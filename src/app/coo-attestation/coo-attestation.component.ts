@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
+import { CooAttestationCreateComponent } from './coo-attestation-create/coo-attestation-create.component';
 import { TranslateService } from '@ngx-translate/core';
 import { ApiService } from 'src/service/api.service';
 import { ConstantsService } from 'src/service/constants.service';
@@ -7,15 +9,15 @@ import * as XLSX from 'xlsx';
 import { ModalPopupService } from 'src/service/modal-popup.service';
 
 @Component({
-  selector: 'app-completed-attestation',
-  templateUrl: './completed-attestation.component.html',
-  styleUrls: ['./completed-attestation.component.css']
+  selector: 'app-coo-attestation',
+  templateUrl: './coo-attestation.component.html',
+  styleUrls: ['./coo-attestation.component.css']
 })
-export class CompletedAttestationComponent implements OnInit {
+export class CooAttestationComponent  implements OnInit {
   progress_val: number = 0;
   selectedAttestations: any;
   totalrecords: number = 0;
-  invoiceRequestLists: [] = [];
+  cooAttestationLists: [] = [];
   cols: any;
   loading: boolean = false;
 
@@ -31,29 +33,44 @@ export class CompletedAttestationComponent implements OnInit {
     this.progress_val = 0;
     this.cols = [
       // { field: 'attestationrequno', header: 'Attestation No.' },
-      { field: 'edasreqno', header: 'label.completedAttestDetails.completedAttestList.edasreqno' },
-      { field: 'entitycode', header: 'label.completedAttestDetails.completedAttestList.entitycode' },
-      { field: 'invoiceno', header: 'label.completedAttestDetails.completedAttestList.invoiceno' },
-      { field: 'invoiceamount', header: 'label.completedAttestDetails.completedAttestList.invoiceamount' },
-      { field: 'invoicecurrency', header: 'label.completedAttestDetails.completedAttestList.invoicecurrency' },
-      { field: 'invoicedate', header: 'label.completedAttestDetails.completedAttestList.invoicedate' },
+      { field: 'declarationumber', header: 'label.cooAttestDetails.cooAttestList.declarationumber' },
+      { field: 'edasreqno', header: 'label.cooAttestDetails.cooAttestList.edasreqno' },
+      { field: 'edasattestno', header: 'label.cooAttestDetails.cooAttestList.edasattestno' },
+      { field: 'entityshareamount', header: 'label.cooAttestDetails.cooAttestList.entityshareamount' },
+      { field: 'totalamount', header: 'label.cooAttestDetails.cooAttestList.totalamount' },
+      { field: 'declarationdate', header: 'label.cooAttestDetails.cooAttestList.declarationdate' },
+      { field: 'attestreqdate', header: 'label.cooAttestDetails.cooAttestList.attestreqdate' },
+      { field: 'actions', header: 'label.cooAttestDetails.cooAttestList.actions' },
     ];
-    this.getInvoiceAttestations();
+    this.getCooAttestations();
   }
 
-  getInvoiceAttestations() {
+  getCooAttestations() {
     let data = {
       uuid: '12223',
       token: '12332',
     };
     this.apiservice
-      .post(this.consts.getInvoiceAttestations, data)
+      .post(this.consts.getCooRequests, data)
       .subscribe((response: any) => {
         if (`${response.responseCode}` === '200') {
           const dataArray = response.data;
-          this.invoiceRequestLists = dataArray;
+          if (dataArray?.dictionary) {
+            this.cooAttestationLists = dataArray?.dictionary?.data;
+          }
         }
       });
+  }
+
+  uploadDeclaration(data: any) {
+    const dialogRef =
+      this.modalPopupService.openPopup<CooAttestationCreateComponent>(
+        CooAttestationCreateComponent,
+        data
+      );
+    dialogRef.afterClosed().subscribe((result) => {
+      this.getCooAttestations();
+    });
   }
 
   splitdatetime(datetimeString: any) {
@@ -87,9 +104,9 @@ export class CompletedAttestationComponent implements OnInit {
   }
 
   exportExcel() {
-    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.invoiceRequestLists);
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.cooAttestationLists);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Physical Attestation');
-    XLSX.writeFile(wb, 'physical-attestation.xlsx');
+    XLSX.utils.book_append_sheet(wb, ws, 'Coo Attestation');
+    XLSX.writeFile(wb, 'coo-attestation.xlsx');
   }
 }

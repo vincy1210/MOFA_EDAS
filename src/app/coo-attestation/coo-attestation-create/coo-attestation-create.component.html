@@ -1,8 +1,8 @@
 <form [formGroup]="registrationForm">
-    <div class="container completedAttestDetails-window">
+    <div class="container cooAttestDetails-window">
       <div class="attest-header">
         <h1 class="mt-0 mb-0 page-title-02">
-          {{ "label.completedAttestDetails.titleCompletedAttest" | translate }}
+          {{ "label.cooAttestDetails.titleCooAttest" | translate }}
         </h1>
         <button
           mat-icon-button
@@ -20,7 +20,7 @@
             class="cd-upload-field"
           >
             <mat-label>{{
-              "label.completedAttestDetails.uploadDeclaration" | translate
+              "label.cooAttestDetails.uploadAttachment" | translate
             }}</mat-label>
             <div class="file-upload-action">
               <button
@@ -32,7 +32,7 @@
               >
                 <span class="upload-field-declaration">
                   <img src="./assets/svg/paperclip.svg" alt="SVG Image" /> &nbsp;
-                  {{ "label.completedAttestDetails.uploadDeclaration" | translate }}
+                  {{ "label.cooAttestDetails.uploadAttachment" | translate }}
                 </span>
               </button>
               <div><p>{{ "label.pdfAccepted" | translate }} </p> <p>{{ "label.lessthan" | translate }} 2MB</p></div>
@@ -71,7 +71,7 @@
                 registrationForm.get('uploadDeclarationFile')?.hasError('required')
               "
             >
-              {{ "alerts.completedAttestDetails.uploadDeclaration" | translate }}
+              {{ "alerts.cooAttestDetails.uploadAttachment" | translate }}
             </mat-error>
           </mat-form-field>
   
@@ -87,7 +87,7 @@
           class="green-filled-btn w-100 btn-w-30"
           (click)="proceed()"
         >
-          {{ "label.completedAttestDetails.submit" | translate }}
+          {{ "label.cooAttestDetails.submit" | translate }}
         </button>
       </div>
     </div>

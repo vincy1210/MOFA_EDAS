@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { ModalPopupService } from 'src/providers/modal-popup.service';
 import { PhysicalAttestationCreateComponent } from './physical-attestation-create/physical-attestation-create.component';
 import { TranslateService } from '@ngx-translate/core';
 import { ApiService } from 'src/service/api.service';
 import { ConstantsService } from 'src/service/constants.service';
 import { DatePipe } from '@angular/common';
 import * as XLSX from 'xlsx';
+import { ModalPopupService } from 'src/service/modal-popup.service';
 
 @Component({
   selector: 'app-physical-attestation',

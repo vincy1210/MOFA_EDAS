@@ -39,10 +39,12 @@
   .file-upload-action {
     display: flex;
     gap: 1rem;
+    padding: 0 0.5rem 0.5rem;
+    align-items: center;
   }
   
   .file-upload-action-btn {
-    margin: 0 0.5rem 0.5rem 0;
+    /* margin: 0 0.5rem 0.5rem 0; */
   }
   
   .cd-file-list {

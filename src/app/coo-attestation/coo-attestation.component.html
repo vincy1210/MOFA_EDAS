@@ -2,11 +2,11 @@
 <div>
   <div class="grid grid-cols-1" color="primary" class="page-header">
     <h3>
-      {{ "label.completedAttestDetails.mainpage.title" | translate }}
+      {{ "label.cooAttestDetails.mainpage.title" | translate }}
     </h3>
   </div>
-  <div class="company-bg completedAttestDetails-page">
-    <div class="mx-auto completedAttestDetails-window">
+  <div class="company-bg cooAttestDetails-page">
+    <div class="mx-auto cooAttestDetails-window">
       <div class="grid grid-cols-1 gap-4">
         <div class="bg-white rounded-lg p-5 col-span-2">
           <p-table
@@ -20,7 +20,7 @@
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
             [filterDelay]="0"
             [totalRecords]="totalrecords"
-            [value]="invoiceRequestLists"
+            [value]="cooAttestationLists"
             [rows]="10"
             [columns]="cols"
             [showCurrentPageReport]="true"
@@ -29,12 +29,14 @@
             styleClass="p-datatable-customers p-datatable-gridlines"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
             [globalFilterFields]="[
+              'declarationumber',
               'edasreqno',
-              'entitycode',
-              'invoiceno',
-              'invoiceamount',
-              'invoicecurrency',
-              'invoicedate'
+              'edasattestno',
+              'entityshareamount',
+              'totalamount',
+              'declarationdate',
+              'attestreqdate',
+              ''
             ]"
           >
             <ng-template pTemplate="caption">
@@ -72,8 +74,12 @@
                   </th> -->
                 <th *ngFor="let col of columns" [pSortableColumn]="col.field">
                   {{ col.header | translate }}
-                  <p-sortIcon field="code"></p-sortIcon>
+                  <p-sortIcon
+                    field="code"
+                    *ngIf="col.field !== 'actions'"
+                  ></p-sortIcon>
                   <p-columnFilter
+                    *ngIf="col.field !== 'actions'"
                     type="text"
                     [field]="col.field"
                     display="menu"
@@ -87,24 +93,39 @@
                     <p-tableCheckbox [value]="data"></p-tableCheckbox>
                   </td> -->
                 <td>
+                  <span class="image-text">{{ data.declarationumber }}</span>
+                </td>
+                <td>
                   <span class="image-text">{{ data.edasreqno }}</span>
                 </td>
                 <td>
-                  <span class="image-text">{{ data.entitycode }}</span>
+                  <span class="image-text">{{ data.edasattestno }}</span>
                 </td>
                 <td>
-                  <span class="image-text">{{ data.invoiceno }}</span>
+                  <span class="image-text">{{ data.entityshareamount }}</span>
                 </td>
                 <td>
-                  <span class="image-text">{{ data.invoiceamount }}</span>
-                </td>
-                <td>
-                  <span class="image-text">{{ data.invoicecurrency }}</span>
+                  <span class="image-text">{{ data.totalamount }}</span>
                 </td>
                 <td>
                   <span class="image-text">{{
-                    splitdatetime1(data.invoicedate)?.date
+                    splitdatetime1(data.declarationdate)?.date
                   }}</span>
+                </td>
+                <td>
+                  <span class="image-text">{{
+                    splitdatetime1(data.attestreqdate)?.date
+                  }}</span>
+                </td>
+                <td>
+                  <button mat-button [matMenuTriggerFor]="menu" color="primary">
+                    {{ "label.cooAttestDetails.manage" | translate }}
+                  </button>
+                  <mat-menu #menu="matMenu">
+                    <button mat-menu-item (click)="uploadDeclaration(data)">
+                        {{ "label.cooAttestDetails.uploadAttachment" | translate }}
+                    </button>
+                  </mat-menu>
                 </td>
               </tr>
             </ng-template>
