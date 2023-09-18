@@ -13,6 +13,8 @@
     "staticcontent.internet.error": "Please check your internet"
   },
   "label": {
+	"pdfAccepted": ".pdf accepted",
+    "lessthan": "less than",
     "app": {
       "InqAroundclock": "For Inquiries around the clock",
       "copyright": "Copyright 2023 Ministry of Foreign Affairs",

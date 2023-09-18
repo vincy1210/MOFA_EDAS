@@ -14,6 +14,8 @@
   },
 
   "label": {
+	"pdfAccepted": ".pdf accepted",
+    "lessthan": "less than",
     "app": {
       "InqAroundclock": "للاستفسار على مدار الساعة",
       "copyright": "حقوق النشر 2023 وزارة الخارجية",
