@@ -13,21 +13,16 @@ import { CommonService } from 'src/service/common.service';
 import { ConstantsService } from 'src/service/constants.service';
 
 interface DeclarationAttestModel {
-  attesttypeuno: number;
-  declarationno: number;
-  attestDocName: string;
-  uuid: string;
-  token: string;
-  processname: string;
-  attestFile: string;
+  data: { uuid: string; coorequestno: number };
+  attachment: File;
 }
 
 @Component({
-  selector: 'app-completed-attestation-create',
-  templateUrl: './completed-attestation-create.component.html',
-  styleUrls: ['./completed-attestation-create.component.css']
+  selector: 'app-coo-attestation-create',
+  templateUrl: './coo-attestation-create.component.html',
+  styleUrls: ['./coo-attestation-create.component.css'],
 })
-export class CompletedAttestationCreateComponent implements OnInit {
+export class CooAttestationCreateComponent implements OnInit {
   registrationForm!: FormGroup;
   today: Date = new Date();
   isLoading = false;
@@ -35,7 +30,7 @@ export class CompletedAttestationCreateComponent implements OnInit {
   listOfFiles: File[] = [];
 
   constructor(
-    public dialogRef: MatDialogRef<CompletedAttestationCreateComponent>,
+    public dialogRef: MatDialogRef<CooAttestationCreateComponent>,
     private FormBuilder: FormBuilder,
     public translate: TranslateService,
     public apiservice: ApiService,
@@ -46,9 +41,10 @@ export class CompletedAttestationCreateComponent implements OnInit {
 
   ngOnInit(): void {
     this.registrationForm = this.FormBuilder.group({
-      declarationId: [, Validators.required],
+      coorequestno: [, Validators.required],
       uploadDeclarationFile: [, Validators.required],
     });
+    this.registrationForm.get('coorequestno')?.setValue(this.data.coorequestno);
   }
 
   onFileChanged(event: any) {
@@ -74,15 +70,9 @@ export class CompletedAttestationCreateComponent implements OnInit {
   removeSelectedFile(index: number) {
     this.listOfFiles.splice(index, 1);
     this.registrationForm.get('uploadDeclarationFile')?.setValue(null);
-    this.registrationForm.get('uploadDeclarationFile')?.updateValueAndValidity();
-  }
-
-  validateNumericInput(control: FormControl) {
-    const numericValue = parseFloat(control.value);
-    if (isNaN(numericValue) || !Number.isFinite(numericValue)) {
-      return { numericInput: true };
-    }
-    return null;
+    this.registrationForm
+      .get('uploadDeclarationFile')
+      ?.updateValueAndValidity();
   }
 
   onClose(response: boolean) {
@@ -91,37 +81,24 @@ export class CompletedAttestationCreateComponent implements OnInit {
 
   proceed() {
     if (this.registrationForm.valid) {
-      const {
-        declarationId,
-      } = this.registrationForm.getRawValue();
-      this.convertToBase64(this.listOfFiles[0])
-        .then((base64String) => {
-          const data: DeclarationAttestModel = {
-            attesttypeuno: 1,
-            uuid: '12212',
-            token: 'tl122',
-            declarationno: declarationId,
-            attestDocName: this.listOfFiles[0].name,
-            processname: 'declaration',
-            attestFile: base64String,
-          };
-          this.submitDeclarationAttestations(data);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+      let formData: FormData = new FormData();
+      const { coorequestno } = this.registrationForm.getRawValue();
+      const data = { uuid: '211', coorequestno: coorequestno };
+      formData.append('data', JSON.stringify(data));
+      formData.append('attachment', this.listOfFiles[0]);
+      this.submitDeclarationAttestations(formData);
     } else {
       // alert
       this.commonService.showErrorMessage('Fill mandatory fields!!!');
     }
   }
 
-  submitDeclarationAttestations(data: DeclarationAttestModel) {
+  submitDeclarationAttestations(data: FormData) {
     this.apiservice
-      .post(this.consts.invoiceAttestation, data)
+      .post(this.consts.updateCOORequests, data)
       .subscribe((response: any) => {
-        const dataArray = response.data;
-        if (`${response.responseCode}` === '200') {
+        const dataArray = response;
+        if (`${response.responsecode}` === '1') {
           //alert
           this.commonService.showSuccessMessage(`Successfully submitted`);
           this.clearDatas();
@@ -160,4 +137,3 @@ export class CompletedAttestationCreateComponent implements OnInit {
     });
   }
 }
-
