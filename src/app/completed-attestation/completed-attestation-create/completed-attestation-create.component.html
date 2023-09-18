@@ -1,0 +1,95 @@
+<form [formGroup]="registrationForm">
+    <div class="container completedAttestDetails-window">
+      <div class="attest-header">
+        <h1 class="mt-0 mb-0 page-title-02">
+          {{ "label.completedAttestDetails.titleCompletedAttest" | translate }}
+        </h1>
+        <button
+          mat-icon-button
+          class="close-button"
+          [mat-dialog-close]="true"
+        >
+          <mat-icon class="close-icon" color="warn">close</mat-icon>
+        </button>
+      </div>
+      <div class="grid grid-cols-1">
+        <div class="cd-upload">
+          <mat-form-field
+            appearance="outline"
+            floatLabel="always"
+            class="cd-upload-field"
+          >
+            <mat-label>{{
+              "label.completedAttestDetails.uploadDeclaration" | translate
+            }}</mat-label>
+            <div class="file-upload-action">
+              <button
+                type="button"
+                mat-stroked-button
+                color="primary"
+                (click)="fileInput.click()"
+                class="file-upload-action-btn"
+              >
+                <span class="upload-field-declaration">
+                  <img src="./assets/svg/paperclip.svg" alt="SVG Image" /> &nbsp;
+                  {{ "label.completedAttestDetails.uploadDeclaration" | translate }}
+                </span>
+              </button>
+              <div><p>{{ "label.pdfAccepted" | translate }} </p> <p>{{ "label.lessthan" | translate }} 2MB</p></div>
+              <div
+                *ngFor="let selected of listOfFiles; let index = index"
+                class="cd-file-list"
+              >
+                <span class="doc_selected">{{ selected.name }}</span>
+                <mat-icon>check_circle_outline</mat-icon>
+                <small (click)="removeSelectedFile(index)">{{
+                  "Remove" | translate
+                }}</small>
+              </div>
+            </div>
+            <input
+              type="text"
+              style="display: none"
+              formControlName="uploadDeclarationFile"
+              name="uploadDeclarationFile"
+              readonly
+              matInput
+            />
+  
+            <input
+              accept=".pdf"
+              style="display: none"
+              formControlName="uploadDeclarationFile"
+              name="uploadDeclarationFile"
+              #attachments
+              type="file"
+              (change)="onFileChanged($event)"
+              #fileInput
+            />
+            <mat-error
+              *ngIf="
+                registrationForm.get('uploadDeclarationFile')?.hasError('required')
+              "
+            >
+              {{ "alerts.completedAttestDetails.uploadDeclaration" | translate }}
+            </mat-error>
+          </mat-form-field>
+  
+          <p *ngIf="isLoading">Loading.....</p>
+        </div>
+      </div>
+    </div>
+    <div class="flex justify-center" mat-dialog-actions>
+      <div class="grid grid-cols-1 w-30">
+        <button
+          mat-flat-button
+          color="primary"
+          class="green-filled-btn w-100 btn-w-30"
+          (click)="proceed()"
+        >
+          {{ "label.completedAttestDetails.submit" | translate }}
+        </button>
+      </div>
+    </div>
+  </form>
+  

@@ -1,0 +1,66 @@
+@use '@angular/material' as mat;
+@import './custom-palettes';
+
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+
+$uaemofa-default-primary: mat.define-palette($wfs-brown-palette, 800, 700, 900);
+$uaemofa-default-accent: mat.define-palette(mat.$green-palette, 900, 800, 900);
+$uaemofa-default-warn: mat.define-palette(mat.$gray-palette, 900, 800, 900);
+
+$uaemofa-yellow-primary: mat.define-palette($wfs-yellow-palette, 800, 700, 900);
+$uaemofa-yellow-accent: mat.define-palette($wfs-yellow-palette, 900, 800, 900);
+$uaemofa-yellow-warn: mat.define-palette(mat.$gray-palette, 900, 800, 900);
+
+$uaemofa-lime-primary: mat.define-palette($wfs-lime-palette, 800, 700, 900);
+$uaemofa-lime-accent: mat.define-palette($wfs-lime-palette, 900, 800, 900);
+$uaemofa-lime-warn: mat.define-palette(mat.$gray-palette, 900, 800, 900);
+
+
+
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as `color` or `typography`.
+$uaemofa-default-theme: mat.define-light-theme((color: (primary: $uaemofa-default-primary,
+        accent: $uaemofa-default-accent,
+        warn: $uaemofa-default-warn,
+      )));
+
+$uaemofa-yellow-theme: mat.define-light-theme((color: (primary: $uaemofa-yellow-primary,
+        accent: $uaemofa-yellow-accent,
+        warn: $uaemofa-yellow-warn,
+      )));
+
+
+$uaemofa-lime-theme: mat.define-light-theme((color: (primary: $uaemofa-lime-primary,
+        accent: $uaemofa-lime-accent,
+        warn: $uaemofa-lime-warn,
+      )));
+
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($uaemofa-default-theme);
+
+// @include mat.all-component-themes($uaemofa-yb-theme);
+.theme-yellowblue {
+  @include mat.all-component-themes($uaemofa-yellow-theme);
+}
+
+.theme-limeblack {
+  @include mat.all-component-themes($uaemofa-lime-theme);
+}
+
+// .theme-yellowblue {
+//   background: mat.get-color-from-palette($uaemofa-yellow-theme, '900')!important;
+//   color: mat.get-color-from-palette($uaemofa-blue-theme, '900')!important;
+//  }

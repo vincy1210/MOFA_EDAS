@@ -1,0 +1,156 @@
+{
+	"currentTheme":"rtl",
+	"currentlanguage":"ar",
+	"backbtn": "خلف",
+	"Cancel": "إلغاء",
+	"Submit": "إرسال",
+	"EDIT": "تعديل",
+	"Remove": "إزالة",
+	"Re-upload": "إعادة تحميل",
+	"Yes":"نعم",
+	"No":"لا",
+	
+	"commonmessage":{
+		"staticcontent.internet.error":"يرجى التحقق من الإنترنت الخاص بك"
+	},
+	
+	"label":{
+		"app":{
+			"InqAroundclock":"للاستفسار على مدار الساعة",
+			"copyright":"حقوق النشر 2023 وزارة الخارجية",
+			"stayintouch":"ابق على تواصل",
+			"joinmaillist":"انضم إلى قائمتنا البريدية ليصلك جديد وزارة الخارجية ويتم تحديث الأحداث بشكل دوري.",
+			"Subscribe":"يشترك"
+		},
+		"registration":{
+			"page.title": "تسجيل",
+			"mainpage.title": "تسجيل",
+			"pagetitle.para": "يرجى إكمال قسم النموذج التالي بتفاصيل دقيقة وحديثة عن الشركة لضمان معالجة طلبك بسلاسة وفعالية.",
+			"tradelicensenumberlabel": "رقم الرخصة التجارية",
+			"chooseadatelabel": "اختر التاريخ",
+			"cancelbtn": "يلغي",
+			"applybtn": "يتقدم",
+			"licenseIssuingauthorityemiratelabel": "سلطة إصدار التراخيص - الإمارة",
+			"choosetypeofissuingauthoritylabel": "سلطة الإصدار",
+			"dmcclabel": "سلطة مركز دبي للسلع المتعددة - مركز دبي للسلع المتعددة (DMCC)",
+			"proceedbtn": "يتابع",
+			"departmentofeconomicdevelopment": "دائرة التنمية الاقتصادية",
+			"freezone": "منطقة حرة"
+		},
+	
+		"companydetails":{
+			"page.title": "تفاصيل الشركة",
+			"pagetitle.para": "ضمان دقة البيانات وأمانها على رأس أولوياتنا. يرجى التحقق من التفاصيل الخاصة بك أولاً ثم رقم الاتصال بالشركة من خلال OTP لإكمال التقديم بكل ثقة.",
+			"nameofthebusinessaspertradelicense": "اسم النشاط التجاري حسب الرخصة التجارية",
+			"tradelicensenumber": "رقم الرخصة التجارية",
+			"tradelicenseissuedate": "تاريخ اصدار الرخصة التجارية",
+			"tradelicenseexpirydate": "تاريخ انتهاء الرخصة التجارية",
+			"licenseissuingauthority": "سلطة إصدار الترخيص",
+			"legaltype": "النوع القانوني",
+			"companyregisteredemailaddress": "عنوان البريد الإلكتروني المسجل للشركة",
+			"companycontactnumber": "رقم الاتصال بالشركة",
+			"uploadtradelicense": "تحميل الرخصة التجارية",
+			"second.page.title": "بيانات مندوب الشركة",
+			"second.pagetitle.para": "ستكون هذه التفاصيل المقدمة بمثابة بيانات اعتماد للوصول إلى الملف التعريفي للشركة بمجرد الموافقة عليه.",
+			"fullname": "الاسم الكامل",
+			"representativeemailaddress": "عنوان البريد الإلكتروني للممثل",
+			"mobilenumber": "رقم الهاتف المحمول",
+			"submitbtn": "يُقدِّم",
+			"Verify Company Contact Number":"التحقق من رقم الاتصال بالشركة",
+			"Verified":"تم التحقق من رقم الجوال",
+			"OTP Verification": "تحقق من رمز OTP",
+			"Enter the verification code sent to": "أدخل رمز التحقق المرسل إلى",
+			"DidntreceivetheOTP": "لم تستلم رمز OTP",
+			"Resend": "إعادة الإرسال",
+			"AreyouaBroker":"هل أنت وسيط؟",
+
+		
+			"Kindlymakeanoteofyour": "من فضلك احتفظ بملاحظتك حول",
+			"referenceID": "معرف المرجعية",
+			"forallfuturecomm": "لجميع التواصلات المستقبلية المتعلقة بطلب التسجيل الخاص بك.",
+			"VISIT": "زيارة",
+		
+			"r1.note1": "لقد قمت بنجاح بتقديم طلب تسجيل شركتك.",
+			"r1.note2": "سيقوم وكلاؤنا المخصصون الآن بمراجعة طلبك، وبمجرد الموافقة، ستتلقى رسالة تأكيد عبر البريد الإلكتروني المسجل لدينا.",
+			"r1.note3": "للعودة إلى الموقع الرئيسي، يرجى النقر على الزر أدناه.",
+			"r2.note1": "شكرًا لتقديم طلبك.",
+			"r2.note2": "نود أن نبلغك بأن طلبك تم تقديمه بنجاح ويتم حاليًا معالجته.",
+			"r2.note21": "كن على يقين، فإن فريقنا يعمل بجد على ذلك وسنعاود الاتصال بك في أقرب وقت ممكن.",
+			"r2.note3": "إذا كان لديك أي أسئلة أو تحتاج إلى التواصل معنا، فلا تتردد في الاتصال على info@mofa.gov.ae، مع الرجاء الإشارة إلى معرف المرجعية الفريد الخاص بك."
+		  
+		},"Attestation":
+		{
+			"DraftPendAttest": "Draft Pending Attestations",
+			"ShowEntries": "Showing {first} to {last} of {totalRecords} entries",
+			"SearchKeyword": "Search keyword",
+			"CSV": "CSV",
+			"XLS": "XLS",
+			"Timeline": "Timeline",
+			"NoInvoicesSelected": "No. of Invoices selected",
+			"TotalFines": "Total Fines(0)",
+			"AttestationFees": "Attestation Fees",
+			"TotalAmount": "Total Amount",
+			"PoweredBy": "Powered by Magnati",
+			"CREATED": "CREATED",
+			"APPROVED": "APPROVED",
+			"PAYMENT": "PAYMENT",
+			"ATTESTATION": "ATTESTATION",
+			"COMPLETED": "COMPLETED",
+			"NoCustomersFound": "No customers found",
+			"AED": "AED",
+			"InclVAT": "incl.VAT",
+			"Loading": "Loading"
+		  },
+		  "landingPage":{
+			"ChooseCompany": "Choose your company",
+			"LoginProfile": "Which company profile you would like to log in to?",
+			"TradeLicenseNo": "Trade License No.",
+			"RegisterNewCompany": "Register a New Company",
+			"Proceed": "Proceed"
+		  }
+
+	}
+	
+	,
+	"alerts":{
+		"registration":{
+			"Trade license number is required.":"رقم الرخصة التجارية مطلوب.",
+			"Please choose a date.":"الرجاء اختيار التاريخ.",
+			"Please select an option.":"الرجاء تحديد خيار.",
+			"Please select the type of Issuing Authority.":"الرجاء تحديد نوع جهة الإصدار."
+
+		},
+		"companydetails": {
+			"Trade License is required": "مطلوب رخصة العمل",
+			"Company Contact Number is required": "رقم اتصال الشركة مطلوب",
+			"Company Contact Number must be 9 characters long": "يجب أن يكون رقم اتصال الشركة مكونًا من 9 أحرف",
+			"Invalid Company Contact Number": "رقم اتصال الشركة غير صحيح",
+			"Company Registered Email Address is required": "عنوان البريد الإلكتروني المسجل للشركة مطلوب",
+			"Legal Type is required": "نوع القانون مطلوب",
+			"License issuing authority is required": "مطلوب سلطة إصدار الترخيص",
+			"Trade License Expiry Date is required": "تاريخ انتهاء رخصة العمل مطلوب",
+			"Trade License issue Date is required": "تاريخ إصدار رخصة العمل مطلوب",
+			"Trade License number is required": "رقم رخصة العمل مطلوب",
+			"Name of the Business is required": "اسم الشركة مطلوب",
+			"Full name is required": "الاسم الكامل مطلوب",
+			"Representative Email address is required": "عنوان البريد الإلكتروني للممثل مطلوب",
+			"Mobile Number is required": "رقم الجوال مطلوب",
+			"Invalid Mobile Number": "رقم الجوال غير صحيح",
+			"Mobile Number must be 9 characters long": "يجب أن يكون رقم الجوال مكونًا من 9 أحرف",
+			"Invalid Email format":"تنسيق البريد الإلكتروني غير صالح",
+			"Please select the option":"Please select the option"
+
+		  }
+		  
+
+	},
+	"ShowErrorMessages":{
+		"Issue in Fetching form":"Issue in Fetching form",
+			"CompanyDetails":"License Already Registered!",
+			"something went wrong":"something went wrong",
+			"UUID or tradelicence no is missing":"UUID or tradelicence no is missing",
+			"Please fill the mandatory Fields":"Please fill the mandatory Fields",
+			"Provide valid details and Try Again":"Provide valid details and Try Again",
+			"OTP is verified":"OTP is verified"
+	}
+}

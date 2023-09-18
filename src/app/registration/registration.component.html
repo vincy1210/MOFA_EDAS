@@ -1,0 +1,133 @@
+
+<!-- Example loading element in your HTML -->
+
+<div class="grid grid-cols-1 title" color="primary" class="page-header">
+  <h3 (click)="mainpage()">{{'label.registration.mainpage.title' | translate }}</h3>
+</div>
+<div class="body-bg registration-page">
+<form [formGroup]="registrationForm">
+
+  <div class="registration-progress">
+  <mat-progress-bar mode="determinate" value="33"></mat-progress-bar>
+</div>
+<!-- here -->
+<div class="container registration-window">
+  <div class="w-50 m-auto">
+    <mat-card>
+      <div class="p-4">
+        <h1 class="pageTitle"> {{'label.registration.page.title' | translate }}</h1>
+        <p class="greytitle">{{'label.registration.pagetitle.para' | translate }}
+        </p>
+      
+        <div class=" mt-3 grid grid-cols-1 rtl-form">
+          <div class="grid grid-cols-1">
+           
+        <mat-form-field [ngClass]="{'error-border': registrationForm.get('tradeLicenseNumber')?.hasError('required')}" appearance="outline">
+          <mat-label>{{'label.registration.tradelicensenumberlabel' | translate }}</mat-label>
+          <input matInput maxlength="60" placeholder="Enter Trade License Number" name="tradeLicenseNumber" formControlName="tradeLicenseNumber">
+          <mat-error class="error" *ngIf="registrationForm.get('tradeLicenseNumber')?.hasError('required')">{{'alerts.registration.Trade license number is required.'|translate}}</mat-error>
+        </mat-form-field>
+
+      
+      </div>
+      <div class="grid grid-cols-1">
+        <mat-form-field class="example-form-field">
+          <mat-label>{{'label.registration.chooseadatelabel' | translate }}</mat-label>
+          <input matInput [max]="today" [matDatepicker]="datepicker" [readonly]="true" name="chosenDate" formControlName="chosenDate">
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+          <mat-datepicker #datepicker>
+            <mat-datepicker-actions>
+            <button mat-button matDatepickerCancel>{{'label.registration.cancelbtn' | translate }}</button>
+            <button mat-raised-button color="primary" matDatepickerApply>{{'label.registration.applybtn' | translate }}</button>
+            </mat-datepicker-actions>
+          </mat-datepicker>
+          <mat-error class="error" *ngIf="registrationForm.get('chosenDate')?.hasError('required')">{{'alerts.registration.Please choose a date.'|translate}}</mat-error>
+        </mat-form-field>
+      
+      </div>
+      <div class="grid grid-cols-1">
+        <mat-form-field appearance="outline">
+          <mat-label>{{'label.registration.licenseIssuingauthorityemiratelabel' | translate }}</mat-label>
+          <mat-select name="issuingAuthority"  formControlName="issuingAuthority" (selectionChange)="onDropdownChange($event)">
+            <mat-option value="01">Abu Dhabi</mat-option>
+            <mat-option value="02">Ajman</mat-option>
+            <mat-option value="03">Dubai</mat-option>
+            <mat-option value="04">Fujairah</mat-option>
+            <mat-option value="05">Sharjah</mat-option>
+            <mat-option value="06">Ras Al Khaimah</mat-option>
+            <mat-option value="07">Umm Al Quwain</mat-option>
+
+          </mat-select>
+          <mat-error class="error" *ngIf="registrationForm.get('issuingAuthority')?.hasError('required')">{{'alerts.registration.Please select an option.'|translate}}</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="grid grid-cols-1">
+
+        <h3 class="font-bold">{{'label.registration.choosetypeofissuingauthoritylabel' | translate }}</h3>
+      </div>
+   
+    <div class="grid grid-cols-1 mt-4">
+      <mat-radio-group formControlName="expressType" >
+        <div class="grid grid-cols-1">
+          <mat-radio-button color="primary" (change)="radio($event)" class="example-radio-button mb-5" *ngFor="let te of typeExpress" [value]="te">
+            {{ te }}
+          </mat-radio-button>
+        <mat-error class="error" *ngIf="registrationForm.get('expressType')?.hasError('required') && this.issuing_auth">{{'alerts.registration.Please select the type of Issuing Authority.'| translate }}</mat-error>
+        </div>
+      </mat-radio-group>
+    </div>
+
+<!-- {{registrationForm.get('expressType')?.hasError('required')}} -->
+
+      <ng-container *ngIf="registrationForm.get('expressType')?.value === 'Department of Economic Development (DED)'">
+      </ng-container>
+      <ng-container *ngIf="registrationForm.get('expressType')?.value === 'Freezone'">
+        <div class="mt-2 grid grid-cols-1">
+        <mat-form-field appearance="outline" >
+          <mat-label>{{'label.registration.dmcclabel' | translate }}</mat-label>
+       
+
+          <mat-select name="dmccOption" formControlName="dmccOption" >
+            <mat-option *ngFor="let option of freezone" [value]="option.typeuno">
+              {{ option.typename }}
+            </mat-option>
+          </mat-select>
+
+
+          <mat-error class="error" *ngIf="registrationForm.get('dmccOption')?.hasError('required')">{{'alerts.registration.Please select an option.'|translate}}</mat-error>
+        </mat-form-field>
+      </div>
+
+
+       
+      </ng-container>
+ 
+      
+      
+      <div class="text-right">
+        <button mat-flat-button color="primary" (click)="proceed()" >{{'label.registration.proceedbtn' | translate }}</button>
+      </div>
+
+      </div>
+      </div>
+    </mat-card>
+  </div>
+  </div>
+</form>
+
+<re-captcha [siteKey]="sitekey"
+size="invisible" 
+#invisible
+(errored)="onError()"
+errorMode="handled"
+(resolved)="addTokenLog('Invisible reCAPTCHA response', $event)"
+>
+</re-captcha>
+
+</div>
+
+
+
+
+

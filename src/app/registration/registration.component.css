@@ -1,0 +1,41 @@
+.mat-error {
+    display: block;
+    color: red;
+    font-size: 9px;
+
+}
+.pageTitle{
+  font-size:17px;
+}
+.greytitle{
+  color: gray;
+  font-size: 12px;
+}
+/* 
+.error-border {
+    border-color: red !important;
+  }
+  mat-form-field-appearance-outline .mat-form-field-flex {
+    padding: 0 0.75em 0 0.75em;
+    margin-top: -0.25em;
+    position: relative;
+    border: 3px red solid !important;
+    border-radius: 10px;
+  }
+  .mat-form-field-flex {
+    display: inline-flex;
+    align-items: baseline;
+    box-sizing: border-box;
+    width: 100%;
+    border: 2px red solid !important;
+  }
+  .mat-input-element {
+    border-color: red !important; 
+  }
+  mat-form-field .mat-input-element {
+    border-color: red !important;
+  }
+  .mat-input-element {
+    border-color: red !important;
+  }
+     */

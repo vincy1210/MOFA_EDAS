@@ -1,0 +1,142 @@
+<!-- <app-loader></app-loader> -->
+<div>
+  <div class="grid grid-cols-1" color="primary" class="page-header">
+    <h3>
+      {{ "label.completedAttestDetails.mainpage.title" | translate }}
+    </h3>
+  </div>
+  <div class="company-bg completedAttestDetails-page">
+    <div class="mx-auto completedAttestDetails-window">
+      <div class="grid grid-cols-1 gap-4">
+        <div class="bg-white rounded-lg p-5 col-span-2">
+          <p-table
+            [(selection)]="selectedAttestations"
+            dataKey="attestationrequno"
+            [scrollable]="true"
+            selectionMode="multiple"
+            #tableref
+            [rowHover]="true"
+            [paginator]="true"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [filterDelay]="0"
+            [totalRecords]="totalrecords"
+            [value]="completedAttestationLists"
+            [rows]="10"
+            [columns]="cols"
+            [showCurrentPageReport]="true"
+            [rowsPerPageOptions]="[10, 25, 50]"
+            [loading]="loading"
+            styleClass="p-datatable-customers p-datatable-gridlines"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [globalFilterFields]="[
+              'declarationumber',
+              'edasreqno',
+              'edasattestno',
+              'entityshareamount',
+              'totalamount',
+              'declarationdate',
+              'attestreqdate',
+              ''
+            ]"
+          >
+            <ng-template pTemplate="caption">
+              <div class="p-d-flex grid-header">
+                <span class="p-input-icon-left p-ml-auto grid-search">
+                  <i class="pi pi-search"></i>
+                  <input
+                    pInputText
+                    type="text"
+                    (input)="
+                      tableref.filterGlobal(
+                        $any($event.target).value,
+                        'contains'
+                      )
+                    "
+                    placeholder="Search keyword"
+                  />
+                </span>
+                <button
+                  type="button"
+                  pButton
+                  pRipple
+                  icon="pi pi-file-excel"
+                  (click)="exportExcel()"
+                  class="p-button-success mr-2 excel-icon"
+                  pTooltip="Excel export"
+                  tooltipPosition="bottom"
+                ></button>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <!-- <th style="width: 3rem">
+                    <p-tableHeaderCheckbox> </p-tableHeaderCheckbox>
+                  </th> -->
+                <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                  {{ col.header | translate }}
+                  <p-sortIcon
+                    field="code"
+                    *ngIf="col.field !== 'actions'"
+                  ></p-sortIcon>
+                  <p-columnFilter
+                    *ngIf="col.field !== 'actions'"
+                    type="text"
+                    [field]="col.field"
+                    display="menu"
+                  ></p-columnFilter>
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-data>
+              <tr>
+                <!-- <td>
+                    <p-tableCheckbox [value]="data"></p-tableCheckbox>
+                  </td> -->
+                <td>
+                  <span class="image-text">{{ data.declarationumber }}</span>
+                </td>
+                <td>
+                  <span class="image-text">{{ data.edasreqno }}</span>
+                </td>
+                <td>
+                  <span class="image-text">{{ data.edasattestno }}</span>
+                </td>
+                <td>
+                  <span class="image-text">{{ data.entityshareamount }}</span>
+                </td>
+                <td>
+                  <span class="image-text">{{ data.totalamount }}</span>
+                </td>
+                <td>
+                  <span class="image-text">{{
+                    splitdatetime1(data.declarationdate)?.date
+                  }}</span>
+                </td>
+                <td>
+                  <span class="image-text">{{
+                    splitdatetime1(data.attestreqdate)?.date
+                  }}</span>
+                </td>
+                <td>
+                  <button mat-button [matMenuTriggerFor]="menu" color="primary">
+                    {{ "label.completedAttestDetails.manage" | translate }}
+                  </button>
+                  <mat-menu #menu="matMenu">
+                    <button mat-menu-item (click)="uploadDeclaration(data)">
+                        {{ "label.completedAttestDetails.uploadDeclaration" | translate }}
+                    </button>
+                  </mat-menu>
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="10">{{ "noDataFound" | translate }}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

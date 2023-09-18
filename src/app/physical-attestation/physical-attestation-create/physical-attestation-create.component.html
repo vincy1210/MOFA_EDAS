@@ -1,0 +1,264 @@
+<form [formGroup]="registrationForm">
+  <div class="container physicalAttestDetails-window">
+    <div class="attest-header">
+      <h1 class="mt-0 mb-0 page-title-02">
+        {{ "label.physicalAttestDetails.titlePhysicalAttest" | translate }}
+      </h1>
+      <button
+        mat-icon-button
+        class="close-button"
+        [mat-dialog-close]="true"
+      >
+        <mat-icon class="close-icon" color="warn">close</mat-icon>
+      </button>
+    </div>
+    <p class="mt-0 page-title-para">
+      {{ "label.physicalAttestDetails.paraPhysicalAttest" | translate }}
+    </p>
+    <p class="mt-0 page-title-para">
+      {{ "label.physicalAttestDetails.para1PhysicalAttest" | translate }}
+    </p>
+
+    <div class="mt-3 grid grid-cols-2 gap-4 rtl-form">
+      <div class="grid grid-cols-1 mr-1">
+        <mat-form-field
+          [ngClass]="{
+            'error-border': registrationForm
+              .get('invoiceId')
+              ?.hasError('required')
+          }"
+          appearance="outline"
+        >
+          <mat-label>{{
+            "label.physicalAttestDetails.invoiceId" | translate
+          }}</mat-label>
+          <input
+            matInput
+            maxlength="60"
+            [placeholder]="
+              translate.instant('label.physicalAttestDetails.invoiceId')
+            "
+            name="invoiceId"
+            formControlName="invoiceId"
+          />
+          <mat-error
+            class="error"
+            *ngIf="registrationForm.get('invoiceId')?.hasError('required')"
+            >{{
+              "alerts.physicalAttestDetails.invoiceId" | translate
+            }}</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <div class="grid grid-cols-1">
+        <mat-form-field class="example-form-field">
+          <mat-label>{{
+            "label.physicalAttestDetails.invoiceDate" | translate
+          }}</mat-label>
+          <input
+            matInput
+            [max]="today"
+            [matDatepicker]="datepicker"
+            [readonly]="true"
+            name="invoiceDate"
+            formControlName="invoiceDate"
+          />
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="datepicker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #datepicker>
+            <mat-datepicker-actions>
+              <button mat-button matDatepickerCancel>
+                {{ "label.registration.cancelbtn" | translate }}
+              </button>
+              <button mat-raised-button color="primary" matDatepickerApply>
+                {{ "label.registration.applybtn" | translate }}
+              </button>
+            </mat-datepicker-actions>
+          </mat-datepicker>
+          <mat-error
+            class="error"
+            *ngIf="registrationForm.get('invoiceDate')?.hasError('required')"
+            >{{
+              "alerts.physicalAttestDetails.invoiceDate" | translate
+            }}</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <div class="grid grid-cols-1 mr-1">
+        <mat-form-field
+          [ngClass]="{
+            'error-border': registrationForm
+              .get('invoiceDate')
+              ?.hasError('required')
+          }"
+          appearance="outline"
+        >
+          <mat-label>{{
+            "label.physicalAttestDetails.invoiceCurrency" | translate
+          }}</mat-label>
+          <input
+            matInput
+            maxlength="60"
+            [placeholder]="
+              translate.instant('label.physicalAttestDetails.invoiceCurrency')
+            "
+            name="invoiceCurrency"
+            formControlName="invoiceCurrency"
+            (input)="capitalizeInput($event)"
+          />
+          <mat-error
+            class="error"
+            *ngIf="
+              registrationForm.get('invoiceCurrency')?.hasError('required')
+            "
+            >{{
+              "alerts.physicalAttestDetails.invoiceCurrency" | translate
+            }}</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <div class="grid grid-cols-1 mr-1">
+        <mat-form-field
+          [ngClass]="{
+            'error-border': registrationForm
+              .get('invoiceAmount')
+              ?.hasError('required')
+          }"
+          appearance="outline"
+        >
+          <mat-label>{{
+            "label.physicalAttestDetails.invoiceAmount" | translate
+          }}</mat-label>
+          <input
+            type="number"
+            matInput
+            maxlength="60"
+            [placeholder]="
+              translate.instant('label.physicalAttestDetails.invoiceAmount')
+            "
+            name="invoiceAmount"
+            formControlName="invoiceAmount"
+          />
+          <mat-error
+            class="error"
+            *ngIf="registrationForm.get('invoiceAmount')?.hasError('required')"
+            >{{
+              "alerts.physicalAttestDetails.invoiceAmount" | translate
+            }}</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <!-- <div class="grid grid-cols-1">
+        <h3 class="font-bold">
+          {{
+            "label.physicalAttestDetails.choosetypeofissuingauthoritylabel" | translate
+          }}
+        </h3>
+      </div> -->
+    </div>
+    <div class="grid grid-cols-1">
+      <mat-form-field appearance="outline">
+        <mat-label>{{
+          "label.physicalAttestDetails.issuingAuthority" | translate
+        }}</mat-label>
+        <mat-select name="issuingAuthority" formControlName="issuingAuthority">
+          <!-- <mat-option value="01">Abu Dhabi</mat-option> -->
+          <mat-option
+            *ngFor="let authority of issuingAuthorities"
+            [value]="authority.typeuno"
+          >
+            {{ authority.typename }}
+          </mat-option>
+        </mat-select>
+        <mat-error
+          class="error"
+          *ngIf="registrationForm.get('issuingAuthority')?.hasError('required')"
+          >{{
+            "alerts.physicalAttestDetails.issuingAuthority" | translate
+          }}</mat-error
+        >
+      </mat-form-field>
+    </div>
+    <div class="grid grid-cols-1">
+      <div class="cd-upload">
+        <mat-form-field
+          appearance="outline"
+          floatLabel="always"
+          class="cd-upload-field"
+        >
+          <mat-label>{{
+            "label.physicalAttestDetails.uploadInvoice" | translate
+          }}</mat-label>
+          <div class="file-upload-action">
+            <button
+              type="button"
+              mat-stroked-button
+              color="primary"
+              (click)="fileInput.click()"
+              class="file-upload-action-btn"
+            >
+              <span class="upload-field-invoice">
+                <img src="./assets/svg/paperclip.svg" alt="SVG Image" /> &nbsp;
+                {{ "label.physicalAttestDetails.uploadInvoice" | translate }}
+              </span>
+            </button>
+            <div><p>{{ "label.pdfAccepted" | translate }} </p> <p>{{ "label.lessthan" | translate }} 2MB</p></div>
+            <div
+              *ngFor="let selected of listOfFiles; let index = index"
+              class="cd-file-list"
+            >
+              <span class="doc_selected">{{ selected.name }}</span>
+              <mat-icon>check_circle_outline</mat-icon>
+              <small (click)="removeSelectedFile(index)">{{
+                "Remove" | translate
+              }}</small>
+            </div>
+          </div>
+          <input
+            type="text"
+            style="display: none"
+            formControlName="uploadInvoiceFile"
+            name="uploadInvoiceFile"
+            readonly
+            matInput
+          />
+
+          <input
+            accept=".pdf"
+            style="display: none"
+            formControlName="uploadInvoiceFile"
+            name="uploadInvoiceFile"
+            #attachments
+            type="file"
+            (change)="onFileChanged($event)"
+            #fileInput
+          />
+          <mat-error
+            *ngIf="
+              registrationForm.get('uploadInvoiceFile')?.hasError('required')
+            "
+          >
+            {{ "alerts.physicalAttestDetails.uploadInvoice" | translate }}
+          </mat-error>
+        </mat-form-field>
+
+        <p *ngIf="isLoading">Loading.....</p>
+      </div>
+    </div>
+  </div>
+  <div class="flex justify-center" mat-dialog-actions>
+    <div class="grid grid-cols-1 w-30">
+      <button
+        mat-flat-button
+        color="primary"
+        class="green-filled-btn w-100 btn-w-30"
+        (click)="proceed()"
+      >
+        {{ "label.physicalAttestDetails.SubmitRequest" | translate }}
+      </button>
+    </div>
+  </div>
+</form>

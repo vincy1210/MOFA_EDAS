@@ -1,0 +1,48 @@
+.page-header h3 {
+    text-align: right;
+}
+h1.page-title-01 {
+    text-align: right;
+}
+p.page-title-para {
+    text-align: right;
+}
+.text-right {
+    text-align: left!important;
+}
+.mat-form-field {
+    width: 100%;
+}
+img.footer-main-logo {
+    padding-left: 0;
+    padding-right: 16px;
+}
+.subscribe-btn .mat-flat-button { 
+    border-radius: 4px 0 0 4px!important;
+  }
+  .subscribe-btn .mat-form-field-outline-end {
+    border-radius: 0 4px 4px 0 !important;
+  }
+  .subscribe-btn .mat-form-field-outline-start {
+    border-radius: 0 0 0 0 !important;
+  }
+  .mat-radio-label {
+    direction: rtl;
+}
+.mat-radio-label-content {
+    padding-left: 0;
+    padding-right: 8px;
+}
+blockquote, dl, dd, h1, h2, h3, h4, h5, h6, hr, figure, p, pre {
+    margin: 0;
+    text-align: right;
+}
+.mat-toolbar-row, .mat-toolbar-single-row {
+    direction: rtl;
+}
+.footer-top-section {
+    direction: rtl;
+}
+.footer-top-section .mat-form-field {
+    direction: ltr;
+}
