@@ -185,21 +185,21 @@
       "Mobile Number must be 9 characters long": "Mobile Number must be 9 characters long",
       "Invalid Email format": "Invalid Email format",
       "Please select the option": "Please select the option"
-    }
-  },
-  "physicalAttestDetails": {
-	"invoiceId": "Invoice ID is required",
-	"invoiceDate": "Please choose a date.",
-	"invoiceCurrency": "Invoice Currency is required",
-	"invoiceAmount": "Invoice Amount is required",
-	"issuingAuthority": "Please select an option.",
-	"uploadInvoice": "Please upload invoice"
-  },
-  "completedAttestDetails": {
-
-  },
-  "cooAttestDetails": {
-	"uploadAttachment": "Please upload attachment"
+    },
+	"physicalAttestDetails": {
+	  "invoiceId": "Invoice ID is required",
+	  "invoiceDate": "Please choose a date.",
+	  "invoiceCurrency": "Invoice Currency is required",
+	  "invoiceAmount": "Invoice Amount is required",
+	  "issuingAuthority": "Please select an option.",
+	  "uploadInvoice": "Please upload invoice"
+	},
+	"completedAttestDetails": {
+  
+	},
+	"cooAttestDetails": {
+	  "uploadAttachment": "Please upload attachment"
+	}
   },
   "ShowErrorMessages": {
     "Issue in Fetching form": "Issue in Fetching form",
