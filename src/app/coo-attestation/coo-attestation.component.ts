@@ -104,7 +104,42 @@ export class CooAttestationComponent  implements OnInit {
   }
 
   exportExcel() {
-    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.cooAttestationLists);
+    const jsonData = {
+      declarationumber: this.translate.instant(
+        'label.cooAttestDetails.cooAttestList.declarationumber'
+      ),
+      edasreqno: this.translate.instant(
+        'label.cooAttestDetails.cooAttestList.edasreqno'
+      ),
+      edasattestno: this.translate.instant(
+        'label.cooAttestDetails.cooAttestList.edasattestno'
+      ),
+      entityshareamount: this.translate.instant(
+        'label.cooAttestDetails.cooAttestList.entityshareamount'
+      ),
+      totalamount: this.translate.instant(
+        'label.cooAttestDetails.cooAttestList.totalamount'
+      ),
+      declarationdate: this.translate.instant(
+        'label.cooAttestDetails.cooAttestList.declarationdate'
+      ),
+      attestreqdate: this.translate.instant(
+        'label.cooAttestDetails.cooAttestList.attestreqdate'
+      ),
+    };
+    const dataList: any = [];
+    this.cooAttestationLists.map((item: any) => {
+      const dataItem: any = {};
+      dataItem[jsonData.declarationumber] = item.declarationumber;
+      dataItem[jsonData.edasreqno] = item.edasreqno;
+      dataItem[jsonData.edasattestno] = item.edasattestno;
+      dataItem[jsonData.entityshareamount] = item.entityshareamount;
+      dataItem[jsonData.totalamount] = item.totalamount;
+      dataItem[jsonData.declarationdate] = item.declarationdate;
+      dataItem[jsonData.attestreqdate] = item.attestreqdate;
+      dataList.push(dataItem);
+    });
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataList);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Coo Attestation');
     XLSX.writeFile(wb, 'coo-attestation.xlsx');

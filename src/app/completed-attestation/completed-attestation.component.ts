@@ -87,9 +87,40 @@ export class CompletedAttestationComponent implements OnInit {
   }
 
   exportExcel() {
-    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.invoiceRequestLists);
+    const jsonData = {
+      edasreqno: this.translate.instant(
+        'label.completedAttestDetails.completedAttestList.edasreqno'
+      ),
+      entitycode: this.translate.instant(
+        'label.completedAttestDetails.completedAttestList.entitycode'
+      ),
+      invoiceno: this.translate.instant(
+        'label.completedAttestDetails.completedAttestList.invoiceno'
+      ),
+      invoiceamount: this.translate.instant(
+        'label.completedAttestDetails.completedAttestList.invoiceamount'
+      ),
+      invoicecurrency: this.translate.instant(
+        'label.completedAttestDetails.completedAttestList.invoicecurrency'
+      ),
+      invoicedate: this.translate.instant(
+        'label.completedAttestDetails.completedAttestList.invoicedate'
+      ),
+    };
+    const dataList: any = [];
+    this.invoiceRequestLists.map((item: any) => {
+      const dataItem: any = {};
+      dataItem[jsonData.edasreqno] = item.edasreqno;
+      dataItem[jsonData.entitycode] = item.entitycode;
+      dataItem[jsonData.invoiceno] = item.invoiceno;
+      dataItem[jsonData.invoiceamount] = item.invoiceamount;
+      dataItem[jsonData.invoicecurrency] = item.invoicecurrency;
+      dataItem[jsonData.invoicedate] = item.invoicedate;
+      dataList.push(dataItem);
+    });
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataList);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Physical Attestation');
-    XLSX.writeFile(wb, 'physical-attestation.xlsx');
+    XLSX.utils.book_append_sheet(wb, ws, 'Completed Attestation');
+    XLSX.writeFile(wb, 'completed-attestation.xlsx');
   }
 }
