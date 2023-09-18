@@ -18,6 +18,8 @@ export class CompletedAttestationComponent implements OnInit {
   invoiceRequestLists: [] = [];
   cols: any;
   loading: boolean = false;
+  enableFilters: boolean = false;
+  chips: { name: string }[] = [{ name: 'Filter' }];
 
   constructor(
     private modalPopupService: ModalPopupService,
@@ -84,6 +86,10 @@ export class CompletedAttestationComponent implements OnInit {
       }
     }
     return null; // Invalid or null datetime string
+  }
+
+  clickChips() {
+    this.enableFilters = !this.enableFilters;
   }
 
   exportExcel() {

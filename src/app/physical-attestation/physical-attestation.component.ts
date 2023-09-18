@@ -20,6 +20,8 @@ export class PhysicalAttestationComponent implements OnInit {
   invoiceRequestLists: [] = [];
   cols: any;
   loading: boolean = false;
+  enableFilters: boolean = false;
+  chips: { name: string }[] = [{ name: 'Filter' }];
 
   constructor(
     private modalPopupService: ModalPopupService,
@@ -59,6 +61,10 @@ export class PhysicalAttestationComponent implements OnInit {
       },
     ];
     this.getInvoiceAttestations();
+  }
+
+  clickChips() {
+    this.enableFilters = !this.enableFilters;
   }
 
   getInvoiceAttestations() {

@@ -20,6 +20,8 @@ export class CooAttestationComponent  implements OnInit {
   cooAttestationLists: [] = [];
   cols: any;
   loading: boolean = false;
+  enableFilters: boolean = false;
+  chips: { name: string }[] = [{ name: 'Filter' }];
 
   constructor(
     private modalPopupService: ModalPopupService,
@@ -103,6 +105,10 @@ export class CooAttestationComponent  implements OnInit {
     return null; // Invalid or null datetime string
   }
 
+  clickChips() {
+    this.enableFilters = !this.enableFilters;
+  }
+  
   exportExcel() {
     const jsonData = {
       declarationumber: this.translate.instant(
