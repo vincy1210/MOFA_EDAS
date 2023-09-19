@@ -16,6 +16,8 @@
   "label": {
     "pdfAccepted": ".pdf accepted",
     "lessthan": "less than",
+    "excelExport": "Excel export",
+    "filter": "Filter",
     "app": {
       "InqAroundclock": "For Inquiries around the clock",
       "copyright": "Copyright 2023 Ministry of Foreign Affairs",

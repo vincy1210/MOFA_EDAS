@@ -9,12 +9,12 @@
     <div class="mx-auto physicalAttestDetails-window">
       <div class="grid grid-cols-1 gap-4">
         <div class="bg-white rounded-lg p-5 col-span-2">
-          <div class="grid grid-cols-1 add-button">
+          <!-- <div class="grid grid-cols-1 add-button">
             <button mat-button (click)="openDialogAttest()">
               <mat-icon>add</mat-icon>
               {{ "label.physicalAttestDetails.addAttest" | translate }}
             </button>
-          </div>
+          </div> -->
           <p-table
             [(selection)]="selectedAttestations"
             dataKey="attestationrequno"
@@ -69,7 +69,7 @@
                     icon="pi pi-file-excel"
                     (click)="exportExcel()"
                     class="mr-2 grid-header-right-icon"
-                    pTooltip="Excel export"
+                    [pTooltip]="'label.excelExport' | translate"
                     tooltipPosition="bottom"
                   ></button>
                   <button
@@ -80,7 +80,17 @@
                     (click)="clickChips()"
                     class="mr-2 grid-header-right-icon"
                     [ngClass]="{'clicked': enableFilters}"
-                    pTooltip="Filter"
+                    [pTooltip]="'label.filter' | translate"
+                    tooltipPosition="bottom"
+                  ></button>
+                  <button
+                    type="button"
+                    pButton
+                    pRipple
+                    icon="pi pi-plus"
+                    (click)="openDialogAttest()"
+                    class="mr-2 grid-header-right-icon"
+                    [pTooltip]="'label.physicalAttestDetails.addAttest' | translate"
                     tooltipPosition="bottom"
                   ></button>
                 </div>

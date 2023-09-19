@@ -125,6 +125,7 @@ const routes: Routes = [
   { path: 'completedcoorequests', component: CompletedCooRequestsComponent },
   { path: 'completedattestation', component: CompletedAttestationComponent },
   { path: 'landingpage', component: LandingPageComponent },
+  { path: 'attestation', component: AttestationComponent },
 ];
 
 @NgModule({

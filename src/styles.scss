@@ -1174,6 +1174,6 @@ button.white-icon-button.mat-menu-item {
 
 .p-button:enabled:hover {
   background: var(--primary-color);
-  color: var(--white-color);
+  color: var(--white-color) !important;
   border-color: var(--primary-color);
 }

@@ -17,6 +17,8 @@
   "label": {
     "pdfAccepted": ".pdf accepted",
     "lessthan": "less than",
+    "excelExport": "Excel export",
+    "filter": "Filter",
     "app": {
       "InqAroundclock": "للاستفسار على مدار الساعة",
       "copyright": "حقوق النشر 2023 وزارة الخارجية",
