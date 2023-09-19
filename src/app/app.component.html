@@ -1,4 +1,5 @@
 <!-- <app-loader></app-loader> -->
+<div id="loading" style="display: none;"></div>
 <div class="app-container" [ngClass]="'currentTheme' | translate" [dir]="currentLanguageDirection">
   <!-- {{'currentTheme' | translate}} -->
   <mat-toolbar class="main-header">
@@ -11,9 +12,7 @@
       class="header-main-logo cursor-pointer"
       routerLink="/registration"
     />
-    <!-- <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-      <mat-icon>menu</mat-icon>
-    </button> -->
+
 
     <span class="example-spacer"></span>
     <div *ngIf="bigScreen">
@@ -308,7 +307,7 @@
   </mat-toolbar>
 
   <mat-drawer-container class="example-container" autosize>
-    <mat-drawer #drawer class="example-sidenav app-sidenav" mode="side">
+    <mat-drawer #drawer class="example-sidenav app-sidenav" mode="over">
       <div class="grid grid-cols-1 mofa-side-nav">
         <div class="grid grid-cols-1 recently-used">
           <h6>Recently Used</h6>
@@ -316,11 +315,11 @@
             <li>Dashboard</li>
             <li>Attestations</li>
           </ul>
-          <!-- <p *ngIf="showFiller">Lorem, ipsum dolor sit amet consectetur.</p>
-      <button (click)="showFiller = !showFiller" mat-raised-button>
-        Toggle extra text
-      </button> -->
         </div>
+
+
+
+        <!-- Tree starts here -->
         <div class="grid grid-cols-1 mofa-side-menus">
           <mat-expansion-panel [class.mat-elevation-z0]="true">
             <mat-expansion-panel-header>
@@ -452,6 +451,9 @@
             </mat-nav-list>
           </mat-expansion-panel>
         </div>
+
+
+        <!-- tree ends here -->
       </div>
     </mat-drawer>
 
