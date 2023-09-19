@@ -119,6 +119,7 @@ const routes: Routes = [
   { path: 'physicalattestation', component: PhysicalAttestationComponent },
   { path: 'cooattestation', component: CooAttestationComponent },
   { path: 'completedattestation', component: CompletedAttestationComponent },
+  {path:'landingpage',component:LandingPageComponent}
 ];
 
 @NgModule({
