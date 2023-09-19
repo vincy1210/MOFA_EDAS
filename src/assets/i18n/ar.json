@@ -9,11 +9,14 @@
   "Re-upload": "إعادة تحميل",
   "Yes": "نعم",
   "No": "لا",
+  "noDataFound": "No data dound",
   "commonmessage": {
     "staticcontent.internet.error": "يرجى التحقق من الإنترنت الخاص بك"
   },
 
   "label": {
+	"pdfAccepted": ".pdf accepted",
+    "lessthan": "less than",
     "app": {
       "InqAroundclock": "للاستفسار على مدار الساعة",
       "copyright": "حقوق النشر 2023 وزارة الخارجية",

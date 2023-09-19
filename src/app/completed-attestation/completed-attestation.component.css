@@ -1,0 +1,24 @@
+.completedAttestDetails-window {
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+.add-button {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.grid-search {
+  margin-right: 1rem;
+}
+
+.grid-header {
+  display: flex;
+  align-items: center;
+}
+
+.excel-icon {
+  width: 2rem;
+  height: 2rem;
+  align-items: center;
+}

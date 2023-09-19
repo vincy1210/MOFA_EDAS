@@ -63,6 +63,17 @@
                   pTooltip="Excel export"
                   tooltipPosition="bottom"
                 ></button>
+                <mat-chip-list>
+                  <mat-chip
+                    *ngFor="let chip of chips"
+                    [selectable]="true"
+                    [removable]="true"
+                    [selected]="enableFilters"
+                    (click)="clickChips()"
+                  >
+                    {{ chip.name }}
+                  </mat-chip>
+                </mat-chip-list>
               </div>
             </ng-template>
             <ng-template pTemplate="header" let-columns>
@@ -72,11 +83,12 @@
                   </th> -->
                 <th *ngFor="let col of columns" [pSortableColumn]="col.field">
                   {{ col.header | translate }}
-                  <p-sortIcon field="code"></p-sortIcon>
+                  <p-sortIcon field="code" *ngIf="enableFilters"></p-sortIcon>
                   <p-columnFilter
                     type="text"
                     [field]="col.field"
                     display="menu"
+                    *ngIf="enableFilters"
                   ></p-columnFilter>
                 </th>
               </tr>

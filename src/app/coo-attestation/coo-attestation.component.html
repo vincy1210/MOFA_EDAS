@@ -65,6 +65,17 @@
                   pTooltip="Excel export"
                   tooltipPosition="bottom"
                 ></button>
+                <mat-chip-list>
+                  <mat-chip
+                    *ngFor="let chip of chips"
+                    [selectable]="true"
+                    [removable]="true"
+                    [selected]="enableFilters"
+                    (click)="clickChips()"
+                  >
+                    {{ chip.name }}
+                  </mat-chip>
+                </mat-chip-list>
               </div>
             </ng-template>
             <ng-template pTemplate="header" let-columns>
@@ -76,10 +87,10 @@
                   {{ col.header | translate }}
                   <p-sortIcon
                     field="code"
-                    *ngIf="col.field !== 'actions'"
+                    *ngIf="col.field !== 'actions' && enableFilters"
                   ></p-sortIcon>
                   <p-columnFilter
-                    *ngIf="col.field !== 'actions'"
+                    *ngIf="col.field !== 'actions' && enableFilters"
                     type="text"
                     [field]="col.field"
                     display="menu"
@@ -123,7 +134,9 @@
                   </button>
                   <mat-menu #menu="matMenu">
                     <button mat-menu-item (click)="uploadDeclaration(data)">
-                        {{ "label.cooAttestDetails.uploadAttachment" | translate }}
+                      {{
+                        "label.cooAttestDetails.uploadAttachment" | translate
+                      }}
                     </button>
                   </mat-menu>
                 </td>
