@@ -21,6 +21,12 @@ export class PhysicalAttestationComponent implements OnInit {
   cols: any;
   loading: boolean = false;
   enableFilters: boolean = false;
+  // for workflow
+  public shouldShow = false;
+  noOfInvoicesSelected: any[]=[];
+  totalFineAmount:any;
+  totalAttestationFee:any;
+  totalFee:any;
 
   constructor(
     private modalPopupService: ModalPopupService,
@@ -158,5 +164,26 @@ export class PhysicalAttestationComponent implements OnInit {
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Physical Attestation');
     XLSX.writeFile(wb, 'physical-attestation.xlsx');
+  }
+
+  loadsidepanel(event: any) {
+    this.noOfInvoicesSelected = this.selectedAttestations.length;
+    this.totalFineAmount = this.selectedAttestations.reduce(
+      (total: any, item: any) => total + item.fineamount,
+      0
+    );
+    this.totalAttestationFee = this.selectedAttestations.reduce(
+      (total: any, item: any) => total + item.feesamount,
+      0
+    );
+    this.totalFee = this.totalFineAmount + this.totalAttestationFee;
+    this.shouldShow = true;
+    if (this.selectedAttestations.length > 1) {
+      // this.previewvisible = false;
+      // this.Timelinevisible = false;
+    } else if (this.selectedAttestations.length == 0) {
+      this.shouldShow = false;
+    } else {
+    }
   }
 }
