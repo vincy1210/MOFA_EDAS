@@ -1159,3 +1159,21 @@ button.white-icon-button.mat-menu-item {
     color: var(--primary-color) !important;
   }
 }
+
+.grid-header-right-icon {
+  width: 2rem;
+  height: 2rem;
+  align-items: center;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  :hover {
+    background-color: var(--primary-color);
+    color: var(--white-color);
+  }
+}
+
+.p-button:enabled:hover {
+  background: var(--primary-color);
+  color: var(--white-color);
+  border-color: var(--primary-color);
+}

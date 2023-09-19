@@ -41,41 +41,45 @@
           >
             <ng-template pTemplate="caption">
               <div class="p-d-flex grid-header">
-                <span class="p-input-icon-left p-ml-auto grid-search">
-                  <i class="pi pi-search"></i>
-                  <input
-                    pInputText
-                    type="text"
-                    (input)="
-                      tableref.filterGlobal(
-                        $any($event.target).value,
-                        'contains'
-                      )
-                    "
-                    placeholder="Search keyword"
-                  />
-                </span>
-                <button
-                  type="button"
-                  pButton
-                  pRipple
-                  icon="pi pi-file-excel"
-                  (click)="exportExcel()"
-                  class="p-button-success mr-2 excel-icon"
-                  pTooltip="Excel export"
-                  tooltipPosition="bottom"
-                ></button>
-                <mat-chip-list>
-                  <mat-chip
-                    *ngFor="let chip of chips"
-                    [selectable]="true"
-                    [removable]="true"
-                    [selected]="enableFilters"
+                <div class="grid-header-left">
+                  <span class="p-input-icon-left p-ml-auto grid-search">
+                    <i class="pi pi-search"></i>
+                    <input
+                      pInputText
+                      type="text"
+                      (input)="
+                        tableref.filterGlobal(
+                          $any($event.target).value,
+                          'contains'
+                        )
+                      "
+                      placeholder="Search keyword"
+                    />
+                  </span>
+                </div>
+                <div class="grid-header-right">
+                  <button
+                    type="button"
+                    pButton
+                    pRipple
+                    icon="pi pi-file-excel"
+                    (click)="exportExcel()"
+                    class="mr-2 grid-header-right-icon"
+                    pTooltip="Excel export"
+                    tooltipPosition="bottom"
+                  ></button>
+                  <button
+                    type="button"
+                    pButton
+                    pRipple
+                    icon="pi pi-filter"
                     (click)="clickChips()"
-                  >
-                    {{ chip.name }}
-                  </mat-chip>
-                </mat-chip-list>
+                    class="mr-2 grid-header-right-icon"
+                    [ngClass]="{'clicked': enableFilters}"
+                    pTooltip="Filter"
+                    tooltipPosition="bottom"
+                  ></button>
+                </div>
               </div>
             </ng-template>
             <ng-template pTemplate="header" let-columns>

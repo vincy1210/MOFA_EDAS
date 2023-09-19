@@ -21,7 +21,6 @@ export class PhysicalAttestationComponent implements OnInit {
   cols: any;
   loading: boolean = false;
   enableFilters: boolean = false;
-  chips: { name: string }[] = [{ name: 'Filter' }];
 
   constructor(
     private modalPopupService: ModalPopupService,
