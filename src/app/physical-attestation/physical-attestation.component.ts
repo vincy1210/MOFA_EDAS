@@ -115,7 +115,7 @@ export class PhysicalAttestationComponent implements OnInit {
           Number(dateTimeParts.substr(0, 2))
         );
         return {
-          date: this.datePipe.transform(parsedDate, 'dd/MM/yyyy'),
+          date: this.datePipe.transform(parsedDate, 'dd-MMM-yyyy'),
         };
       }
     }

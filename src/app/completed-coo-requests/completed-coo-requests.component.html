@@ -2,11 +2,11 @@
 <div>
   <div class="grid grid-cols-1" color="primary" class="page-header">
     <h3>
-      {{ "label.cooAttestDetails.mainpage.title" | translate }}
+      {{ "label.completedCooRequests.mainpage.title" | translate }}
     </h3>
   </div>
-  <div class="company-bg cooAttestDetails-page">
-    <div class="mx-auto cooAttestDetails-window">
+  <div class="company-bg completedCooRequests-page">
+    <div class="mx-auto completedCooRequests-window">
       <div class="grid grid-cols-1 gap-4">
         <div class="bg-white rounded-lg p-5 col-span-2">
           <p-table
@@ -35,7 +35,6 @@
               'totalamount',
               'declarationdate',
               'attestreqdate',
-              ''
             ]"
           >
             <ng-template pTemplate="caption">
@@ -84,8 +83,8 @@
             <ng-template pTemplate="header" let-columns>
               <tr>
                 <!-- <th style="width: 3rem">
-                    <p-tableHeaderCheckbox> </p-tableHeaderCheckbox>
-                  </th> -->
+                      <p-tableHeaderCheckbox> </p-tableHeaderCheckbox>
+                    </th> -->
                 <th *ngFor="let col of columns" [pSortableColumn]="col.field">
                   {{ col.header | translate }}
                   <p-sortIcon
@@ -104,8 +103,8 @@
             <ng-template pTemplate="body" let-data>
               <tr>
                 <!-- <td>
-                    <p-tableCheckbox [value]="data"></p-tableCheckbox>
-                  </td> -->
+                      <p-tableCheckbox [value]="data"></p-tableCheckbox>
+                    </td> -->
                 <td>
                   <span class="image-text">{{ data.declarationumber }}</span>
                 </td>
@@ -127,23 +126,6 @@
                   <span class="image-text">{{
                     splitdatetime(data.attestreqdate)?.date
                   }}</span>
-                </td>
-                <td>
-                  <button
-                    mat-button
-                    [matMenuTriggerFor]="menu"
-                    color="primary"
-                    *ngIf="data.feespaid === 'Paid'"
-                  >
-                    {{ "label.cooAttestDetails.manage" | translate }}
-                  </button>
-                  <mat-menu #menu="matMenu">
-                    <button mat-menu-item (click)="uploadDeclaration(data)">
-                      {{
-                        "label.cooAttestDetails.uploadAttachment" | translate
-                      }}
-                    </button>
-                  </mat-menu>
                 </td>
               </tr>
             </ng-template>

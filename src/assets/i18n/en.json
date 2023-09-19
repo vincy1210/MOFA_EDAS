@@ -14,7 +14,7 @@
     "staticcontent.internet.error": "Please check your internet"
   },
   "label": {
-	"pdfAccepted": ".pdf accepted",
+    "pdfAccepted": ".pdf accepted",
     "lessthan": "less than",
     "app": {
       "InqAroundclock": "For Inquiries around the clock",
@@ -132,6 +132,23 @@
         "actions": "Actions"
       }
     },
+    "completedCooRequests": {
+      "mainpage.title": "Completed Attestation",
+      "manage": "Manage",
+      "titleCooAttest": "Coo Attestation",
+      "uploadAttachment": "Upload attachment",
+      "submit": "Submit",
+      "completedCooList": {
+        "declarationumber": "Declaration No.",
+        "edasreqno": "EDAS Request No.",
+        "edasattestno": "EDAS Attest No.",
+        "entityshareamount": "Entity Share Amount",
+        "totalamount": "Total Amount",
+        "declarationdate": "Declaration Date",
+        "attestreqdate": "Attest Request Date",
+        "actions": "Actions"
+      }
+    },
     "Attestation": {
       "DraftPendAttest": "Draft Pending Attestations",
       "ShowEntries": "Showing {first} to {last} of {totalRecords} entries",
@@ -189,20 +206,18 @@
       "Invalid Email format": "Invalid Email format",
       "Please select the option": "Please select the option"
     },
-	"physicalAttestDetails": {
-	  "invoiceId": "Invoice ID is required",
-	  "invoiceDate": "Please choose a date.",
-	  "invoiceCurrency": "Invoice Currency is required",
-	  "invoiceAmount": "Invoice Amount is required",
-	  "issuingAuthority": "Please select an option.",
-	  "uploadInvoice": "Please upload invoice"
-	},
-	"completedAttestDetails": {
-  
-	},
-	"cooAttestDetails": {
-	  "uploadAttachment": "Please upload attachment"
-	}
+    "physicalAttestDetails": {
+      "invoiceId": "Invoice ID is required",
+      "invoiceDate": "Please choose a date.",
+      "invoiceCurrency": "Invoice Currency is required",
+      "invoiceAmount": "Invoice Amount is required",
+      "issuingAuthority": "Please select an option.",
+      "uploadInvoice": "Please upload invoice"
+    },
+    "completedAttestDetails": {},
+    "cooAttestDetails": {
+      "uploadAttachment": "Please upload attachment"
+    }
   },
   "ShowErrorMessages": {
     "Issue in Fetching form": "Issue in Fetching form",

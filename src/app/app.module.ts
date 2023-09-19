@@ -21,7 +21,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MAT_CHIPS_DEFAULT_OPTIONS, MatChipsModule } from '@angular/material/chips';
+import {
+  MAT_CHIPS_DEFAULT_OPTIONS,
+  MatChipsModule,
+} from '@angular/material/chips';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -105,6 +108,7 @@ import { CooAttestationCreateComponent } from './coo-attestation/coo-attestation
 import { CompletedAttestationComponent } from './completed-attestation/completed-attestation.component';
 import { ModalPopupService } from 'src/service/modal-popup.service';
 import { DatePipe } from '@angular/common';
+import { CompletedCooRequestsComponent } from './completed-coo-requests/completed-coo-requests.component';
 // import { PrimeIcons } from 'primeng/api';
 
 const routes: Routes = [
@@ -118,8 +122,9 @@ const routes: Routes = [
   { path: 'companydetails', component: CompanydetailsComponent },
   { path: 'physicalattestation', component: PhysicalAttestationComponent },
   { path: 'cooattestation', component: CooAttestationComponent },
+  { path: 'completedcoorequests', component: CompletedCooRequestsComponent },
   { path: 'completedattestation', component: CompletedAttestationComponent },
-  {path:'landingpage',component:LandingPageComponent}
+  { path: 'landingpage', component: LandingPageComponent },
 ];
 
 @NgModule({
@@ -135,6 +140,7 @@ const routes: Routes = [
     CooAttestationComponent,
     CooAttestationCreateComponent,
     CompletedAttestationComponent,
+    CompletedCooRequestsComponent,
   ],
 
   imports: [

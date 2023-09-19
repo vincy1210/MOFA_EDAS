@@ -1,0 +1,28 @@
+.completedCooRequests-window {
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+.add-button {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.grid-search {
+  margin-right: 1rem;
+}
+
+.grid-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .grid-header-right {
+    display: flex;
+    gap: 0.5rem;
+  }
+}
+
+.clicked {
+  background: var(--primary-color);
+  color: var(--white-color);
+}
