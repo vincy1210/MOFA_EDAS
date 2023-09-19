@@ -1145,6 +1145,9 @@ button.white-icon-button.mat-menu-item {
       color: var(--primary-color) !important;
     }
   }
+  .p-datatable-thead{
+    white-space: nowrap;
+  }
 }
 
 .ng-trigger {
