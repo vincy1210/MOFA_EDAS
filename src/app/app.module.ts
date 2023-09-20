@@ -111,6 +111,7 @@ import { DatePipe } from '@angular/common';
 import { CompletedCooRequestsComponent } from './completed-coo-requests/completed-coo-requests.component';
 import { PageNotFoundComponent } from './shared/not-found.component';
 import { AttestationWorkflowComponent } from './shared/components/attestation-workflow/attestation-workflow.component';
+import { LeftMenuDrawerComponent } from './shared/components/left-menu-drawer/left-menu-drawer.component';
 // import { PrimeIcons } from 'primeng/api';
 
 const routes: Routes = [
@@ -145,7 +146,8 @@ const routes: Routes = [
     CompletedAttestationComponent,
     CompletedCooRequestsComponent,
     PageNotFoundComponent,
-    AttestationWorkflowComponent
+    AttestationWorkflowComponent,
+    LeftMenuDrawerComponent
   ],
 
   imports: [

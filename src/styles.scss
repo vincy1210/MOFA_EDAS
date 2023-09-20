@@ -1141,12 +1141,25 @@ button.white-icon-button.mat-menu-item {
     color: var(--primary-color) !important;
   }
   .p-sortable-column.p-highlight {
-    .p-sortable-column-icon{
+    .p-sortable-column-icon {
       color: var(--primary-color) !important;
     }
   }
-  .p-datatable-thead{
+  .p-datatable-thead {
     white-space: nowrap;
+  }
+  .p-checkbox {
+    .p-checkbox-box.p-highlight {
+      border-color: var(--primary-color);
+      background: var(--primary-color);
+    }
+    .p-checkbox-box.p-highlight:hover {
+      border-color: var(--primary-color);
+      background: var(--primary-color);
+    }
+    .p-checkbox-box:hover {
+      border-color: var(--primary-color);
+    }
   }
 }
 
@@ -1155,7 +1168,7 @@ button.white-icon-button.mat-menu-item {
     border: 1px solid var(--primary-color);
     color: var(--primary-color) !important;
   }
-  .p-button:hover{
+  .p-button:hover {
     background: transparent;
   }
   .p-button.p-button-outlined {
