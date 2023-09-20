@@ -12,9 +12,9 @@ import { AttestationStatusEnum } from 'src/app/shared/models/attestation-status.
 @Component({
   selector: 'app-coo-attestation',
   templateUrl: './coo-attestation.component.html',
-  styleUrls: ['./coo-attestation.component.css']
+  styleUrls: ['./coo-attestation.component.css'],
 })
-export class CooAttestationComponent  implements OnInit {
+export class CooAttestationComponent implements OnInit {
   progress_val: number = 0;
   selectedAttestations: any;
   totalrecords: number = 0;
@@ -24,10 +24,10 @@ export class CooAttestationComponent  implements OnInit {
   enableFilters: boolean = false;
   // for workflow
   public shouldShow = false;
-  noOfInvoicesSelected: any[]=[];
-  totalFineAmount:any;
-  totalAttestationFee:any;
-  totalFee:any;
+  noOfInvoicesSelected: any[] = [];
+  totalFineAmount: any;
+  totalAttestationFee: any;
+  totalFee: any;
 
   constructor(
     private modalPopupService: ModalPopupService,
@@ -41,14 +41,35 @@ export class CooAttestationComponent  implements OnInit {
     this.progress_val = 0;
     this.cols = [
       // { field: 'attestationrequno', header: 'Attestation No.' },
-      { field: 'declarationumber', header: 'label.cooAttestDetails.cooAttestList.declarationumber' },
-      { field: 'edasattestno', header: 'label.cooAttestDetails.cooAttestList.edasattestno' },
+      {
+        field: 'declarationumber',
+        header: 'label.cooAttestDetails.cooAttestList.declarationumber',
+      },
+      {
+        field: 'edasattestno',
+        header: 'label.cooAttestDetails.cooAttestList.edasattestno',
+      },
       // { field: 'entityshareamount', header: 'label.cooAttestDetails.cooAttestList.entityshareamount' },
-      { field: 'totalamount', header: 'label.cooAttestDetails.cooAttestList.totalamount' },
-      { field: 'declarationdate', header: 'label.cooAttestDetails.cooAttestList.declarationdate' },
-      { field: 'attestreqdate', header: 'label.cooAttestDetails.cooAttestList.attestreqdate' },
-      { field: 'status', header: 'label.cooAttestDetails.cooAttestList.status' },
-      { field: 'actions', header: 'label.cooAttestDetails.cooAttestList.actions' },
+      {
+        field: 'totalamount',
+        header: 'label.cooAttestDetails.cooAttestList.totalamount',
+      },
+      {
+        field: 'declarationdate',
+        header: 'label.cooAttestDetails.cooAttestList.declarationdate',
+      },
+      {
+        field: 'attestreqdate',
+        header: 'label.cooAttestDetails.cooAttestList.attestreqdate',
+      },
+      {
+        field: 'status',
+        header: 'label.cooAttestDetails.cooAttestList.status',
+      },
+      {
+        field: 'actions',
+        header: 'label.cooAttestDetails.cooAttestList.actions',
+      },
     ];
     this.getCooAttestations();
   }
@@ -63,24 +84,22 @@ export class CooAttestationComponent  implements OnInit {
       .subscribe((response: any) => {
         if (`${response.responseCode}` === '200') {
           const dataArray = response.data;
-          if (dataArray?.dictionary) {
-            this.cooAttestationLists = dataArray?.dictionary?.data;
-            this.cooAttestationLists.map((row: any) => {
-              if (row.statusuno === AttestationStatusEnum.Status0) {
-                row.status = 'Created';
-              } else if (row.statusuno === AttestationStatusEnum.Status1) {
-                row.status = 'Approved';
-              } else if (row.statusuno === AttestationStatusEnum.Status2) {
-                row.status = 'Payment';
-              } else if (row.statusuno === AttestationStatusEnum.Status3) {
-                row.status = 'Attestation';
-              } else if (row.statusuno === AttestationStatusEnum.Status4) {
-                row.status = 'Completed';
-              } else {
-                row.status = '';
-              }
-            });
-          }
+          this.cooAttestationLists = dataArray?.dictionary?.data;
+          this.cooAttestationLists.map((row: any) => {
+            if (row.statusuno === AttestationStatusEnum.Status0) {
+              row.status = 'Created';
+            } else if (row.statusuno === AttestationStatusEnum.Status1) {
+              row.status = 'Approved';
+            } else if (row.statusuno === AttestationStatusEnum.Status2) {
+              row.status = 'Payment';
+            } else if (row.statusuno === AttestationStatusEnum.Status3) {
+              row.status = 'Attestation';
+            } else if (row.statusuno === AttestationStatusEnum.Status4) {
+              row.status = 'Completed';
+            } else {
+              row.status = '';
+            }
+          });
         }
       });
   }
@@ -129,7 +148,7 @@ export class CooAttestationComponent  implements OnInit {
   clickChips() {
     this.enableFilters = !this.enableFilters;
   }
-  
+
   exportExcel() {
     const jsonData = {
       declarationumber: this.translate.instant(
