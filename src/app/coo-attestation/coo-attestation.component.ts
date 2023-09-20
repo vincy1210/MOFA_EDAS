@@ -40,7 +40,7 @@ export class CooAttestationComponent implements OnInit {
   ngOnInit(): void {
     this.progress_val = 0;
     this.cols = [
-      // { field: 'attestationrequno', header: 'Attestation No.' },
+      // { field: 'coorequestno', header: 'Request No.' },
       {
         field: 'declarationumber',
         header: 'label.cooAttestDetails.cooAttestList.declarationumber',
