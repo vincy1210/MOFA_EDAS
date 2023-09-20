@@ -98,7 +98,8 @@
         "invoiceno": "Invoice No.",
         "invoiceamount": "Invoice Amount",
         "invoicecurrency": "Invoice Currency",
-        "invoicedate": "Invoice Date"
+        "invoicedate": "Invoice Date",
+        "status": "Status"
       },
       "fileDetails": {
         "uploadInvoice": "Upload Invoice",
@@ -131,6 +132,7 @@
         "totalamount": "Total Amount",
         "declarationdate": "Declaration Date",
         "attestreqdate": "Attest Request Date",
+        "status": "Status",
         "actions": "Actions"
       }
     },
@@ -148,6 +150,7 @@
         "totalamount": "Total Amount",
         "declarationdate": "Declaration Date",
         "attestreqdate": "Attest Request Date",
+        "status": "Status",
         "actions": "Actions"
       }
     },

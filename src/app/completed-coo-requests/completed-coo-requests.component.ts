@@ -10,7 +10,7 @@ import { ModalPopupService } from 'src/service/modal-popup.service';
 @Component({
   selector: 'app-completed-coo-requests',
   templateUrl: './completed-coo-requests.component.html',
-  styleUrls: ['./completed-coo-requests.component.css']
+  styleUrls: ['./completed-coo-requests.component.css'],
 })
 export class CompletedCooRequestsComponent implements OnInit {
   progress_val: number = 0;
@@ -32,13 +32,27 @@ export class CompletedCooRequestsComponent implements OnInit {
   ngOnInit(): void {
     this.progress_val = 0;
     this.cols = [
-      // { field: 'attestationrequno', header: 'Attestation No.' },
-      { field: 'declarationumber', header: 'label.completedCooRequests.completedCooList.declarationumber' },
-      { field: 'edasattestno', header: 'label.completedCooRequests.completedCooList.edasattestno' },
-      { field: 'entityshareamount', header: 'label.completedCooRequests.completedCooList.entityshareamount' },
-      { field: 'totalamount', header: 'label.completedCooRequests.completedCooList.totalamount' },
-      { field: 'declarationdate', header: 'label.completedCooRequests.completedCooList.declarationdate' },
-      { field: 'attestreqdate', header: 'label.completedCooRequests.completedCooList.attestreqdate' },
+      {
+        field: 'declarationumber',
+        header: 'label.completedCooRequests.completedCooList.declarationumber',
+      },
+      {
+        field: 'edasattestno',
+        header: 'label.completedCooRequests.completedCooList.edasattestno',
+      },
+      // { field: 'entityshareamount', header: 'label.completedCooRequests.completedCooList.entityshareamount' },
+      {
+        field: 'totalamount',
+        header: 'label.completedCooRequests.completedCooList.totalamount',
+      },
+      {
+        field: 'declarationdate',
+        header: 'label.completedCooRequests.completedCooList.declarationdate',
+      },
+      {
+        field: 'attestreqdate',
+        header: 'label.completedCooRequests.completedCooList.attestreqdate',
+      },
     ];
     this.getCooAttestations();
   }
@@ -93,7 +107,7 @@ export class CompletedCooRequestsComponent implements OnInit {
   clickChips() {
     this.enableFilters = !this.enableFilters;
   }
-  
+
   exportExcel() {
     const jsonData = {
       declarationumber: this.translate.instant(
@@ -102,9 +116,9 @@ export class CompletedCooRequestsComponent implements OnInit {
       edasattestno: this.translate.instant(
         'label.completedCooRequests.completedCooList.edasattestno'
       ),
-      entityshareamount: this.translate.instant(
-        'label.completedCooRequests.completedCooList.entityshareamount'
-      ),
+      // entityshareamount: this.translate.instant(
+      //   'label.completedCooRequests.completedCooList.entityshareamount'
+      // ),
       totalamount: this.translate.instant(
         'label.completedCooRequests.completedCooList.totalamount'
       ),
@@ -120,7 +134,7 @@ export class CompletedCooRequestsComponent implements OnInit {
       const dataItem: any = {};
       dataItem[jsonData.declarationumber] = item.declarationumber;
       dataItem[jsonData.edasattestno] = item.edasattestno;
-      dataItem[jsonData.entityshareamount] = item.entityshareamount;
+      // dataItem[jsonData.entityshareamount] = item.entityshareamount;
       dataItem[jsonData.totalamount] = item.totalamount;
       dataItem[jsonData.declarationdate] = item.declarationdate;
       dataItem[jsonData.attestreqdate] = item.attestreqdate;

@@ -31,10 +31,10 @@
             [globalFilterFields]="[
               'declarationumber',
               'edasattestno',
-              'entityshareamount',
               'totalamount',
               'declarationdate',
               'attestreqdate',
+              'status',
               ''
             ]"
           >
@@ -83,9 +83,10 @@
             </ng-template>
             <ng-template pTemplate="header" let-columns>
               <tr>
-                <!-- <th style="width: 3rem">
-                    <p-tableHeaderCheckbox> </p-tableHeaderCheckbox>
-                  </th> -->
+                <th style="width: 3rem">
+                  <p-tableHeaderCheckbox (click)="loadsidepanel($event)">
+                  </p-tableHeaderCheckbox>
+                </th>
                 <th *ngFor="let col of columns" [pSortableColumn]="col.field">
                   {{ col.header | translate }}
                   <p-sortIcon
@@ -103,18 +104,21 @@
             </ng-template>
             <ng-template pTemplate="body" let-data>
               <tr>
-                <!-- <td>
-                    <p-tableCheckbox [value]="data"></p-tableCheckbox>
-                  </td> -->
+                <td>
+                  <p-tableCheckbox
+                    (click)="loadsidepanel($event)"
+                    [value]="data"
+                  ></p-tableCheckbox>
+                </td>
                 <td>
                   <span class="image-text">{{ data.declarationumber }}</span>
                 </td>
                 <td>
                   <span class="image-text">{{ data.edasattestno }}</span>
                 </td>
-                <td>
+                <!-- <td>
                   <span class="image-text">{{ data.entityshareamount }}</span>
-                </td>
+                </td> -->
                 <td>
                   <span class="image-text">{{ data.totalamount }}</span>
                 </td>
@@ -127,6 +131,9 @@
                   <span class="image-text">{{
                     splitdatetime(data.attestreqdate)?.date
                   }}</span>
+                </td>
+                <td>
+                  <span class="image-text">{{ data.status }}</span>
                 </td>
                 <td>
                   <button

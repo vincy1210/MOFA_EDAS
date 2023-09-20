@@ -7,6 +7,7 @@ import { ConstantsService } from 'src/service/constants.service';
 import { DatePipe } from '@angular/common';
 import * as XLSX from 'xlsx';
 import { ModalPopupService } from 'src/service/modal-popup.service';
+import { AttestationStatusEnum } from 'src/app/shared/models/attestation-status.model';
 
 @Component({
   selector: 'app-coo-attestation',
@@ -21,6 +22,12 @@ export class CooAttestationComponent  implements OnInit {
   cols: any;
   loading: boolean = false;
   enableFilters: boolean = false;
+  // for workflow
+  public shouldShow = false;
+  noOfInvoicesSelected: any[]=[];
+  totalFineAmount:any;
+  totalAttestationFee:any;
+  totalFee:any;
 
   constructor(
     private modalPopupService: ModalPopupService,
@@ -36,10 +43,11 @@ export class CooAttestationComponent  implements OnInit {
       // { field: 'attestationrequno', header: 'Attestation No.' },
       { field: 'declarationumber', header: 'label.cooAttestDetails.cooAttestList.declarationumber' },
       { field: 'edasattestno', header: 'label.cooAttestDetails.cooAttestList.edasattestno' },
-      { field: 'entityshareamount', header: 'label.cooAttestDetails.cooAttestList.entityshareamount' },
+      // { field: 'entityshareamount', header: 'label.cooAttestDetails.cooAttestList.entityshareamount' },
       { field: 'totalamount', header: 'label.cooAttestDetails.cooAttestList.totalamount' },
       { field: 'declarationdate', header: 'label.cooAttestDetails.cooAttestList.declarationdate' },
       { field: 'attestreqdate', header: 'label.cooAttestDetails.cooAttestList.attestreqdate' },
+      { field: 'status', header: 'label.cooAttestDetails.cooAttestList.status' },
       { field: 'actions', header: 'label.cooAttestDetails.cooAttestList.actions' },
     ];
     this.getCooAttestations();
@@ -57,6 +65,21 @@ export class CooAttestationComponent  implements OnInit {
           const dataArray = response.data;
           if (dataArray?.dictionary) {
             this.cooAttestationLists = dataArray?.dictionary?.data;
+            this.cooAttestationLists.map((row: any) => {
+              if (row.statusuno === AttestationStatusEnum.Status0) {
+                row.status = 'Created';
+              } else if (row.statusuno === AttestationStatusEnum.Status1) {
+                row.status = 'Approved';
+              } else if (row.statusuno === AttestationStatusEnum.Status2) {
+                row.status = 'Payment';
+              } else if (row.statusuno === AttestationStatusEnum.Status3) {
+                row.status = 'Attestation';
+              } else if (row.statusuno === AttestationStatusEnum.Status4) {
+                row.status = 'Completed';
+              } else {
+                row.status = '';
+              }
+            });
           }
         }
       });
@@ -115,9 +138,9 @@ export class CooAttestationComponent  implements OnInit {
       edasattestno: this.translate.instant(
         'label.cooAttestDetails.cooAttestList.edasattestno'
       ),
-      entityshareamount: this.translate.instant(
-        'label.cooAttestDetails.cooAttestList.entityshareamount'
-      ),
+      // entityshareamount: this.translate.instant(
+      //   'label.cooAttestDetails.cooAttestList.entityshareamount'
+      // ),
       totalamount: this.translate.instant(
         'label.cooAttestDetails.cooAttestList.totalamount'
       ),
@@ -133,7 +156,7 @@ export class CooAttestationComponent  implements OnInit {
       const dataItem: any = {};
       dataItem[jsonData.declarationumber] = item.declarationumber;
       dataItem[jsonData.edasattestno] = item.edasattestno;
-      dataItem[jsonData.entityshareamount] = item.entityshareamount;
+      // dataItem[jsonData.entityshareamount] = item.entityshareamount;
       dataItem[jsonData.totalamount] = item.totalamount;
       dataItem[jsonData.declarationdate] = item.declarationdate;
       dataItem[jsonData.attestreqdate] = item.attestreqdate;
@@ -143,5 +166,26 @@ export class CooAttestationComponent  implements OnInit {
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Coo Attestation');
     XLSX.writeFile(wb, 'coo-attestation.xlsx');
+  }
+
+  loadsidepanel(event: any) {
+    this.noOfInvoicesSelected = this.selectedAttestations.length;
+    this.totalFineAmount = this.selectedAttestations.reduce(
+      (total: any, item: any) => total + item.fineamount,
+      0
+    );
+    this.totalAttestationFee = this.selectedAttestations.reduce(
+      (total: any, item: any) => total + item.feesamount,
+      0
+    );
+    this.totalFee = this.totalFineAmount + this.totalAttestationFee;
+    this.shouldShow = true;
+    if (this.selectedAttestations.length > 1) {
+      // this.previewvisible = false;
+      // this.Timelinevisible = false;
+    } else if (this.selectedAttestations.length == 0) {
+      this.shouldShow = false;
+    } else {
+    }
   }
 }

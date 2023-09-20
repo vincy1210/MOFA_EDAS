@@ -7,6 +7,7 @@ import { ConstantsService } from 'src/service/constants.service';
 import { DatePipe } from '@angular/common';
 import * as XLSX from 'xlsx';
 import { ModalPopupService } from 'src/service/modal-popup.service';
+import { AttestationStatusEnum } from 'src/app/shared/models/attestation-status.model';
 
 @Component({
   selector: 'app-physical-attestation',
@@ -64,6 +65,10 @@ export class PhysicalAttestationComponent implements OnInit {
         field: 'invoicedate',
         header: 'label.physicalAttestDetails.physicalAttestList.invoicedate',
       },
+      {
+        field: 'status',
+        header: 'label.physicalAttestDetails.physicalAttestList.status',
+      },
     ];
     this.getInvoiceAttestations();
   }
@@ -83,6 +88,21 @@ export class PhysicalAttestationComponent implements OnInit {
         if (`${response.responseCode}` === '200') {
           const dataArray = response.data;
           this.invoiceRequestLists = dataArray;
+          this.invoiceRequestLists.map((row: any) => {
+            if (row.statusuno === AttestationStatusEnum.Status0) {
+              row.status = 'Created';
+            } else if (row.statusuno === AttestationStatusEnum.Status1) {
+              row.status = 'Approved';
+            } else if (row.statusuno === AttestationStatusEnum.Status2) {
+              row.status = 'Payment';
+            } else if (row.statusuno === AttestationStatusEnum.Status3) {
+              row.status = 'Attestation';
+            } else if (row.statusuno === AttestationStatusEnum.Status4) {
+              row.status = 'Completed';
+            } else {
+              row.status = '';
+            }
+          });
         }
       });
   }
@@ -148,6 +168,9 @@ export class PhysicalAttestationComponent implements OnInit {
       invoicedate: this.translate.instant(
         'label.physicalAttestDetails.physicalAttestList.invoicedate'
       ),
+      status: this.translate.instant(
+        'label.physicalAttestDetails.physicalAttestList.status'
+      ),
     };
     const dataList: any = [];
     this.invoiceRequestLists.map((item: any) => {
@@ -158,6 +181,7 @@ export class PhysicalAttestationComponent implements OnInit {
       dataItem[jsonData.invoiceamount] = item.invoiceamount;
       dataItem[jsonData.invoicecurrency] = item.invoicecurrency;
       dataItem[jsonData.invoicedate] = item.invoicedate;
+      dataItem[jsonData.status] = item.status;
       dataList.push(dataItem);
     });
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataList);

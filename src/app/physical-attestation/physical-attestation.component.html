@@ -43,7 +43,8 @@
               'invoiceno',
               'invoiceamount',
               'invoicecurrency',
-              'invoicedate'
+              'invoicedate',
+              'status'
             ]"
           >
             <ng-template pTemplate="caption">
@@ -146,6 +147,9 @@
                   <span class="image-text">{{
                     splitdatetime1(data.invoicedate)?.date
                   }}</span>
+                </td>
+                <td>
+                  <span class="image-text">{{ data.status }}</span>
                 </td>
               </tr>
             </ng-template>
