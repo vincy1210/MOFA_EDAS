@@ -109,6 +109,7 @@ import { CompletedAttestationComponent } from './completed-attestation/completed
 import { ModalPopupService } from 'src/service/modal-popup.service';
 import { DatePipe } from '@angular/common';
 import { CompletedCooRequestsComponent } from './completed-coo-requests/completed-coo-requests.component';
+import { PageNotFoundComponent } from './shared/not-found.component';
 // import { PrimeIcons } from 'primeng/api';
 
 const routes: Routes = [
@@ -117,7 +118,6 @@ const routes: Routes = [
     redirectTo: '/registration',
     pathMatch: 'full',
   },
-
   { path: 'registration', component: RegistrationComponent },
   { path: 'companydetails', component: CompanydetailsComponent },
   { path: 'physicalattestation', component: PhysicalAttestationComponent },
@@ -126,6 +126,7 @@ const routes: Routes = [
   { path: 'completedattestation', component: CompletedAttestationComponent },
   { path: 'landingpage', component: LandingPageComponent },
   { path: 'attestation', component: AttestationComponent },
+  { path: '**', component: PageNotFoundComponent }
 ];
 
 @NgModule({
@@ -142,6 +143,7 @@ const routes: Routes = [
     CooAttestationCreateComponent,
     CompletedAttestationComponent,
     CompletedCooRequestsComponent,
+    PageNotFoundComponent
   ],
 
   imports: [
