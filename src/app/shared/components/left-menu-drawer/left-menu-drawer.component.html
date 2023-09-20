@@ -1,154 +1,143 @@
-<mat-drawer-container class="example-container" autosize>
-  <mat-drawer class="example-sidenav app-sidenav" mode="over">
-    <div class="grid grid-cols-1 mofa-side-nav">
-      <div class="grid grid-cols-1 recently-used">
-        <h6>Recently Used</h6>
-        <ul class="my-3">
-          <li>Dashboard</li>
-          <li>Attestations</li>
-        </ul>
-      </div>
-
-      <!-- Tree starts here -->
-      <div class="grid grid-cols-1 mofa-side-menus">
-        <mat-expansion-panel [class.mat-elevation-z0]="true">
-          <mat-expansion-panel-header>
-            <mat-icon>dashboard</mat-icon><span>Dashboard</span>
-          </mat-expansion-panel-header>
-          <mat-nav-list>
-            <a mat-list-item routerLink="#">
-              <mat-icon>play_arrow</mat-icon><span>Option 01</span>
-            </a>
-            <a mat-list-item routerLink="#">
-              <mat-icon>play_arrow</mat-icon><span>Option 02</span>
-            </a>
-            <a mat-list-item routerLink="#">
-              <mat-icon>play_arrow</mat-icon><span>Option 03</span>
-            </a>
-          </mat-nav-list>
-        </mat-expansion-panel>
-        <mat-expansion-panel [class.mat-elevation-z0]="true">
-          <mat-expansion-panel-header>
-            <mat-icon>manage_accounts</mat-icon><span>Services</span>
-          </mat-expansion-panel-header>
-          <mat-nav-list>
-            <a mat-list-item routerLink="#">
-              <mat-icon>play_arrow</mat-icon><span>Option 01</span>
-            </a>
-            <a mat-list-item routerLink="#">
-              <mat-icon>play_arrow</mat-icon><span>Option 02</span>
-            </a>
-            <a mat-list-item routerLink="#">
-              <mat-icon>play_arrow</mat-icon><span>Option 03</span>
-            </a>
-          </mat-nav-list>
-        </mat-expansion-panel>
-        <mat-expansion-panel [class.mat-elevation-z0]="true">
-          <mat-expansion-panel-header>
-            <mat-icon>settings</mat-icon><span>Attestation</span>
-          </mat-expansion-panel-header>
-          <mat-nav-list>
-            <a mat-list-item routerLink="/Attestation">
-              <mat-icon>play_arrow</mat-icon><span>Pending Attestations</span>
-            </a>
-            <a mat-list-item routerLink="#">
-              <mat-icon>play_arrow</mat-icon><span>Completed Attestations</span>
-            </a>
-            <a mat-list-item routerLink="#">
-              <mat-icon>play_arrow</mat-icon><span>Option 03</span>
-            </a>
-          </mat-nav-list>
-        </mat-expansion-panel>
-        <mat-expansion-panel [class.mat-elevation-z0]="true">
-          <mat-expansion-panel-header>
-            <mat-icon>account_box</mat-icon
-            ><span>Manual Attestation Services</span>
-          </mat-expansion-panel-header>
-          <mat-nav-list>
-            <a mat-list-item routerLink="#">
-              <mat-icon>play_arrow</mat-icon><span>Option 01</span>
-            </a>
-            <a mat-list-item routerLink="#">
-              <mat-icon>play_arrow</mat-icon><span>Option 02</span>
-            </a>
-            <a mat-list-item routerLink="#">
-              <mat-icon>play_arrow</mat-icon><span>Option 03</span>
-            </a>
-          </mat-nav-list>
-        </mat-expansion-panel>
-        <mat-expansion-panel [class.mat-elevation-z0]="true">
-          <mat-expansion-panel-header>
-            <mat-icon>assessment</mat-icon><span>Reports</span>
-          </mat-expansion-panel-header>
-          <mat-nav-list>
-            <a mat-list-item routerLink="#">
-              <mat-icon>play_arrow</mat-icon><span>Option 01</span>
-            </a>
-            <a mat-list-item routerLink="#">
-              <mat-icon>play_arrow</mat-icon><span>Option 02</span>
-            </a>
-            <a mat-list-item routerLink="#">
-              <mat-icon>play_arrow</mat-icon><span>Option 03</span>
-            </a>
-          </mat-nav-list>
-        </mat-expansion-panel>
-        <mat-expansion-panel [class.mat-elevation-z0]="true">
-          <mat-expansion-panel-header>
-            <mat-icon>find_in_page</mat-icon><span>Audit Trail</span>
-          </mat-expansion-panel-header>
-          <mat-nav-list>
-            <a mat-list-item routerLink="#">
-              <mat-icon>play_arrow</mat-icon><span>Option 01</span>
-            </a>
-            <a mat-list-item routerLink="#">
-              <mat-icon>play_arrow</mat-icon><span>Option 02</span>
-            </a>
-            <a mat-list-item routerLink="#">
-              <mat-icon>play_arrow</mat-icon><span>Option 03</span>
-            </a>
-          </mat-nav-list>
-        </mat-expansion-panel>
-        <mat-expansion-panel [class.mat-elevation-z0]="true">
-          <mat-expansion-panel-header>
-            <mat-icon>build</mat-icon><span>Configurations</span>
-          </mat-expansion-panel-header>
-          <mat-nav-list>
-            <a mat-list-item routerLink="#">
-              <mat-icon>play_arrow</mat-icon><span>Option 01</span>
-            </a>
-            <a mat-list-item routerLink="#">
-              <mat-icon>play_arrow</mat-icon><span>Option 02</span>
-            </a>
-            <a mat-list-item routerLink="#">
-              <mat-icon>play_arrow</mat-icon><span>Option 03</span>
-            </a>
-          </mat-nav-list>
-        </mat-expansion-panel>
-        <mat-expansion-panel [class.mat-elevation-z0]="true">
-          <mat-expansion-panel-header>
-            <mat-icon>settings</mat-icon><span>Settings</span>
-          </mat-expansion-panel-header>
-          <mat-nav-list>
-            <a mat-list-item routerLink="#">
-              <mat-icon>play_arrow</mat-icon><span>Option 01</span>
-            </a>
-            <a mat-list-item routerLink="#">
-              <mat-icon>play_arrow</mat-icon><span>Option 02</span>
-            </a>
-            <a mat-list-item routerLink="#">
-              <mat-icon>play_arrow</mat-icon><span>Option 03</span>
-            </a>
-          </mat-nav-list>
-        </mat-expansion-panel>
-      </div>
-
-      <!-- tree ends here -->
-    </div>
-  </mat-drawer>
-
-  <div class="example-sidenav-content">
-    <div id="font-id" [ngClass]="fontSize">
-      <router-outlet></router-outlet>
-    </div>
+<div class="grid grid-cols-1 mofa-side-nav">
+  <div class="grid grid-cols-1 recently-used">
+    <h6>Recently Used</h6>
+    <ul class="my-3">
+      <li>Dashboard</li>
+      <li>Attestations</li>
+    </ul>
   </div>
-</mat-drawer-container>
+
+  <!-- Tree starts here -->
+  <div class="grid grid-cols-1 mofa-side-menus">
+    <mat-expansion-panel [class.mat-elevation-z0]="true">
+      <mat-expansion-panel-header>
+        <mat-icon>dashboard</mat-icon><span>Dashboard</span>
+      </mat-expansion-panel-header>
+      <mat-nav-list>
+        <a mat-list-item routerLink="#">
+          <mat-icon>play_arrow</mat-icon><span>Option 01</span>
+        </a>
+        <a mat-list-item routerLink="#">
+          <mat-icon>play_arrow</mat-icon><span>Option 02</span>
+        </a>
+        <a mat-list-item routerLink="#">
+          <mat-icon>play_arrow</mat-icon><span>Option 03</span>
+        </a>
+      </mat-nav-list>
+    </mat-expansion-panel>
+    <mat-expansion-panel [class.mat-elevation-z0]="true">
+      <mat-expansion-panel-header>
+        <mat-icon>manage_accounts</mat-icon><span>Services</span>
+      </mat-expansion-panel-header>
+      <mat-nav-list>
+        <a mat-list-item routerLink="#">
+          <mat-icon>play_arrow</mat-icon><span>Option 01</span>
+        </a>
+        <a mat-list-item routerLink="#">
+          <mat-icon>play_arrow</mat-icon><span>Option 02</span>
+        </a>
+        <a mat-list-item routerLink="#">
+          <mat-icon>play_arrow</mat-icon><span>Option 03</span>
+        </a>
+      </mat-nav-list>
+    </mat-expansion-panel>
+    <mat-expansion-panel [class.mat-elevation-z0]="true">
+      <mat-expansion-panel-header>
+        <mat-icon>settings</mat-icon><span>Attestation</span>
+      </mat-expansion-panel-header>
+      <mat-nav-list>
+        <a mat-list-item routerLink="/Attestation">
+          <mat-icon>play_arrow</mat-icon><span>Pending Attestations</span>
+        </a>
+        <a mat-list-item routerLink="#">
+          <mat-icon>play_arrow</mat-icon><span>Completed Attestations</span>
+        </a>
+        <a mat-list-item routerLink="#">
+          <mat-icon>play_arrow</mat-icon><span>Option 03</span>
+        </a>
+      </mat-nav-list>
+    </mat-expansion-panel>
+    <mat-expansion-panel [class.mat-elevation-z0]="true">
+      <mat-expansion-panel-header>
+        <mat-icon>account_box</mat-icon><span>Manual Attestation Services</span>
+      </mat-expansion-panel-header>
+      <mat-nav-list>
+        <a mat-list-item routerLink="#">
+          <mat-icon>play_arrow</mat-icon><span>Option 01</span>
+        </a>
+        <a mat-list-item routerLink="#">
+          <mat-icon>play_arrow</mat-icon><span>Option 02</span>
+        </a>
+        <a mat-list-item routerLink="#">
+          <mat-icon>play_arrow</mat-icon><span>Option 03</span>
+        </a>
+      </mat-nav-list>
+    </mat-expansion-panel>
+    <mat-expansion-panel [class.mat-elevation-z0]="true">
+      <mat-expansion-panel-header>
+        <mat-icon>assessment</mat-icon><span>Reports</span>
+      </mat-expansion-panel-header>
+      <mat-nav-list>
+        <a mat-list-item routerLink="#">
+          <mat-icon>play_arrow</mat-icon><span>Option 01</span>
+        </a>
+        <a mat-list-item routerLink="#">
+          <mat-icon>play_arrow</mat-icon><span>Option 02</span>
+        </a>
+        <a mat-list-item routerLink="#">
+          <mat-icon>play_arrow</mat-icon><span>Option 03</span>
+        </a>
+      </mat-nav-list>
+    </mat-expansion-panel>
+    <mat-expansion-panel [class.mat-elevation-z0]="true">
+      <mat-expansion-panel-header>
+        <mat-icon>find_in_page</mat-icon><span>Audit Trail</span>
+      </mat-expansion-panel-header>
+      <mat-nav-list>
+        <a mat-list-item routerLink="#">
+          <mat-icon>play_arrow</mat-icon><span>Option 01</span>
+        </a>
+        <a mat-list-item routerLink="#">
+          <mat-icon>play_arrow</mat-icon><span>Option 02</span>
+        </a>
+        <a mat-list-item routerLink="#">
+          <mat-icon>play_arrow</mat-icon><span>Option 03</span>
+        </a>
+      </mat-nav-list>
+    </mat-expansion-panel>
+    <mat-expansion-panel [class.mat-elevation-z0]="true">
+      <mat-expansion-panel-header>
+        <mat-icon>build</mat-icon><span>Configurations</span>
+      </mat-expansion-panel-header>
+      <mat-nav-list>
+        <a mat-list-item routerLink="#">
+          <mat-icon>play_arrow</mat-icon><span>Option 01</span>
+        </a>
+        <a mat-list-item routerLink="#">
+          <mat-icon>play_arrow</mat-icon><span>Option 02</span>
+        </a>
+        <a mat-list-item routerLink="#">
+          <mat-icon>play_arrow</mat-icon><span>Option 03</span>
+        </a>
+      </mat-nav-list>
+    </mat-expansion-panel>
+    <mat-expansion-panel [class.mat-elevation-z0]="true">
+      <mat-expansion-panel-header>
+        <mat-icon>settings</mat-icon><span>Settings</span>
+      </mat-expansion-panel-header>
+      <mat-nav-list>
+        <a mat-list-item routerLink="#">
+          <mat-icon>play_arrow</mat-icon><span>Option 01</span>
+        </a>
+        <a mat-list-item routerLink="#">
+          <mat-icon>play_arrow</mat-icon><span>Option 02</span>
+        </a>
+        <a mat-list-item routerLink="#">
+          <mat-icon>play_arrow</mat-icon><span>Option 03</span>
+        </a>
+      </mat-nav-list>
+    </mat-expansion-panel>
+  </div>
+
+  <!-- tree ends here -->
+</div>

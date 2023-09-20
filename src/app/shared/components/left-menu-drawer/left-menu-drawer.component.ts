@@ -6,11 +6,6 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./left-menu-drawer.component.css']
 })
 export class LeftMenuDrawerComponent implements OnInit {
-  fontSize = 'sm';
-
-  toggle(size: string) {
-    this.fontSize = size;
-  }
 
   constructor() { }
 
