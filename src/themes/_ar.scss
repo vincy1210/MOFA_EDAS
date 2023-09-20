@@ -46,3 +46,46 @@ blockquote, dl, dd, h1, h2, h3, h4, h5, h6, hr, figure, p, pre {
 .footer-top-section .mat-form-field {
     direction: ltr;
 }
+.mat-drawer {
+    right: 0;
+    left: auto;
+    transform: translate3d(100%, 0, 0);
+}
+.mat-content {
+    direction: rtl;
+}
+.mofa-side-menus .mat-expansion-indicator {
+    right: 4px;
+    left: auto;
+}
+.mofa-side-menus .mat-expansion-panel-header-description, .mofa-side-menus .mat-expansion-indicator::after {
+    transform: rotate(-225deg);
+}
+.mofa-side-menus .mat-expanded .mat-expansion-panel-header.mat-expanded .mat-expansion-indicator {
+    transform: rotate(-90deg) !important;
+}
+.mat-list-base .mat-list-item .mat-list-item-content, .mat-list-base .mat-list-option .mat-list-item-content {
+    direction: rtl;
+}
+.mat-list-base .mat-list-item-content .mat-icon {
+    transform: rotate(-180deg) !important;
+}
+.mofa-side-menus .mat-icon {
+    margin-left: 10px;
+    margin-right:0;
+}
+.main-header > .mr-2.cursor-pointer {
+    margin-left: 0.5rem;
+    margin-right:0;
+}
+ul{
+    direction: rtl;
+}
+.mofa-side-nav ul li {
+    padding-right: 20px;
+    padding-left: 0;
+}
+.mofa-side-nav ul li::before {
+    margin-right: -18px;
+    margin-left:0;
+}

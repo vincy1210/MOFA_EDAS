@@ -4,7 +4,7 @@
   <!-- {{'currentTheme' | translate}} -->
   <mat-toolbar class="main-header">
     <a (click)="drawer.toggle()" class="mr-2 cursor-pointer">
-      <mat-icon>menu</mat-icon>
+      <mat-icon color="primary">menu</mat-icon>
     </a>
     <img
       src="./assets/img/logo/mofo-logo-merged.png"
@@ -159,7 +159,7 @@
           mat-button
           [matMenuTriggerFor]="aboveMenu"
         >
-          <mat-icon>menu</mat-icon>
+          <mat-icon color="primary">menu</mat-icon>
         </button>
         <mat-menu #aboveMenu="matMenu">
           <button mat-menu-item [matMenuTriggerFor]="fontsizemenu">
