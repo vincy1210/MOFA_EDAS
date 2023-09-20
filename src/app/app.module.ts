@@ -110,6 +110,7 @@ import { ModalPopupService } from 'src/service/modal-popup.service';
 import { DatePipe } from '@angular/common';
 import { CompletedCooRequestsComponent } from './completed-coo-requests/completed-coo-requests.component';
 import { PageNotFoundComponent } from './shared/not-found.component';
+import { AttestationWorkflowComponent } from './shared/components/attestation-workflow/attestation-workflow.component';
 // import { PrimeIcons } from 'primeng/api';
 
 const routes: Routes = [
@@ -143,7 +144,8 @@ const routes: Routes = [
     CooAttestationCreateComponent,
     CompletedAttestationComponent,
     CompletedCooRequestsComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    AttestationWorkflowComponent
   ],
 
   imports: [

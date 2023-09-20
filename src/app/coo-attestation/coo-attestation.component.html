@@ -7,8 +7,11 @@
   </div>
   <div class="company-bg cooAttestDetails-page">
     <div class="mx-auto cooAttestDetails-window">
-      <div class="grid grid-cols-1 gap-4">
-        <div class="bg-white rounded-lg p-5 col-span-2">
+      <div class="grid grid-cols-3 gap-4">
+        <div
+          class="bg-white rounded-lg p-5 col-span-3"
+          [ngClass]="{ 'col-span-2': shouldShow, 'col-span-3': !shouldShow }"
+        >
           <p-table
             [(selection)]="selectedAttestations"
             dataKey="attestationrequno"
@@ -160,6 +163,12 @@
               </tr>
             </ng-template>
           </p-table>
+        </div>
+        <div
+          class="bg-white rounded-lg p-5 mofa-tab-section show"
+          [ngClass]="{ show: shouldShow, hide: !shouldShow }"
+        >
+          <app-attestation-workflow></app-attestation-workflow>
         </div>
       </div>
     </div>
