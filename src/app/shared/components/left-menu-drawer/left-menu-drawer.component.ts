@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatExpansionPanel } from '@angular/material/expansion';
+import { Router } from '@angular/router';
 
 interface MenuModel {
   id: number;
@@ -15,8 +17,9 @@ interface MenuModel {
 })
 export class LeftMenuDrawerComponent implements OnInit {
   menuList: MenuModel[] = [];
+  @ViewChild('myPanel') myPanel!: MatExpansionPanel;
 
-  constructor() {}
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
     this.getMenuItemLists();
@@ -34,18 +37,16 @@ export class LeftMenuDrawerComponent implements OnInit {
         id: 1,
         menu: 'Services',
         icon: 'manage_accounts',
-        link: '/',
         subMenus: [
-          { id: 1, menu: 'Option 01', icon: 'play_arrow', link: '#' },
-          { id: 2, menu: 'Option 02', icon: 'play_arrow', link: '#' },
-          { id: 3, menu: 'Option 03', icon: 'play_arrow', link: '#' },
+          { id: 1, menu: 'Option 01', icon: 'play_arrow' },
+          { id: 2, menu: 'Option 02', icon: 'play_arrow' },
+          { id: 3, menu: 'Option 03', icon: 'play_arrow' },
         ],
       },
       {
         id: 1,
         menu: 'Attestation',
         icon: 'settings',
-        link:'/',
         subMenus: [
           {
             id: 1,
@@ -89,37 +90,39 @@ export class LeftMenuDrawerComponent implements OnInit {
         id: 1,
         menu: 'Manual Attestation Services',
         icon: 'account_box',
-        link: '#',
-        subMenus: [{ id: 1, menu: 'Option 01', icon: 'play_arrow', link: '#' }],
+        subMenus: [{ id: 1, menu: 'Option 01', icon: 'play_arrow' }],
       },
       {
         id: 1,
         menu: 'Reports',
         icon: 'assessment',
-        link: '#',
-        subMenus: [{ id: 1, menu: 'Option 01', icon: 'play_arrow', link: '#' }],
+        subMenus: [{ id: 1, menu: 'Option 01', icon: 'play_arrow' }],
       },
       {
         id: 1,
         menu: 'Audit Trail',
         icon: 'find_in_page',
-        link: '#',
-        subMenus: [{ id: 1, menu: 'Option 01', icon: 'play_arrow', link: '#' }],
+        subMenus: [{ id: 1, menu: 'Option 01', icon: 'play_arrow' }],
       },
       {
         id: 1,
         menu: 'Configurations',
         icon: 'build',
-        link: '#',
-        subMenus: [{ id: 1, menu: 'Option 01', icon: 'play_arrow', link: '#' }],
+        subMenus: [{ id: 1, menu: 'Option 01', icon: 'play_arrow' }],
       },
       {
         id: 1,
         menu: 'Settings',
         icon: 'settings',
-        link: '#',
-        subMenus: [{ id: 1, menu: 'Option 01', icon: 'play_arrow', link: '#' }],
+        subMenus: [{ id: 1, menu: 'Option 01', icon: 'play_arrow' }],
       }
     );
+  }
+  
+  onPanelClick(items: any) {
+    if (items.link) {
+      this.router.navigate([items.link]);
+      this.myPanel.close();
+    }
   }
 }

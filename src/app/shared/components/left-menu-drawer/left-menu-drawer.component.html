@@ -9,10 +9,11 @@
 
   <div class="grid grid-cols-1 mofa-side-menus">
     <mat-expansion-panel
+      #myPanel
       [class.mat-elevation-z0]="true"
       *ngFor="let items of menuList"
     >
-      <mat-expansion-panel-header [routerLink]="items.link">
+      <mat-expansion-panel-header  (click)="onPanelClick(items)">
         <span class="mat-items">
           <mat-icon>{{ items.icon }}</mat-icon
           ><span>{{ items.menu }}</span>
