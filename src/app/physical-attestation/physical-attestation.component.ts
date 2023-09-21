@@ -4,10 +4,10 @@ import { PhysicalAttestationCreateComponent } from './physical-attestation-creat
 import { TranslateService } from '@ngx-translate/core';
 import { ApiService } from 'src/service/api.service';
 import { ConstantsService } from 'src/service/constants.service';
-import { DatePipe } from '@angular/common';
 import * as XLSX from 'xlsx';
 import { ModalPopupService } from 'src/service/modal-popup.service';
 import { AttestationStatusEnum } from 'src/app/shared/models/attestation-status.model';
+import { CommonService } from 'src/service/common.service';
 
 @Component({
   selector: 'app-physical-attestation',
@@ -24,17 +24,17 @@ export class PhysicalAttestationComponent implements OnInit {
   enableFilters: boolean = false;
   // for workflow
   public shouldShow = false;
-  noOfInvoicesSelected: any[]=[];
-  totalFineAmount:any;
-  totalAttestationFee:any;
-  totalFee:any;
+  noOfInvoicesSelected: any[] = [];
+  totalFineAmount: any;
+  totalAttestationFee: any;
+  totalFee: any;
 
   constructor(
     private modalPopupService: ModalPopupService,
     public translate: TranslateService,
     public apiservice: ApiService,
     public consts: ConstantsService,
-    private datePipe: DatePipe
+    private common: CommonService
   ) {}
 
   ngOnInit(): void {
@@ -118,36 +118,6 @@ export class PhysicalAttestationComponent implements OnInit {
     });
   }
 
-  splitdatetime(datetimeString: any) {
-    if (datetimeString && typeof datetimeString === 'string') {
-      const dateTimeParts = datetimeString.split('T'); // Splitting the string at 'T'
-      if (dateTimeParts.length === 2) {
-        return {
-          date: dateTimeParts[0],
-          time: dateTimeParts[1],
-        };
-      }
-    }
-    return null; // Invalid or null datetime string
-  }
-
-  splitdatetime1(datetimeString: any) {
-    if (datetimeString && typeof datetimeString === 'string') {
-      const dateTimeParts = datetimeString;
-      if (dateTimeParts.length === 8) {
-        const parsedDate = new Date(
-          Number(dateTimeParts.substr(4, 4)),
-          Number(dateTimeParts.substr(2, 2)) - 1,
-          Number(dateTimeParts.substr(0, 2))
-        );
-        return {
-          date: this.datePipe.transform(parsedDate, 'dd-MMM-yyyy'),
-        };
-      }
-    }
-    return null; // Invalid or null datetime string
-  }
-
   exportExcel() {
     const jsonData = {
       edasreqno: this.translate.instant(
@@ -188,6 +158,10 @@ export class PhysicalAttestationComponent implements OnInit {
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Physical Attestation');
     XLSX.writeFile(wb, 'physical-attestation.xlsx');
+  }
+
+  splitdatetime1(date: any) {
+    return this.common.splitdatetime1(date);
   }
 
   loadsidepanel(event: any) {
