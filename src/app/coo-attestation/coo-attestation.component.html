@@ -168,7 +168,7 @@
           class="bg-white rounded-lg p-5 mofa-tab-section show"
           [ngClass]="{ show: shouldShow, hide: !shouldShow }"
         >
-          <app-attestation-workflow></app-attestation-workflow>
+          <app-attestation-workflow [selectedAttestations]="selectedAttestations"></app-attestation-workflow>
         </div>
       </div>
     </div>
