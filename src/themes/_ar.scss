@@ -89,3 +89,9 @@ ul{
     margin-right: -18px;
     margin-left:0;
 }
+.float-left {
+    float: right;
+}
+.dw-container .timeline-block::before {
+    right: 9px;
+}
