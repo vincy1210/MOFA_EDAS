@@ -39,7 +39,6 @@ export class AttestationWorkflowComponent implements OnInit {
       const attestationLists = changes['selectedAttestations'].currentValue;
       this.selectedAttestations = attestationLists;
       if (this.selectedAttestations && this.selectedAttestations.length >= 0) {
-        debugger;
         this.noOfInvoicesSelected = this.selectedAttestations.length;
         this.totalFineAmount = this.selectedAttestations.reduce(
           (total: any, item: any) => total + (item.fineamount ? item.fineamount : 0),
