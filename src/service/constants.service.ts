@@ -16,4 +16,6 @@ export class ConstantsService {
   invoiceAttestation = 'Common/invoiceAttestation'; // invoice attest request
   getCooRequests = 'Company/getCOORequests'; // completed attest lists
   updateCOORequests = 'Company/updateCOORequests'; // completed attest update
+  lcaCompletedAttestList='Company/lcaCompletedAttestList';
+  sendMailGeneric="Company/sendMailGeneric"
 }

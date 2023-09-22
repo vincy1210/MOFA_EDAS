@@ -86,27 +86,17 @@
         <div class="mt-2 grid grid-cols-1">
         <mat-form-field appearance="outline" >
           <mat-label>{{'label.registration.dmcclabel' | translate }}</mat-label>
-       
-
           <mat-select name="dmccOption" formControlName="dmccOption" >
             <mat-option *ngFor="let option of freezone" [value]="option.typeuno">
               {{ option.typename }}
             </mat-option>
           </mat-select>
-
-
           <mat-error class="error" *ngIf="registrationForm.get('dmccOption')?.hasError('required')">{{'alerts.registration.Please select an option.'|translate}}</mat-error>
         </mat-form-field>
       </div>
-
-
-       
       </ng-container>
- 
-      
-      
       <div class="text-right">
-        <button mat-flat-button color="primary" (click)="proceed()" >{{'label.registration.proceedbtn' | translate }}</button>
+        <button mat-flat-button color="primary"  (click)="proceed()" >{{'label.registration.proceedbtn' | translate }}</button>
       </div>
 
       </div>
@@ -114,17 +104,8 @@
     </mat-card>
   </div>
   </div>
+  
 </form>
-
-<re-captcha [siteKey]="sitekey"
-size="invisible" 
-#invisible
-(errored)="onError()"
-errorMode="handled"
-(resolved)="addTokenLog('Invisible reCAPTCHA response', $event)"
->
-</re-captcha>
-
 </div>
 
 

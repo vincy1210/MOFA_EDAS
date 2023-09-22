@@ -71,12 +71,19 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { CompanydetailsComponent } from './companydetails/companydetails.component';
 import { NgxOtpInputModule } from 'ngx-otp-input';
 import { ToastrModule } from 'ngx-toastr';
-import { RecaptchaModule } from 'ng-recaptcha';
+
+
 import {
+  RecaptchaModule,
+  RECAPTCHA_SETTINGS,
+  RecaptchaSettings,
+  RecaptchaFormsModule,
   RECAPTCHA_V3_SITE_KEY,
   RecaptchaV3Module,
-  ReCaptchaV3Service,
+  
+  
 } from 'ng-recaptcha';
+
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { AttestationComponent } from './attestation/attestation.component';
@@ -105,7 +112,14 @@ import { CooAttestationCreateComponent } from './coo-attestation/coo-attestation
 import { CompletedAttestationComponent } from './completed-attestation/completed-attestation.component';
 import { ModalPopupService } from 'src/service/modal-popup.service';
 import { DatePipe } from '@angular/common';
+import { environment } from 'src/environments/environment.prod';
+
 // import { PrimeIcons } from 'primeng/api';
+
+/// 6LeA5fcnAAAAAEIP7UI5750gbJxgKqgrkHQ-YXXM
+
+const RECAPTCHA_V3_STACKBLITZ_KEY = '6LcVQRwoAAAAAB6scwIvG78wLgpk516pJJ-IB-qQ';
+const RECAPTCHA_V2_DUMMY_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
 
 const routes: Routes = [
   {
@@ -229,18 +243,26 @@ const routes: Routes = [
     ProgressBarModule,
     InputTextModule,
     ToastModule,
-    PdfViewerModule,
+    PdfViewerModule,   RecaptchaFormsModule,
+    RecaptchaV3Module,
   ],
   providers: [
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: { appearance: 'outline' },
     },
+    
+        {
+          provide: RECAPTCHA_SETTINGS,
+          useValue: {
+            siteKey: RECAPTCHA_V2_DUMMY_KEY
+          } as RecaptchaSettings
+        },
     {
       provide: RECAPTCHA_V3_SITE_KEY,
-      useValue: '6LcVQRwoAAAAAB6scwIvG78wLgpk516pJJ-IB-qQ',
+      useValue: RECAPTCHA_V3_STACKBLITZ_KEY,
     },
-    ReCaptchaV3Service,
+    
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     ModalPopupService,
     DatePipe,

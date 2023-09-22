@@ -39,7 +39,7 @@ export class ApiService {
   }
  sPassAuthGetUserprofile(param1:any, param3:any){
 
-  const email = encodeURIComponent(param3.trim());
+  const email = encodeURIComponent(param3);
   console.log(email)   
    let Url = this.baseURL+ `Common/CheckUAEPassLogin?sAuthCode=${param1}&sEmail=${email}`
 
@@ -73,7 +73,7 @@ export class ApiService {
 
   GetAuthToken(param1:any, param3:any){
 
-    const email = encodeURIComponent(param3?.trim());
+    const email = encodeURIComponent(param3);
     console.log(email)   
      let Url = this.authTokenURL+ `EDASGetAccessTokenV2?AuthenticationCode=${param1}&email=${email}`
 

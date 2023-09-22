@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, VERSION } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormControl, MinLengthValidator, ValidatorFn, AbstractControl } from '@angular/forms';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { NgxOtpInputConfig } from 'ngx-otp-input';
@@ -12,6 +12,8 @@ import { takeWhile } from 'rxjs/operators';
 import { ApiService } from 'src/service/api.service';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { formatDate } from '@angular/common';
+import { environment } from 'src/environments/environment';
+import { ReCaptchaV3Service } from 'ng-recaptcha';
 
 @Component({
   selector: 'app-companydetails',
@@ -19,9 +21,18 @@ import { formatDate } from '@angular/common';
   styleUrls: ['./companydetails.component.css']
 })
 export class CompanydetailsComponent implements OnInit {
+
+  @ViewChild('invisible') invisibleRecaptcha: any;
   companyDetailsForm: FormGroup;//
   legalTypeOptions: { typeuno: string; typename: string }[] = [];
   TemplateRef: any;
+  captcha_token:any;
+
+  public version = VERSION.full;
+  public recaptchaMode = 'v3';
+  public reactiveForm: FormGroup = new FormGroup({
+    recaptchaReactive: new FormControl(null, Validators.required),
+  });
 
   // countdown setup var start
   countdownMinutes:number = 0;
@@ -49,7 +60,7 @@ export class CompanydetailsComponent implements OnInit {
   note3:string='';
   freezonelist:any;
 
-  constructor(private common:CommonService ,private _activatedRoute: ActivatedRoute,private formBuilder:FormBuilder, public dialog: MatDialog, private Common:CommonService, public apiservice:ApiService, public consts:ConstantsService, public router:Router) {
+  constructor(private recaptchaV3Service:ReCaptchaV3Service,private common:CommonService ,private _activatedRoute: ActivatedRoute,private formBuilder:FormBuilder, public dialog: MatDialog, private Common:CommonService, public apiservice:ApiService, public consts:ConstantsService, public router:Router) {
 
 
 
@@ -114,6 +125,7 @@ export class CompanydetailsComponent implements OnInit {
    
 
   ngOnInit(): void {
+    this.sitekey=environment.recaptcha.siteKey
 
     this.Common.getUserIfoData().subscribe(data => {
       this.user_info_taken_using_authtoken = data;
@@ -143,6 +155,7 @@ this.apiservice.post(this.consts.GetLegalTypes, data).subscribe((response: any) 
   fileList: File[] = [];
   listOfFiles: any[] = [];
   isLoading = false;
+  sitekey:string='';
 
   onFileChanged(event: any) {
     this.isLoading = true;
@@ -169,40 +182,40 @@ this.apiservice.post(this.consts.GetLegalTypes, data).subscribe((response: any) 
     this.alive = false
   }
 
-  submit(){
-    console.log(this.fileList)
-    let response;
-    const form={...this.companyDetailsForm}
-    console.log(form.value)
 
-    if(this.companyDetailsForm.get('isbroker')?.value===""){
-      this.radiochosenornot=true;
+  //
+  submit11() {
+    if (this.companyDetailsForm.get('isbroker')?.value === "") {
+      this.radiochosenornot = true;
+    } else {
+      this.radiochosenornot = false;
     }
-    else{
-      this.radiochosenornot=false;
-    }
-
-
-    console.log(this.user_info_taken_using_authtoken)
-
-    if(this.companyDetailsForm.valid){
-    let data={
+  
+    if (this.companyDetailsForm.valid) {
+      // Execute reCAPTCHA v3
+      this.executeRecaptchaV3(() => {
+        console.log('File List:', this.fileList);
+        const form = { ...this.companyDetailsForm.value };
+        console.log('Form Values:', form);
+        console.log(this.captcha_token)
+  
+       
+	  let data={
       "emiratesId": this.user_info_taken_using_authtoken.idn,   // UAE pass frields start
       "uuid": this.user_info_taken_using_authtoken.uuid,
       "token": this.user_info_taken_using_authtoken.Token,
       "useruno": "0",     //find out
-      
-      "companyname":form.value.name_of_Business,
-      "tradelicensenumber": form.value.trade_Licence,
-      "tradelicenseissuedate": this.Common.convertISOToCustomFormat(form.value.trade_Licence_Issue_Date) ,
-      "tradelicenseexpirydate": this.Common.convertISOToCustomFormat(form.value.trade_Licence_Expiry_Date),
-      "licenseissuingauthority": form.value.Licence_issuing_auth, //freetext
-      "companyregisteredemailaddress": form.value.Comp_Reg_Email_Address,
-      "companycontactnumber": form.value.Comp_contact_number,
+      "companyname":form.name_of_Business,
+      "tradelicensenumber": form.trade_Licence,
+      "tradelicenseissuedate": this.Common.convertISOToCustomFormat(form.trade_Licence_Issue_Date) ,
+      "tradelicenseexpirydate": this.Common.convertISOToCustomFormat(form.trade_Licence_Expiry_Date),
+      "licenseissuingauthority": form.Licence_issuing_auth, //freetext
+      "companyregisteredemailaddress": form.Comp_Reg_Email_Address,
+      "companycontactnumber": form.Comp_contact_number,
       "HASATTACHMENT": "0",
-      "attachment": form.value.trade_Licence,
-      "representativeemailaddress": form.value.companyrep_EmailAddress,
-      "mobilenumber": form.value.companyrep_MobileNumber,
+      "attachment": form.trade_Licence,
+      "representativeemailaddress": form.companyrep_EmailAddress,
+      "mobilenumber": form.companyrep_MobileNumber,
       "userType": this.user_info_taken_using_authtoken.userType,
       "mobile": this.user_info_taken_using_authtoken.mobile,
       "email": this.user_info_taken_using_authtoken.email,
@@ -223,64 +236,226 @@ this.apiservice.post(this.consts.GetLegalTypes, data).subscribe((response: any) 
       "UAEPassJson": this.user_info_taken_using_authtoken.UAEPassJson,
       
       "freezoneuno": this.reg_form_data?.dmccOption,    ///
-      "legaltypeuno": form.value.legal_Type,
-      "repfullnameen":form.value.companyrep_fullname,
-      "repfullnamear":form.value.companyrep_fullname,
+      "legaltypeuno": form.legal_Type,
+      "repfullnameen":form.companyrep_fullname,
+      "repfullnamear":form.companyrep_fullname,
       "licenseissuingauthorityemirate":this.reg_form_data.issuingAuthority,  //dropdown
       "IssuingAuthorityType":this.reg_form_data.expressType,
-      "captchkey":"yguuyyhhyhbhb",
-      "isbroker":form.value.isbroker,
+      "captchakey":this.captcha_token,
+      "isbroker":form.isbroker,
 
     }
-
-    let data111={...data,...this.user_info_taken_using_authtoken}
-    console.log(data111);
-    this.apiservice.registerCompanyAttachment(this.consts.registercompany ,this.sel_file_test,data).pipe(takeWhile(() => this.alive)).subscribe({
-      next: (success)=>{
-              response=success;
-              console.log(response);
-              if(response.responseCode==200){
-                this.response_code_after_submit=response.data.dictionary.requestno
-                this.form1_Vis=false;
-                this.note1="You have successfully submitted your request for company registration."
-                this.note2="Our dedicated agents will now review your application, and upon approval, you will receive a confirmation email at your registered email address."
-                this.note3="To proceed back to the main website, please click the button below."
-                this.progress_val=100
-              }
-              else if(response.responseCode==400){
-                this.response_code_after_submit=response.data.dictionary.requestno
-                this.form1_Vis=false;
-                this.note1="Thank you for submitting your request."
-                this.note2="We would like to inform you that your request has already been successfully submitted and is currently under process."
-                this.note2=this.note2+ "Rest assured, our team is diligently working on it, and we will get back to you at the earliest possible time."
-                this.note3="Should you have any questions or need to communicate with us, please feel free to reach out at info@mofa.gov.ae, while kindly referring to your unique reference ID."
-                this.progress_val=100
-                
-              }
-              else if(response.responseCode=500){
-                if(response.data.dictionary.message==="ORA-00001: unique constraint (MOFA_ADMIN.UK_COMPANY_REG) violated"){
-                  this.Common.showErrorMessage("License Already Registered!")
-                  return;
-                }
-                else{
-                  this.Common.showErrorMessage("something went wrong!!"+ response.data.message)
-                  return;
-                }
-              }
-              else{
-                this.form1_Vis=true;
-                this.Common.showErrorMessage("something went wrong!!"+ response.data.message)
-                return;
-              }
-      }
-  })
   
-}
-else{
-  this.Common.showErrorMessage("Please fill the mandatory Fields!!")
-}
+        let data111 = { ...data, ...this.user_info_taken_using_authtoken };
+        console.log(data111);
+
+        let response;
+  
+        this.apiservice.registerCompanyAttachment(this.consts.registercompany ,this.sel_file_test,data).pipe(takeWhile(() => this.alive)).subscribe({
+          next: (success)=>{
+                  response=success;
+                  console.log(response);
+                  if(response.responseCode==200){
+                    this.response_code_after_submit=response.data.dictionary.requestno
+                    this.form1_Vis=false;
+                    this.note1="You have successfully submitted your request for company registration."
+                    this.note2="Our dedicated agents will now review your application, and upon approval, you will receive a confirmation email at your registered email address."
+                    this.note3="To proceed back to the main website, please click the button below."
+                    this.progress_val=100
+                  }
+                  else if(response.responseCode==400){
+                    this.response_code_after_submit=response.data.dictionary.requestno
+                    this.form1_Vis=false;
+                    this.note1="Thank you for submitting your request."
+                    this.note2="We would like to inform you that your request has already been successfully submitted and is currently under process."
+                    this.note2=this.note2+ "Rest assured, our team is diligently working on it, and we will get back to you at the earliest possible time."
+                    this.note3="Should you have any questions or need to communicate with us, please feel free to reach out at info@mofa.gov.ae, while kindly referring to your unique reference ID."
+                    this.progress_val=100
+                  }
+                  else if(response.responseCode==500){
+                    if(response.data.dictionary.message==="ORA-00001: unique constraint (MOFA_ADMIN.UK_COMPANY_REG) violated"){
+                      this.Common.showErrorMessage("License Already Registered!")
+                      return;
+                    }
+                    else{
+                      this.Common.showErrorMessage("something went wrong!!"+ response.data.dictionary.message)
+                      return;
+                    }
+                  }
+                  else{
+                    this.form1_Vis=true;
+                    this.Common.showErrorMessage("something went wrong!!"+ response.data.dictionary.message)
+                    return;
+                  }
+          }
+      })
+      
+      });
+
+      
+    } else {
+      this.Common.showErrorMessage("Please fill the mandatory Fields!!");
+    }
   }
 
+  
+  submit() {
+    if (this.companyDetailsForm.get('isbroker')?.value === "") {
+      this.radiochosenornot = true;
+    } else {
+      this.radiochosenornot = false;
+    }
+  
+    if (this.companyDetailsForm.valid) {
+      // Execute reCAPTCHA v3
+      this.recaptchaV3Service.execute('myAction').subscribe(
+        (token) => {
+
+          console.log(token)
+        this.captcha_token=token;
+        this.addTokenLog('Recaptcha v3 token', token);
+
+        console.log('File List:', this.fileList);
+        const form = { ...this.companyDetailsForm.value };
+        console.log('Form Values:', form);
+        console.log(this.captcha_token)
+  
+       
+	  let data={
+      "emiratesId": this.user_info_taken_using_authtoken.idn,   // UAE pass frields start
+      "uuid": this.user_info_taken_using_authtoken.uuid,
+      "token": this.user_info_taken_using_authtoken.Token,
+      "useruno": "0",     //find out
+      "companyname":form.name_of_Business,
+      "tradelicensenumber": form.trade_Licence,
+      "tradelicenseissuedate": this.Common.convertISOToCustomFormat(form.trade_Licence_Issue_Date) ,
+      "tradelicenseexpirydate": this.Common.convertISOToCustomFormat(form.trade_Licence_Expiry_Date),
+      "licenseissuingauthority": form.Licence_issuing_auth, //freetext
+      "companyregisteredemailaddress": form.Comp_Reg_Email_Address,
+      "companycontactnumber": form.Comp_contact_number,
+      "HASATTACHMENT": "0",
+      "attachment": form.trade_Licence,
+      "representativeemailaddress": form.companyrep_EmailAddress,
+      "mobilenumber": form.companyrep_MobileNumber,
+      "userType": this.user_info_taken_using_authtoken.userType,
+      "mobile": this.user_info_taken_using_authtoken.mobile,
+      "email": this.user_info_taken_using_authtoken.email,
+      "spuuid": this.user_info_taken_using_authtoken.spuuid,
+      "idn": this.user_info_taken_using_authtoken.idn,
+      "fullnameEN": this.user_info_taken_using_authtoken.fullnameEN,
+      "fullnameAR": this.user_info_taken_using_authtoken.fullnameAR,
+      "firstnameEN": this.user_info_taken_using_authtoken.firstnameEN,
+      "firstnameAR": this.user_info_taken_using_authtoken.firstnameAR,
+      "lastnameEN": this.user_info_taken_using_authtoken.lastnameEN,
+      "lastnameAR": this.user_info_taken_using_authtoken.lastnameAR,
+      "nationalityEN": this.user_info_taken_using_authtoken.nationalityEN,
+      "nationalityAR": this.user_info_taken_using_authtoken.nationalityAR,
+      "gender": this.user_info_taken_using_authtoken.gender,
+      "idType": this.user_info_taken_using_authtoken.idType,
+      "titleEN": this.user_info_taken_using_authtoken.titleEN,
+      "titleAR": this.user_info_taken_using_authtoken.titleAR,
+      "UAEPassJson": this.user_info_taken_using_authtoken.UAEPassJson,
+      
+      "freezoneuno": this.reg_form_data?.dmccOption,    ///
+      "legaltypeuno": form.legal_Type,
+      "repfullnameen":form.companyrep_fullname,
+      "repfullnamear":form.companyrep_fullname,
+      "licenseissuingauthorityemirate":this.reg_form_data.issuingAuthority,  //dropdown
+      "IssuingAuthorityType":this.reg_form_data.expressType,
+      "captchakey":this.captcha_token,
+      "isbroker":form.isbroker,
+
+    }
+  
+        let data111 = { ...data, ...this.user_info_taken_using_authtoken };
+        console.log(data111);
+
+        let response;
+  
+        this.apiservice.registerCompanyAttachment(this.consts.registercompany ,this.sel_file_test,data).pipe(takeWhile(() => this.alive)).subscribe({
+          next: (success)=>{
+                  response=success;
+                  console.log(response);
+                  if(response.responseCode==200){
+                    this.response_code_after_submit=response.data.dictionary.requestno
+                    this.form1_Vis=false;
+                    this.note1="You have successfully submitted your request for company registration."
+                    this.note2="Our dedicated agents will now review your application, and upon approval, you will receive a confirmation email at your registered email address."
+                    this.note3="To proceed back to the main website, please click the button below."
+                    this.progress_val=100
+                  }
+                  else if(response.responseCode==400){
+                    this.response_code_after_submit=response.data.dictionary.requestno
+                    this.form1_Vis=false;
+                    this.note1="Thank you for submitting your request."
+                    this.note2="We would like to inform you that your request has already been successfully submitted and is currently under process."
+                    this.note2=this.note2+ "Rest assured, our team is diligently working on it, and we will get back to you at the earliest possible time."
+                    this.note3="Should you have any questions or need to communicate with us, please feel free to reach out at info@mofa.gov.ae, while kindly referring to your unique reference ID."
+                    this.progress_val=100
+                  }
+                  else if(response.responseCode==500){
+                    if(response.data.dictionary.message==="ORA-00001: unique constraint (MOFA_ADMIN.UK_COMPANY_REG) violated"){
+                      this.Common.showErrorMessage("License Already Registered!")
+                      return;
+                    }
+                    else{
+                      this.Common.showErrorMessage("something went wrong!!"+ response.data.dictionary.message)
+                      return;
+                    }
+                  }
+                  else{
+                    this.form1_Vis=true;
+                    this.Common.showErrorMessage("something went wrong!!"+ response.data.dictionary.message)
+                    return;
+                  }
+          }
+      })
+      
+      }
+      ,
+      (error) => {
+        console.log(`Recaptcha v3 error: see console`);
+        console.log(`Recaptcha v3 error:`, error);
+      }
+      );
+    } else {
+      this.Common.showErrorMessage("Please fill the mandatory Fields!!");
+    }
+  }
+  
+  executeRecaptchaV3(callback: () => void) {
+    
+    this.recaptchaV3Service.execute('myAction').subscribe(
+      (token) => {
+        console.log(token)
+        this.captcha_token=token;
+        this.addTokenLog('Recaptcha v3 token', token);
+      },
+      (error) => {
+        console.log(`Recaptcha v3 error: see console`);
+        console.log(`Recaptcha v3 error:`, error);
+      }
+    );
+    callback();
+  }
+  
+  
+  // executeRecaptchaV3(callback: () => void) {
+    
+  //   this.recaptchaV3Service.execute('myAction').subscribe(
+  //     (token) => {
+  //       console.log(token)
+  //       this.captcha_token=token;
+  //       this.addTokenLog('Recaptcha v3 token', token);
+  //     },
+  //     (error) => {
+  //       console.log(`Recaptcha v3 error: see console`);
+  //       console.log(`Recaptcha v3 error:`, error);
+  //     }
+  //   );
+  //   callback();
+  // }
+  
   //OTP related functions start----------
 // Generates a OTP using random numbers
    generateOTP(): string {
@@ -297,22 +472,47 @@ else{
 
   SendOTP(){
 
-    let data;
-
+    let data, data1;
+    const OTP=this.generateOTP();
     data={
       "uuid":this.user_info_taken_using_authtoken.uuid,
-      "otp":this.generateOTP(),
+      "otp":OTP,
       "tradelicenseno":this.reg_form_data.tradeLicenseNumber
       }
-
       console.log(data);
       let otpresponse;
-
       this.apiservice.post(this.consts.SendOTPForCompanyRegn,data).subscribe({next:(success)=>{
       otpresponse=success;
       console.log(otpresponse);
       }
       })
+
+      let email;
+      let email2=this.companyDetailsForm.get('companyrep_EmailAddress')?.value;
+      console.log(email2);
+      if(email2==undefined ||email2===""){
+        email=""
+      }
+      else{
+        email=email2;
+      }
+
+      data1={
+        "emailID":email,
+        "OTP":OTP
+      }
+
+        this.apiservice.post(this.consts.sendMailGeneric, data1).subscribe((response: any) => {
+          otpresponse= response; 
+          otpresponse=JSON.parse(otpresponse)
+          console.log(otpresponse)
+          if(otpresponse.dictionary.responsecode==200){
+              this.common.showSuccessMessage("OTP Eail sent!")
+          }
+          else{
+            this.common.showSuccessMessage("Email- something went wrong!")
+          }
+        })
 
   }
 
@@ -410,39 +610,28 @@ else{
     }
     })
 
-//Test Data
-    // if (this.OTP_entered === '123456') {
-    //   this.Common.showSuccessMessage('OTP is verified'); // Show the verification alert
-    //   this.OTP_verified=true;
-    //   this.dialog.closeAll();
-    // } else {
-    //   // Handle incorrect OTP case here if needed
-    //   this.incorrectOTP = true; // set a label in the template that OTP is invalid
-    //   this.OTP_verified=false;
-    //   this.ngxotp.clear();
-    // }
-
   }
 
-  //OTP related functions end
   
-
-  // radio(event:any){
-
-  //   console.log(event.value);
-  //   var issuing_auth=event.value
-  //   this.i=issuing_auth;
-  //   console.log(issuing_auth);
-  //   console.log(this.expressType)
-
-  // }
 
   mainpage(){
     this.router.navigateByUrl('/registration');
   }
 
-
- 
   
+ 
 
+  public addTokenLog(message: string, token: string | null) {
+    console.log(`${message}: ${this.formatToken(token)}`);
+  }
+
+  public onError() {
+    console.log(`reCAHPTCHA errored;`);
+  }
+
+  public formatToken(token: string | null) {
+    return token !== null
+      ? `${token.substring(0, 7)}...${token.substring(token.length - 7)}`
+      : 'null';
+  }
 }

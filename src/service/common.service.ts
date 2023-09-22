@@ -3,6 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject } from 'rxjs';
 import * as $ from 'jquery';
+import * as forge from 'node-forge';
 
 
 
@@ -15,6 +16,8 @@ export class CommonService {
   private RegisteredCompanyDetails = new BehaviorSubject<string>('');
   private selectedcompany = new BehaviorSubject<string>('');
   private freeZone = new BehaviorSubject<string>('');
+
+  publicKey!: string;
 
 
 
@@ -102,6 +105,19 @@ export class CommonService {
   }
   getfreezone(){
     return this.freeZone.asObservable();
+  }
+
+  encryptWithPublicKey(valueToEncrypt: string): string {
+ 
+    this.publicKey = `-----BEGIN PUBLIC KEY-----
+    MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQClnd0dRXYSiKkHgmzq53FiEAiR
+    dWOU2EZMFDYbICt/t0SB0FLfN7pOaI3t9/WxxBmqHPL6MrFTDdmJi0BLD2LTDQ4E
+    sZl4Uj1u7PJyDewjQxpehRv5dZ6u7wXOy0U9/WsNrWMrZo3UiL9Dndb6GUciXo31
+    MQyXkegCGYxB/qm19wIDAQAB
+    -----END PUBLIC KEY-----`;
+    
+    const rsa = forge.pki.publicKeyFromPem(this.publicKey);
+    return window.btoa(rsa.encrypt(valueToEncrypt.toString()));
   }
   
   

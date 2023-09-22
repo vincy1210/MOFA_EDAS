@@ -5,6 +5,7 @@ import { NavigationStart, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Direction } from '@angular/cdk/bidi';
 
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -12,6 +13,7 @@ import { Direction } from '@angular/cdk/bidi';
 })
 export class AppComponent {
   @HostBinding('class') classRoot = 'theme-default';
+  
 
   title = 'uaemofa';
   overlayContainer: any;
@@ -20,6 +22,10 @@ export class AppComponent {
 
   toggle(size: string) {
     this.fontSize = size;
+  }
+
+  resolved(captchaResponse: string) {
+    console.log(`Resolved captcha with response: ${captchaResponse}`);
   }
 
   preventCloseOnClickOut() {

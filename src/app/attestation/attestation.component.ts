@@ -10,6 +10,7 @@ import { LazyLoadEvent } from 'primeng/api';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
 import * as pdfMake from 'pdfmake/build/pdfmake';
+import { HttpClient } from '@angular/common/http';
 
 
  import { saveAs } from 'file-saver';
@@ -74,10 +75,11 @@ datasource:any;
   totalAttestationFee:any;
 totalFee:any;
 AttestationList:any;
-
+isPending:boolean=true;
+base64PdfString: any;
 
  
-  constructor(private _liveAnnouncer: LiveAnnouncer, private api:ApiService, private common:CommonService, private consts:ConstantsService){
+  constructor(private http:HttpClient,private _liveAnnouncer: LiveAnnouncer, private api:ApiService, private common:CommonService, private consts:ConstantsService){
 
   }
 
@@ -92,14 +94,36 @@ AttestationList:any;
     let data=this.redirectselectedcompanyData;
     console.log(data);
     // test value comment this
-    data={
-      "companyuno":0,
-      "uuid":'e6b1fcd2-aba6-4a63-8718-a2120807a156'
+    // data={
+    //   "companyuno":0,
+    //   "uuid":'e6b1fcd2-aba6-4a63-8718-a2120807a156'
+    // }
+
+    if(this.isPending){
+            this.api.post(this.consts.pendingattestation,data).subscribe({next:(success:any)=>{
+              resp=success;
+              if(resp.data.dictionary.responsecode==1){
+              this.customers=resp.data.dictionary.data
+                this.datasource=resp.data.dictionary.data;
+                this.totalrecords=resp.data.dictionary.data.length;
+                this.loading = false;
+                this.Reduce();
+                this.common.showSuccessMessage('Data retrived'); // Show the verification alert
+
+              }
+              else{
+                this.common.showErrorMessage('Data retrived Failed')
+                this.loading=false;
+              }
+        
+            }
+          })
     }
-    this.api.post(this.consts.pendingattestation,data).subscribe({next:(success:any)=>{
+    else{
+      this.api.post(this.consts.lcaCompletedAttestList,data).subscribe({next:(success:any)=>{
         resp=success;
         if(resp.data.dictionary.responsecode==1){
-         this.customers=resp.data.dictionary.data
+        this.customers=resp.data.dictionary.data
           this.datasource=resp.data.dictionary.data;
           this.totalrecords=resp.data.dictionary.data.length;
           this.loading = false;
@@ -111,10 +135,40 @@ AttestationList:any;
           this.common.showErrorMessage('Data retrived Failed')
           this.loading=false;
         }
-   
       }
     })
-this.src='';
+
+    }
+
+   
+
+
+//this.src='https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
+
+this.getimagebase64();
+
+// // pdf to base 64
+
+// const pdfUrl = 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
+
+// // Fetch the PDF using HttpClient
+// this.http.get(pdfUrl, { responseType: 'blob' }).subscribe((pdfBlob: Blob) => {
+//   const reader = new FileReader();
+
+//   reader.onloadend = () => {
+//     if (typeof reader.result === 'string') {
+//       const base64String = reader.result.split(',')[1]; // Get the base64 part of the data URL
+//       console.log('Base64 Encoded PDF:', base64String);
+//       this.base64PdfString=base64String;
+//       // Now you can use the base64String as needed.
+//     }
+//   };
+
+//   reader.readAsDataURL(pdfBlob);
+// });
+
+
+// end
 
 // this.customers=[
 //   {
@@ -445,15 +499,6 @@ this.src='';
 
   ];
 
-    this.representatives = [
-      { name: "Amy Elsner", image: "amyelsner.png" },
-      { name: "Anna Fali", image: "annafali.png" },
-    ];
-
-    this.statuses = [
-      { label: "Unqualified", value: "unqualified" },
-    ];
-
   }
    response:any
 
@@ -623,8 +668,44 @@ Reduce(){
   console.log(selectedData);
 }
 
+getimagebase64(){
+  let resp;
+
+  let attestfilelocation=this.common.encryptWithPublicKey("D:\\mofafile\\LCARequest\\PDF\\\\20161220423\\INV00000_New.PDF")
+  let data={
+    "attestfilelocation":attestfilelocation,
+    "uuid":"e6b1fcd2-aba6-4a63-8718-a2120807a156"
+  }
+  this.api.post(this.consts.lcaCompletedAttestList,data).subscribe({next:(success:any)=>{
+    resp=success;
+    if(resp.responsecode==1){
+    // this.customers=resp.data.dictionary.data
+    //   this.datasource=resp.data.dictionary.data;
+    //   this.totalrecords=resp.data.dictionary.data.length;
+    //   this.loading = false;
+    //   this.Reduce();
+    //   this.common.showSuccessMessage('Data retrived'); // Show the verification alert
+
+    this.base64PdfString=resp.data;
+
+    const source = `data:application/pdf;base64,${this.base64PdfString}`;
+    const link = document.createElement("a");
+    link.href = source;
+    link.download = `attachment.pdf`
+    link.click();
+    this.src=link;
 
 
+
+    }
+    else{
+      this.common.showErrorMessage('Data retrived Failed')
+      this.loading=false;
+    }
+  }
+})
+
+}
 
 }
 

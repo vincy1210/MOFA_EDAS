@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { FormControl, Validators, FormBuilder } from '@angular/forms';
@@ -19,6 +19,9 @@ import { ConstantsService } from 'src/service/constants.service';
 
 })
 export class RegistrationComponent {
+
+  @ViewChild('invisible') invisibleRecaptcha: any;
+
   showSection03a: boolean = false;
 
   expressType: string='';
@@ -40,22 +43,12 @@ export class RegistrationComponent {
   //testvar vincy
 
   userinfo:any;
-  captcha_token:string='';
+  captcha_token:any;
   user_info_taken_using_authtoken:any;
   freezone:any;
   freezone1:any;
 
-  sitekey:string='6LcVQRwoAAAAAB6scwIvG78wLgpk516pJJ-IB-qQ';
-
-
-
-
   constructor(private consts:ConstantsService,private recaptchaV3Service: ReCaptchaV3Service,private http:HttpClient ,private common:CommonService,private FormBuilder:FormBuilder, private router:Router, private _activatedRoute:ActivatedRoute, private apiservice:ApiService){
-    
-    this.captcha='';
-    this.email='secretemail@email.com'
-
-
     this.common.getData().subscribe(data => {
       this.reg_form_data = data;
       console.log(this.reg_form_data)
@@ -85,8 +78,10 @@ export class RegistrationComponent {
 
   }
 
+ 
   proceed(){
     this.registrationForm.markAllAsTouched()
+   
     console.log(this.registrationForm.get('tradeLicenseNumber'));
     //uncomment
     if(this.userinfo===""||this.userinfo==undefined)
@@ -102,7 +97,9 @@ export class RegistrationComponent {
       console.log("success");
       const formData = this.registrationForm.value;
       console.log('Form Data:', formData);
+     // formData.captcha_token=this.captcha_token;
       this.common.setData(formData); 
+      console.log(formData);
 
       this.common.getUserIfoData().subscribe(data => {
         this.user_info_taken_using_authtoken = data;
@@ -225,131 +222,101 @@ let data={
       AuthenticationCode: this.param1,
       email: this.param3
     }
-   // this.sRetriveUserProfile();
-    this.getToken(objTxData);
+    this.sRetriveUserProfile();
+   // this.getToken(objTxData);
   }
 //commented for testing
-  // sRetriveUserProfile() {
-  //   // Show the loader before making the API request
-  
-  //   this.apiservice.sPassAuthGetUserprofile(this.param1, this.param3)
-  //     .toPromise()
-  //     .then((response: any) => {
-  //       // Hide the loader when the API request is complete
-  //     //this.common.hideLoading();
+  sRetriveUserProfile() {
+    // Show the loader before making the API request
+    this.apiservice.sPassAuthGetUserprofile(this.param1, this.param3)
+      .toPromise()
+      .then((response: any) => {
 
+        if (typeof response === 'string' && !response.includes('/')) {
+         // response = response.slice(1, -1);
+          response = JSON.parse(response);
+        }
+        else{
+          response = JSON.stringify(response).replace(/\\/g, '');
+         // response = response.slice(1, -1);
+          response = JSON.parse(response);
+        }
+        if (response.IsSucceeded === "True") {
+          this.userinfo = response;
+          console.log(response.IsSucceeded);
+        } 
+        else if (response.IsSucceeded === "False") {
+          console.log(response.message)
+          this.common.showErrorMessage("Auth Failed!!!");
+        }
   
-  //       if (response.IsSucceeded === "True") {
-  //         this.userinfo = response;
-  //         console.log(response.IsSucceeded);
-  //         console.log(response.Data.AccessToken);
-  //         console.log(response.Data.Email);
-  //         console.log(response);
-  //       } else if (response.IsSucceeded === "False") {
-  //         console.log(response.message)
-  //         this.common.showErrorMessage("Auth Failed!!!");
-  //       }
+        if (this.userinfo == undefined) {
+          this.common.showErrorMessage("Auth2 Failed!!!");
+        }
   
-  //       if (this.userinfo == undefined) {
-  //         this.common.showErrorMessage("Auth2 Failed!!!");
-  //       }
-  
-  //       this.common.setUserIfoData(response.Data);
-  //     })
-  //     .catch(console.log);
-  // }
+        this.common.setUserIfoData(response.Data);
+      })
+      .catch(console.log);
+  }
   
 
  //NIU
-  public getToken(objDepartment:any) {
-    console.log(objDepartment)
+  // public getToken(objDepartment:any) {
+  //   console.log(objDepartment)
 
-    if(this.param1==undefined || this.param3==undefined){
-      this.common.showErrorMessage("Invalid Parameters!")
-      return;
-    }
-    this.apiservice.GetAuthToken(this.param1, this.param3)
-      .toPromise()
-      .then((response:any) => {
-        console.log(response);
-        console.log(response.IsSucceeded);
-        console.log(response.Data.AccessToken);
-        console.log(response.Data.Email);
-        console.log(response);
+  //   if(this.param1==undefined || this.param3==undefined){
+  //     this.common.showErrorMessage("Invalid Parameters!")
+  //     return;
+  //   }
+  //   this.apiservice.GetAuthToken(this.param1, this.param3)
+  //     .toPromise()
+  //     .then((response:any) => {
+  //       console.log(response);
+  //       console.log(response.IsSucceeded);
+  //       console.log(response.Data.AccessToken);
+  //       console.log(response.Data.Email);
+  //       console.log(response);
 
-      // need to uncomment this
+  //     // need to uncomment this
 
-        if(response.IsSucceeded==="True"){
-          this.getUserToken(response.Data.AccessToken);
-        }
-        else{
-          this.common.showErrorMessage("Auth1 Failed!!!");
-          return;
-        }
-      })
-      .catch(console.log); 
+  //       if(response.IsSucceeded==="True"){
+  //         this.getUserToken(response.Data.AccessToken);
+  //       }
+  //       else{
+  //         this.common.showErrorMessage("Auth1 Failed!!!");
+  //         return;
+  //       }
+  //     })
+  //     .catch(console.log); 
 
-      //comment this 
-   // this.getUserToken("response.Data.AccessToken");
+  //     //comment this 
+  //  // this.getUserToken("response.Data.AccessToken");
      
-  }
+  // }
 //NIU
-  public getUserToken(accessToken:any) {
-//uncmnt this while deploying
-    this.apiservice.getUserToken(accessToken,this.param3 )
-      .toPromise()
-      .then((response:any) => {
-        console.log(response);
-        this.userinfo=response;
-        console.log(response.IsSucceeded);
-        console.log(response.Data.AccessToken);//
-        console.log(response.Data.Email);
-        console.log(response);
+//   public getUserToken(accessToken:any) {
+// //uncmnt this while deploying
+//     this.apiservice.getUserToken(accessToken,this.param3 )
+//       .toPromise()
+//       .then((response:any) => {
+//         console.log(response);
+//         this.userinfo=response;
+//         console.log(response.IsSucceeded);
+//         console.log(response.Data.AccessToken);//
+//         console.log(response.Data.Email);
+//         console.log(response);
 
-        if(this.userinfo==undefined){
-          this.common.showErrorMessage("Auth2 Failed!!!");
-          return;
-        }
+//         if(this.userinfo==undefined){
+//           this.common.showErrorMessage("Auth2 Failed!!!");
+//           return;
+//         }
         
-        this.common.setUserIfoData(response.Data)
+//         this.common.setUserIfoData(response.Data)
 
-      })
-      .catch(console.log); 
+//       })
+//       .catch(console.log); 
 
-
-      //Testdata-- comment this swhile deploying
-
-    //   this.userinfo={
-    //     "IsSucceeded": "True",
-    //     "Message": "Succeeded.",
-    //     "Data": {
-    //         "Id": "e6b1fcd2-aba6-4a63-8718-a2120807a156",
-    //         "Token": "8172f15f-8d0d-4375-90d9-d383e7c079fe",
-    //         "userType": "SOP1",
-    //         "mobile": "971567548576",
-    //         "email": "vincy12101998@gmail.com",
-    //         "uuid": "e6b1fcd2-aba6-4a63-8718-a2120807a156",
-    //         "spuuid": null,
-    //         "idn": "567548576",
-    //         "fullnameEN": "PRAFULL KUMAR PANDEY K PANDEY",
-    //         "fullnameAR": null,
-    //         "firstnameEN": "PRAFULL KUMAR PANDEY K",
-    //         "firstnameAR": null,
-    //         "lastnameEN": "PANDEY",
-    //         "lastnameAR": null,
-    //         "nationalityEN": "IND",
-    //         "nationalityAR": "هندى",
-    //         "gender": "Male",
-    //         "idType": null,
-    //         "titleEN": null,
-    //         "titleAR": null,
-    //         "UAEPassJson": null
-    //     }
-    // }
-
-    //   this.common.setUserIfoData(this.userinfo.Data)
-  // end
-  }
+//   }
   //Redirection from MOFA end
   
   ngOnDestroy() {
@@ -358,32 +325,32 @@ let data={
   }
 
 
-  resolved(captchaResponse: string) {
-    console.log(`Resolved captcha with response: ${captchaResponse}`);
-  }
+  // resolved(captchaResponse: string) {
+  //   console.log(`Resolved captcha with response: ${captchaResponse}`);
+  // }
   
 
-  public executeImportantAction(): void {
-    this.recaptchaV3Service.execute('importantAction')
-      .subscribe((token) => 
-     console.log(token)
-      );
-  }
+  // public executeImportantAction(): void {
+  //   this.recaptchaV3Service.execute('importantAction')
+  //     .subscribe((token) => 
+  //    console.log(token)
+  //     );
+  // }
 
-  public onError() {
-    console.log("reCAHPTCHA errored;");
-  }
+  // public onError() {
+  //   console.log("reCAHPTCHA errored;");
+  // }
 
-  public addTokenLog(message: string, token: string | null) {
-    console.log(`${message}: ${this.formatToken(token)}`);
-    this.captcha_token=this.formatToken(token);
-  }
+  // public addTokenLog(message: string, token: string | null) {
+  //   console.log(`${message}: ${this.formatToken(token)}`);
+  //   this.captcha_token=this.formatToken(token);
+  // }
 
-  public formatToken(token: string | null) {
-    return token !== null
-      ? `${token.substring(0, 7)}...${token.substring(token.length - 7)}`
-      : 'null';
-  }
+  // public formatToken(token: string | null) {
+  //   return token !== null
+  //     ? `${token.substring(0, 7)}...${token.substring(token.length - 7)}`
+  //     : 'null';
+  // }
   //for recaptcha end
 
   mainpage(){
@@ -407,6 +374,18 @@ let data={
     this.freezone=filteredData;
     
   }
-  
+
+  // public formatToken(token: string | null) {
+  //   return token !== null
+  //     ? `${token.substring(0, 7)}...${token.substring(token.length - 7)}`
+  //     : 'null';
+  // }
+
+  // public addTokenLog(message: string, token: string | null) {
+  //   console.log(`${message}: ${this.formatToken(token)}`);
+  //   this.captcha_token=token;
+
+
+  // }
 
 }

@@ -317,4 +317,17 @@
   </div>
 </ng-template>
 
+<ng-container >
+  <h3>Invisible CAPTCHA</h3>
+  <re-captcha
+    size="invisible" [siteKey]="sitekey"
+    #invisible
+    (errored)="onError()"
+    errorMode="handled"
+    (resolved)="addTokenLog('Invisible reCAPTCHA response', $event)"
+  >
+  </re-captcha>
+
+</ng-container>
+
 </div>
