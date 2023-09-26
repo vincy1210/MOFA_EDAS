@@ -38,7 +38,6 @@ export class ApiService {
   }
 
   postXML(serviceUrl: any, soapRequest: any) {
-    debugger;
     const headers = new HttpHeaders({
       'Content-Type': 'text/xml; charset=utf-8',
       'SOAPAction': 'Sign',
