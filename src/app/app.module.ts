@@ -32,6 +32,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
+// import { NgxEchartsModule } from 'ngx-echarts';
+// import * as echarts from 'echarts';
 import {
   DateAdapter,
   MatNativeDateModule,
@@ -113,28 +115,23 @@ import { CompletedAttestationComponent } from './completed-attestation/completed
 import { ModalPopupService } from 'src/service/modal-popup.service';
 import { DatePipe } from '@angular/common';
 import { environment } from 'src/environments/environment.prod';
+import { LeftMenuDrawerComponent } from './shared/components/left-menu-drawer/left-menu-drawer.component';
+import { AttestationWorkflowComponent } from './shared/components/attestation-workflow/attestation-workflow.component';
+import { CompletedCooRequestsComponent } from './completed-coo-requests/completed-coo-requests.component';
+import { LcaCompletedAttestationsComponent } from './lca-completed-attestations/lca-completed-attestations.component';
+import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
+// import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
+
 
 // import { PrimeIcons } from 'primeng/api';
 
-/// 6LeA5fcnAAAAAEIP7UI5750gbJxgKqgrkHQ-YXXM
+/// 6LeA5fcnAAAAAEIP7UI5750gbJxgKqgrkHQ-YXXM  site key--   6LcVQRwoAAAAAB6scwIvG78wLgpk516pJJ-IB-qQ secret key-  6LcVQRwoAAAAAE3-tm9pf3erpqk2hyE6EGPs01hU
 
-const RECAPTCHA_V3_STACKBLITZ_KEY = '6LcVQRwoAAAAAB6scwIvG78wLgpk516pJJ-IB-qQ';
+const RECAPTCHA_V3_STACKBLITZ_KEY = environment.recaptcha.siteKey;
 const RECAPTCHA_V2_DUMMY_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
 
-const routes: Routes = [
-  {
-    path: '',
-    redirectTo: '/registration',
-    pathMatch: 'full',
-  },
 
-  { path: 'registration', component: RegistrationComponent },
-  { path: 'companydetails', component: CompanydetailsComponent },
-  { path: 'physicalattestation', component: PhysicalAttestationComponent },
-  { path: 'cooattestation', component: CooAttestationComponent },
-    { path: 'completedattestation', component: CompletedAttestationComponent },
-  {path:'landingpage',component:LandingPageComponent}
-];
+
 
 @NgModule({
   declarations: [
@@ -148,7 +145,10 @@ const routes: Routes = [
     PhysicalAttestationCreateComponent,
     CooAttestationComponent,
     CooAttestationCreateComponent,
-    CompletedAttestationComponent,
+    CompletedAttestationComponent,LeftMenuDrawerComponent, AttestationWorkflowComponent, CompletedCooRequestsComponent,
+    LcaCompletedAttestationsComponent, 
+
+    
       ],
 
   imports: [
@@ -163,10 +163,10 @@ const routes: Routes = [
     NgxOtpInputModule,
     BrowserModule,
     AppRoutingModule,
-    RouterModule.forRoot(routes),
+    // RouterModule.forRoot(routes),
     BrowserModule,
     ReactiveFormsModule,
-    RouterModule.forRoot(routes),
+    // RouterModule.forRoot(routes),
     AppRoutingModule,
     BrowserAnimationsModule,
     MatToolbarModule,
@@ -244,7 +244,7 @@ const routes: Routes = [
     InputTextModule,
     ToastModule,
     PdfViewerModule,   RecaptchaFormsModule,
-    RecaptchaV3Module,
+    RecaptchaV3Module, 
   ],
   providers: [
     {

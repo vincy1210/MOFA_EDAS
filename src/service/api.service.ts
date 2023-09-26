@@ -38,10 +38,15 @@ export class ApiService {
   }
   sPassAuthGetUserprofile(param1: any, param3: any) {
     const email = encodeURIComponent(param3.trim());
+    let email2 = encodeURIComponent(email);
+    
     console.log(email);
+    console.log(email2);
+
     let Url =
       this.baseURL +
-      `Common/CheckUAEPassLogin?sAuthCode=${param1}&sEmail=${email}`;
+      `Common/CheckUAEPassLogin?sAuthCode=${param1}&sEmail=${email2}`;
+      console.log(Url)
 
     return this.http.get(Url, this.headerOptions);
   }
@@ -59,7 +64,7 @@ export class ApiService {
     }),
   };
 
-  
+
   registerCompanyAttachment(
     servicename: any,
     file: File,
@@ -71,22 +76,22 @@ export class ApiService {
     return this.http.post(this.baseURL + servicename, formData);
   }
 
-  GetAuthToken(param1: any, param3: any) {
-    const email = encodeURIComponent(param3?.trim());
-    console.log(email);
-    let Url =
-      this.authTokenURL +
-      `EDASGetAccessTokenV2?AuthenticationCode=${param1}&email=${email}`;
+  // GetAuthToken(param1: any, param3: any) {
+  //   const email = encodeURIComponent(param3?.trim());
+  //   console.log(email);
+  //   let Url =
+  //     this.authTokenURL +
+  //     `EDASGetAccessTokenV2?AuthenticationCode=${param1}&email=${email}`;
 
-    return this.http.get(Url, this.headerOptions);
-  }
-  getUserToken(accessToken: any, param3: any) {
-    const email2 = encodeURIComponent(param3);
-    let Url =
-      this.authTokenURL +
-      `EDASGetProfileByAccessTokenV2?AccessToken=${accessToken}&email=${email2}`;
-    return this.http.get(Url, this.headerOptions);
-  }
+  //   return this.http.get(Url, this.headerOptions);
+  // }
+  // getUserToken(accessToken: any, param3: any) {
+  //   const email2 = encodeURIComponent(param3);
+  //   let Url =
+  //     this.authTokenURL +
+  //     `EDASGetProfileByAccessTokenV2?AccessToken=${accessToken}&email=${email2}`;
+  //   return this.http.get(Url, this.headerOptions);
+  // }
   getattestations(skip: number): Observable<attachmentResponse> {
     let data = {
       companyuno: '1',

@@ -1193,3 +1193,64 @@ button.white-icon-button.mat-menu-item {
   color: var(--white-color) !important;
   border-color: var(--primary-color);
 }
+
+
+
+.bg-brown-r {
+  background-color: #decdab;
+  border-radius:10px;
+}
+.bg-white-r {
+  background-color: #fff;
+  border-radius:10px;
+}
+#font-id.sm h1.dashboard-scores{
+  font-size: 2rem!important;
+}
+
+#font-id.md h1.dashboard-scores{
+  font-size: 3rem!important;
+}
+
+#font-id.lg h1.dashboard-scores{
+  font-size: 4rem!important;
+}
+.kd-guage-legends.rkpi-guage-legends.mat-list-base .mat-list-item, .kd-guage-legends.rkpi-guage-legends.mat-list-base .mat-list-option {
+  width: auto!important;
+  float: left;
+  height: 29px!important;
+    font-size: 14px;
+}
+.kd-dot {
+  font-size: 15px!important;
+  padding-top: 4px;
+  width: 16px!important;
+}
+.kd-guage-legends {
+  margin-top: -7px;
+}
+.kdl-chart-color-brown {
+  color: #b68a35!important;
+}
+.kdl-chart-color-black {
+  color: #1b1d21!important;
+}
+.kdl-chart-color-grey {
+  color: #a4a5a6!important;
+}
+.kdl-chart-color-black {
+  color: #1b1d21!important;
+}
+.kdl-chart-color-lightbrown {
+  color: #e2d0ae!important;
+}
+.kd-guage-legends.kd-guage-legends-h-auto.rkpi-guage-legends.mat-list-base .mat-list-item, 
+.kd-guage-legends.kd-guage-legends-h-auto.rkpi-guage-legends.mat-list-base .mat-list-option {
+  width: auto !important;
+  float: left;
+  height: 50px !important;
+  font-size: 14px;
+}
+.kd-guage-legends.rkpi-guage-legends.mat-list-base .mat-list-item-content {
+  align-items: start;
+}

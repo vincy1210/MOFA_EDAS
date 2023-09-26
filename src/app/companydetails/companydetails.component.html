@@ -25,7 +25,7 @@
 
         <mat-form-field appearance="outline">
           <mat-label>{{'label.companydetails.nameofthebusinessaspertradelicense' | translate }}</mat-label>
-          <input class="amount-input" autocomplete="off" formControlName="name_of_Business" name="name_of_Business"  matInput placeholder="Example Technologies L.L.C">
+          <input class="amount-input" autocomplete="off" formControlName="name_of_Business" name="name_of_Business" maxlength="100"  matInput placeholder="Example Technologies L.L.C">
           <mat-error *ngIf="companyDetailsForm.get('name_of_Business')?.hasError('required')">{{'alerts.companydetails.Name of the Business is required' | translate }} </mat-error>
           <mat-error *ngIf="companyDetailsForm.get('name_of_Business')?.hasError('pattern')">{{'alerts.companydetails.Name of the Business is required' | translate }} </mat-error>
           
@@ -139,7 +139,7 @@
         <div class="cd-upload">
           <mat-form-field appearance="outline" floatLabel="always">
             <mat-label>{{'label.companydetails.uploadtradelicense' | translate }}</mat-label>
-            <button mat-button color="primary" (click)="fileInput.click()" class="float-right">{{'Re-upload' | translate }}</button>
+            <button mat-button color="primary" (click)="fileInput.click()" class="float-right">{{'UPLOAD' | translate }}</button>
             <input type="text" formControlName="Upload_trade_license" name="Upload_trade_license" readonly matInput />
 
             <input accept=".pdf" style="display: none" formControlName="Upload_trade_license" name="Upload_trade_license" #attachments type="file" (change)="onFileChanged($event)" #fileInput
@@ -168,7 +168,7 @@
           <mat-radio-group formControlName="isbroker" aria-label="Are you a Broker?">
           <mat-label style="font-weight: 600;">{{'label.companydetails.AreyouaBroker' | translate }}</mat-label> &nbsp; &nbsp; &nbsp; &nbsp;
 
-            <mat-radio-button value="1">{{'Yes' | translate }}</mat-radio-button>
+            <mat-radio-button  value="1">{{'Yes' | translate }}</mat-radio-button>
             <mat-radio-button value="2">{{'No' | translate }}</mat-radio-button>
             <mat-error class="error" *ngIf="companyDetailsForm.get('isbroker')?.hasError('required') && radiochosenornot ">{{'alerts.companydetails.Please select the option'| translate }}</mat-error>
 
@@ -239,9 +239,9 @@
 
   
 
-  <!-- form end -->
-  <!-- Thanks form starts   -->
-  <div  *ngIf="!form1_Vis" style="text-align: justify;" >
+  <!-- form end    uncomment -->
+  <!-- Thanks form starts   *ngIf="!form1_Vis" -->
+  <div    *ngIf="!form1_Vis" style="text-align: justify;" >
 
   <span class="Thanksnote">
     {{note1}}
@@ -250,9 +250,10 @@
 <br>
 <br>
   <span class="REF-231192">
-    REF # {{response_code_after_submit}} 
+    {{'label.companydetails.RegistrationReferenceNumber' |translate}}    : # {{response_code_after_submit}} 
   </span>
-
+<br>
+<br>
   <span class="Texts">{{'label.companydetails.Kindlymakeanoteofyour' |translate}}
    
     <span class="text-style-1">{{'label.companydetails.referenceID' |translate}}</span>
@@ -270,11 +271,18 @@
   <span class="Texts">
   {{note3}}
   </span>
-  <div class="Frame-18642">
+  <!-- <div class="Frame-18642">
     <span class="VISIT-MOFAGOVAE Heading">
       {{'label.companydetails.VISIT' |translate}} MOFA.GOV.AE
     </span>
+  </div> -->
+
+  <div class="Frame-18642">
+    <a href="https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2" target="_blank" class="VISIT-MOFAGOVAE Heading">
+      {{ 'label.companydetails.VISIT' | translate }} MOFA.GOV.AE
+    </a>
   </div>
+  
 </div>
 
   <!-- Thanks form ends -->
@@ -318,7 +326,7 @@
 </ng-template>
 
 <ng-container >
-  <h3>Invisible CAPTCHA</h3>
+  
   <re-captcha
     size="invisible" [siteKey]="sitekey"
     #invisible

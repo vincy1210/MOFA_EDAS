@@ -1,15 +1,19 @@
- 
-      <div style="padding: 20px;">
+
+
+    
+
+    
+      <div >
         <div class="grid grid-cols-1">
     
           <div >
             <div class="grid grid-cols-1" color="primary"  class="page-header">
              
-              <label style="font-size: 14px; color: white; font-weight: bold;">Draft Pending Attestations</label>
+              <label style="font-size: 14px; color: white; font-weight: bold;">Completed Attestations</label>
             </div>
             <br>
     
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div style="padding: 40px;" class="grid grid-cols-1 lg:grid-cols-3 gap-4">
               <div 
                 [ngClass]="{'col-span-2': shouldShow, 'col-span-3': !shouldShow }">
     
@@ -47,44 +51,9 @@
             <div class="col"></div>
             <div class="col" style="text-align: right;">
               <span >
-                <!-- <button type="button" style="background-color: rgb(32, 23, 205);" pButton pRipple icon="pi pi-file" (click)="tableref.exportCSV()" class="mr-2" pTooltip="CSV" tooltipPosition="bottom"></button>
+                <button type="button" style="background-color: rgb(32, 23, 205);" pButton pRipple icon="pi pi-file" (click)="tableref.exportCSV()" class="mr-2" pTooltip="CSV" tooltipPosition="bottom"></button>
                 <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel()" class="p-button-success mr-2" pTooltip="XLS" tooltipPosition="bottom"></button>
-            -->
-                <div class="grid-header-right">
-                  <button
-                    type="button"
-                    pButton
-                    pRipple
-                    icon="pi pi-file-excel"
-                    (click)="exportExcel()"
-                    class="mr-2 grid-header-right-icon"
-                    pTooltip="Excel"
-                    tooltipPosition="bottom"
-                  ></button>
-                   <button
-                    type="button"
-                    pButton
-                    pRipple
-                    icon="pi pi-filter"
-                    (click)="clickChips()"
-                    class="mr-2 grid-header-right-icon"
-                    [ngClass]="{ clicked: enableFilters }"
-                    [pTooltip]="'label.filter' | translate"
-                    tooltipPosition="bottom"
-                  ></button>
-                  <!-- <button
-                    type="button"
-                    pButton
-                    pRipple
-                    icon="pi pi-plus"
-                    (click)="openDialogAttest()"
-                    class="mr-2 grid-header-right-icon"
-                    [pTooltip]="
-                      'label.physicalAttestDetails.addAttest' | translate
-                    "
-                    tooltipPosition="bottom"
-                  ></button>  -->
-                </div>
+           
               </span>
             </div>
           
@@ -98,10 +67,10 @@
                   </p-tableHeaderCheckbox>
               </th>
               <th *ngFor="let col of columns" pResizableColumn [pSortableColumn]="col.field" >
-                  {{col.header}} <p-sortIcon field="code"  *ngIf="enableFilters"></p-sortIcon>
+                  {{col.header}} <p-sortIcon field="code"></p-sortIcon>
                   <p-columnFilter
                   type="text"
-                  [field]="col.field"  *ngIf="enableFilters"
+                  [field]="col.field"
                   display="menu"
                 ></p-columnFilter>
               </th>
@@ -144,8 +113,6 @@
         </ng-template>
       </p-table>
               </div>
-
-              
               <div class="bg-white rounded-lg p-5 mofa-tab-section show"
                 [ngClass]="{'show': shouldShow, 'hide': !shouldShow }">
                 <mat-tab-group>

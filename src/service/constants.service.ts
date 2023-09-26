@@ -9,6 +9,7 @@ export class ConstantsService {
   CheckCompanyRegStatus = 'Company/checkCompanyRegnStatus';
   GetLegalTypes = 'Company/getLegalTypes';
   SendOTPForCompanyRegn = 'Company/saveOTPforCompanyRegn';
+  validateOTPforCompanyRegn='Company/validateOTPforCompanyRegn'
   getFreezonetypes = 'Company/getFreezonetypes';
   pendingattestation = 'Company/lcapendingAttestList';
   //UAEPassprofile="Company/lcapendingAttestList"

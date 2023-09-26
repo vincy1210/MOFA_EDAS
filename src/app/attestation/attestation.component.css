@@ -1,4 +1,4 @@
-table{
+/* table{
   width: 100%;
  }
  mat-paginator{
@@ -13,14 +13,14 @@ table{
 
 mat-grid-tile {
   background: lightblue;
-}
+} */
 
 /* .mat-grid-tile-content
 {
     flex-direction: row;
 }   */
 
-.Frame-18799 {
+/* .Frame-18799 {
   width: 100%;
   height: 100%;
   display: flex;
@@ -40,4 +40,25 @@ mat-grid-tile {
   text-align: left;
   color: #000;
   flex-grow: 0;
+} */
+
+
+/* .grid-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .grid-header-right {
+    display: flex;
+    gap: 0.5rem;
+  }
+} */
+
+.grid-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .grid-header-right {
+    display: flex;
+    gap: 0.5rem;
+  }
 }

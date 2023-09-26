@@ -4,9 +4,12 @@ import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject } from 'rxjs';
 import * as $ from 'jquery';
 import * as forge from 'node-forge';
+import { Router } from '@angular/router';
 
 
 import { DatePipe } from '@angular/common';
+
+
 
 @Injectable({
   providedIn: 'root',
@@ -18,13 +21,23 @@ export class CommonService {
   private selectedcompany = new BehaviorSubject<string>('');
   private freeZone = new BehaviorSubject<string>('');
 
+  private inactivityTimer: any;
+  private readonly INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minutes in milliseconds
+  isSidebar:boolean=false
+
+  // private sidebarOpen = false;
+  private isDrawerOpenSubject = new BehaviorSubject<boolean>(false);
+  
+
 
   publicKey!: string;
   constructor(
     private translate: TranslateService,
     private Toastr: ToastrService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,private Router:Router
   ) {}
+
+  
 
   //toaster message alerts
   showErrorMessage(data: any) {
@@ -113,6 +126,30 @@ export class CommonService {
     return this.freeZone.asObservable();
   }
 
+  // toggleSidebar() {
+  //   this.sidebarOpen = !this.sidebarOpen;
+  // }
+
+  // isSidebarOpen() {
+  //   return this.sidebarOpen;
+  // }
+  
+
+  isDrawerOpen$ = this.isDrawerOpenSubject.asObservable();
+
+  toggleDrawer() {
+    this.isDrawerOpenSubject.next(!this.isDrawerOpenSubject.value);
+  }
+
+
+  setSidebarVisibility(data: boolean) {
+    this.isSidebar=data;
+  }
+
+  GetSidebarVisibility() {
+    return this.isSidebar;
+  }
+
   encryptWithPublicKey(valueToEncrypt: string): string {
  
     this.publicKey = `-----BEGIN PUBLIC KEY-----
@@ -155,5 +192,78 @@ export class CommonService {
       }
     }
     return null; // Invalid or null datetime string
+  }
+
+  setUserProfile(userProfile: any) {
+    console.log(userProfile);
+    sessionStorage.setItem('userProfile', JSON.stringify(userProfile));
+    this.startInactivityTimer();
+  }
+
+  getUserProfile() {
+    const userProfileString = sessionStorage.getItem('userProfile');
+    if (userProfileString) {
+      console.log(userProfileString);
+      return JSON.parse(userProfileString);
+    }
+    return null;
+  }
+
+  setCompanyList(companylist: any) {
+    console.log(companylist);
+    sessionStorage.setItem('companylist', JSON.stringify(companylist));
+    this.startInactivityTimer();
+  }
+
+  getCompanyList() {
+    const companylistString = sessionStorage.getItem('companylist');
+    if (companylistString) {
+      console.log(companylistString);
+      return JSON.parse(companylistString);
+    }
+    return null;
+  }
+
+  startInactivityTimer() {
+    // Clear existing timer (if any)
+    this.clearInactivityTimer();
+    // Start a new timer for inactivity
+    this.inactivityTimer = setTimeout(() => {
+      // Session timeout action - you can logout the user or perform any other action
+      this.logoutUser();
+    }, this.INACTIVITY_TIMEOUT);
+  }
+
+  clearInactivityTimer() {
+    // Clear the inactivity timer
+    if (this.inactivityTimer) {
+      clearTimeout(this.inactivityTimer);
+      this.inactivityTimer = null;
+    }
+  }
+  
+  logoutUser() {
+    // Perform logout actions here, e.g., remove user data from SessionStorage
+    sessionStorage.removeItem('userProfile');
+this.Router.navigateByUrl('https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2')
+    
+    // Redirect to the login page or perform other logout-related tasks
+  }
+
+  convertBase64ToPdf(base64Data: string): void {
+    const binaryData = atob(base64Data);
+    const arrayBuffer = new ArrayBuffer(binaryData.length);
+    const uint8Array = new Uint8Array(arrayBuffer);
+    
+    for (let i = 0; i < binaryData.length; i++) {
+      uint8Array[i] = binaryData.charCodeAt(i);
+    }
+
+    const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
+    const url = window.URL.createObjectURL(blob);
+
+    // You can now use the 'url' to display or download the PDF as needed.
+    // For example, you can open it in a new window:
+    window.open(url);
   }
 }

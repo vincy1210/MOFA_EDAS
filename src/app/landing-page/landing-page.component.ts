@@ -17,49 +17,37 @@ uuiddetails:any;
 
   ngOnInit(): void {
 
-    this.common.getUserIfoData().subscribe(data => {
-      this.uuiddetails = data;
-      console.log(this.uuiddetails)
+    // this.common.getUserIfoData().subscribe(data => {
+    //   this.uuiddetails = data;
+    //   console.log(this.uuiddetails)
 
       
-    });
+    // });
 
-    this.CompanyListforAdmin=this.common.getRegisteredCompanyDetails();
+    this.uuiddetails=this.common.getUserProfile();
 
-    this.common.getRegisteredCompanyDetails().subscribe(data => {
-      this.CompanyListforAdmin = data;
-      console.log(this.CompanyListforAdmin)
-    });
+    this.uuiddetails=JSON.parse(this.uuiddetails);
+    this.uuiddetails=this.uuiddetails.Data;
 
-    //test
 
-   this.CompanyListforAdmin=[
-    {
-      "companyname":"test1",
-      "tradelicensenumber":"123456789",
-      "companyuno": 0,
-    },
-    {
-      "companyname":"Alpha Data",
-      "tradelicensenumber":"6875554",
-      "companyuno": 1,
-      
-    }, {
-      "companyname":"Zoho Corp",
-      "tradelicensenumber":"46799w27",
-      "companyuno": 2,
-    },
-    {
-      "companyname":"Amazon Inc",
-      "tradelicensenumber":"985433",
-      "companyuno": 3,
-    },
-    {
-      "companyname":"Aeronautical Development Agency, Bangalore, Vimanapura",
-      "tradelicensenumber":"68886544",
-      "companyuno": 4,
-    }
-]
+    this.CompanyListforAdmin=this.common.getCompanyList();
+    console.log(this.CompanyListforAdmin)
+
+    // this.common.getRegisteredCompanyDetails().subscribe(data => {
+    //   this.CompanyListforAdmin = data;
+    //   console.log(this.CompanyListforAdmin)
+    // });
+
+    //comment it
+
+//    this.CompanyListforAdmin=[
+//     {
+//       "companyname":"test1",
+//       "tradelicensenumber":"123456789",
+//       "companyuno": 0,
+//     }
+   
+// ]
 
 
   }
@@ -99,8 +87,9 @@ uuiddetails:any;
     }
 
   this.common.setSelectedCompany(this.setselcompany)
-    this.router.navigateByUrl('/Attestation')
+    this.router.navigateByUrl('/attestation')
 
+    this.common.setSidebarVisibility(true);
    
 
   }

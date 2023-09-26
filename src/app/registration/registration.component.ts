@@ -83,10 +83,15 @@ export class RegistrationComponent {
     this.registrationForm.markAllAsTouched()
    
     console.log(this.registrationForm.get('tradeLicenseNumber'));
+
+    // this.reg_form_data= this.common.getUserProfile();
+
+    // if(this.reg_form_data==undefined || this.reg_form_data==null)
     //uncomment
     if(this.userinfo===""||this.userinfo==undefined)
     {
-      this.common.showErrorMessage("Missing Data!")
+      console.log("Missing Data!!!")
+      this.common.showErrorMessage("Something went wrong!")
       return;
 
     }
@@ -101,10 +106,12 @@ export class RegistrationComponent {
       this.common.setData(formData); 
       console.log(formData);
 
-      this.common.getUserIfoData().subscribe(data => {
-        this.user_info_taken_using_authtoken = data;
-        console.log(this.user_info_taken_using_authtoken)
-      });
+      // this.common.getUserIfoData().subscribe(data => {
+      //   this.user_info_taken_using_authtoken = data;
+      //   console.log(this.user_info_taken_using_authtoken)
+      // });
+
+      this.user_info_taken_using_authtoken=this.common.getUserProfile().Data;
       let data=
       {
         "tradelicensenumber": this.reg_form_data.tradeLicenseNumber,
@@ -118,8 +125,11 @@ export class RegistrationComponent {
         response=success;
         if(response.responseCode==200){
          if(response.data.dictionary.data.length>0){
-           this.common.setRegisteredCompanyDetails(response.data.dictionary.data)
-           this.router.navigateByUrl('/landing')
+         //  this.common.setRegisteredCompanyDetails(response.data.dictionary.data)
+
+this.common.setCompanyList(response.data.dictionary.data);
+           
+           this.router.navigateByUrl('/landingpage')
          }
          else{
            this.router.navigateByUrl('/companydetails')
@@ -167,15 +177,20 @@ export class RegistrationComponent {
       this.param2 = params['lang'];
       this.param3 = params['email'];
 
+     
+
       console.log(this.param1);
       console.log(this.param2);
       console.log(this.param3);
       
       // You can perform any actions or logic with these parameters
     });
-let data={
-  "useruno":"1"
-}
+
+    this.reg_form_data= this.common.getUserProfile();
+    console.log(this.reg_form_data);
+    let data={
+      "useruno":"1"
+    }
     this.apiservice.post(this.consts.getFreezonetypes, data).subscribe((response: any) => {
       const dataArray = response.data; // Access the 'data' property from the response
       this.freezone1=dataArray.dictionary.data;
@@ -187,10 +202,34 @@ let data={
       }
     });
 
+    if(this.param3==undefined ||this.param1==undefined || this.param2==undefined){
 
+      if(this.reg_form_data!=null ||this.reg_form_data!=undefined){
+       
+        this.userinfo=JSON.parse(this.reg_form_data);
+        this.common.setUserIfoData(this.reg_form_data);
+      }
+      else{
 
-    this.addItem();
-   
+        console.log("redirect parameters undefined");
+        this.common.showErrorMessage("Something went wrong! Please try again")
+        return;
+      }
+
+    }
+    else{
+
+      if(this.reg_form_data==null ||this.reg_form_data==undefined){
+        this.addItem();
+      }
+      else{
+        this.userinfo=JSON.parse(this.reg_form_data);
+        this.common.setUserIfoData(this.reg_form_data);
+      }
+      
+
+    }
+
   }
   radio(event:any){
 
@@ -243,15 +282,27 @@ let data={
         }
         if (response.IsSucceeded === "True") {
           this.userinfo = response;
+
+          const userProfileString = JSON.stringify(this.userinfo);
+
+         this.common.setUserProfile(userProfileString);
+
+// Set the user profile data in SessionStorage
+       // sessionStorage.setItem('userProfile', userProfileString);
+
           console.log(response.IsSucceeded);
         } 
         else if (response.IsSucceeded === "False") {
           console.log(response.message)
-          this.common.showErrorMessage("Auth Failed!!!");
+          this.common.showErrorMessage("Something went wrong!");
+          console.log("Auth1 failed")
+          return;
         }
   
         if (this.userinfo == undefined) {
-          this.common.showErrorMessage("Auth2 Failed!!!");
+          this.common.showErrorMessage("Something went wrong!");
+          console.log("Auth2 Failed!!!");
+          return;
         }
   
         this.common.setUserIfoData(response.Data);
@@ -369,9 +420,13 @@ let data={
     console.log(`Selected value: ${selectedValue}`);
     console.log(this.freezone1)
 
-    const filteredData = this.freezone1.filter((item:any) => item.emiratesuno === parseInt(selectedValue, 10));
-    console.log(filteredData);
-    this.freezone=filteredData;
+    if(this.freezone1!=undefined){
+      const filteredData = this.freezone1.filter((item:any) => item.emiratesuno === parseInt(selectedValue, 10));
+      console.log(filteredData);
+      this.freezone=filteredData;
+    }
+
+   
     
   }
 

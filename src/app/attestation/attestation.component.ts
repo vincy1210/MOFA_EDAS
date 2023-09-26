@@ -78,6 +78,10 @@ AttestationList:any;
 isPending:boolean=true;
 base64PdfString: any;
 
+uuid:string='';
+
+enableFilters: boolean = false;
+
  
   constructor(private http:HttpClient,private _liveAnnouncer: LiveAnnouncer, private api:ApiService, private common:CommonService, private consts:ConstantsService){
 
@@ -93,19 +97,40 @@ base64PdfString: any;
     let resp;
     let data=this.redirectselectedcompanyData;
     console.log(data);
-    // test value comment this
-    // data={
-    //   "companyuno":0,
-    //   "uuid":'e6b1fcd2-aba6-4a63-8718-a2120807a156'
-    // }
 
-    if(this.isPending){
+    let data11=this.common.getUserProfile();
+    data11=JSON.parse(data11)
+    console.log(data11)
+    let uuid;
+
+    if(data11!=null){
+      console.log(data11.Data)
+      uuid=data11.Data.uuid;
+      this.uuid=uuid;
+
+    }
+    else{
+      this.common.showErrorMessage("Invalid Session!")
+      console.log("Invalid session in landing page while getting user profile details")
+      return;
+    }
+
+
+    // console.log(data11.Data)
+
+    // test value comment this
+    data={
+      "companyuno":0,
+      "uuid":this.uuid
+    }
+
+    // if(this.isPending){
             this.api.post(this.consts.pendingattestation,data).subscribe({next:(success:any)=>{
               resp=success;
-              if(resp.data.dictionary.responsecode==1){
-              this.customers=resp.data.dictionary.data
-                this.datasource=resp.data.dictionary.data;
-                this.totalrecords=resp.data.dictionary.data.length;
+              if(resp.dictionary.responsecode==1){
+              this.customers=resp.dictionary.data
+                this.datasource=resp.dictionary.data;
+                this.totalrecords=resp.dictionary.data.length;
                 this.loading = false;
                 this.Reduce();
                 this.common.showSuccessMessage('Data retrived'); // Show the verification alert
@@ -118,376 +143,34 @@ base64PdfString: any;
         
             }
           })
-    }
-    else{
-      this.api.post(this.consts.lcaCompletedAttestList,data).subscribe({next:(success:any)=>{
-        resp=success;
-        if(resp.data.dictionary.responsecode==1){
-        this.customers=resp.data.dictionary.data
-          this.datasource=resp.data.dictionary.data;
-          this.totalrecords=resp.data.dictionary.data.length;
-          this.loading = false;
-          this.Reduce();
-          this.common.showSuccessMessage('Data retrived'); // Show the verification alert
+    // }
+    // else{
+    //   this.api.post(this.consts.lcaCompletedAttestList,data).subscribe({next:(success:any)=>{
+    //     resp=success;
+    //     if(resp.data.dictionary.responsecode==1){
+    //     this.customers=resp.data.dictionary.data
+    //       this.datasource=resp.data.dictionary.data;
+    //       this.totalrecords=resp.data.dictionary.data.length;
+    //       this.loading = false;
+    //       this.Reduce();
+    //       this.common.showSuccessMessage('Data retrived'); // Show the verification alert
 
-        }
-        else{
-          this.common.showErrorMessage('Data retrived Failed')
-          this.loading=false;
-        }
-      }
-    })
+    //     }
+    //     else{
+    //       this.common.showErrorMessage('Data retrived Failed')
+    //       this.loading=false;
+    //     }
+    //   }
+    // })
 
-    }
+    // }
 
    
 
 
-//this.src='https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
 
 this.getimagebase64();
 
-// // pdf to base 64
-
-// const pdfUrl = 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
-
-// // Fetch the PDF using HttpClient
-// this.http.get(pdfUrl, { responseType: 'blob' }).subscribe((pdfBlob: Blob) => {
-//   const reader = new FileReader();
-
-//   reader.onloadend = () => {
-//     if (typeof reader.result === 'string') {
-//       const base64String = reader.result.split(',')[1]; // Get the base64 part of the data URL
-//       console.log('Base64 Encoded PDF:', base64String);
-//       this.base64PdfString=base64String;
-//       // Now you can use the base64String as needed.
-//     }
-//   };
-
-//   reader.readAsDataURL(pdfBlob);
-// });
-
-
-// end
-
-// this.customers=[
-//   {
-//       "edasattestno": "AECI20192210739000710EF0",
-//       "reqappnumber": "0",
-//       "attestreqdate": "05-09-2023T10:16:50",
-//       "attestfilelocation": "file:///C://Users/vincy/Desktop/Test%20document.pdf",
-//       "declarationdate": "2019-01-09T09:10:51",
-//       "invoicenumber": "INV0011",
-//       "declarationumber": "DEC12345",
-//       "tradelicensenumber": "",
-//       "invoicedate": "2019-01-10T09:20:51",
-//       "invoiceamount": 0,
-//       "currencycode": "",
-//       "documenttypecode": "",
-//       "approvalauthority": "",
-//       "dutypercentage": 0,
-//       "feesamount": 150,
-//       "fineamount": 150,
-//       "entityshareamount": 0,
-//       "totalamount": 0,
-//       "grossamount": 0,
-//       "invoiceuno": 0,
-//       "paidon": "2019-01-12T09:20:51",
-//       "paidby": "Developer",
-//       "approvedon": "2019-03-10T09:20:51",
-//       "approvedby": "Tester",
-//       "rejectedon": "2019-04-10T09:20:51",
-//       "qrcoderef": "",
-//       "attestedon": "2019-05-10T08:20:51",
-//       "completedon": "2019-05-12T00:00:00",
-//       "statusuno": 4
-//   },
-//   {
-//       "edasattestno": "AECI2019221073900072CB72",
-//       "reqappnumber": "0",
-//       "attestreqdate": "05-09-2023T10:16:50",
-//       "attestfilelocation": "file:///C://Users/vincy/Desktop/Test%20document.pdf",
-//       "declarationdate": "0001-01-01T00:00:00",
-//       "invoicenumber": "INV0012",
-//       "declarationumber": "DEC12345",
-//       "tradelicensenumber": "",
-//       "invoicedate": "0001-01-01T00:00:00",
-//       "invoiceamount": 0,
-//       "currencycode": "",
-//       "documenttypecode": "",
-//       "approvalauthority": "",
-//       "dutypercentage": 0,
-//       "feesamount": 150,
-//       "fineamount": 500,
-//       "entityshareamount": 0,
-//       "totalamount": 0,
-//       "grossamount": 0,
-//       "invoiceuno": 0,
-//       "paidon": "0001-01-01T00:00:00",
-//       "paidby": "",
-//       "approvedon": "0001-01-01T00:00:00",
-//       "approvedby": "",
-//       "rejectedon": "0001-01-01T00:00:00",
-//       "qrcoderef": "",
-//       "attestedon": "0001-01-01T00:00:00",
-//       "completedon": null,
-//       "statusuno": 3
-//   },
-//   {
-//       "edasattestno": "AECI20192210739000734321",
-//       "reqappnumber": "0",
-//       "attestreqdate": "05-09-2023T10:16:50",
-//       "attestfilelocation": "file:///C://Users/vincy/Desktop/Test%20document.pdf",
-//       "declarationdate": "0001-01-01T00:00:00",
-//       "invoicenumber": "INV0013",
-//       "declarationumber": "DEC12346",
-//       "tradelicensenumber": "",
-//       "invoicedate": "0001-01-01T00:00:00",
-//       "invoiceamount": 0,
-//       "currencycode": "",
-//       "documenttypecode": "",
-//       "approvalauthority": "",
-//       "dutypercentage": 0,
-//       "feesamount": 200,
-//       "fineamount": 500,
-//       "entityshareamount": 0,
-//       "totalamount": 0,
-//       "grossamount": 0,
-//       "invoiceuno": 0,
-//       "paidon": "0001-01-01T00:00:00",
-//       "paidby": "",
-//       "approvedon": "0001-01-01T00:00:00",
-//       "approvedby": "",
-//       "rejectedon": null,
-//       "qrcoderef": "",
-//       "attestedon": null,
-//       "completedon": null,
-//       "statusuno": 2
-//   },
-//   {
-//       "edasattestno": "AECI2019221073900074B976",
-//       "reqappnumber": "0",
-//       "attestreqdate": "05-09-2023T10:16:50",
-//       "attestfilelocation": "file:///C://Users/vincy/Desktop/Test%20document.pdf",
-//       "declarationdate": "0001-01-01T00:00:00",
-//       "invoicenumber": "INV0014",
-//       "declarationumber": "DEC12346",
-//       "tradelicensenumber": "",
-//       "invoicedate": "0001-01-01T00:00:00",
-//       "invoiceamount": 0,
-//       "currencycode": "",
-//       "documenttypecode": "",
-//       "approvalauthority": "",
-//       "dutypercentage": 0,
-//       "feesamount": 300,
-//       "fineamount": 0,
-//       "entityshareamount": 0,
-//       "totalamount": 0,
-//       "grossamount": 0,
-//       "invoiceuno": 0,
-//       "paidon": null,
-//       "paidby": null,
-//       "approvedon": null,
-//       "approvedby": null,
-//       "rejectedon": null,
-//       "qrcoderef": "",
-//       "attestedon": null,
-//       "completedon": null,
-//       "statusuno": 0
-//   },
-//   {
-//       "edasattestno": "AECI2019221073900074B976",
-//       "reqappnumber": "0",
-//       "attestreqdate": "05-09-2023T10:16:50",
-//       "attestfilelocation": "file:///C://Users/vincy/Desktop/Test%20document.pdf",
-//       "declarationdate": "0001-01-01T00:00:00",
-//       "invoicenumber": "INV0014",
-//       "declarationumber": "DEC12346",
-//       "tradelicensenumber": "",
-//       "invoicedate": "0001-01-01T00:00:00",
-//       "invoiceamount": 0,
-//       "currencycode": "",
-//       "documenttypecode": "",
-//       "approvalauthority": "",
-//       "dutypercentage": 0,
-//       "feesamount": 0,
-//       "fineamount": 0,
-//       "entityshareamount": 0,
-//       "totalamount": 0,
-//       "grossamount": 0,
-//       "invoiceuno": 0,
-//       "paidon": null,
-//       "paidby": null,
-//       "approvedon": null,
-//       "approvedby": null,
-//       "rejectedon": null,
-//       "qrcoderef": "",
-//       "attestedon": null,
-//       "completedon": null,
-//       "statusuno": 0
-//   },
-//   {
-//       "edasattestno": "AECI2019221073900074B976",
-//       "reqappnumber": "0",
-//       "attestreqdate": "05-09-2023T10:16:50",
-//       "attestfilelocation": "file:///C://Users/vincy/Desktop/Test%20document.pdf",
-//       "declarationdate": "0001-01-01T00:00:00",
-//       "invoicenumber": "INV0014",
-//       "declarationumber": "DEC12346",
-//       "tradelicensenumber": "",
-//       "invoicedate": "0001-01-01T00:00:00",
-//       "invoiceamount": 0,
-//       "currencycode": "",
-//       "documenttypecode": "",
-//       "approvalauthority": "",
-//       "dutypercentage": 0,
-//       "feesamount": 0,
-//       "fineamount": 0,
-//       "entityshareamount": 0,
-//       "totalamount": 0,
-//       "grossamount": 0,
-//       "invoiceuno": 0,
-//       "paidon": null,
-//       "paidby": null,
-//       "approvedon": null,
-//       "approvedby": null,
-//       "rejectedon": null,
-//       "qrcoderef": "",
-//       "attestedon": null,
-//       "completedon": null,
-//       "statusuno": 0
-//   },
-//   {
-//       "edasattestno": "AECI2019221073900074B976",
-//       "reqappnumber": "0",
-//       "attestreqdate": "05-09-2023T10:16:50",
-//       "attestfilelocation": "file:///C://Users/vincy/Desktop/Test%20document.pdf",
-//       "declarationdate": "0001-01-01T00:00:00",
-//       "invoicenumber": "INV0014",
-//       "declarationumber": "DEC12346",
-//       "tradelicensenumber": "",
-//       "invoicedate": "0001-01-01T00:00:00",
-//       "invoiceamount": 0,
-//       "currencycode": "",
-//       "documenttypecode": "",
-//       "approvalauthority": "",
-//       "dutypercentage": 0,
-//       "feesamount": 0,
-//       "fineamount": 0,
-//       "entityshareamount": 0,
-//       "totalamount": 0,
-//       "grossamount": 0,
-//       "invoiceuno": 0,
-//       "paidon": null,
-//       "paidby": null,
-//       "approvedon": null,
-//       "approvedby": null,
-//       "rejectedon": null,
-//       "qrcoderef": "",
-//       "attestedon": null,
-//       "completedon": null,
-//       "statusuno": 0
-//   },
-//   {
-//       "edasattestno": "AECI2019221073900074B976",
-//       "reqappnumber": "0",
-//       "attestreqdate": "05-09-2023T10:16:50",
-//       "attestfilelocation": "file:///C://Users/vincy/Desktop/Test%20document.pdf",
-//       "declarationdate": "0001-01-01T00:00:00",
-//       "invoicenumber": "INV0014",
-//       "declarationumber": "DEC12346",
-//       "tradelicensenumber": "",
-//       "invoicedate": "0001-01-01T00:00:00",
-//       "invoiceamount": 0,
-//       "currencycode": "",
-//       "documenttypecode": "",
-//       "approvalauthority": "",
-//       "dutypercentage": 0,
-//       "feesamount": 0,
-//       "fineamount": 0,
-//       "entityshareamount": 0,
-//       "totalamount": 0,
-//       "grossamount": 0,
-//       "invoiceuno": 0,
-//       "paidon": null,
-//       "paidby": null,
-//       "approvedon": null,
-//       "approvedby": null,
-//       "rejectedon": null,
-//       "qrcoderef": "",
-//       "attestedon": null,
-//       "completedon": null,
-//       "statusuno": 0
-//   },
-//   {
-//       "edasattestno": "AECI2019221073900074B976",
-//       "reqappnumber": "0",
-//       "attestreqdate": "05-09-2023T10:16:50",
-//       "attestfilelocation": "file:///C://Users/vincy/Desktop/Test%20document.pdf",
-//       "declarationdate": "0001-01-01T00:00:00",
-//       "invoicenumber": "INV0014",
-//       "declarationumber": "DEC12346",
-//       "tradelicensenumber": "",
-//       "invoicedate": "0001-01-01T00:00:00",
-//       "invoiceamount": 0,
-//       "currencycode": "",
-//       "documenttypecode": "",
-//       "approvalauthority": "",
-//       "dutypercentage": 0,
-//       "feesamount": 0,
-//       "fineamount": 0,
-//       "entityshareamount": 0,
-//       "totalamount": 0,
-//       "grossamount": 0,
-//       "invoiceuno": 0,
-//       "paidon": null,
-//       "paidby": null,
-//       "approvedon": null,
-//       "approvedby": null,
-//       "rejectedon": null,
-//       "qrcoderef": "",
-//       "attestedon": null,
-//       "completedon": null,
-//       "statusuno": 0
-//   },
-//   {
-//       "edasattestno": "AECI2019221073900074B976",
-//       "reqappnumber": "0",
-//       "attestreqdate": "05-09-2023T10:16:50",
-//       "attestfilelocation": "file:///C://Users/vincy/Desktop/Test%20document.pdf",
-//       "declarationdate": "0001-01-01T00:00:00",
-//       "invoicenumber": "INV0014",
-//       "declarationumber": "DEC12346",
-//       "tradelicensenumber": "",
-//       "invoicedate": "0001-01-01T00:00:00",
-//       "invoiceamount": 0,
-//       "currencycode": "",
-//       "documenttypecode": "",
-//       "approvalauthority": "",
-//       "dutypercentage": 0,
-//       "feesamount": 0,
-//       "fineamount": 0,
-//       "entityshareamount": 0,
-//       "totalamount": 0,
-//       "grossamount": 0,
-//       "invoiceuno": 0,
-//       "paidon": null,
-//       "paidby": null,
-//       "approvedon": null,
-//       "approvedby": null,
-//       "rejectedon": null,
-//       "qrcoderef": "",
-//       "attestedon": null,
-//       "completedon": null,
-//       "statusuno": 0
-//   }
-// ]
-
-// this.loading=false;
-// this.totalrecords=this.customers.length;
-//this.Reduce();
-
-   
 
     this.cols = [
       { field: 'edasattestno', header: 'Attestation No.' },
@@ -674,7 +357,7 @@ getimagebase64(){
   let attestfilelocation=this.common.encryptWithPublicKey("D:\\mofafile\\LCARequest\\PDF\\\\20161220423\\INV00000_New.PDF")
   let data={
     "attestfilelocation":attestfilelocation,
-    "uuid":"e6b1fcd2-aba6-4a63-8718-a2120807a156"
+    "uuid":this.uuid 
   }
   this.api.post(this.consts.lcaCompletedAttestList,data).subscribe({next:(success:any)=>{
     resp=success;
@@ -699,12 +382,20 @@ getimagebase64(){
 
     }
     else{
-      this.common.showErrorMessage('Data retrived Failed')
+      this.common.showErrorMessage('Attachment load failed!')
       this.loading=false;
     }
   }
 })
 
+}
+
+clickChips() {
+  this.enableFilters = !this.enableFilters;
+}
+
+convertBase64ToPdf(base64Data: string): void {
+  this.common.convertBase64ToPdf(base64Data);
 }
 
 }

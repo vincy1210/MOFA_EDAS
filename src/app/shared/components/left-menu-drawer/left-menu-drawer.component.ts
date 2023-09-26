@@ -7,7 +7,7 @@ interface MenuModel {
   menu: string;
   icon: string;
   link?: string;
-  subMenus?: { id: number; menu: string; icon: string; link?: string }[];
+  subMenus?: { id: number; menu: string; icon: string; link?: string, param?:string }[];
 }
 
 @Component({
@@ -31,18 +31,29 @@ export class LeftMenuDrawerComponent implements OnInit {
         id: 1,
         menu: 'Dashboard',
         icon: 'dashboard',
-        link: '/landingpage',
+        link: '/dashboard',
       },
-      {
+       {
         id: 1,
-        menu: 'Services',
+        menu: 'Profile',
         icon: 'manage_accounts',
-        subMenus: [
-          { id: 1, menu: 'Option 01', icon: 'play_arrow' },
-          { id: 2, menu: 'Option 02', icon: 'play_arrow' },
-          { id: 3, menu: 'Option 03', icon: 'play_arrow' },
-        ],
+        link:'/landingpage'
+        // subMenus: [
+        //   { id: 1, menu: 'Option 01', icon: 'play_arrow' },
+        //   { id: 2, menu: 'Option 02', icon: 'play_arrow' },
+        //   { id: 3, menu: 'Option 03', icon: 'play_arrow' },
+        // ],
       },
+      // {
+      //   id: 1,
+      //   menu: 'Services',
+      //   icon: 'manage_accounts',
+      //   subMenus: [
+      //     { id: 1, menu: 'Option 01', icon: 'play_arrow' },
+      //     { id: 2, menu: 'Option 02', icon: 'play_arrow' },
+      //     { id: 3, menu: 'Option 03', icon: 'play_arrow' },
+      //   ],
+      // },
       {
         id: 1,
         menu: 'Attestation',
@@ -58,7 +69,8 @@ export class LeftMenuDrawerComponent implements OnInit {
             id: 2,
             menu: 'Completed Attestations',
             icon: 'play_arrow',
-            link: '#',
+            link: '/lcacompletedattestation',
+            param:'true'
           },
           {
             id: 3,
@@ -86,36 +98,36 @@ export class LeftMenuDrawerComponent implements OnInit {
           }
         ],
       },
-      {
-        id: 1,
-        menu: 'Manual Attestation Services',
-        icon: 'account_box',
-        subMenus: [{ id: 1, menu: 'Option 01', icon: 'play_arrow' }],
-      },
-      {
-        id: 1,
-        menu: 'Reports',
-        icon: 'assessment',
-        subMenus: [{ id: 1, menu: 'Option 01', icon: 'play_arrow' }],
-      },
-      {
-        id: 1,
-        menu: 'Audit Trail',
-        icon: 'find_in_page',
-        subMenus: [{ id: 1, menu: 'Option 01', icon: 'play_arrow' }],
-      },
-      {
-        id: 1,
-        menu: 'Configurations',
-        icon: 'build',
-        subMenus: [{ id: 1, menu: 'Option 01', icon: 'play_arrow' }],
-      },
-      {
-        id: 1,
-        menu: 'Settings',
-        icon: 'settings',
-        subMenus: [{ id: 1, menu: 'Option 01', icon: 'play_arrow' }],
-      }
+      // {
+      //   id: 1,
+      //   menu: 'Manual Attestation Services',
+      //   icon: 'account_box',
+      //   subMenus: [{ id: 1, menu: 'Option 01', icon: 'play_arrow' }],
+      // },
+      // {
+      //   id: 1,
+      //   menu: 'Reports',
+      //   icon: 'assessment',
+      //   subMenus: [{ id: 1, menu: 'Option 01', icon: 'play_arrow' }],
+      // },
+      // {
+      //   id: 1,
+      //   menu: 'Audit Trail',
+      //   icon: 'find_in_page',
+      //   subMenus: [{ id: 1, menu: 'Option 01', icon: 'play_arrow' }],
+      // },
+      // {
+      //   id: 1,
+      //   menu: 'Configurations',
+      //   icon: 'build',
+      //   subMenus: [{ id: 1, menu: 'Option 01', icon: 'play_arrow' }],
+      // },
+      // {
+      //   id: 1,
+      //   menu: 'Settings',
+      //   icon: 'settings',
+      //   subMenus: [{ id: 1, menu: 'Option 01', icon: 'play_arrow' }],
+      // }
     );
   }
   

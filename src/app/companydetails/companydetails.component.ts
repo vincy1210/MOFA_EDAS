@@ -63,20 +63,33 @@ export class CompanydetailsComponent implements OnInit {
   constructor(private recaptchaV3Service:ReCaptchaV3Service,private common:CommonService ,private _activatedRoute: ActivatedRoute,private formBuilder:FormBuilder, public dialog: MatDialog, private Common:CommonService, public apiservice:ApiService, public consts:ConstantsService, public router:Router) {
 
 
+    // uncomment
+if(this.reg_form_data==undefined){
 
-    this.Common.getData().subscribe(data => {
-      this.reg_form_data = data;
-      console.log(this.reg_form_data)
-    });
+  this.Common.getData().subscribe(data => {
+    this.reg_form_data = data;
+    console.log(this.reg_form_data)
+  });
 
-    if(this.reg_form_data===""){
+}
+
+    // if(this.reg_form_data===""){
+    //   this.router.navigateByUrl("/registration");
+    //   this.common.showErrorMessage("Issue in Fetching form!")
+    // }
+
+    //this.reg_form_data= this.common.getUserProfile();
+
+    if(this.reg_form_data==="" || this.reg_form_data==undefined){
       this.router.navigateByUrl("/registration");
-      this.common.showErrorMessage("Issue in Fetching form!")
+      console.log("Issue in Fetching form!");
+      this.common.showErrorMessage("Something went wrong!")
     }
+   
 
     let license_issuing_auth;
     
-    if(this.reg_form_data.expressType==="Freezone"){
+    if(this.reg_form_data?.expressType==="Freezone"){
 
       this.common.getfreezone().subscribe(data => {
         this.freezonelist = data;
@@ -90,13 +103,13 @@ export class CompanydetailsComponent implements OnInit {
     
     }
     else{
-      license_issuing_auth=this.reg_form_data.expressType
+      license_issuing_auth=this.reg_form_data?.expressType
     }
 
     this.companyDetailsForm=this.formBuilder.group({
       name_of_Business:['', [Validators.required,Validators.pattern('^(?=.*\\S).+$')]],
-      trade_Licence:[this.reg_form_data.tradeLicenseNumber, [Validators.required,Validators.pattern('^(?=.*\\S).+$')]],
-      trade_Licence_Issue_Date:[this.reg_form_data.chosenDate, Validators.required],
+      trade_Licence:[this.reg_form_data?.tradeLicenseNumber, [Validators.required,Validators.pattern('^(?=.*\\S).+$')]],
+      trade_Licence_Issue_Date:[this.reg_form_data?.chosenDate, Validators.required],
       trade_Licence_Expiry_Date:['', Validators.required],
       Licence_issuing_auth:[license_issuing_auth, [Validators.required, Validators.pattern('^(?=.*\\S).+$')]],
       legal_Type:['', Validators.required],
@@ -107,7 +120,7 @@ export class CompanydetailsComponent implements OnInit {
       companyrep_fullname:['',[Validators.required, Validators.pattern('^(?=.*\\S).+$')]],
       companyrep_EmailAddress:['',[Validators.required, Validators.email]],
       companyrep_MobileNumber:['',[Validators.required, Validators.maxLength(9), Validators.minLength(9), Validators.pattern(/^5\d+$/)]],
-      isbroker: ['', Validators.required],
+      isbroker: ['2', Validators.required],
 
     })
     
@@ -127,25 +140,35 @@ export class CompanydetailsComponent implements OnInit {
   ngOnInit(): void {
     this.sitekey=environment.recaptcha.siteKey
 
-    this.Common.getUserIfoData().subscribe(data => {
-      this.user_info_taken_using_authtoken = data;
-      console.log(this.user_info_taken_using_authtoken)
-    });
+    // this.Common.getUserIfoData().subscribe(data => {
+    //   this.user_info_taken_using_authtoken = data;
+    //   console.log(this.user_info_taken_using_authtoken)
+    // });
+
+    this.user_info_taken_using_authtoken=this.common.getUserProfile();
+
+    if(this.user_info_taken_using_authtoken==null || this.user_info_taken_using_authtoken==undefined){
+      console.log("session expired!");
+      this.common.showErrorMessage("Session Expired!")
+    }
+    else{
+      this.user_info_taken_using_authtoken=JSON.parse(this.user_info_taken_using_authtoken);
+      this.user_info_taken_using_authtoken=this.user_info_taken_using_authtoken.Data;
+    }
 
     this.typeExpress=['yes', 'No']
+    let response;
+    let data={
+      "useruno":"1"
+    }
 
-let response;
-let data={
-  "useruno":"1"
-}
 
-
-this.apiservice.post(this.consts.GetLegalTypes, data).subscribe((response: any) => {
-  const dataArray = response.data; // Access the 'data' property from the response
-  console.log(dataArray);
-  this.legalTypeOptions=dataArray.dictionary.data;
-  console.log(dataArray)
-});
+      this.apiservice.post(this.consts.GetLegalTypes, data).subscribe((response: any) => {
+        const dataArray = response.data; // Access the 'data' property from the response
+        console.log(dataArray);
+        this.legalTypeOptions=dataArray.dictionary.data;
+        console.log(dataArray)
+      });
 
   }
 
@@ -300,6 +323,7 @@ this.apiservice.post(this.consts.GetLegalTypes, data).subscribe((response: any) 
 
   
   submit() {
+    console.log(this.attachment)
     if (this.companyDetailsForm.get('isbroker')?.value === "") {
       this.radiochosenornot = true;
     } else {
@@ -474,20 +498,8 @@ this.apiservice.post(this.consts.GetLegalTypes, data).subscribe((response: any) 
 
     let data, data1;
     const OTP=this.generateOTP();
-    data={
-      "uuid":this.user_info_taken_using_authtoken.uuid,
-      "otp":OTP,
-      "tradelicenseno":this.reg_form_data.tradeLicenseNumber
-      }
-      console.log(data);
-      let otpresponse;
-      this.apiservice.post(this.consts.SendOTPForCompanyRegn,data).subscribe({next:(success)=>{
-      otpresponse=success;
-      console.log(otpresponse);
-      }
-      })
 
-      let email;
+    let email;
       let email2=this.companyDetailsForm.get('companyrep_EmailAddress')?.value;
       console.log(email2);
       if(email2==undefined ||email2===""){
@@ -497,22 +509,19 @@ this.apiservice.post(this.consts.GetLegalTypes, data).subscribe((response: any) 
         email=email2;
       }
 
-      data1={
-        "emailID":email,
-        "OTP":OTP
+    data={
+      "uuid":this.user_info_taken_using_authtoken.uuid,
+      "OTP":OTP,
+      "tradelicenseno":this.reg_form_data.tradeLicenseNumber,
+      "emailID":email
       }
-
-        this.apiservice.post(this.consts.sendMailGeneric, data1).subscribe((response: any) => {
-          otpresponse= response; 
-          otpresponse=JSON.parse(otpresponse)
-          console.log(otpresponse)
-          if(otpresponse.dictionary.responsecode==200){
-              this.common.showSuccessMessage("OTP Eail sent!")
-          }
-          else{
-            this.common.showSuccessMessage("Email- something went wrong!")
-          }
-        })
+      console.log(data);
+      let otpresponse;
+      this.apiservice.post(this.consts.SendOTPForCompanyRegn,data).subscribe({next:(success)=>{
+      otpresponse=success;
+      console.log(otpresponse);
+      }
+      })
 
   }
 
@@ -593,7 +602,7 @@ this.apiservice.post(this.consts.GetLegalTypes, data).subscribe((response: any) 
 
     let OTPRetrival;
 
-    this.apiservice.post(this.consts.SendOTPForCompanyRegn,data).subscribe({next:(success:any)=>{
+    this.apiservice.post(this.consts.validateOTPforCompanyRegn,data).subscribe({next:(success:any)=>{
       OTPRetrival=success;
       if(OTPRetrival.data.dictionary.responsecode==1){
         this.Common.showSuccessMessage('OTP is verified'); // Show the verification alert
