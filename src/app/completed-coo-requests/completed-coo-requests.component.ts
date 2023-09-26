@@ -1,20 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { CooAttestationCreateComponent } from './coo-attestation-create/coo-attestation-create.component';
 import { TranslateService } from '@ngx-translate/core';
 import { ApiService } from 'src/service/api.service';
 import { ConstantsService } from 'src/service/constants.service';
 import { DatePipe } from '@angular/common';
 import * as XLSX from 'xlsx';
 import { ModalPopupService } from 'src/service/modal-popup.service';
-import { AttestationStatusEnum } from 'src/app/shared/models/attestation-status.model';
 
 @Component({
-  selector: 'app-coo-attestation',
-  templateUrl: './coo-attestation.component.html',
-  styleUrls: ['./coo-attestation.component.css'],
+  selector: 'app-completed-coo-requests',
+  templateUrl: './completed-coo-requests.component.html',
+  styleUrls: ['./completed-coo-requests.component.css'],
 })
-export class CooAttestationComponent implements OnInit {
+export class CompletedCooRequestsComponent implements OnInit {
   progress_val: number = 0;
   selectedAttestations: any;
   totalrecords: number = 0;
@@ -22,12 +20,6 @@ export class CooAttestationComponent implements OnInit {
   cols: any;
   loading: boolean = false;
   enableFilters: boolean = false;
-  // for workflow
-  public shouldShow = false;
-  noOfInvoicesSelected: any[] = [];
-  totalFineAmount: any;
-  totalAttestationFee: any;
-  totalFee: any;
 
   constructor(
     private modalPopupService: ModalPopupService,
@@ -40,35 +32,26 @@ export class CooAttestationComponent implements OnInit {
   ngOnInit(): void {
     this.progress_val = 0;
     this.cols = [
-      // { field: 'coorequestno', header: 'Request No.' },
       {
         field: 'declarationumber',
-        header: 'label.cooAttestDetails.cooAttestList.declarationumber',
+        header: 'label.completedCooRequests.completedCooList.declarationumber',
       },
       {
         field: 'edasattestno',
-        header: 'label.cooAttestDetails.cooAttestList.edasattestno',
+        header: 'label.completedCooRequests.completedCooList.edasattestno',
       },
-      // { field: 'entityshareamount', header: 'label.cooAttestDetails.cooAttestList.entityshareamount' },
+      // { field: 'entityshareamount', header: 'label.completedCooRequests.completedCooList.entityshareamount' },
       {
         field: 'totalamount',
-        header: 'label.cooAttestDetails.cooAttestList.totalamount',
+        header: 'label.completedCooRequests.completedCooList.totalamount',
       },
       {
         field: 'declarationdate',
-        header: 'label.cooAttestDetails.cooAttestList.declarationdate',
+        header: 'label.completedCooRequests.completedCooList.declarationdate',
       },
       {
         field: 'attestreqdate',
-        header: 'label.cooAttestDetails.cooAttestList.attestreqdate',
-      },
-      {
-        field: 'status',
-        header: 'label.cooAttestDetails.cooAttestList.status',
-      },
-      {
-        field: 'actions',
-        header: 'label.cooAttestDetails.cooAttestList.actions',
+        header: 'label.completedCooRequests.completedCooList.attestreqdate',
       },
     ];
     this.getCooAttestations();
@@ -80,39 +63,15 @@ export class CooAttestationComponent implements OnInit {
       token: '12332',
     };
     this.apiservice
-      .post(this.consts.getCooRequests, data)
+      .post(this.consts.getcompletedCOORequests, data)
       .subscribe((response: any) => {
         if (`${response.responseCode}` === '200') {
           const dataArray = response.data;
-          this.cooAttestationLists = dataArray?.dictionary?.data;
-          this.cooAttestationLists.map((row: any) => {
-            if (row.statusuno === AttestationStatusEnum.Status0) {
-              row.status = 'Created';
-            } else if (row.statusuno === AttestationStatusEnum.Status1) {
-              row.status = 'Approved';
-            } else if (row.statusuno === AttestationStatusEnum.Status2) {
-              row.status = 'Payment';
-            } else if (row.statusuno === AttestationStatusEnum.Status3) {
-              row.status = 'Attestation';
-            } else if (row.statusuno === AttestationStatusEnum.Status4) {
-              row.status = 'Completed';
-            } else {
-              row.status = '';
-            }
-          });
+          if (dataArray?.dictionary) {
+            this.cooAttestationLists = dataArray?.dictionary?.data;
+          }
         }
       });
-  }
-
-  uploadDeclaration(data: any) {
-    const dialogRef =
-      this.modalPopupService.openPopup<CooAttestationCreateComponent>(
-        CooAttestationCreateComponent,
-        data
-      );
-    dialogRef.afterClosed().subscribe((result) => {
-      this.getCooAttestations();
-    });
   }
 
   splitdatetime(datetimeString: any) {
@@ -138,7 +97,7 @@ export class CooAttestationComponent implements OnInit {
           Number(dateTimeParts.substr(0, 2))
         );
         return {
-          date: this.datePipe.transform(parsedDate, 'dd-MMM-yyyy'),
+          date: this.datePipe.transform(parsedDate, 'dd/MM/yyyy'),
         };
       }
     }
@@ -152,22 +111,22 @@ export class CooAttestationComponent implements OnInit {
   exportExcel() {
     const jsonData = {
       declarationumber: this.translate.instant(
-        'label.cooAttestDetails.cooAttestList.declarationumber'
+        'label.completedCooRequests.completedCooList.declarationumber'
       ),
       edasattestno: this.translate.instant(
-        'label.cooAttestDetails.cooAttestList.edasattestno'
+        'label.completedCooRequests.completedCooList.edasattestno'
       ),
       // entityshareamount: this.translate.instant(
-      //   'label.cooAttestDetails.cooAttestList.entityshareamount'
+      //   'label.completedCooRequests.completedCooList.entityshareamount'
       // ),
       totalamount: this.translate.instant(
-        'label.cooAttestDetails.cooAttestList.totalamount'
+        'label.completedCooRequests.completedCooList.totalamount'
       ),
       declarationdate: this.translate.instant(
-        'label.cooAttestDetails.cooAttestList.declarationdate'
+        'label.completedCooRequests.completedCooList.declarationdate'
       ),
       attestreqdate: this.translate.instant(
-        'label.cooAttestDetails.cooAttestList.attestreqdate'
+        'label.completedCooRequests.completedCooList.attestreqdate'
       ),
     };
     const dataList: any = [];
@@ -184,27 +143,6 @@ export class CooAttestationComponent implements OnInit {
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataList);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Coo Attestation');
-    XLSX.writeFile(wb, 'coo-attestation.xlsx');
-  }
-
-  loadsidepanel(event: any) {
-    this.noOfInvoicesSelected = this.selectedAttestations.length;
-    this.totalFineAmount = this.selectedAttestations.reduce(
-      (total: any, item: any) => total + item.fineamount,
-      0
-    );
-    this.totalAttestationFee = this.selectedAttestations.reduce(
-      (total: any, item: any) => total + item.feesamount,
-      0
-    );
-    this.totalFee = this.totalFineAmount + this.totalAttestationFee;
-    this.shouldShow = true;
-    if (this.selectedAttestations.length > 1) {
-      // this.previewvisible = false;
-      // this.Timelinevisible = false;
-    } else if (this.selectedAttestations.length == 0) {
-      this.shouldShow = false;
-    } else {
-    }
+    XLSX.writeFile(wb, 'completed-coo-attestation.xlsx');
   }
 }

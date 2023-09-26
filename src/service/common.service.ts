@@ -6,9 +6,10 @@ import * as $ from 'jquery';
 import * as forge from 'node-forge';
 
 
+import { DatePipe } from '@angular/common';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CommonService {
   private dataSubject = new BehaviorSubject<string>('');
@@ -17,42 +18,50 @@ export class CommonService {
   private selectedcompany = new BehaviorSubject<string>('');
   private freeZone = new BehaviorSubject<string>('');
 
+
   publicKey!: string;
-
-
-
-
-
-  constructor(private translate: TranslateService, private Toastr:ToastrService) { }
+  constructor(
+    private translate: TranslateService,
+    private Toastr: ToastrService,
+    private datePipe: DatePipe
+  ) {}
 
   //toaster message alerts
-  showErrorMessage(data:any) {
-    if(data != undefined){
+  showErrorMessage(data: any) {
+    if (data != undefined) {
       var status = this.translate.instant(data);
       this.Toastr.error(data);
     }
   }
-  showSuccessMessage(data:any) {
-    if(data != undefined){
+  showSuccessMessage(data: any) {
+    if (data != undefined) {
       var status = this.translate.instant(data);
       this.Toastr.success(data);
     }
   }
 
-
-   convertISOToCustomFormat(isoDate:any) {
+  convertISOToCustomFormat(isoDate: any) {
     const months = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
     ];
-  
+
     const date = new Date(isoDate);
     const day = date.getDate();
     const month = months[date.getMonth()];
     const year = date.getFullYear();
-  
+
     const customFormattedDate = `${day}-${month}-${year}`;
-  
     return customFormattedDate;
   }
 
@@ -80,16 +89,13 @@ export class CommonService {
     return this.RegisteredCompanyDetails.asObservable();
   }
 
-
   showLoading(): void {
-    $("#loading").show();
-   
-  }
-  hideLoading(): void {
-      $("#loading").hide();
+    $('#loading').show();
   }
 
- 
+  hideLoading(): void {
+    $('#loading').hide();
+  }
 
   setSelectedCompany(data: string) {
     this.selectedcompany.next(data);
@@ -98,12 +104,12 @@ export class CommonService {
   getSelectedCompany() {
     return this.selectedcompany.asObservable();
   }
-  setfreezone(data: string){
+
+  setfreezone(data: string) {
     this.freeZone.next(data);
-
-
   }
-  getfreezone(){
+
+  getfreezone() {
     return this.freeZone.asObservable();
   }
 
@@ -121,4 +127,33 @@ export class CommonService {
   }
   
   
+  splitdatetime(datetimeString: any) {
+    if (datetimeString && typeof datetimeString === 'string') {
+      const dateTimeParts = datetimeString.split('T'); // Splitting the string at 'T'
+      if (dateTimeParts.length === 2) {
+        return {
+          date: dateTimeParts[0],
+          time: dateTimeParts[1],
+        };
+      }
+    }
+    return null; // Invalid or null datetime string
+  }
+
+  splitdatetime1(datetimeString: any) {
+    if (datetimeString && typeof datetimeString === 'string') {
+      const dateTimeParts = datetimeString;
+      if (dateTimeParts.length === 8) {
+        const parsedDate = new Date(
+          Number(dateTimeParts.substr(4, 4)),
+          Number(dateTimeParts.substr(2, 2)) - 1,
+          Number(dateTimeParts.substr(0, 2))
+        );
+        return {
+          date: this.datePipe.transform(parsedDate, 'dd-MMM-yyyy'),
+        };
+      }
+    }
+    return null; // Invalid or null datetime string
+  }
 }

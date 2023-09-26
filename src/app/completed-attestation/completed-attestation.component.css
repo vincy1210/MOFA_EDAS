@@ -15,10 +15,14 @@
 .grid-header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  .grid-header-right {
+    display: flex;
+    gap: 0.5rem;
+  }
 }
 
-.excel-icon {
-  width: 2rem;
-  height: 2rem;
-  align-items: center;
+.clicked {
+  background: var(--primary-color);
+  color: var(--white-color);
 }

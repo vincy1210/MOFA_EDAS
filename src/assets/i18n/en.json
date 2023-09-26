@@ -14,8 +14,10 @@
     "staticcontent.internet.error": "Please check your internet"
   },
   "label": {
-	"pdfAccepted": ".pdf accepted",
+    "pdfAccepted": ".pdf accepted",
     "lessthan": "less than",
+    "excelExport": "Excel export",
+    "filter": "Filter",
     "app": {
       "InqAroundclock": "For Inquiries around the clock",
       "copyright": "Copyright 2023 Ministry of Foreign Affairs",
@@ -96,7 +98,8 @@
         "invoiceno": "Invoice No.",
         "invoiceamount": "Invoice Amount",
         "invoicecurrency": "Invoice Currency",
-        "invoicedate": "Invoice Date"
+        "invoicedate": "Invoice Date",
+        "status": "Status"
       },
       "fileDetails": {
         "uploadInvoice": "Upload Invoice",
@@ -129,6 +132,25 @@
         "totalamount": "Total Amount",
         "declarationdate": "Declaration Date",
         "attestreqdate": "Attest Request Date",
+        "status": "Status",
+        "actions": "Actions"
+      }
+    },
+    "completedCooRequests": {
+      "mainpage.title": "Completed Attestation",
+      "manage": "Manage",
+      "titleCooAttest": "Coo Attestation",
+      "uploadAttachment": "Upload attachment",
+      "submit": "Submit",
+      "completedCooList": {
+        "declarationumber": "Declaration No.",
+        "edasreqno": "EDAS Request No.",
+        "edasattestno": "EDAS Attest No.",
+        "entityshareamount": "Entity Share Amount",
+        "totalamount": "Total Amount",
+        "declarationdate": "Declaration Date",
+        "attestreqdate": "Attest Request Date",
+        "status": "Status",
         "actions": "Actions"
       }
     },
@@ -189,20 +211,18 @@
       "Invalid Email format": "Invalid Email format",
       "Please select the option": "Please select the option"
     },
-	"physicalAttestDetails": {
-	  "invoiceId": "Invoice ID is required",
-	  "invoiceDate": "Please choose a date.",
-	  "invoiceCurrency": "Invoice Currency is required",
-	  "invoiceAmount": "Invoice Amount is required",
-	  "issuingAuthority": "Please select an option.",
-	  "uploadInvoice": "Please upload invoice"
-	},
-	"completedAttestDetails": {
-  
-	},
-	"cooAttestDetails": {
-	  "uploadAttachment": "Please upload attachment"
-	}
+    "physicalAttestDetails": {
+      "invoiceId": "Invoice ID is required",
+      "invoiceDate": "Please choose a date.",
+      "invoiceCurrency": "Invoice Currency is required",
+      "invoiceAmount": "Invoice Amount is required",
+      "issuingAuthority": "Please select an option.",
+      "uploadInvoice": "Please upload invoice"
+    },
+    "completedAttestDetails": {},
+    "cooAttestDetails": {
+      "uploadAttachment": "Please upload attachment"
+    }
   },
   "ShowErrorMessages": {
     "Issue in Fetching form": "Issue in Fetching form",

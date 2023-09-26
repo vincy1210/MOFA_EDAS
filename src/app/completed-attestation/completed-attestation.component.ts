@@ -19,7 +19,6 @@ export class CompletedAttestationComponent implements OnInit {
   cols: any;
   loading: boolean = false;
   enableFilters: boolean = false;
-  chips: { name: string }[] = [{ name: 'Filter' }];
 
   constructor(
     private modalPopupService: ModalPopupService,
@@ -81,7 +80,7 @@ export class CompletedAttestationComponent implements OnInit {
           Number(dateTimeParts.substr(0, 2))
         );
         return {
-          date: this.datePipe.transform(parsedDate, 'dd/MM/yyyy'),
+          date: this.datePipe.transform(parsedDate, 'dd-MMM-yyyy'),
         };
       }
     }

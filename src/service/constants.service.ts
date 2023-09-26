@@ -18,4 +18,5 @@ export class ConstantsService {
   updateCOORequests = 'Company/updateCOORequests'; // completed attest update
   lcaCompletedAttestList='Company/lcaCompletedAttestList';
   sendMailGeneric="Company/sendMailGeneric"
+  getcompletedCOORequests = 'Company/getcompletedCOORequests'; // completed COO Request
 }

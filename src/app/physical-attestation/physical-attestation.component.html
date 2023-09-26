@@ -7,14 +7,17 @@
   </div>
   <div class="company-bg physicalAttestDetails-page">
     <div class="mx-auto physicalAttestDetails-window">
-      <div class="grid grid-cols-1 gap-4">
-        <div class="bg-white rounded-lg p-5 col-span-2">
-          <div class="grid grid-cols-1 add-button">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div
+          class="bg-white rounded-lg p-5 col-span-3"
+          [ngClass]="{ 'col-span-2': shouldShow, 'col-span-3': !shouldShow }"
+        >
+          <!-- <div class="grid grid-cols-1 add-button">
             <button mat-button (click)="openDialogAttest()">
               <mat-icon>add</mat-icon>
               {{ "label.physicalAttestDetails.addAttest" | translate }}
             </button>
-          </div>
+          </div> -->
           <p-table
             [(selection)]="selectedAttestations"
             dataKey="attestationrequno"
@@ -40,53 +43,71 @@
               'invoiceno',
               'invoiceamount',
               'invoicecurrency',
-              'invoicedate'
+              'invoicedate',
+              'status'
             ]"
           >
             <ng-template pTemplate="caption">
               <div class="p-d-flex grid-header">
-                <span class="p-input-icon-left p-ml-auto grid-search">
-                  <i class="pi pi-search"></i>
-                  <input
-                    pInputText
-                    type="text"
-                    (input)="
-                      tableref.filterGlobal(
-                        $any($event.target).value,
-                        'contains'
-                      )
-                    "
-                    placeholder="Search keyword"
-                  />
-                </span>
-                <button
-                  type="button"
-                  pButton
-                  pRipple
-                  icon="pi pi-file-excel"
-                  (click)="exportExcel()"
-                  class="p-button-success mr-2 excel-icon"
-                  pTooltip="Excel export"
-                  tooltipPosition="bottom"
-                ></button>
-                <mat-chip-list>
-                  <mat-chip
-                    *ngFor="let chip of chips"
-                    [selectable]="true"
-                    [removable]="true"
-                    [selected]="enableFilters"
+                <div class="grid-header-left">
+                  <span class="p-input-icon-left p-ml-auto grid-search">
+                    <i class="pi pi-search"></i>
+                    <input
+                      pInputText
+                      type="text"
+                      (input)="
+                        tableref.filterGlobal(
+                          $any($event.target).value,
+                          'contains'
+                        )
+                      "
+                      placeholder="Search keyword"
+                    />
+                  </span>
+                </div>
+                <div class="grid-header-right">
+                  <button
+                    type="button"
+                    pButton
+                    pRipple
+                    icon="pi pi-file-excel"
+                    (click)="exportExcel()"
+                    class="mr-2 grid-header-right-icon"
+                    [pTooltip]="'label.excelExport' | translate"
+                    tooltipPosition="bottom"
+                  ></button>
+                  <button
+                    type="button"
+                    pButton
+                    pRipple
+                    icon="pi pi-filter"
                     (click)="clickChips()"
-                  >
-                    {{ chip.name }}
-                  </mat-chip>
-                </mat-chip-list>
+                    class="mr-2 grid-header-right-icon"
+                    [ngClass]="{ clicked: enableFilters }"
+                    [pTooltip]="'label.filter' | translate"
+                    tooltipPosition="bottom"
+                  ></button>
+                  <button
+                    type="button"
+                    pButton
+                    pRipple
+                    icon="pi pi-plus"
+                    (click)="openDialogAttest()"
+                    class="mr-2 grid-header-right-icon"
+                    [pTooltip]="
+                      'label.physicalAttestDetails.addAttest' | translate
+                    "
+                    tooltipPosition="bottom"
+                  ></button>
+                </div>
               </div>
             </ng-template>
             <ng-template pTemplate="header" let-columns>
               <tr>
-                <!-- <th style="width: 3rem">
-                  <p-tableHeaderCheckbox> </p-tableHeaderCheckbox>
-                </th> -->
+                <th style="width: 3rem">
+                  <p-tableHeaderCheckbox (click)="loadsidepanel($event)">
+                  </p-tableHeaderCheckbox>
+                </th>
                 <th *ngFor="let col of columns" [pSortableColumn]="col.field">
                   {{ col.header | translate }}
                   <p-sortIcon field="code" *ngIf="enableFilters"></p-sortIcon>
@@ -101,9 +122,12 @@
             </ng-template>
             <ng-template pTemplate="body" let-data>
               <tr>
-                <!-- <td>
-                  <p-tableCheckbox [value]="data"></p-tableCheckbox>
-                </td> -->
+                <td>
+                  <p-tableCheckbox
+                    (click)="loadsidepanel($event)"
+                    [value]="data"
+                  ></p-tableCheckbox>
+                </td>
                 <td>
                   <span class="image-text">{{ data.edasreqno }}</span>
                 </td>
@@ -124,6 +148,9 @@
                     splitdatetime1(data.invoicedate)?.date
                   }}</span>
                 </td>
+                <td>
+                  <span class="image-text">{{ data.status }}</span>
+                </td>
               </tr>
             </ng-template>
             <ng-template pTemplate="emptymessage">
@@ -132,6 +159,12 @@
               </tr>
             </ng-template>
           </p-table>
+        </div>
+        <div
+          class="bg-white rounded-lg p-5 mofa-tab-section show"
+          [ngClass]="{ show: shouldShow, hide: !shouldShow }"
+        >
+          <app-attestation-workflow [selectedAttestations]="selectedAttestations"></app-attestation-workflow>
         </div>
       </div>
     </div>

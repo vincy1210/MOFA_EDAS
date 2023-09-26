@@ -1,0 +1,32 @@
+<div class="grid grid-cols-1 mofa-side-nav">
+  <div class="grid grid-cols-1 recently-used">
+    <h6>Recently Used</h6>
+    <ul class="my-3">
+      <li>Dashboard</li>
+      <li>Attestations</li>
+    </ul>
+  </div>
+
+  <div class="grid grid-cols-1 mofa-side-menus">
+    <mat-expansion-panel
+      #myPanel
+      [class.mat-elevation-z0]="true"
+      *ngFor="let items of menuList"
+    >
+      <mat-expansion-panel-header  (click)="onPanelClick(items)">
+        <span class="mat-items">
+          <mat-icon>{{ items.icon }}</mat-icon
+          ><span>{{ items.menu }}</span>
+        </span>
+      </mat-expansion-panel-header>
+      <mat-nav-list *ngFor="let item of items.subMenus">
+        <span class="mat-items">
+          <a mat-list-item [routerLink]="item.link">
+            <mat-icon>{{ item.icon }}</mat-icon
+            ><span>{{ item.menu }}</span>
+          </a>
+        </span>
+      </mat-nav-list>
+    </mat-expansion-panel>
+  </div>
+</div>

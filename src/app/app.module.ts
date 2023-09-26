@@ -132,7 +132,7 @@ const routes: Routes = [
   { path: 'companydetails', component: CompanydetailsComponent },
   { path: 'physicalattestation', component: PhysicalAttestationComponent },
   { path: 'cooattestation', component: CooAttestationComponent },
-  { path: 'completedattestation', component: CompletedAttestationComponent },
+    { path: 'completedattestation', component: CompletedAttestationComponent },
   {path:'landingpage',component:LandingPageComponent}
 ];
 
@@ -149,7 +149,7 @@ const routes: Routes = [
     CooAttestationComponent,
     CooAttestationCreateComponent,
     CompletedAttestationComponent,
-  ],
+      ],
 
   imports: [
     TranslateModule.forRoot({

@@ -4,9 +4,10 @@ import { PhysicalAttestationCreateComponent } from './physical-attestation-creat
 import { TranslateService } from '@ngx-translate/core';
 import { ApiService } from 'src/service/api.service';
 import { ConstantsService } from 'src/service/constants.service';
-import { DatePipe } from '@angular/common';
 import * as XLSX from 'xlsx';
 import { ModalPopupService } from 'src/service/modal-popup.service';
+import { AttestationStatusEnum } from 'src/app/shared/models/attestation-status.model';
+import { CommonService } from 'src/service/common.service';
 
 @Component({
   selector: 'app-physical-attestation',
@@ -21,14 +22,19 @@ export class PhysicalAttestationComponent implements OnInit {
   cols: any;
   loading: boolean = false;
   enableFilters: boolean = false;
-  chips: { name: string }[] = [{ name: 'Filter' }];
+  // for workflow
+  public shouldShow = false;
+  noOfInvoicesSelected: any[] = [];
+  totalFineAmount: any;
+  totalAttestationFee: any;
+  totalFee: any;
 
   constructor(
     private modalPopupService: ModalPopupService,
     public translate: TranslateService,
     public apiservice: ApiService,
     public consts: ConstantsService,
-    private datePipe: DatePipe
+    private common: CommonService
   ) {}
 
   ngOnInit(): void {
@@ -59,6 +65,10 @@ export class PhysicalAttestationComponent implements OnInit {
         field: 'invoicedate',
         header: 'label.physicalAttestDetails.physicalAttestList.invoicedate',
       },
+      {
+        field: 'status',
+        header: 'label.physicalAttestDetails.physicalAttestList.status',
+      },
     ];
     this.getInvoiceAttestations();
   }
@@ -78,6 +88,21 @@ export class PhysicalAttestationComponent implements OnInit {
         if (`${response.responseCode}` === '200') {
           const dataArray = response.data;
           this.invoiceRequestLists = dataArray;
+          this.invoiceRequestLists.map((row: any) => {
+            if (row.statusuno === AttestationStatusEnum.Status0) {
+              row.status = 'Created';
+            } else if (row.statusuno === AttestationStatusEnum.Status1) {
+              row.status = 'Approved';
+            } else if (row.statusuno === AttestationStatusEnum.Status2) {
+              row.status = 'Payment';
+            } else if (row.statusuno === AttestationStatusEnum.Status3) {
+              row.status = 'Attestation';
+            } else if (row.statusuno === AttestationStatusEnum.Status4) {
+              row.status = 'Completed';
+            } else {
+              row.status = '';
+            }
+          });
         }
       });
   }
@@ -91,36 +116,6 @@ export class PhysicalAttestationComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       this.getInvoiceAttestations();
     });
-  }
-
-  splitdatetime(datetimeString: any) {
-    if (datetimeString && typeof datetimeString === 'string') {
-      const dateTimeParts = datetimeString.split('T'); // Splitting the string at 'T'
-      if (dateTimeParts.length === 2) {
-        return {
-          date: dateTimeParts[0],
-          time: dateTimeParts[1],
-        };
-      }
-    }
-    return null; // Invalid or null datetime string
-  }
-
-  splitdatetime1(datetimeString: any) {
-    if (datetimeString && typeof datetimeString === 'string') {
-      const dateTimeParts = datetimeString;
-      if (dateTimeParts.length === 8) {
-        const parsedDate = new Date(
-          Number(dateTimeParts.substr(4, 4)),
-          Number(dateTimeParts.substr(2, 2)) - 1,
-          Number(dateTimeParts.substr(0, 2))
-        );
-        return {
-          date: this.datePipe.transform(parsedDate, 'dd/MM/yyyy'),
-        };
-      }
-    }
-    return null; // Invalid or null datetime string
   }
 
   exportExcel() {
@@ -143,6 +138,9 @@ export class PhysicalAttestationComponent implements OnInit {
       invoicedate: this.translate.instant(
         'label.physicalAttestDetails.physicalAttestList.invoicedate'
       ),
+      status: this.translate.instant(
+        'label.physicalAttestDetails.physicalAttestList.status'
+      ),
     };
     const dataList: any = [];
     this.invoiceRequestLists.map((item: any) => {
@@ -153,11 +151,37 @@ export class PhysicalAttestationComponent implements OnInit {
       dataItem[jsonData.invoiceamount] = item.invoiceamount;
       dataItem[jsonData.invoicecurrency] = item.invoicecurrency;
       dataItem[jsonData.invoicedate] = item.invoicedate;
+      dataItem[jsonData.status] = item.status;
       dataList.push(dataItem);
     });
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataList);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Physical Attestation');
     XLSX.writeFile(wb, 'physical-attestation.xlsx');
+  }
+
+  splitdatetime1(date: any) {
+    return this.common.splitdatetime1(date);
+  }
+
+  loadsidepanel(event: any) {
+    this.noOfInvoicesSelected = this.selectedAttestations.length;
+    this.totalFineAmount = this.selectedAttestations.reduce(
+      (total: any, item: any) => total + item.fineamount,
+      0
+    );
+    this.totalAttestationFee = this.selectedAttestations.reduce(
+      (total: any, item: any) => total + item.feesamount,
+      0
+    );
+    this.totalFee = this.totalFineAmount + this.totalAttestationFee;
+    this.shouldShow = true;
+    if (this.selectedAttestations.length > 1) {
+      // this.previewvisible = false;
+      // this.Timelinevisible = false;
+    } else if (this.selectedAttestations.length == 0) {
+      this.shouldShow = false;
+    } else {
+    }
   }
 }
