@@ -112,6 +112,7 @@ import { CompletedCooRequestsComponent } from './completed-coo-requests/complete
 import { PageNotFoundComponent } from './shared/not-found.component';
 import { AttestationWorkflowComponent } from './shared/components/attestation-workflow/attestation-workflow.component';
 import { LeftMenuDrawerComponent } from './shared/components/left-menu-drawer/left-menu-drawer.component';
+import { ESealTestComponent } from './e-seal-test/e-seal-test.component';
 // import { PrimeIcons } from 'primeng/api';
 
 const routes: Routes = [
@@ -128,6 +129,7 @@ const routes: Routes = [
   { path: 'completedattestation', component: CompletedAttestationComponent },
   { path: 'landingpage', component: LandingPageComponent },
   { path: 'attestation', component: AttestationComponent },
+  { path: 'eseal-test', component: ESealTestComponent },
   { path: '**', component: PageNotFoundComponent }
 ];
 
@@ -147,7 +149,8 @@ const routes: Routes = [
     CompletedCooRequestsComponent,
     PageNotFoundComponent,
     AttestationWorkflowComponent,
-    LeftMenuDrawerComponent
+    LeftMenuDrawerComponent,
+    ESealTestComponent
   ],
 
   imports: [

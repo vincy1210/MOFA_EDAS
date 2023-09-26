@@ -36,6 +36,19 @@ export class ApiService {
       .post(this.baseURL + servicename, data)
       .pipe(catchError(this.handleError));
   }
+
+  postXML(serviceUrl: any, soapRequest: any) {
+    debugger;
+    const headers = new HttpHeaders({
+      'Content-Type': 'text/xml; charset=utf-8',
+      'SOAPAction': 'Sign',
+      'TwsAuthN': 'urn:safelayer:tws:policies:authentication:oauth:clients'
+    });
+    return this.http
+      .post(serviceUrl, soapRequest, { headers, responseType: 'text' })
+      .pipe(catchError(this.handleError));
+  }
+
   sPassAuthGetUserprofile(param1: any, param3: any) {
     const email = encodeURIComponent(param3.trim());
     console.log(email);
@@ -79,6 +92,7 @@ export class ApiService {
 
     return this.http.get(Url, this.headerOptions);
   }
+
   getUserToken(accessToken: any, param3: any) {
     const email2 = encodeURIComponent(param3);
     let Url =
@@ -86,6 +100,7 @@ export class ApiService {
       `EDASGetProfileByAccessTokenV2?AccessToken=${accessToken}&email=${email2}`;
     return this.http.get(Url, this.headerOptions);
   }
+
   getattestations(skip: number): Observable<attachmentResponse> {
     let data = {
       companyuno: '1',
