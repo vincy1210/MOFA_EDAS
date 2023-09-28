@@ -7,7 +7,9 @@
   </div>
   <div class="company-bg registration-page">
     <div class="container mx-auto px-32 registration-window">
+      <!-- FE -->
       <div class="grid grid-cols-1">
+        <label>From FE</label>
         <input
           accept=".pdf"
           name="uploadInvoiceFile"
@@ -16,7 +18,20 @@
           (change)="onFileChanged($event)"
           #fileInput
         />
-        <button type="button" mat-button (click)="clickESeal()">E-Seal</button>
+        <button type="button" mat-button (click)="clickESealFE()">E-Seal FE</button>
+      </div>
+      <!-- BE -->
+      <div class="grid grid-cols-1">
+        <label>From BE</label>
+        <input
+          accept=".pdf"
+          name="uploadInvoiceFile"
+          #attachments
+          type="file"
+          (change)="onFileChanged($event)"
+          #fileInput
+        />
+        <button type="button" mat-button (click)="clickESealBE()">E-Seal BE</button>
       </div>
     </div>
   </div>

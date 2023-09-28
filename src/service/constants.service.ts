@@ -18,4 +18,5 @@ export class ConstantsService {
   updateCOORequests = 'Company/updateCOORequests'; // completed attest update
   getcompletedCOORequests = 'Company/getcompletedCOORequests'; // completed COO Request
   eSealSoapGatewayUrl = 'https://stg-id.uaepass.ae/trustedx-gw/SoapGateway';
+  checkESeal = 'Test/CheckESeal';
 }

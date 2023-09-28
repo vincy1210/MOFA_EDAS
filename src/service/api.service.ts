@@ -37,6 +37,12 @@ export class ApiService {
       .pipe(catchError(this.handleError));
   }
 
+  postForESeal(servicename: any, data: any) {
+    return this.http
+      .post(servicename, data)
+      .pipe(catchError(this.handleError));
+  }
+
   postXML(serviceUrl: any, soapRequest: any) {
     const headers = new HttpHeaders({
       'Content-Type': 'text/xml; charset=utf-8',
