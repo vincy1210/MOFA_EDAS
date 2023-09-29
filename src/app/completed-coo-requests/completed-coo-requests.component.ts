@@ -65,7 +65,7 @@ export class CompletedCooRequestsComponent implements OnInit {
     this.apiservice
       .post(this.consts.getcompletedCOORequests, data)
       .subscribe((response: any) => {
-        if (`${response.responseCode}` === '200') {
+        if (`${response.responseCode}` === '1') {
           const dataArray = response.data;
           if (dataArray?.dictionary) {
             this.cooAttestationLists = dataArray?.dictionary?.data;

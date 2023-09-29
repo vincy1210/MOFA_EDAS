@@ -69,7 +69,7 @@ export class PhysicalAttestationCreateComponent implements OnInit {
     this.apiservice
       .post(this.consts.getFreezonetypes, data)
       .subscribe((response: any) => {
-        if (`${response.responseCode}` === '200') {
+        if (`${response.responsecode}` === '1') {
           const dataArray = response.data;
           this.issuingAuthorities = dataArray.dictionary.data;
         }
@@ -157,7 +157,7 @@ export class PhysicalAttestationCreateComponent implements OnInit {
       .post(this.consts.invoiceAttestation, data)
       .subscribe((response: any) => {
         const dataArray = response.data;
-        if (`${response.responseCode}` === '200') {
+        if (`${response.responsecode}` === '1') {
           //alert
           this.commonService.showSuccessMessage(`Successfully submitted`);
           this.clearDatas();

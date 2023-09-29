@@ -85,7 +85,7 @@ export class PhysicalAttestationComponent implements OnInit {
     this.apiservice
       .post(this.consts.getInvoiceAttestations, data)
       .subscribe((response: any) => {
-        if (`${response.responseCode}` === '200') {
+        if (`${response.responsecode}` === '1') {
           const dataArray = response.data;
           this.invoiceRequestLists = dataArray;
           this.invoiceRequestLists.map((row: any) => {

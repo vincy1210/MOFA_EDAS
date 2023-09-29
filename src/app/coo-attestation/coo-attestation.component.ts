@@ -82,9 +82,10 @@ export class CooAttestationComponent implements OnInit {
     this.apiservice
       .post(this.consts.getCooRequests, data)
       .subscribe((response: any) => {
-        if (`${response.responseCode}` === '200') {
-          const dataArray = response.data;
-          this.cooAttestationLists = dataArray?.dictionary?.data;
+        let response1 = response?.dictionary;
+        if (`${response1.responsecode}` === '1') {
+          const dataArray = response1.data;
+          this.cooAttestationLists = dataArray;
           this.cooAttestationLists.map((row: any) => {
             if (row.statusuno === AttestationStatusEnum.Status0) {
               row.status = 'Created';
