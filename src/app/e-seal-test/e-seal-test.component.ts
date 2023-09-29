@@ -101,7 +101,7 @@ export class ESealTestComponent implements OnInit {
       base64file: file64
     };
 
-    this.apiservice.postForESeal('http://localhost:5010/api/Test/CheckESeal', data).subscribe({
+    this.apiservice.postForESeal('http://localhost:5010/api/ApiGateway/CheckESeal', data).subscribe({
       next: (data: any) => {
         let response: any = data;
         console.log('response:', response);
