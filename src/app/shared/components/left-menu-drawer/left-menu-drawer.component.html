@@ -21,7 +21,7 @@
       </mat-expansion-panel-header>
       <mat-nav-list *ngFor="let item of items.subMenus">
         <span class="mat-items">
-          <a mat-list-item [routerLink]="item.link">
+          <a mat-list-item (click)="menuClick(item)">
             <mat-icon>{{ item.icon }}</mat-icon
             ><span>{{ item.menu }}</span>
           </a>

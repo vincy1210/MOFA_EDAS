@@ -68,6 +68,15 @@ export class CommonService {
     return this.dataSubject.asObservable();
   }
 
+  setDataCommon(objData: { key: string, value: object }) {
+    const data = JSON.stringify(objData);
+    this.dataSubject.next(data);
+  }
+
+  getDataCommon() {
+    return this.dataSubject.asObservable();
+  }
+
   setUserIfoData(data: string) {
     this.userinfo.next(data);
   }

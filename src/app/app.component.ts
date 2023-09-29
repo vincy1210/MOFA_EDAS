@@ -1,9 +1,11 @@
-import { Component, HostBinding } from '@angular/core';
+import { Component, HostBinding, ViewChild } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NavigationStart, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Direction } from '@angular/cdk/bidi';
+import { CommonService } from 'src/service/common.service';
+import { MatDrawer } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +14,7 @@ import { Direction } from '@angular/cdk/bidi';
 })
 export class AppComponent {
   @HostBinding('class') classRoot = 'theme-default';
+  @ViewChild("drawer") drawer!: MatDrawer;
 
   title = 'uaemofa';
   overlayContainer: any;
@@ -58,6 +61,14 @@ export class AppComponent {
   role: any;
 
   ngOnInit(): void {
+    this.comnService.getDataCommon().subscribe((data) => {
+      if (data && data != '') {
+        const dataObj: { key: string; value: object } = JSON.parse(data);
+        if (dataObj.key === 'drawer') {
+          this.toggleDrawer();
+        }
+      }
+    });
     this.bigScreen = window.innerWidth > 786;
     window.addEventListener('resize', (event) => {
       this.bigScreen = window.innerWidth > 786;
@@ -586,13 +597,18 @@ export class AppComponent {
     this.showToggle = !this.showToggle;
   }
 
+  toggleDrawer(): void {
+    this.drawer.toggle();
+  }
+
   showHead: boolean = false;
 
   constructor(
     private router: Router,
     private translate: TranslateService,
     private iconRegistry: MatIconRegistry,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private comnService: CommonService
   ) {
     iconRegistry.addSvgIcon(
       'profile-dropdownarrow-icon',

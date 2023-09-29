@@ -78,6 +78,7 @@ export class PhysicalAttestationComponent implements OnInit {
   }
 
   getInvoiceAttestations() {
+    this.loading = true;
     let data = {
       uuid: '12223',
       token: '12332',
@@ -85,6 +86,7 @@ export class PhysicalAttestationComponent implements OnInit {
     this.apiservice
       .post(this.consts.getInvoiceAttestations, data)
       .subscribe((response: any) => {
+        this.loading = false;
         if (`${response.responsecode}` === '1') {
           const dataArray = response.data;
           this.invoiceRequestLists = dataArray;

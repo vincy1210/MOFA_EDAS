@@ -58,6 +58,7 @@ export class CompletedCooRequestsComponent implements OnInit {
   }
 
   getCooAttestations() {
+    this.loading = true;
     let data = {
       uuid: '12223',
       token: '12332',
@@ -65,6 +66,7 @@ export class CompletedCooRequestsComponent implements OnInit {
     this.apiservice
       .post(this.consts.getcompletedCOORequests, data)
       .subscribe((response: any) => {
+        this.loading = false;
         if (`${response.responseCode}` === '1') {
           const dataArray = response.data;
           if (dataArray?.dictionary) {

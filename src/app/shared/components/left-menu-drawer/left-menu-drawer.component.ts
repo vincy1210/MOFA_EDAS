@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatExpansionPanel } from '@angular/material/expansion';
 import { Router } from '@angular/router';
+import { CommonService } from 'src/service/common.service';
 
 interface MenuModel {
   id: number;
@@ -19,7 +20,7 @@ export class LeftMenuDrawerComponent implements OnInit {
   menuList: MenuModel[] = [];
   @ViewChild('myPanel') myPanel!: MatExpansionPanel;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private comnService: CommonService) {}
 
   ngOnInit(): void {
     this.getMenuItemLists();
@@ -83,7 +84,7 @@ export class LeftMenuDrawerComponent implements OnInit {
             menu: 'Completed COO Attestations',
             icon: 'play_arrow',
             link: '/completedcoorequests',
-          }
+          },
         ],
       },
       {
@@ -118,7 +119,19 @@ export class LeftMenuDrawerComponent implements OnInit {
       }
     );
   }
-  
+
+  menuClick(items: any) {
+    if (items.link) {
+      this.router.navigateByUrl(items.link);
+      this.myPanel.close();
+      const dataObj: { key: string; value: object } = {
+        key: 'drawer',
+        value: {},
+      };
+      this.comnService.setDataCommon(dataObj);
+    }
+  }
+
   onPanelClick(items: any) {
     if (items.link) {
       this.router.navigate([items.link]);

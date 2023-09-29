@@ -75,6 +75,7 @@ export class CooAttestationComponent implements OnInit {
   }
 
   getCooAttestations() {
+    this.loading = true;
     let data = {
       uuid: '12223',
       token: '12332',
@@ -82,6 +83,7 @@ export class CooAttestationComponent implements OnInit {
     this.apiservice
       .post(this.consts.getCooRequests, data)
       .subscribe((response: any) => {
+        this.loading = false;
         let response1 = response?.dictionary;
         if (`${response1.responsecode}` === '1') {
           const dataArray = response1.data;
