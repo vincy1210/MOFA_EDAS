@@ -80,8 +80,11 @@ export class PhysicalAttestationComponent implements OnInit {
   getInvoiceAttestations() {
     this.loading = true;
     let data = {
+      companyuno: '1',
       uuid: '12223',
       token: '12332',
+      startnum: 1,
+      endnum: 10,
     };
     this.apiservice
       .post(this.consts.getInvoiceAttestations, data)

@@ -12,11 +12,12 @@ export class ConstantsService {
   getFreezonetypes = 'Company/getFreezonetypes';
   pendingattestation = 'Company/lcapendingAttestList';
   //UAEPassprofile="Company/lcapendingAttestList"
-  getInvoiceAttestations = 'Common/getInvoiceAttestations'; // invoice attest lists
+  getInvoiceAttestations = 'User/getMyInvoiceAttestations'; // invoice attest lists
+  getCompletedInvoiceAttestations = 'User/getMycompletedInvoiceAttestList';
   invoiceAttestation = 'Common/invoiceAttestation'; // invoice attest request
-  getCooRequests = 'Company/getCOORequests'; // completed attest lists
+  getCooRequests = 'User/getMyCOORequests'; // completed attest lists
   updateCOORequests = 'Company/updateCOORequests'; // completed attest update
-  getcompletedCOORequests = 'Company/getcompletedCOORequests'; // completed COO Request
+  getcompletedCOORequests = 'User/getMycompletedCOORequests'; // completed COO Request
   eSealSoapGatewayUrl = 'https://stg-id.uaepass.ae/trustedx-gw/SoapGateway';
   checkESeal = 'Test/CheckESeal';
 }

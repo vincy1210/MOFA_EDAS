@@ -9,7 +9,7 @@ import { ModalPopupService } from 'src/service/modal-popup.service';
 @Component({
   selector: 'app-completed-attestation',
   templateUrl: './completed-attestation.component.html',
-  styleUrls: ['./completed-attestation.component.css']
+  styleUrls: ['./completed-attestation.component.css'],
 })
 export class CompletedAttestationComponent implements OnInit {
   progress_val: number = 0;
@@ -32,12 +32,32 @@ export class CompletedAttestationComponent implements OnInit {
     this.progress_val = 0;
     this.cols = [
       // { field: 'attestationrequno', header: 'Attestation No.' },
-      { field: 'edasreqno', header: 'label.completedAttestDetails.completedAttestList.edasreqno' },
-      { field: 'entitycode', header: 'label.completedAttestDetails.completedAttestList.entitycode' },
-      { field: 'invoiceno', header: 'label.completedAttestDetails.completedAttestList.invoiceno' },
-      { field: 'invoiceamount', header: 'label.completedAttestDetails.completedAttestList.invoiceamount' },
-      { field: 'invoicecurrency', header: 'label.completedAttestDetails.completedAttestList.invoicecurrency' },
-      { field: 'invoicedate', header: 'label.completedAttestDetails.completedAttestList.invoicedate' },
+      {
+        field: 'edasreqno',
+        header: 'label.completedAttestDetails.completedAttestList.edasreqno',
+      },
+      {
+        field: 'entitycode',
+        header: 'label.completedAttestDetails.completedAttestList.entitycode',
+      },
+      {
+        field: 'invoiceno',
+        header: 'label.completedAttestDetails.completedAttestList.invoiceno',
+      },
+      {
+        field: 'invoiceamount',
+        header:
+          'label.completedAttestDetails.completedAttestList.invoiceamount',
+      },
+      {
+        field: 'invoicecurrency',
+        header:
+          'label.completedAttestDetails.completedAttestList.invoicecurrency',
+      },
+      {
+        field: 'invoicedate',
+        header: 'label.completedAttestDetails.completedAttestList.invoicedate',
+      },
     ];
     this.getInvoiceAttestations();
   }
@@ -45,11 +65,14 @@ export class CompletedAttestationComponent implements OnInit {
   getInvoiceAttestations() {
     this.loading = true;
     let data = {
-      uuid: '12223',
-      token: '12332',
+      companyuno: 1,
+      uuid: '1111',
+      startnum: 0,
+      endnum: 10,
+      status: 0,
     };
     this.apiservice
-      .post(this.consts.getInvoiceAttestations, data)
+      .post(this.consts.getCompletedInvoiceAttestations, data)
       .subscribe((response: any) => {
         this.loading = false;
         if (`${response.responsecode}` === '1') {

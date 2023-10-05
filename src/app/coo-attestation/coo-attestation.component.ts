@@ -77,8 +77,10 @@ export class CooAttestationComponent implements OnInit {
   getCooAttestations() {
     this.loading = true;
     let data = {
-      uuid: '12223',
-      token: '12332',
+      companyuno: '1',
+      uuid: '1222',
+      startnum: 0,
+      endnum: 0,
     };
     this.apiservice
       .post(this.consts.getCooRequests, data)
