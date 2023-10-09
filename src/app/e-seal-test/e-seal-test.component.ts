@@ -31,11 +31,11 @@ export class ESealTestComponent implements OnInit {
     for (var i = 0; i <= event.target.files.length - 1; i++) {
       var selectedFile = event.target.files[i];
       if (selectedFile) {
-        if (selectedFile.size <= 2 * 1024 * 1024) {
+        if (selectedFile.size <= 15 * 1024 * 1024) {
           this.listOfFiles.push(selectedFile);
         } else {
           this.commonService.showErrorMessage(
-            'File size exceeds the allowed limit (2 MB).'
+            'File size exceeds the allowed limit (15 MB).'
           );
         }
       }
