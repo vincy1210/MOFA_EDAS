@@ -59,6 +59,8 @@ export class CompanydetailsComponent implements OnInit {
   note2:string='';
   note3:string='';
   freezonelist:any;
+  showResendLink:boolean=false;
+  
 
   constructor(private recaptchaV3Service:ReCaptchaV3Service,private common:CommonService ,private _activatedRoute: ActivatedRoute,private formBuilder:FormBuilder, public dialog: MatDialog, private Common:CommonService, public apiservice:ApiService, public consts:ConstantsService, public router:Router) {
 
@@ -75,15 +77,15 @@ if(this.reg_form_data==undefined){
 
     // if(this.reg_form_data===""){
     //   this.router.navigateByUrl("/registration");
-    //   this.common.showErrorMessage("Issue in Fetching form!")
+    //   this.common.showErrorMessage("Issue in Fetching form")
     // }
 
     //this.reg_form_data= this.common.getUserProfile();
 
     if(this.reg_form_data==="" || this.reg_form_data==undefined){
       this.router.navigateByUrl("/registration");
-      console.log("Issue in Fetching form!");
-      this.common.showErrorMessage("Something went wrong!")
+      console.log("Issue in Fetching form");
+      this.common.showErrorMessage("Something went wrong")
     }
    
 
@@ -126,7 +128,6 @@ if(this.reg_form_data==undefined){
     
    }
 
-   private _dialogRef: any;
    dialogRef: any;
    rep_contact_no='';
    typeExpress:any;
@@ -138,18 +139,12 @@ if(this.reg_form_data==undefined){
    
 
   ngOnInit(): void {
+    this.common.showLoading();
     this.sitekey=environment.recaptcha.siteKey
-
-    // this.Common.getUserIfoData().subscribe(data => {
-    //   this.user_info_taken_using_authtoken = data;
-    //   console.log(this.user_info_taken_using_authtoken)
-    // });
-
     this.user_info_taken_using_authtoken=this.common.getUserProfile();
-
     if(this.user_info_taken_using_authtoken==null || this.user_info_taken_using_authtoken==undefined){
-      console.log("session expired!");
-      this.common.showErrorMessage("Session Expired!")
+      console.log("session expired");
+      this.common.showErrorMessage("Session Expired")
     }
     else{
       this.user_info_taken_using_authtoken=JSON.parse(this.user_info_taken_using_authtoken);
@@ -161,14 +156,13 @@ if(this.reg_form_data==undefined){
     let data={
       "useruno":"1"
     }
-
-
       this.apiservice.post(this.consts.GetLegalTypes, data).subscribe((response: any) => {
         const dataArray = response.data; // Access the 'data' property from the response
         console.log(dataArray);
         this.legalTypeOptions=dataArray.dictionary.data;
         console.log(dataArray)
       });
+      this.common.hideLoading();
 
   }
 
@@ -181,6 +175,8 @@ if(this.reg_form_data==undefined){
   sitekey:string='';
 
   onFileChanged(event: any) {
+
+    const form = { ...this.companyDetailsForm.value };
     this.isLoading = true;
     this.fileList=[];
     this.listOfFiles=[];
@@ -191,6 +187,13 @@ if(this.reg_form_data==undefined){
         this.listOfFiles.push(selectedFile.name);
     }
     this.isLoading = false;
+    const timestamp = new Date().getTime();
+    const newFileName = form.trade_Licence +'_'+timestamp+ '.pdf'; 
+
+    const renamedFile = new File([selectedFile], newFileName, { type: selectedFile.type });
+    
+    this.sel_file_test=renamedFile;
+
   }
 
   removeSelectedFile(index: number) {
@@ -207,120 +210,6 @@ if(this.reg_form_data==undefined){
 
 
   //
-  submit11() {
-    if (this.companyDetailsForm.get('isbroker')?.value === "") {
-      this.radiochosenornot = true;
-    } else {
-      this.radiochosenornot = false;
-    }
-  
-    if (this.companyDetailsForm.valid) {
-      // Execute reCAPTCHA v3
-      this.executeRecaptchaV3(() => {
-        console.log('File List:', this.fileList);
-        const form = { ...this.companyDetailsForm.value };
-        console.log('Form Values:', form);
-        console.log(this.captcha_token)
-  
-       
-	  let data={
-      "emiratesId": this.user_info_taken_using_authtoken.idn,   // UAE pass frields start
-      "uuid": this.user_info_taken_using_authtoken.uuid,
-      "token": this.user_info_taken_using_authtoken.Token,
-      "useruno": "0",     //find out
-      "companyname":form.name_of_Business,
-      "tradelicensenumber": form.trade_Licence,
-      "tradelicenseissuedate": this.Common.convertISOToCustomFormat(form.trade_Licence_Issue_Date) ,
-      "tradelicenseexpirydate": this.Common.convertISOToCustomFormat(form.trade_Licence_Expiry_Date),
-      "licenseissuingauthority": form.Licence_issuing_auth, //freetext
-      "companyregisteredemailaddress": form.Comp_Reg_Email_Address,
-      "companycontactnumber": form.Comp_contact_number,
-      "HASATTACHMENT": "0",
-      "attachment": form.trade_Licence,
-      "representativeemailaddress": form.companyrep_EmailAddress,
-      "mobilenumber": form.companyrep_MobileNumber,
-      "userType": this.user_info_taken_using_authtoken.userType,
-      "mobile": this.user_info_taken_using_authtoken.mobile,
-      "email": this.user_info_taken_using_authtoken.email,
-      "spuuid": this.user_info_taken_using_authtoken.spuuid,
-      "idn": this.user_info_taken_using_authtoken.idn,
-      "fullnameEN": this.user_info_taken_using_authtoken.fullnameEN,
-      "fullnameAR": this.user_info_taken_using_authtoken.fullnameAR,
-      "firstnameEN": this.user_info_taken_using_authtoken.firstnameEN,
-      "firstnameAR": this.user_info_taken_using_authtoken.firstnameAR,
-      "lastnameEN": this.user_info_taken_using_authtoken.lastnameEN,
-      "lastnameAR": this.user_info_taken_using_authtoken.lastnameAR,
-      "nationalityEN": this.user_info_taken_using_authtoken.nationalityEN,
-      "nationalityAR": this.user_info_taken_using_authtoken.nationalityAR,
-      "gender": this.user_info_taken_using_authtoken.gender,
-      "idType": this.user_info_taken_using_authtoken.idType,
-      "titleEN": this.user_info_taken_using_authtoken.titleEN,
-      "titleAR": this.user_info_taken_using_authtoken.titleAR,
-      "UAEPassJson": this.user_info_taken_using_authtoken.UAEPassJson,
-      
-      "freezoneuno": this.reg_form_data?.dmccOption,    ///
-      "legaltypeuno": form.legal_Type,
-      "repfullnameen":form.companyrep_fullname,
-      "repfullnamear":form.companyrep_fullname,
-      "licenseissuingauthorityemirate":this.reg_form_data.issuingAuthority,  //dropdown
-      "IssuingAuthorityType":this.reg_form_data.expressType,
-      "captchakey":this.captcha_token,
-      "isbroker":form.isbroker,
-
-    }
-  
-        let data111 = { ...data, ...this.user_info_taken_using_authtoken };
-        console.log(data111);
-
-        let response;
-  
-        this.apiservice.registerCompanyAttachment(this.consts.registercompany ,this.sel_file_test,data).pipe(takeWhile(() => this.alive)).subscribe({
-          next: (success)=>{
-                  response=success;
-                  console.log(response);
-                  if(response.responseCode==200){
-                    this.response_code_after_submit=response.data.dictionary.requestno
-                    this.form1_Vis=false;
-                    this.note1="You have successfully submitted your request for company registration."
-                    this.note2="Our dedicated agents will now review your application, and upon approval, you will receive a confirmation email at your registered email address."
-                    this.note3="To proceed back to the main website, please click the button below."
-                    this.progress_val=100
-                  }
-                  else if(response.responseCode==400){
-                    this.response_code_after_submit=response.data.dictionary.requestno
-                    this.form1_Vis=false;
-                    this.note1="Thank you for submitting your request."
-                    this.note2="We would like to inform you that your request has already been successfully submitted and is currently under process."
-                    this.note2=this.note2+ "Rest assured, our team is diligently working on it, and we will get back to you at the earliest possible time."
-                    this.note3="Should you have any questions or need to communicate with us, please feel free to reach out at info@mofa.gov.ae, while kindly referring to your unique reference ID."
-                    this.progress_val=100
-                  }
-                  else if(response.responseCode==500){
-                    if(response.data.dictionary.message==="ORA-00001: unique constraint (MOFA_ADMIN.UK_COMPANY_REG) violated"){
-                      this.Common.showErrorMessage("License Already Registered!")
-                      return;
-                    }
-                    else{
-                      this.Common.showErrorMessage("something went wrong!!"+ response.data.dictionary.message)
-                      return;
-                    }
-                  }
-                  else{
-                    this.form1_Vis=true;
-                    this.Common.showErrorMessage("something went wrong!!"+ response.data.dictionary.message)
-                    return;
-                  }
-          }
-      })
-      
-      });
-
-      
-    } else {
-      this.Common.showErrorMessage("Please fill the mandatory Fields!!");
-    }
-  }
-
   
   submit() {
     console.log(this.attachment)
@@ -395,9 +284,10 @@ if(this.reg_form_data==undefined){
         console.log(data111);
 
         let response;
-  
+  this.common.showLoading();
         this.apiservice.registerCompanyAttachment(this.consts.registercompany ,this.sel_file_test,data).pipe(takeWhile(() => this.alive)).subscribe({
           next: (success)=>{
+            this.common.hideLoading();
                   response=success;
                   console.log(response);
                   if(response.responseCode==200){
@@ -408,28 +298,39 @@ if(this.reg_form_data==undefined){
                     this.note3="To proceed back to the main website, please click the button below."
                     this.progress_val=100
                   }
-                  else if(response.responseCode==400){
-                    this.response_code_after_submit=response.data.dictionary.requestno
-                    this.form1_Vis=false;
-                    this.note1="Thank you for submitting your request."
-                    this.note2="We would like to inform you that your request has already been successfully submitted and is currently under process."
-                    this.note2=this.note2+ "Rest assured, our team is diligently working on it, and we will get back to you at the earliest possible time."
-                    this.note3="Should you have any questions or need to communicate with us, please feel free to reach out at info@mofa.gov.ae, while kindly referring to your unique reference ID."
-                    this.progress_val=100
-                  }
-                  else if(response.responseCode==500){
-                    if(response.data.dictionary.message==="ORA-00001: unique constraint (MOFA_ADMIN.UK_COMPANY_REG) violated"){
-                      this.Common.showErrorMessage("License Already Registered!")
-                      return;
+                  else if(response.responseCode==500 && response.data.dictionary.request!=''){
+
+                    if(response.data.dictionary.message=="Invalid Captcha key"){
+                      console.log("invalid captcha key");
+                      this.Common.showErrorMessage("something went wrong");
+                       return;
                     }
                     else{
-                      this.Common.showErrorMessage("something went wrong!!"+ response.data.dictionary.message)
-                      return;
+                      this.response_code_after_submit=response.data.dictionary.requestno
+                      this.form1_Vis=false;
+                      this.note1="Thank you for submitting your request."
+                      this.note2="We would like to inform you that your request has already been successfully submitted and is currently under process."
+                      this.note2=this.note2+ "Rest assured, our team is diligently working on it, and we will get back to you at the earliest possible time."
+                      this.note3="Should you have any questions or need to communicate with us, please feel free to reach out at info@mofa.gov.ae, while kindly referring to your unique reference ID."
+                      this.progress_val=100
+
                     }
+
+                  
                   }
+                  // else if(response.responseCode==500 && response.data.dictionary.request==''){
+                  //   if(response.data.dictionary.message==="ORA-00001: unique constraint (MOFA_ADMIN.UK_COMPANY_REG) violated"){
+                  //     this.Common.showErrorMessage("License Already Registered")
+                  //     return;
+                  //   }
+                  //   else{
+                  //     this.Common.showErrorMessage("something went wrong"+ response.data.dictionary.message)
+                  //     return;
+                  //   }
+                  // }
                   else{
                     this.form1_Vis=true;
-                    this.Common.showErrorMessage("something went wrong!!"+ response.data.dictionary.message)
+                    this.Common.showErrorMessage("something went wrong"+ response.data.dictionary.message)
                     return;
                   }
           }
@@ -443,7 +344,7 @@ if(this.reg_form_data==undefined){
       }
       );
     } else {
-      this.Common.showErrorMessage("Please fill the mandatory Fields!!");
+      this.Common.showErrorMessage("Please fill the mandatory Fields");
     }
   }
   
@@ -482,22 +383,22 @@ if(this.reg_form_data==undefined){
   
   //OTP related functions start----------
 // Generates a OTP using random numbers
-   generateOTP(): string {
-    const digits = '0123456789';
-    let otp = '';
+  //  generateOTP(): string {
+  //   const digits = '0123456789';
+  //   let otp = '';
   
-    for (let i = 0; i < 6; i++) {
-      const randomIndex = Math.floor(Math.random() * 10);
-      otp += digits[randomIndex];
-    }
+  //   for (let i = 0; i < 6; i++) {
+  //     const randomIndex = Math.floor(Math.random() * 10);
+  //     otp += digits[randomIndex];
+  //   }
   
-    return otp;
-  }
+  //   return otp;
+  // }
 
   SendOTP(){
 
     let data, data1;
-    const OTP=this.generateOTP();
+    //const OTP=this.generateOTP();
 
     let email;
       let email2=this.companyDetailsForm.get('companyrep_EmailAddress')?.value;
@@ -511,7 +412,7 @@ if(this.reg_form_data==undefined){
 
     data={
       "uuid":this.user_info_taken_using_authtoken.uuid,
-      "OTP":OTP,
+      "OTP":"",
       "tradelicenseno":this.reg_form_data.tradeLicenseNumber,
       "emailID":email
       }
@@ -527,14 +428,6 @@ if(this.reg_form_data==undefined){
 
   openOTPPopup(templateRef: TemplateRef<any>) {
       this.rep_contact_no=this.companyDetailsForm.get('companyrep_MobileNumber')?.value;
-
-      // if(this.rep_contact_no===""){
-      //  this.Common.showErrorMessage('Enter Representative number to proceed');
-      //  return;
-      // }
-      // else
-      // {
-
       if(this.companyDetailsForm.get('isbroker')?.value===""){
         this.radiochosenornot=true;
       }
@@ -545,14 +438,16 @@ if(this.reg_form_data==undefined){
       if(this.companyDetailsForm.valid){
         this.SendOTP();  // writing sendOTP as a diff function so that it can be used in Resend OTP too.
         if(this.user_info_taken_using_authtoken.uuid==undefined||this.reg_form_data.tradeLicenseNumber==undefined){
-          this.common.showErrorMessage("UUID or tradelicence no is missing!!")
+          this.common.showErrorMessage("UUID or tradelicence no is missing")
           return;
         }
               this.dialog.open(templateRef, {
                 width: '280px',
-                panelClass: ['my-dialog','animate__animated','animate__zoomIn'],
+                panelClass: ['my-dialog', 'animate__animated', 'animate__zoomIn'],
                 backdropClass: 'normalpopupBackdropClass',
+                hasBackdrop: false, // Prevents closing on clicking outside the dialog
               });
+              
               this.countdownMinutes = 2;
               this.countdownSeconds = 40;
               this.countdownTotalSeconds = this.countdownMinutes * 60 + this.countdownSeconds;
@@ -563,10 +458,18 @@ if(this.reg_form_data==undefined){
                 this.countdownTotalSeconds--;
                 this.countdownMinutes = Math.floor(this.countdownTotalSeconds / 60);
                 this.countdownSeconds = this.countdownTotalSeconds % 60;
+
+                if (this.countdownTotalSeconds === 0) {
+                  // Countdown has expired, show the resend link
+                  this.showResendLink = true;
+                }
+                else{
+                  this.showResendLink = false;
+                }
               });
             }
             else{// invalid form
-              this.common.showErrorMessage("Provide valid details and Try Again!!")
+              this.common.showErrorMessage("Provide valid details and Try Again")
               return;
             }
   }
@@ -601,8 +504,10 @@ if(this.reg_form_data==undefined){
   }
 
     let OTPRetrival;
+    this.common.showLoading();
 
     this.apiservice.post(this.consts.validateOTPforCompanyRegn,data).subscribe({next:(success:any)=>{
+      this.common.hideLoading();
       OTPRetrival=success;
       if(OTPRetrival.data.dictionary.responsecode==1){
         this.Common.showSuccessMessage('OTP is verified'); // Show the verification alert
