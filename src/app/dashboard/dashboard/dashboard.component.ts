@@ -11,37 +11,28 @@ import { ApiService } from 'src/service/api.service';
 })
 export class DashboardComponent implements OnInit {
 
+  uuid:any;
+
   isButtonDisabled = false;
 
-  progress_val: number = 0;
-  totalrecords: number = 0;
   statisticsLists: any = {};
   statisticsDailyListsFilter: any[] = [];
   statisticsWeeklyListsFilter: any[] = [];
   statisticsMonthlyListsFilter: any[] = [];
-  statisticsData: any = {};
-  currentDate: Date = new Date();
-  currentDateStr: string = "2023-10-02T00:00:00"; // (new Date()).toDateString();
-  routesname: "pending" | "approve" = "pending";
-  routesurl: string = "";
-  loading: boolean = false;
-  selectedFilterOption: any = {
-    id: 0,
-    value: "Approved",
-  };
+
   totalTile = {
-    noofentity: 0,
-    noofcompanyregn: 0,
-    noofcompanyregnrequestapproved: 0,
-    noofcompletedattestation: 0,
-    noofrequests: 0,
-    nooflcarequestapproved: 0,
-    noofcoorequestapproved: 0,
+    noofpendingrequests:0,
+    noofcompletedrequests:0
   };
+
+  xAxisDataValues: string[] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
   lcaChartOptionattestation: EChartsOption = {};
   cooChartOptionattestation: EChartsOption = {};
   physicalChartOptionattestation: EChartsOption = {};
-  constructor(private common:CommonService, private consts:ConstantsService, private apicall:ApiService) { }
+
+
+  constructor(private consts: ConstantsService ,private apicall: ApiService, private common: CommonService) { }
 
 
   //Attestation Requests
@@ -58,8 +49,6 @@ export class DashboardComponent implements OnInit {
       right: '6%',
       bottom: '10%',
       top: '10%',
-      //containLabel: true,
-      //height: '90%'
   },
     tooltip: {},
     color: ['#b68a35', '#1b1d21' ],
@@ -72,21 +61,21 @@ export class DashboardComponent implements OnInit {
     xAxis: {
       type: 'category',
       boundaryGap: false,
-      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+      data: this.xAxisDataValues
     },
     yAxis: {
       type: 'value'
     },
     series: [
       {
-        name: 'Email',
+        name: 'Completed',
         type: 'line',
         smooth: true,
         stack: 'Total',
         data: [1200, 1320, 1010, 1340, 900, 2300, 5100]
       },
       {
-        name: 'Union Ads',
+        name: 'Pending',
         type: 'line',
         smooth: true,
         stack: 'Total',
@@ -231,178 +220,114 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.selectedFilterOption.uuid = "11122";
-    this.onClickFilterOptionDate("daily");
-    this.onClickFilterOptionDate("weekly");
-    this.onClickFilterOptionDate("monthly");
-  }
+    
+    let data11=this.common.getUserProfile();
+    let uuid;
+    if(data11!=null || data11!=undefined){
+      data11=JSON.parse(data11)
+      console.log(data11.Data)
+      uuid=data11.Data.uuid;
+      this.uuid=uuid;
 
-  onClickFilterOptionDate(type: "daily" | "weekly" | "monthly") {
-    const { Startdate, Enddate } = this.selectedFilterOption;
-    this.selectedFilterOption.StartdateStr = this.common.splitdatetime(Startdate)?.date?.toString();
-    this.selectedFilterOption.EnddateStr = this.common.splitdatetime(Enddate)?.date?.toString();
-    this.onClickFilterOptionDailyMonthlyWeekly(type);
-  }
-
-  onClickFilterOptionDailyMonthlyWeekly(
-    filterType: "daily" | "weekly" | "monthly"
-  ) {
-    let payload = {};
-    if (filterType === "daily") {
-      payload = {
-        date: this.common.splitdatetime(this.currentDate)?.date,
-        uuid: this.selectedFilterOption.uuid,
-      };
-    } else if (filterType === "weekly") {
-      payload = {
-        week: 43,
-        year: this.common.splitdatetime(this.currentDate)?.date,
-        uuid: this.selectedFilterOption.uuid,
-      };
-    } else if (filterType === "monthly") {
-      payload = {
-        Month: this.common.splitdatetime(this.currentDate)?.date,
-        year: this.common.splitdatetime(this.currentDate)?.date,
-        uuid: this.selectedFilterOption.uuid,
-      };
     }
-    this.getStatistics(filterType, payload);
+    else{
+      console.log("Invalid Session")
+      // this.common.logoutUser()
+    }
   }
 
-  getStatistics(filterType: "daily" | "weekly" | "monthly", data: any) {
-    const getLists =
-      filterType === "daily"? this.consts.getDailyStatistics: filterType === "weekly"? this.consts.getWeeklyStatistics: this.consts.getMonthlyStatistics;
-    this.loading = true;
-    this.apicall.post(getLists, data).subscribe((response: any) => {
-      this.loading = false;
-      const dictionary = this.routesname === "pending" ? response : response;
-      if (`${dictionary.responsecode}` === "1") {
-        const dataArray = dictionary.data;
-        this.statisticsLists = {
-          ...this.statisticsLists,
-          [filterType]: dataArray,
-        };
-        if (filterType === "daily") {
-          this.statisticsDailyListsFilter = this.statisticsLists?.daily;
-          this.totalTile.noofentity = this.statisticsDailyListsFilter.reduce(
-            (total: any, item: any) => total + item.noofentityrequest,
-            0
-          );
-          this.totalTile.noofcompanyregn =
-            this.statisticsDailyListsFilter.reduce(
-              (total: any, item: any) => total + item.noofcompanyregnrequest,
-              0
-            );
-          this.totalTile.noofcompanyregnrequestapproved =
-            this.statisticsDailyListsFilter.reduce(
-              (total: any, item: any) =>
-                total + item.noofcompanyregnrequestapproved,
-              0
-            );
-          this.totalTile.noofcompletedattestation =
-            this.statisticsDailyListsFilter.reduce(
-              (total: any, item: any) =>
-                total +
-                item.nooflcarequestcompleted +
-                item.noofentityrequestcompleted +
-                item.noofphysicalrequestcompleted,
-              0
-            );
-          this.totalTile.noofrequests = this.statisticsDailyListsFilter.reduce(
-            (total: any, item: any) =>
-              total +
-              item.nooflcarequest +
-              item.noofentityrequest +
-              item.noofphysicalrequest +
-              item.noofcoorequest +
-              item.noofcompanyregnrequest +
-              item.noofuserrequest,
-            0
-          );
-          this.totalTile.nooflcarequestapproved =
-            this.statisticsDailyListsFilter.reduce(
-              (total: any, item: any) => total + item.nooflcarequestapproved,
-              0
-            );
-          this.totalTile.noofcoorequestapproved =
-            this.statisticsDailyListsFilter.reduce(
-              (total: any, item: any) => total + item.noofcoorequestapproved,
-              0
-            );
-          this.bindDataToDaily();
-        } else if (filterType === "weekly") {
-          this.statisticsWeeklyListsFilter = this.statisticsLists?.weekly;
-        } else if (filterType === "monthly") {
-          this.statisticsMonthlyListsFilter = this.statisticsLists?.monthly;
-        }
-      }
-    });
-  }
+  onAttestationRequestDropdownChange(event: any, type:any): void {
+    // You can show an alert or perform any other action here
 
-  bindDataToDaily() {
-    this.onClickFilterOption("lca", "01");
-    this.onClickFilterOption("coo", "01");
-    this.onClickFilterOption("physical", "01");
-  }
-
-  onClickFilterOption(
-    type: "lca" | "coo" | "physical",
-    dayweekmonth: "01" | "02" | "03"
-  ) {
-    this.refreshAttestChartAll(type);
+    this.refreshAttestChartAll(type)
+    this.common.showSuccessMessage(event);
     let xAxis: string[] = [];
     let seriesDataRequest: number[] = [];
     let seriesDataCompleted: number[] = [];
     let statisticsListsFilter: any[] = [];
-    if (dayweekmonth) {
-      if (dayweekmonth === "01") {
-        statisticsListsFilter = this.statisticsDailyListsFilter;
-        statisticsListsFilter.forEach((row) => {
-          xAxis.push(row?.statdate);
-        });
-      } else if (dayweekmonth === "02") {
-        statisticsListsFilter = this.statisticsWeeklyListsFilter;
-        statisticsListsFilter.forEach((row) => {
-          xAxis.push(`${row?.weekno}/${row?.yearuno}`);
-        });
-      } else if (dayweekmonth === "03") {
-        statisticsListsFilter = this.statisticsMonthlyListsFilter;
-        statisticsListsFilter.forEach((row) => {
-          xAxis.push(`${row?.monthname}`);
-        });
+
+    let data;
+    if(event=="01")
+    {
+      data={
+        "date":"23-OCT-23",
+        "uuid":this.uuid
       }
     }
-    if (type) {
-      if (type === "lca") {
-        statisticsListsFilter.forEach((row) => {
-          seriesDataRequest.push(row?.nooflcarequest);
-          seriesDataCompleted.push(row?.nooflcarequestcompleted);
-        });
-      } else if (type === "coo") {
-        statisticsListsFilter.forEach((row) => {
-          seriesDataRequest.push(row?.noofcoorequest);
-          seriesDataCompleted.push(row?.noofcoorequestapproved);
-        });
-      } else if (type === "physical") {
-        statisticsListsFilter.forEach((row) => {
-          seriesDataRequest.push(row?.noofphysicalrequest);
-          seriesDataCompleted.push(row?.noofphysicalrequestcompleted);
-        });
-      }
+    else if(event=="02")
+    {
+      this.xAxisDataValues=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      
+        data={"week":"43",
+        "year":"2023",
+        "uuid":this.uuid}
+      
     }
-    //
-    // console.log("seriesDataRequest: ", seriesDataRequest);
-    // console.log("seriesDataCompleted: ", seriesDataCompleted);
-    this.refreshAttestationChart(
-      type,
-      xAxis,
-      seriesDataRequest,
-      seriesDataCompleted
-    );
+    else
+    {
+      data={
+        "Month":"Oct-2023",
+        "year":"2023",    
+        "uuid":this.uuid
+        }
+    }
+    const getLists = event === "01"
+        ? this.consts.getDailyStatistics
+        : event === "02"
+        ? this.consts.getWeeklyStatistics
+        : this.consts.getMonthlyStatistics;
+
+        this.apicall.post(getLists, data).subscribe((response: any) => {
+
+          if (response.responsecode == 1) {
+
+            let dataarray=response.data;
+
+            console.log(dataarray);
+
+            if (type === "LCA") {
+              this.statisticsDailyListsFilter = dataarray;
+              this.totalTile.noofpendingrequests = this.statisticsDailyListsFilter?.reduce(
+                (total: any, item: any) => total + item.nooflcarequest,
+                0
+              );
+
+              this.totalTile.noofcompletedrequests = this.statisticsDailyListsFilter?.reduce(
+                (total: any, item: any) => total + item.nooflcarequestcompleted,
+                0
+              );
+            }
+            else if (type === "COO") {
+              this.statisticsDailyListsFilter = dataarray;
+              this.totalTile.noofpendingrequests = this.statisticsDailyListsFilter?.reduce(
+                (total: any, item: any) => total + item.noofcoorequest,
+                0
+              );
+
+              this.totalTile.noofcompletedrequests = this.statisticsDailyListsFilter?.reduce(
+                (total: any, item: any) => total + item.nooflcarequestcompleted,
+                0
+              );
+            }
+            else{  //Physical
+              this.statisticsDailyListsFilter = dataarray;
+              this.totalTile.noofpendingrequests = this.statisticsDailyListsFilter?.reduce(
+                (total: any, item: any) => total + item.nooflcarequest,
+                0
+              );
+
+              this.totalTile.noofcompletedrequests = this.statisticsDailyListsFilter?.reduce(
+                (total: any, item: any) => total + item.nooflcarequestcompleted,
+                0
+              );
+            }
+
+
+          }});
+
   }
 
-
-  refreshAttestChartAll(type: "lca" | "coo" | "physical" | "") {
+  refreshAttestChartAll(type:any) {
     const commonObject: EChartsOption = {
       legend: {
         right: "5%",
@@ -452,91 +377,16 @@ export class DashboardComponent implements OnInit {
         },
       ],
     };
-    if (type === "lca") {
+    if (type === "01") {
       this.lcaChartOptionattestation = { ...commonObject };
-    } else if (type === "coo") {
+    } else if (type === "02") {
       this.cooChartOptionattestation = { ...commonObject };
-    } else if (type === "physical") {
+    } else if (type === "03") {
       this.physicalChartOptionattestation = { ...commonObject };
     } else {
       this.lcaChartOptionattestation = { ...commonObject };
       this.cooChartOptionattestation = { ...commonObject };
       this.physicalChartOptionattestation = { ...commonObject };
-    }
-  }
-
-  refreshAttestationChart(
-    type: "lca" | "coo" | "physical",
-    xAxis: string[],
-    seriesDataRequest: number[],
-    seriesDataCompleted: number[]
-  ) {
-    if (type === "lca") {
-      this.lcaChartOptionattestation.xAxis = {
-        type: "category",
-        boundaryGap: false,
-        data: xAxis,
-      };
-      this.lcaChartOptionattestation.series = [
-        {
-          name: "Requests completed",
-          type: "line",
-          smooth: true,
-          stack: "Total",
-          data: seriesDataCompleted,
-        },
-        {
-          name: "Number of requests",
-          type: "line",
-          smooth: true,
-          stack: "Total",
-          data: seriesDataRequest,
-        },
-      ];
-    } else if (type === "coo") {
-      this.cooChartOptionattestation.xAxis = {
-        type: "category",
-        boundaryGap: false,
-        data: xAxis,
-      };
-      this.cooChartOptionattestation.series = [
-        {
-          name: "Requests completed",
-          type: "line",
-          smooth: true,
-          stack: "Total",
-          data: seriesDataCompleted,
-        },
-        {
-          name: "Number of requests",
-          type: "line",
-          smooth: true,
-          stack: "Total",
-          data: seriesDataRequest,
-        },
-      ];
-    } else if (type === "physical") {
-      this.physicalChartOptionattestation.xAxis = {
-        type: "category",
-        boundaryGap: false,
-        data: xAxis,
-      };
-      this.physicalChartOptionattestation.series = [
-        {
-          name: "Requests completed",
-          type: "line",
-          smooth: true,
-          stack: "Total",
-          data: seriesDataCompleted,
-        },
-        {
-          name: "Number of requests",
-          type: "line",
-          smooth: true,
-          stack: "Total",
-          data: seriesDataRequest,
-        },
-      ];
     }
   }
 

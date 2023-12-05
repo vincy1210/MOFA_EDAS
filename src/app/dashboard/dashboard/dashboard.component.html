@@ -33,33 +33,28 @@
         <div class="grid grid-cols-1 bg-white-r p-5">
             <div class="grid grid-cols-3">
                 <div>
-                  <h1 class="font-bold float-left mr-3">{{'Attestation Requests' | translate}}</h1>
+                  <h1 class="font-bold float-left mr-3">LCA {{'Attestation Requests' | translate}}</h1>
                   <div style="width:100px" class="float-left">
                     <mat-form-field appearance="outline" >
                         <mat-label>{{'Select' | translate}}</mat-label>
-                      <mat-select (selectionChange)="onClickFilterOption('lca', $event.value)">
-                        <mat-option value="01">{{'Week' | translate}}</mat-option>
-                        <mat-option value="02">{{'Month' | translate}}</mat-option>
-                        <mat-option value="03">{{'Year' | translate}}</mat-option>
+                      <mat-select
+                  (selectionChange)="onAttestationRequestDropdownChange($event.value, 'LCA')">
+                        <mat-option value="01">{{'Day' | translate}}</mat-option>
+                        <mat-option value="02">{{'Week' | translate}}</mat-option>
+                        <mat-option value="03">{{'Month' | translate}}</mat-option>
                       </mat-select>
-                      
                     </mat-form-field>
                 </div>
-                 
                 </div>
-               
                 <div class="col-span-2">
                   <div class="flex justify-end">
                     <mat-list role="list" class="kd-guage-legends rkpi-guage-legends">
-        
                       <mat-list-item role="listitem">
-                        <mat-icon class="mr-1 kd-dot kdl-chart-color-brown">circle</mat-icon>{{'Total Attestation Requests' | translate}}
+                        <mat-icon class="mr-1 kd-dot kdl-chart-color-brown">circle</mat-icon>{{'Pending Requests' | translate}}
                       </mat-list-item>
                       <mat-list-item role="listitem">
-                        <mat-icon class="mr-1 kd-dot kdl-chart-color-black">circle</mat-icon>{{'Manual Attestation Requests' | translate}}
+                        <mat-icon class="mr-1 kd-dot kdl-chart-color-black">circle</mat-icon>{{'Completed Requests' | translate}}
                       </mat-list-item>
-                      
-        
                     </mat-list>
                   </div>
                 </div>
@@ -67,12 +62,92 @@
               </div>
               <div class="grid grid-cols-1">
                 <div class="ps-01">
-                  <div echarts [options]="chartOptionattestationrequest" class="demo-chart pb-3" style="height:300px; width:100%"></div>
+                  <div echarts [options]="lcaChartOptionattestation" class="demo-chart pb-3" style="height:300px; width:100%"></div>
                 </div>
                 </div>
-
         </div>
     </div>
+
+    <!-- COO -->
+
+    <div class="grid grid-cols-1 px-5 py-3">
+      <div class="grid grid-cols-1 bg-white-r p-5">
+          <div class="grid grid-cols-3">
+              <div>
+                <h1 class="font-bold float-left mr-3">COO {{'Attestation Requests' | translate}}</h1>
+                <div style="width:100px" class="float-left">
+                  <mat-form-field appearance="outline" >
+                      <mat-label>{{'Select' | translate}}</mat-label>
+                    <mat-select
+                (selectionChange)="onAttestationRequestDropdownChange($event.value, 'COO')">
+                      <mat-option value="01">{{'Day' | translate}}</mat-option>
+                      <mat-option value="02">{{'Week' | translate}}</mat-option>
+                      <mat-option value="03">{{'Month' | translate}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+              </div>
+              </div>
+              <div class="col-span-2">
+                <div class="flex justify-end">
+                  <mat-list role="list" class="kd-guage-legends rkpi-guage-legends">
+                    <mat-list-item role="listitem">
+                      <mat-icon class="mr-1 kd-dot kdl-chart-color-brown">circle</mat-icon>{{'Pending Requests' | translate}}
+                    </mat-list-item>
+                    <mat-list-item role="listitem">
+                      <mat-icon class="mr-1 kd-dot kdl-chart-color-black">circle</mat-icon>{{'Completed Requests' | translate}}
+                    </mat-list-item>
+                  </mat-list>
+                </div>
+              </div>
+             
+            </div>
+            <div class="grid grid-cols-1">
+              <div class="ps-01">
+                <div echarts [options]="cooChartOptionattestation" class="demo-chart pb-3" style="height:300px; width:100%"></div>
+              </div>
+              </div>
+      </div>
+  </div>
+
+  <!-- Physical -->
+  <div class="grid grid-cols-1 px-5 py-3">
+    <div class="grid grid-cols-1 bg-white-r p-5">
+        <div class="grid grid-cols-3">
+            <div>
+              <h1 class="font-bold float-left mr-3">Physical {{'Attestation Requests' | translate}}</h1>
+              <div style="width:100px" class="float-left">
+                <mat-form-field appearance="outline" >
+                    <mat-label>{{'Select' | translate}}</mat-label>
+                  <mat-select
+              (selectionChange)="onAttestationRequestDropdownChange($event.value, 'Physical')">
+                    <mat-option value="01">{{'Day' | translate}}</mat-option>
+                    <mat-option value="02">{{'Week' | translate}}</mat-option>
+                    <mat-option value="03">{{'Month' | translate}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+            </div>
+            </div>
+            <div class="col-span-2">
+              <div class="flex justify-end">
+                <mat-list role="list" class="kd-guage-legends rkpi-guage-legends">
+                  <mat-list-item role="listitem">
+                    <mat-icon class="mr-1 kd-dot kdl-chart-color-brown">circle</mat-icon>{{'Pending Requests' | translate}}
+                  </mat-list-item>
+                  <mat-list-item role="listitem">
+                    <mat-icon class="mr-1 kd-dot kdl-chart-color-black">circle</mat-icon>{{'Completed Requests' | translate}}
+                  </mat-list-item>
+                </mat-list>
+              </div>
+            </div>
+           
+          </div>
+          <div class="grid grid-cols-1">
+            <div class="ps-01">
+              <div echarts [options]="physicalChartOptionattestation" class="demo-chart pb-3" style="height:300px; width:100%"></div>
+            </div>
+            </div>
+    </div>
+</div>
 
 
 

@@ -31,53 +31,55 @@
 
           <p-toolbar  >
             <ng-template pTemplate="left">
-                <div style="padding: 5px;" class="col-md-3 col-lg-3 col-sm-6">
-                        <mat-form-field class="searchboxinput" >
-                          <mat-label><mat-icon style="font-size:larger;">{{'search' | translate}}</mat-icon> {{'Search keyword' | translate}}</mat-label>
-                          <input  matInput type="text" (input)="tableref.filterGlobal($any($event.target).value, 'contains')" placeholder="Search keyword">
-                        </mat-form-field>
-                </div>
-             
-              <div *ngIf="enableFilters" style="padding: 5px;" class="col-md-3 col-lg-3  col-md-6">
-                        <mat-form-field style="height: 20px; margin: 0; padding-top: 0; margin-top: -2.89em !important;width: 170px; ">
-                          <mat-label>{{'Start Date' | translate}}</mat-label>
-                          <input matInput [matDatepicker]="decDatepicker1" [max]="todayModel" [(ngModel)]="oneMonthAgo" placeholder="{{'From' | translate}}" name="createdatefrom"  />
-                          <mat-datepicker-toggle matSuffix [for]="decDatepicker1"></mat-datepicker-toggle>
-                          <mat-datepicker #decDatepicker1></mat-datepicker>
-                        </mat-form-field>
-                </div>
-
-                <div *ngIf="enableFilters" style="padding: 5px;" class="col-md-3 col-lg-3  col-sm-6">
-                  <mat-form-field style="height: 20px; margin: 0; padding-top: 0; margin-top: -2.89em !important; width: 170px;">
-                    <mat-label>{{'End Date' | translate}}</mat-label>
-                    <input matInput [matDatepicker]="decDatepicker2" [min]="oneMonthAgo" [max]="today" placeholder="{{'To' | translate}}" [(ngModel)]="todayModel" name="createdateto"  />
-                    <mat-datepicker-toggle matSuffix [for]="decDatepicker2"></mat-datepicker-toggle>
-                    <mat-datepicker #decDatepicker2></mat-datepicker>
-                  </mat-form-field>
-                </div>
-                <div *ngIf="enableFilters" style="padding: 5px;" clasFrs="col-md-3 col-lg-3">
-    <button pButton pRipple label="{{'Apply' | translate}}" class="p-button-text primary" (click)="InitTable()"></button>
-
-                </div>
-              
-            </ng-template>
-         
+              <div style="padding: 5px;" class="col-md-3 col-lg-3 col-sm-6">
+                      <mat-form-field class="searchboxinput" >
+                        <mat-label><mat-icon style="font-size:larger;">{{'search' | translate}}</mat-icon> {{'Search keyword' | translate}}</mat-label>
+                        <input  matInput type="text" (input)="tableref.filterGlobal($any($event.target).value, 'contains')" placeholder="Search keyword">
+                      </mat-form-field>
+              </div>
+           
+</ng-template>
           <ng-template pTemplate="right">
-          <button type="button" pButton  pRipple  icon="pi pi-file-excel"  (click)="exportExcel()"  class="mr-2 grid-header-right-icon"  pTooltip="Excel"
-          tooltipPosition="bottom"
-        ></button>
-          
+            <div *ngIf="enableFilters" style="padding: 5px;" class="col-md-3 col-lg-3  col-md-6">
+                      <mat-form-field style="height: 20px; margin: 0; padding-top: 0; margin-top: -2.89em !important;width: 170px; ">
+                        <mat-label>{{'Start Date' | translate}}</mat-label>
+                        <input matInput [matDatepicker]="decDatepicker1" [max]="todayModel" [(ngModel)]="oneMonthAgo" placeholder="{{'From' | translate}}" name="createdatefrom"  />
+                        <mat-datepicker-toggle matSuffix [for]="decDatepicker1"></mat-datepicker-toggle>
+                        <mat-datepicker #decDatepicker1></mat-datepicker>
+                      </mat-form-field>
+              </div>
 
-            <button  type="button"
-            pButton  pRipple  icon="pi pi-filter"   (click)="clickChips()"  class="mr-2 grid-header-right-icon"
-            [ngClass]="{ clicked: enableFilters }"  [pTooltip]="'Filter' | translate"  tooltipPosition="bottom"
-          ></button>
+              <div *ngIf="enableFilters" style="padding: 5px;" class="col-md-3 col-lg-3  col-sm-6">
+                <mat-form-field style="height: 20px; margin: 0; padding-top: 0; margin-top: -2.89em !important; width: 170px;">
+                  <mat-label>{{'End Date' | translate}}</mat-label>
+                  <input matInput [matDatepicker]="decDatepicker2" [min]="oneMonthAgo" [max]="today" placeholder="{{'To' | translate}}" [(ngModel)]="todayModel" name="createdateto"  />
+                  <mat-datepicker-toggle matSuffix [for]="decDatepicker2"></mat-datepicker-toggle>
+                  <mat-datepicker #decDatepicker2></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div *ngIf="enableFilters" style="padding: 5px;" clasFrs="col-md-3 col-lg-3">
+  <button pButton pRipple label="{{'Apply' | translate}}" class="p-button-text primary" (click)="InitTable()"></button>
+
+              </div>
+            
+        
+       
+        
+        <button type="button" pButton  pRipple  icon="pi pi-file-excel"  (click)="exportExcel()"  class="mr-2 grid-header-right-icon"  pTooltip="Excel"
+        tooltipPosition="bottom"
+      ></button>
+        
 
           <button  type="button"
-          pButton  pRipple  icon="pi pi-user-plus"   (click)="openDialog()"  class="mr-2 grid-header-right-icon"
-          [ngClass]="{ clicked: enableFilters }"  [pTooltip]="'Add User' | translate"  tooltipPosition="bottom"
+          pButton  pRipple  icon="pi pi-filter"   (click)="clickChips()"  class="mr-2 grid-header-right-icon"
+          [ngClass]="{ clicked: enableFilters }"  [pTooltip]="'Filter' | translate"  tooltipPosition="bottom"
         ></button>
-        </ng-template>
+
+        <button  type="button"
+        pButton  pRipple  icon="pi pi-user-plus"   (click)="openDialog()"  class="mr-2 grid-header-right-icon"
+        [ngClass]="{ clicked: enableFilters }"  [pTooltip]="'Add User' | translate"  tooltipPosition="bottom"
+      ></button>
+      </ng-template>
 
     
          
