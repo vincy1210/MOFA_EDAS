@@ -37,6 +37,7 @@
               'invoicedate'
             ]"
           >
+<<<<<<< HEAD
           <ng-template pTemplate="caption">
             <p-toolbar  >
               <ng-template pTemplate="left">
@@ -85,6 +86,51 @@
             
           </ng-template>
 
+=======
+            <ng-template pTemplate="caption">
+              <div class="p-d-flex grid-header">
+                <div class="grid-header-left">
+                  <span class="p-input-icon-left p-ml-auto grid-search">
+                    <i class="pi pi-search"></i>
+                    <input
+                      pInputText
+                      type="text"
+                      (input)="
+                        tableref.filterGlobal(
+                          $any($event.target).value,
+                          'contains'
+                        )
+                      "
+                      placeholder="Search keyword"
+                    />
+                  </span>
+                </div>
+                <div class="grid-header-right">
+                  <button
+                    type="button"
+                    pButton
+                    pRipple
+                    icon="pi pi-file-excel"
+                    (click)="exportExcel()"
+                    class="mr-2 grid-header-right-icon"
+                    pTooltip="Excel export"
+                    tooltipPosition="bottom"
+                  ></button>
+                  <button
+                    type="button"
+                    pButton
+                    pRipple
+                    icon="pi pi-filter"
+                    (click)="clickChips()"
+                    class="mr-2 grid-header-right-icon"
+                    [ngClass]="{'clicked': enableFilters}"
+                    pTooltip="Filter"
+                    tooltipPosition="bottom"
+                  ></button>
+                </div>
+              </div>
+            </ng-template>
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
             <ng-template pTemplate="header" let-columns>
               <tr>
                 <!-- <th style="width: 3rem">

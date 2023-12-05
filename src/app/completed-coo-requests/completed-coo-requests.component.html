@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div class="grid grid-cols-1" color="primary"  class="page-header">
              
   <label style="font-size: 14px; color: white; font-weight: bold;">{{'COO Attestation(s)' | translate}} - {{'Completed' | translate}}</label>
@@ -9,11 +10,28 @@
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 tablepadding">
         <div  class="col-span-3" >
 
+=======
+<!-- <app-loader></app-loader> -->
+<div>
+  <div class="grid grid-cols-1" color="primary" class="page-header">
+    <h3>
+      {{ "label.completedCooRequests.mainpage.title" | translate }}
+    </h3>
+  </div>
+  <div class="company-bg completedCooRequests-page">
+    <div class="mx-auto completedCooRequests-window">
+      <div class="grid grid-cols-1 gap-4">
+        <div class="bg-white rounded-lg p-5 col-span-2">
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
           <p-table
             [(selection)]="selectedAttestations"
             dataKey="attestationrequno"
             [scrollable]="true"
+<<<<<<< HEAD
             selectionMode="single"
+=======
+            selectionMode="multiple"
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
             #tableref
             [rowHover]="true"
             [paginator]="true"
@@ -21,10 +39,17 @@
             [filterDelay]="0"
             [totalRecords]="totalrecords"
             [value]="cooAttestationLists"
+<<<<<<< HEAD
             [rows]="5"
             [columns]="cols"
             [showCurrentPageReport]="true"
             [rowsPerPageOptions]="[5, 10]"
+=======
+            [rows]="10"
+            [columns]="cols"
+            [showCurrentPageReport]="true"
+            [rowsPerPageOptions]="[10, 25, 50]"
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
             [loading]="loading"
             styleClass="p-datatable-customers p-datatable-gridlines"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
@@ -36,6 +61,7 @@
               'attestreqdate',
             ]"
           >
+<<<<<<< HEAD
           <ng-template pTemplate="caption">
             <p-toolbar  >
               <ng-template pTemplate="left">
@@ -92,6 +118,61 @@
                   <p-sortIcon
                     field="code"
                     *ngIf="col.field !== 'actions'"
+=======
+            <ng-template pTemplate="caption">
+              <div class="p-d-flex grid-header">
+                <div class="grid-header-left">
+                  <span class="p-input-icon-left p-ml-auto grid-search">
+                    <i class="pi pi-search"></i>
+                    <input
+                      pInputText
+                      type="text"
+                      (input)="
+                        tableref.filterGlobal(
+                          $any($event.target).value,
+                          'contains'
+                        )
+                      "
+                      placeholder="Search keyword"
+                    />
+                  </span>
+                </div>
+                <div class="grid-header-right">
+                  <button
+                    type="button"
+                    pButton
+                    pRipple
+                    icon="pi pi-file-excel"
+                    (click)="exportExcel()"
+                    class="mr-2 grid-header-right-icon"
+                    pTooltip="Excel export"
+                    tooltipPosition="bottom"
+                  ></button>
+                  <button
+                    type="button"
+                    pButton
+                    pRipple
+                    icon="pi pi-filter"
+                    (click)="clickChips()"
+                    class="mr-2 grid-header-right-icon"
+                    [ngClass]="{ clicked: enableFilters }"
+                    pTooltip="Filter"
+                    tooltipPosition="bottom"
+                  ></button>
+                </div>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <!-- <th style="width: 3rem">
+                      <p-tableHeaderCheckbox> </p-tableHeaderCheckbox>
+                    </th> -->
+                <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                  {{ col.header | translate }}
+                  <p-sortIcon
+                    field="code"
+                    *ngIf="col.field !== 'actions' && enableFilters"
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
                   ></p-sortIcon>
                   <p-columnFilter
                     *ngIf="col.field !== 'actions' && enableFilters"
@@ -100,11 +181,18 @@
                     display="menu"
                   ></p-columnFilter>
                 </th>
+<<<<<<< HEAD
                 <th pFrozenColumn alignFrozen="right">{{'Action' | translate}}</th>
               </tr>
             </ng-template>
             <ng-template pTemplate="body" let-data>
               <tr [pSelectableRow]="data">
+=======
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-data>
+              <tr>
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
                 <!-- <td>
                       <p-tableCheckbox [value]="data"></p-tableCheckbox>
                     </td> -->
@@ -117,16 +205,25 @@
                 <!-- <td>
                   <span class="image-text">{{ data.entityshareamount }}</span>
                 </td> -->
+<<<<<<< HEAD
                 <td style="text-align: right;">
+=======
+                <td>
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
                   <span class="image-text">{{ data.totalamount }}</span>
                 </td>
                 <td>
                   <span class="image-text">{{
+<<<<<<< HEAD
                     common.splitdatetime(data.declarationdate)?.date
+=======
+                    splitdatetime(data.declarationdate)?.date
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
                   }}</span>
                 </td>
                 <td>
                   <span class="image-text">{{
+<<<<<<< HEAD
                     common.splitdatetime(data.attestreqdate)?.date
                   }}</span>
                 </td>
@@ -138,6 +235,11 @@
                
 </td>
                 
+=======
+                    splitdatetime(data.attestreqdate)?.date
+                  }}</span>
+                </td>
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
               </tr>
             </ng-template>
             <ng-template pTemplate="emptymessage">
@@ -146,6 +248,7 @@
               </tr>
             </ng-template>
           </p-table>
+<<<<<<< HEAD
   </div>
              
        
@@ -178,3 +281,10 @@
 
 </p-dialog>
   
+=======
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb

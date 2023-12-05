@@ -3,6 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject } from 'rxjs';
 import * as $ from 'jquery';
+<<<<<<< HEAD
 import * as forge from 'node-forge';
 import { Router } from '@angular/router';
 
@@ -11,6 +12,9 @@ import { DatePipe } from '@angular/common';
 import { AbstractControl, ValidatorFn } from '@angular/forms';
 
 
+=======
+import { DatePipe } from '@angular/common';
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
 
 @Injectable({
   providedIn: 'root',
@@ -37,6 +41,7 @@ export class CommonService {
   private selectedcompany = new BehaviorSubject<string>('');
   private freeZone = new BehaviorSubject<string>('');
 
+<<<<<<< HEAD
   private inactivityTimer: any;
   private readonly INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minutes in milliseconds
   isSidebar:boolean=false
@@ -101,6 +106,13 @@ export class CommonService {
   }
 
   
+=======
+  constructor(
+    private translate: TranslateService,
+    private Toastr: ToastrService,
+    private datePipe: DatePipe
+  ) {}
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
 
   //toaster message alerts
   showErrorMessage(data: any) {
@@ -149,6 +161,15 @@ export class CommonService {
     return this.dataSubject.asObservable();
   }
 
+  setDataCommon(objData: { key: string, value: object }) {
+    const data = JSON.stringify(objData);
+    this.dataSubject.next(data);
+  }
+
+  getDataCommon() {
+    return this.dataSubject.asObservable();
+  }
+
   setUserIfoData(data: string) {
     this.userinfo.next(data);
   }
@@ -165,6 +186,7 @@ export class CommonService {
     return this.RegisteredCompanyDetails.asObservable();
   }
 
+<<<<<<< HEAD
   
 
   // showLoading(): void {
@@ -238,6 +260,24 @@ export class CommonService {
    }
  
 
+=======
+  showLoading(): void {
+    $('#loading').show();
+  }
+
+  hideLoading(): void {
+    $('#loading').hide();
+  }
+
+  setSelectedCompany(data: string) {
+    this.selectedcompany.next(data);
+  }
+
+  getSelectedCompany() {
+    return this.selectedcompany.asObservable();
+  }
+
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
   setfreezone(data: string) {
     this.freeZone.next(data);
   }
@@ -246,6 +286,7 @@ export class CommonService {
     return this.freeZone.asObservable();
   }
 
+<<<<<<< HEAD
   // toggleSidebar() {
   //   this.sidebarOpen = !this.sidebarOpen;
   // }
@@ -296,11 +337,14 @@ export class CommonService {
   //   }
   //   return null; // Invalid or null datetime string
   // }
+=======
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
   splitdatetime(datetimeString: any) {
     if (datetimeString && typeof datetimeString === 'string') {
       const dateTimeParts = datetimeString.split('T'); // Splitting the string at 'T'
       if (dateTimeParts.length === 2) {
         return {
+<<<<<<< HEAD
           date: this.datePipe.transform(dateTimeParts[0], 'dd-MMM-yyyy'),
           time: dateTimeParts[1],
         };
@@ -312,6 +356,12 @@ export class CommonService {
         };
   
       }
+=======
+          date: dateTimeParts[0],
+          time: dateTimeParts[1],
+        };
+      }
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
     }
     return null; // Invalid or null datetime string
   }
@@ -332,6 +382,7 @@ export class CommonService {
     }
     return null; // Invalid or null datetime string
   }
+<<<<<<< HEAD
 
   setUserProfile(userProfile: any) {
     console.log(userProfile);
@@ -514,4 +565,6 @@ export class CommonService {
   }
   
   
+=======
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
 }

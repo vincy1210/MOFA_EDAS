@@ -7,6 +7,7 @@ import * as XLSX from 'xlsx';
 import { ModalPopupService } from 'src/service/modal-popup.service';
 import { AttestationStatusEnum } from 'src/app/shared/models/attestation-status.model';
 import { CommonService } from 'src/service/common.service';
+<<<<<<< HEAD
 import { DatePipe } from '@angular/common';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { LazyLoadEvent } from 'primeng/api';
@@ -15,6 +16,8 @@ import { environment } from 'src/environments/environment';
 
 
 
+=======
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
 
 @Component({
   selector: 'app-physical-attestation',
@@ -36,6 +39,7 @@ export class PhysicalAttestationComponent implements OnInit {
   totalFineAmount: any;
   totalAttestationFee: any;
   totalFee: any;
+<<<<<<< HEAD
   uuid:any;
   user_mailID:string='';
   today: Date = new Date(); 
@@ -78,6 +82,8 @@ isfilenotfouund:boolean=false;
 fields: { label: string, value: any }[] = [];
 isButtonDisabled = false;
 paymentcount=environment.appdetails.payment_count;
+=======
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
 
   constructor(
     private confirmationService:ConfirmationService,private messageService:MessageService,
@@ -85,6 +91,7 @@ paymentcount=environment.appdetails.payment_count;
     public translate: TranslateService,
     public apiservice: ApiService,
     public consts: ConstantsService,
+<<<<<<< HEAD
     public common: CommonService,private datePipe: DatePipe, private fb:FormBuilder
  
   ) {
@@ -101,6 +108,10 @@ paymentcount=environment.appdetails.payment_count;
       companyname: ''
     });
   }
+=======
+    private common: CommonService
+  ) {}
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
 
   ngOnInit(): void {
     this.currentcompany=this.common.getSelectedCompany().companyuno;
@@ -160,10 +171,15 @@ paymentcount=environment.appdetails.payment_count;
       },
       {
         field: 'status',
+<<<<<<< HEAD
         header: 'status',
         width:'10%'
       },
    
+=======
+        header: 'label.physicalAttestDetails.physicalAttestList.status',
+      },
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
     ];
    // this.InitTable();
   }
@@ -178,6 +194,7 @@ paymentcount=environment.appdetails.payment_count;
     this.enableFilters = !this.enableFilters;
   }
 
+<<<<<<< HEAD
   globalFilter(row: any, globalFilterValue: string): boolean {
     for (const key in row) {
       if (row[key] && row[key].toString().toLowerCase().includes(globalFilterValue.toLowerCase())) {
@@ -209,6 +226,16 @@ paymentcount=environment.appdetails.payment_count;
       "limit":200 + ($event.first ?? 0),
       "Startdate":this.common.formatDateTime_API_payload(this.oneMonthAgo.toDateString()),
       "Enddate":this.common.formatDateTime_API_payload(this.todayModel.toDateString())
+=======
+  getInvoiceAttestations() {
+    this.loading = true;
+    let data = {
+      companyuno: '1',
+      uuid: '12223',
+      token: '12332',
+      startnum: 1,
+      endnum: 10,
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
     };
     this.loading=true;
     this.common.showLoading();
@@ -216,9 +243,13 @@ paymentcount=environment.appdetails.payment_count;
     this.apiservice
       .post(this.consts.getInvoiceAttestations, data)
       .subscribe((response: any) => {
+<<<<<<< HEAD
         this.common.hideLoading();
 
        this.loading=false;
+=======
+        this.loading = false;
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
         if (`${response.responsecode}` === '1') {
           const dataArray = response.data;
 	   this.totalrecords=response.recordcount;
@@ -238,6 +269,7 @@ paymentcount=environment.appdetails.payment_count;
               row.status = '';
             }
           });
+<<<<<<< HEAD
 
           this.datasource=this.invoiceRequestLists;
           if ($event.globalFilter) {
@@ -252,6 +284,8 @@ paymentcount=environment.appdetails.payment_count;
             this.totalrecords=this.invoiceRequestLists .length;
           }
           console.log(this.datasource);
+=======
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
         }
       });
 
@@ -291,6 +325,9 @@ paymentcount=environment.appdetails.payment_count;
       status: this.translate.instant(
         'status'
       ),
+      status: this.translate.instant(
+        'label.physicalAttestDetails.physicalAttestList.status'
+      ),
     };
     const dataList: any = [];
     this.invoiceRequestLists.map((item: any) => {
@@ -300,7 +337,11 @@ paymentcount=environment.appdetails.payment_count;
       dataItem[jsonData.invoiceno] = item.invoiceno;
       dataItem[jsonData.invoiceamount] = item.invoiceamount;
       dataItem[jsonData.invoicecurrency] = item.invoicecurrency;
+<<<<<<< HEAD
       dataItem[jsonData.invoicedate] = this.splitdatetime1(item.invoicedate)?.date;
+=======
+      dataItem[jsonData.invoicedate] = item.invoicedate;
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
       dataItem[jsonData.status] = item.status;
       dataList.push(dataItem);
     });
@@ -313,6 +354,7 @@ paymentcount=environment.appdetails.payment_count;
   splitdatetime1(date: any) {
     return this.common.splitdatetime1(date);
   }
+<<<<<<< HEAD
 loadsidepanel(event:any){
   // this.common.showLoading();
    console.log(event);
@@ -785,4 +827,27 @@ openNew(data:any) {
 }
 
  
+=======
+
+  loadsidepanel(event: any) {
+    this.noOfInvoicesSelected = this.selectedAttestations.length;
+    this.totalFineAmount = this.selectedAttestations.reduce(
+      (total: any, item: any) => total + item.fineamount,
+      0
+    );
+    this.totalAttestationFee = this.selectedAttestations.reduce(
+      (total: any, item: any) => total + item.feesamount,
+      0
+    );
+    this.totalFee = this.totalFineAmount + this.totalAttestationFee;
+    this.shouldShow = true;
+    if (this.selectedAttestations.length > 1) {
+      // this.previewvisible = false;
+      // this.Timelinevisible = false;
+    } else if (this.selectedAttestations.length == 0) {
+      this.shouldShow = false;
+    } else {
+    }
+  }
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
 }

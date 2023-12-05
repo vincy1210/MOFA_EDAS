@@ -21,7 +21,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MAT_CHIPS_DEFAULT_OPTIONS, MatChipsModule } from '@angular/material/chips';
+import {
+  MAT_CHIPS_DEFAULT_OPTIONS,
+  MatChipsModule,
+} from '@angular/material/chips';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
@@ -115,6 +118,7 @@ import { CooAttestationCreateComponent } from './coo-attestation/coo-attestation
 import { CompletedAttestationComponent } from './completed-attestation/completed-attestation.component';
 import { ModalPopupService } from 'src/service/modal-popup.service';
 import { DatePipe } from '@angular/common';
+<<<<<<< HEAD
 import { environment } from 'src/environments/environment.prod';
 import { LeftMenuDrawerComponent } from './shared/components/left-menu-drawer/left-menu-drawer.component';
 import { AttestationWorkflowComponent } from './shared/components/attestation-workflow/attestation-workflow.component';
@@ -154,6 +158,32 @@ import { FinesComponent } from './reports/fines/fines.component';
 
 
 
+=======
+import { CompletedCooRequestsComponent } from './completed-coo-requests/completed-coo-requests.component';
+import { PageNotFoundComponent } from './shared/not-found.component';
+import { AttestationWorkflowComponent } from './shared/components/attestation-workflow/attestation-workflow.component';
+import { LeftMenuDrawerComponent } from './shared/components/left-menu-drawer/left-menu-drawer.component';
+import { ESealTestComponent } from './e-seal-test/e-seal-test.component';
+// import { PrimeIcons } from 'primeng/api';
+
+const routes: Routes = [
+  {
+    path: '',
+    redirectTo: '/registration',
+    pathMatch: 'full',
+  },
+  { path: 'registration', component: RegistrationComponent },
+  { path: 'companydetails', component: CompanydetailsComponent },
+  { path: 'physicalattestation', component: PhysicalAttestationComponent },
+  { path: 'cooattestation', component: CooAttestationComponent },
+  { path: 'completedcoorequests', component: CompletedCooRequestsComponent },
+  { path: 'completedattestation', component: CompletedAttestationComponent },
+  { path: 'landingpage', component: LandingPageComponent },
+  { path: 'attestation', component: AttestationComponent },
+  { path: 'eseal-test', component: ESealTestComponent },
+  { path: '**', component: PageNotFoundComponent }
+];
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
 
 @NgModule({
   declarations: [
@@ -168,6 +198,7 @@ import { FinesComponent } from './reports/fines/fines.component';
     PhysicalAttestationCreateComponent,
     CooAttestationComponent,
     CooAttestationCreateComponent,
+<<<<<<< HEAD
     CompletedAttestationComponent,LeftMenuDrawerComponent, AttestationWorkflowComponent, CompletedCooRequestsComponent,
     LcaCompletedAttestationsComponent,
     ESealTestComponent, LoginComponent, PaymentinfoComponent, CooinreviewComponent, PhysicalinreviewComponent, ReportsComponent, LCAComponent, COOComponent, PhysicalComponent, FinesComponent, 
@@ -175,6 +206,15 @@ import { FinesComponent } from './reports/fines/fines.component';
 
     
       ],
+=======
+    CompletedAttestationComponent,
+    CompletedCooRequestsComponent,
+    PageNotFoundComponent,
+    AttestationWorkflowComponent,
+    LeftMenuDrawerComponent,
+    ESealTestComponent
+  ],
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
 
   imports: [
     NgIdleKeepaliveModule.forRoot() ,//vincy

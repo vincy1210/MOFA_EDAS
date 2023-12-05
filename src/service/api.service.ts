@@ -17,8 +17,11 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class ApiService {
+<<<<<<< HEAD
  
 
+=======
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
   baseURL = environment.baseURL;
   authTokenURL = environment.authTokenURL;
   //sauthTokenURL="https://mofastg.mofaic.gov.ae/en/Account/"
@@ -38,6 +41,7 @@ export class ApiService {
       .post(this.baseURL + servicename, data)
       .pipe(catchError(this.handleError));
   }
+<<<<<<< HEAD
   postWH(servicename: any, data: any, header:any) {
     return this.http
       .post(this.baseURL + servicename, data, header)
@@ -55,6 +59,33 @@ export class ApiService {
       `Common/CheckUAEPassLogin?sAuthCode=${param1}&sEmail=${email2}`;
       console.log(Url)
 
+=======
+
+  postForESeal(servicename: any, data: any) {
+    return this.http
+      .post(servicename, data)
+      .pipe(catchError(this.handleError));
+  }
+
+  postXML(serviceUrl: any, soapRequest: any) {
+    const headers = new HttpHeaders({
+      'Content-Type': 'text/xml; charset=utf-8',
+      'SOAPAction': 'Sign',
+      'TwsAuthN': 'urn:safelayer:tws:policies:authentication:oauth:clients'
+    });
+    return this.http
+      .post(serviceUrl, soapRequest, { headers, responseType: 'text' })
+      .pipe(catchError(this.handleError));
+  }
+
+  sPassAuthGetUserprofile(param1: any, param3: any) {
+    const email = encodeURIComponent(param3.trim());
+    console.log(email);
+    let Url =
+      this.baseURL +
+      `Common/CheckUAEPassLogin?sAuthCode=${param1}&sEmail=${email}`;
+
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
     return this.http.get(Url, this.headerOptions);
   }
 
@@ -71,7 +102,10 @@ export class ApiService {
     }),
   };
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
   registerCompanyAttachment(
     servicename: any,
     file: File,
@@ -83,6 +117,7 @@ export class ApiService {
     return this.http.post(this.baseURL + servicename, formData);
   }
 
+<<<<<<< HEAD
   // GetAuthToken(param1: any, param3: any) {
   //   const email = encodeURIComponent(param3?.trim());
   //   console.log(email);
@@ -132,4 +167,39 @@ export class ApiService {
   loadarabicval(){
     return this.http.get('http://localhost:3000/txnlog');
     }
+=======
+  GetAuthToken(param1: any, param3: any) {
+    const email = encodeURIComponent(param3?.trim());
+    console.log(email);
+    let Url =
+      this.authTokenURL +
+      `EDASGetAccessTokenV2?AuthenticationCode=${param1}&email=${email}`;
+
+    return this.http.get(Url, this.headerOptions);
+  }
+
+  getUserToken(accessToken: any, param3: any) {
+    const email2 = encodeURIComponent(param3);
+    let Url =
+      this.authTokenURL +
+      `EDASGetProfileByAccessTokenV2?AccessToken=${accessToken}&email=${email2}`;
+    return this.http.get(Url, this.headerOptions);
+  }
+
+  getattestations(skip: number): Observable<attachmentResponse> {
+    let data = {
+      companyuno: '1',
+      uuid: '123',
+    };
+    const pendingattestation = 'Company/lcapendingAttestList';
+
+    // return this.http.post(this.baseURL + pendingattestation, data)
+    // .pipe(
+    //   catchError(this.handleError)
+    // );
+    return this.http.get<attachmentResponse>(
+      `http://4.227.215.219/mofa/edasapi/api/Company/lcapendingAttestList?limit=10&skip=${skip}`
+    );
+  }
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
 }

@@ -44,6 +44,7 @@
   "Re-upload": "Re-upload",
   "Yes": "Yes",
   "No": "No",
+<<<<<<< HEAD
   "noDataFound": "No data found",
     "Abu Dhabi": "Abu Dhabi",
     "Ajman": "Ajman",
@@ -56,6 +57,18 @@
     "lessthan": "less than",
     "excelExport": "Excel export",
     "Filter": "Filter",
+=======
+  "noDataFound": "No data dound",
+  "commonmessage": {
+    "staticcontent.internet.error": "Please check your internet"
+  },
+  "label": {
+    "pdfAccepted": ".pdf accepted",
+    "lessthan": "less than",
+    "excelExport": "Excel export",
+    "filter": "Filter",
+    "app": {
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
       "InqAroundclock": "For Inquiries around the clock",
       "copyright": "Copyright 2023 Ministry of Foreign Affairs",
       "stayintouch": "Stay in touch",
@@ -123,6 +136,20 @@
       "issuingAuthority": "Issuing Authority",
       "uploadInvoice": "Upload Invoice",
       "addAttest": "Add Attestation",
+<<<<<<< HEAD
+=======
+      "physicalAttestList": {
+        "edasreqno": "EDAS Request No.",
+        "entitycode": "Entity Code",
+        "invoiceno": "Invoice No.",
+        "invoiceamount": "Invoice Amount",
+        "invoicecurrency": "Invoice Currency",
+        "invoicedate": "Invoice Date",
+        "status": "Status"
+      },
+      "fileDetails": {
+        "uploadInvoice": "Upload Invoice",
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
         "fileAccept": "pdf Accepted",
         "sizeAccepted": "less than 2MB",
         "edasreqno": "EDAS Ref",
@@ -142,8 +169,35 @@
         "entityshareamount": "Entity Share Amount",
         "totalamount": "Fees",
         "declarationdate": "Declaration Date",
+<<<<<<< HEAD
         "attestreqdate": "Request Date",
         "status": "Status",
+=======
+        "attestreqdate": "Attest Request Date",
+        "status": "Status",
+        "actions": "Actions"
+      }
+    },
+    "completedCooRequests": {
+      "mainpage.title": "Completed Attestation",
+      "manage": "Manage",
+      "titleCooAttest": "Coo Attestation",
+      "uploadAttachment": "Upload attachment",
+      "submit": "Submit",
+      "completedCooList": {
+        "declarationumber": "Declaration No.",
+        "edasreqno": "EDAS Request No.",
+        "edasattestno": "EDAS Attest No.",
+        "entityshareamount": "Entity Share Amount",
+        "totalamount": "Total Amount",
+        "declarationdate": "Declaration Date",
+        "attestreqdate": "Attest Request Date",
+        "status": "Status",
+        "actions": "Actions"
+      }
+    },
+    "Attestation": {
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
       "DraftPendAttest": "Draft Pending Attestations",
       "ShowEntries": "Showing {first} to {last} of {totalRecords} entries",
       "SearchKeyword": "Search keyword",
@@ -192,6 +246,7 @@
       "Invalid Mobile Number": "Invalid Mobile Number",
       "Mobile Number must be 9 characters long": "Mobile Number must be 9 characters long",
       "Invalid Email format": "Invalid Email format",
+<<<<<<< HEAD
       "Please select the option": "Please select the option",
       "invoiceIdrequired": "Invoice ID is required",
       "invoiceDaterequired": "Please choose a date.",
@@ -200,6 +255,24 @@
       "issuingAuthorityrequired": "Please select an option.",
       "alertuploadInvoice": "Please upload invoice",
       "pleaseuploadAttachment": "Please upload attachment",
+=======
+      "Please select the option": "Please select the option"
+    },
+    "physicalAttestDetails": {
+      "invoiceId": "Invoice ID is required",
+      "invoiceDate": "Please choose a date.",
+      "invoiceCurrency": "Invoice Currency is required",
+      "invoiceAmount": "Invoice Amount is required",
+      "issuingAuthority": "Please select an option.",
+      "uploadInvoice": "Please upload invoice"
+    },
+    "completedAttestDetails": {},
+    "cooAttestDetails": {
+      "uploadAttachment": "Please upload attachment"
+    }
+  },
+  "ShowErrorMessages": {
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
     "Issue in Fetching form": "Issue in Fetching form",
     "CompanyDetails": "License Already Registered",
     "something went wrong": "something went wrong",

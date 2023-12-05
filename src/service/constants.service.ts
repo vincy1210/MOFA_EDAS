@@ -14,6 +14,7 @@ export class ConstantsService {
   pendingattestation = 'User/lcaMypendingAttestList';
   //UAEPassprofile="Company/lcapendingAttestList"
   getInvoiceAttestations = 'User/getMyInvoiceAttestations'; // invoice attest lists
+<<<<<<< HEAD
   invoiceAttestation = 'Common/invoiceAttestation'; // invoice attest request // invoice attest request
   getCooRequests = 'User/getMyCOORequests'; // completed attest lists
   updateCOORequests = 'Company/updateCOORequests'; // completed attest update
@@ -49,4 +50,13 @@ export class ConstantsService {
   //payment
 
   getLCAPaymentdetails='LCA/getLCAPaymentdetails';
+=======
+  getCompletedInvoiceAttestations = 'User/getMycompletedInvoiceAttestList';
+  invoiceAttestation = 'Common/invoiceAttestation'; // invoice attest request
+  getCooRequests = 'User/getMyCOORequests'; // completed attest lists
+  updateCOORequests = 'Company/updateCOORequests'; // completed attest update
+  getcompletedCOORequests = 'User/getMycompletedCOORequests'; // completed COO Request
+  eSealSoapGatewayUrl = 'https://stg-id.uaepass.ae/trustedx-gw/SoapGateway';
+  checkESeal = 'Test/CheckESeal';
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
 }

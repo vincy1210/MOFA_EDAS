@@ -4,6 +4,10 @@ import { ApiService } from 'src/service/api.service';
 import { CommonService } from 'src/service/common.service';
 import { ConstantsService } from 'src/service/constants.service';
 import { XmlService } from 'src/service/xml.service';
+<<<<<<< HEAD
+=======
+import { PdfConverterService } from '../pdf-converter.service';
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
 
 @Component({
   selector: 'app-e-seal-test',
@@ -18,7 +22,12 @@ export class ESealTestComponent implements OnInit {
     private commonService: CommonService,
     public apiservice: ApiService,
     public consts: ConstantsService,
+<<<<<<< HEAD
     public xmlService: XmlService
+=======
+    public xmlService: XmlService,
+    private pdfConverterService: PdfConverterService
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
   ) {}
 
   ngOnInit(): void {}
@@ -29,11 +38,19 @@ export class ESealTestComponent implements OnInit {
     for (var i = 0; i <= event.target.files.length - 1; i++) {
       var selectedFile = event.target.files[i];
       if (selectedFile) {
+<<<<<<< HEAD
         if (selectedFile.size <= 2 * 1024 * 1024) {
           this.listOfFiles.push(selectedFile);
         } else {
           this.commonService.showErrorMessage(
             'File size exceeds the allowed limit (2 MB).'
+=======
+        if (selectedFile.size <= 15 * 1024 * 1024) {
+          this.listOfFiles.push(selectedFile);
+        } else {
+          this.commonService.showErrorMessage(
+            'File size exceeds the allowed limit (15 MB).'
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
           );
         }
       }
@@ -41,6 +58,7 @@ export class ESealTestComponent implements OnInit {
     this.isLoading = false;
   }
 
+<<<<<<< HEAD
   clickESeal() {
     this.convertToBase64(this.listOfFiles[0])
       .then((base64String) => {
@@ -56,6 +74,38 @@ export class ESealTestComponent implements OnInit {
             this.submitInvoiceAttestations(xmlString); //xmlDoc1
           }
         });
+=======
+  clickESealBE() {
+    this.convertToBase64(this.listOfFiles[0])
+      .then((base64String) => {
+        if (base64String) {
+          this.onSubmitForESeal(base64String); //xmlDoc1
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  clickESealFE() {
+    this.convertToBase64(this.listOfFiles[0])
+      .then((base64String) => {
+        this.xmlService
+          .loadXmlFile('./assets/xml/e-seal.xml')
+          .subscribe((xmlDoc) => {
+            const serializer = new XMLSerializer();
+            let xmlString: string = xmlDoc; //serializer.serializeToString(xmlDoc);
+            xmlString = xmlString.replace('{client_id}', 'icp_eSeal_stage');
+            xmlString = xmlString.replace(
+              '{client_secret}',
+              'Sc837EzlZryDN06V'
+            );
+            xmlString = xmlString.replace('{pdfBase64File}', base64String);
+            if (xmlString) {
+              this.submitInvoiceAttestations(xmlString); //xmlDoc1
+            }
+          });
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
       })
       .catch((error) => {
         console.error(error);
@@ -79,6 +129,32 @@ export class ESealTestComponent implements OnInit {
     });
   }
 
+<<<<<<< HEAD
+=======
+  onSubmitForESeal(file64: string) {
+    const data = {
+      base64file: file64
+    };
+
+    this.apiservice.postForESeal('http://localhost:5010/api/ApiGateway/CheckESeal', data).subscribe({
+      next: (data: any) => {
+        let response: any = data;
+        console.log('response:', response);
+        this.convertAndSavePdf(response);
+      },
+      complete: () => {
+        this.isLoading = false;
+      },
+    });
+  }
+
+  convertAndSavePdf(base64Data: string) {
+    const blob = this.pdfConverterService.convertBase64ToBlob(base64Data);
+    const fileName = 'ESealedFile.pdf';
+    this.pdfConverterService.savePdf(blob, fileName);
+  }
+
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
   submitInvoiceAttestations(data: any) {
     this.apiservice
       .postXML(this.consts.eSealSoapGatewayUrl, data)

@@ -4,7 +4,11 @@
 }
 
 .payment-header-label {
+<<<<<<< HEAD
     font-size: 12px;
+=======
+    font-size: 14px;
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
     font-weight: bold;
     font-stretch: normal;
     font-style: normal;
@@ -15,10 +19,17 @@
     font-stretch: normal;
     font-style: normal;
     .payment-total-amount1 {
+<<<<<<< HEAD
         font-size: 13px;
     }
     .payment-total-amount2 {
         font-size: 20px;
+=======
+        font-size: 16px;
+    }
+    .payment-total-amount2 {
+        font-size: 30px;
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
     }
     .payment-total-amount3 {
         font-size: 10px;

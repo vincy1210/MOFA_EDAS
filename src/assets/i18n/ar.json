@@ -39,6 +39,7 @@
   "Re-upload": "إعادة التحميل",
   "Yes": "نعم",
   "No": "لا",
+<<<<<<< HEAD
   "noDataFound": "No data found",
   
     "Abu Dhabi": "أبوظبي",
@@ -49,6 +50,19 @@
     "Ras Al Khaimah": "رأس الخيمة",
     "Umm Al Quwain": "أم القيوين",
     "pdfAccepted": ".pdf accepted",
+=======
+  "noDataFound": "No data dound",
+  "commonmessage": {
+    "staticcontent.internet.error": "يرجى التحقق من الإنترنت الخاص بك"
+  },
+
+  "label": {
+    "pdfAccepted": ".pdf accepted",
+    "lessthan": "less than",
+    "excelExport": "Excel export",
+    "filter": "Filter",
+    "app": {
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
       "InqAroundclock": "للاستفسار على مدار الساعة",
       "copyright": "حقوق الطبع والنشر 2023 وزارة الخارجية",
       "stayintouch": "ابق على اتصال",
@@ -150,8 +164,16 @@
         "entitycode": "Entity Code",
         "invoiceno": "Invoice No",
         "invoiceamount": "Invoice Amount",
+<<<<<<< HEAD
         "invoicecurrency": "Currency",
         "invoicedate": "Invoice Date",
+=======
+        "invoicecurrency": "Invoice Currency",
+        "invoicedate": "Invoice Date",
+        "status": "Status"
+      },
+      "fileDetails": {
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
         "uploadInvoice": "Upload Invoice",
         "fileAccept": "pdf Accepted",
         "sizeAccepted": "less than 2MB",
@@ -166,6 +188,7 @@
         "entityshareamount": "Entity Share Amount",
         "totalamount": "fees",
         "declarationdate": "Declaration Date",
+<<<<<<< HEAD
         "attestreqdate": "Request Date",
         "status": "Status",
         "Kindlymakeanoteofyour": " Kindly make a note of your",
@@ -175,6 +198,64 @@
     "lessthan": "less than",
     "excelExport": "Excel export",
     "Filter": "Filter",
+=======
+        "attestreqdate": "Attest Request Date",
+        "status": "Status",
+        "actions": "Actions"
+      }
+    },
+    "completedCooRequests": {
+      "mainpage.title": "Completed Attestation",
+      "manage": "Manage",
+      "titleCooAttest": "Coo Attestation",
+      "uploadAttachment": "Upload attachment",
+      "submit": "Submit",
+      "completedCooList": {
+        "declarationumber": "Declaration No.",
+        "edasreqno": "EDAS Request No.",
+        "edasattestno": "EDAS Attest No.",
+        "entityshareamount": "Entity Share Amount",
+        "totalamount": "Total Amount",
+        "declarationdate": "Declaration Date",
+        "attestreqdate": "Attest Request Date",
+        "status": "Status",
+        "actions": "Actions"
+      }
+    },
+    "Attestation": {
+      "DraftPendAttest": "Draft Pending Attestations",
+      "ShowEntries": "Showing {first} to {last} of {totalRecords} entries",
+      "SearchKeyword": "Search keyword",
+      "CSV": "CSV",
+      "XLS": "XLS",
+      "Timeline": "Timeline",
+      "NoInvoicesSelected": "No. of Invoices selected",
+      "TotalFines": "Total Fines(0)",
+      "AttestationFees": "Attestation Fees",
+      "TotalAmount": "Total Amount",
+      "PoweredBy": "Powered by Magnati",
+      "CREATED": "CREATED",
+      "APPROVED": "APPROVED",
+      "PAYMENT": "PAYMENT",
+      "ATTESTATION": "ATTESTATION",
+      "COMPLETED": "COMPLETED",
+      "NoCustomersFound": "No customers found",
+      "AED": "AED",
+      "InclVAT": "incl.VAT",
+      "Loading": "Loading"
+    },
+    "landingPage": {
+      "ChooseCompany": "Choose your company",
+      "LoginProfile": "Which company profile you would like to log in to?",
+      "TradeLicenseNo": "Trade License No.",
+      "RegisterNewCompany": "Register a New Company",
+      "Proceed": "Proceed"
+    }
+  },
+
+  "alerts": {
+    "registration": {
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
       "Trade license number is required.": "رقم الرخصة التجارية مطلوب.",
       "Trade license Number length cannot be less than 4 digits": "لا يمكن أن يقل طول رقم الرخصة التجارية عن 4 أرقام",
 
@@ -196,6 +277,7 @@
       "Representative Email address is required": "مطلوب عنوان البريد الإلكتروني لممثل الشركة",
       "Mobile Number is required": "رقم الجوال مطلوب",
       "Invalid Mobile Number": "رقم الجوال غير صحيح",
+<<<<<<< HEAD
       "Mobile Number must be 9 characters long": "يجب أن يتكون رقم الهاتف المحمول من 9 أحرف",
       "Invalid Email format": "تنسيق البريد  الإكتروني غير صحيح",
       "Please select the option": "الرجاء تحديد الخيار",
@@ -214,4 +296,31 @@
     "Provide valid details and Try Again": "قدم تفاصيل صحيحة وحاول مرة أخرى",
     "OTP is verified": "تم التحقق من كلمة السر المستخدمة لمرة واحدة"
   
+=======
+      "Mobile Number must be 9 characters long": "يجب أن يكون رقم الجوال مكونًا من 9 أحرف",
+      "Invalid Email format": "تنسيق البريد الإلكتروني غير صالح",
+      "Please select the option": "Please select the option"
+    },
+    "physicalAttestDetails": {
+      "invoiceId": "Invoice ID is required",
+      "invoiceDate": "Please choose a date.",
+      "invoiceCurrency": "Invoice Currency is required",
+      "invoiceAmount": "Invoice Amount is required",
+      "issuingAuthority": "Please select an option.",
+      "uploadInvoice": "Please upload invoice"
+    },
+    "completedAttestDetails": {},
+    "cooAttestDetails": {
+      "uploadAttachment": "Please upload attachment"
+    }
+  },
+  "ShowErrorMessages": {
+    "Issue in Fetching form": "Issue in Fetching form",
+    "CompanyDetails": "License Already Registered!",
+    "something went wrong": "something went wrong",
+    "UUID or tradelicence no is missing": "UUID or tradelicence no is missing",
+    "Please fill the mandatory Fields": "Please fill the mandatory Fields",
+    "Provide valid details and Try Again": "Provide valid details and Try Again",
+    "OTP is verified": "OTP is verified"
+>>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
   }
