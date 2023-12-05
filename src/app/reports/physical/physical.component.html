@@ -1,0 +1,178 @@
+<div class="grid grid-cols-1" color="primary"  class="page-header">
+             
+    <label style="font-size: 14px; color: white; font-weight: bold;">{{'Reports' | translate}} - {{'physicalattestation_title' |translate}}</label>
+  </div>
+  
+  <div style="padding: 2px;" >
+   <div class="grid grid-cols-1">
+  
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 tablepadding">
+          <div   
+             [ngClass]="{'col-span-2': shouldShow, 'col-span-3': !shouldShow }">
+            <p-table
+              [(selection)]="selectedAttestations"
+              dataKey="attestationrequno"
+              [scrollable]="true"
+              selectionMode="single"
+              #tableref
+              [rowHover]="true"
+              [paginator]="true"
+              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+              [filterDelay]="0"
+              [totalRecords]="totalrecords"
+              [value]="invoiceRequestLists"
+              [rows]="10"
+              [columns]="cols"
+              [showCurrentPageReport]="true"
+              [rowsPerPageOptions]="[10, 20, 50]"
+              [loading]="loading"
+              styleClass="p-datatable-customers p-datatable-gridlines"
+              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+              [globalFilterFields]="[
+                'edasreqno',
+                'entitycode',
+                'invoiceno',
+                'invoiceamount',
+                'invoicecurrency',
+                'invoicedate'
+              ]"
+            >
+            <ng-template pTemplate="caption">
+              <p-toolbar  >
+                <ng-template pTemplate="left">
+                
+                    <div style="padding: 5px;" class="col-md-3 col-lg-3 col-sm-6">
+                            <mat-form-field class="searchboxinput" >
+                              <mat-label><mat-icon style="font-size:larger;">{{'search' | translate}}</mat-icon> {{'Search keyword' | translate}}</mat-label>
+                              <input  matInput type="text" (input)="tableref.filterGlobal($any($event.target).value, 'contains')" placeholder="Search keyword">
+                            </mat-form-field>
+                    </div>
+                
+                
+                </ng-template>
+        
+                <ng-template pTemplate="right">
+  
+                  <div style="padding: 5px;" *ngIf="enableFilters" class="col-md-3 col-lg-3  col-md-6">
+                    <mat-form-field class="filter_datepicker">
+                      <mat-label>{{'Start Date' | translate}}</mat-label>
+                      <input matInput [matDatepicker]="decDatepicker1" [max]="todayModel" [(ngModel)]="oneMonthAgo" placeholder="From" name="createdatefrom"  />
+                      <mat-datepicker-toggle matSuffix [for]="decDatepicker1"></mat-datepicker-toggle>
+                      <mat-datepicker #decDatepicker1></mat-datepicker>
+                    </mat-form-field>
+            </div>
+            <div style="padding: 5px;" *ngIf="enableFilters" class="col-md-3 col-lg-3  col-sm-6">
+              <mat-form-field class="filter_datepicker">
+                <mat-label>{{'End Date' | translate}}</mat-label>
+                <input matInput [matDatepicker]="decDatepicker2" [min]="oneMonthAgo" [max]="today" placeholder="To" [(ngModel)]="todayModel" name="createdateto"  />
+                <mat-datepicker-toggle matSuffix [for]="decDatepicker2"></mat-datepicker-toggle>
+                <mat-datepicker #decDatepicker2></mat-datepicker>
+              </mat-form-field>
+            </div>
+            <div style="padding: 5px;" *ngIf="enableFilters" class="col-md-3 col-lg-3">
+              <button type="button" mat-flat-button color="primary" (click)="InitTable()" >{{'Apply' | translate}}</button>
+            </div>
+            <span style="padding: 10px;"></span>
+                  <button type="button" pButton  pRipple  icon="pi pi-file-excel"  (click)="exportExcel()"  class="mr-2 grid-header-right-icon"  pTooltip="Excel"
+                  tooltipPosition="bottom"
+                ></button>
+                 <button  type="button"
+                  pButton  pRipple  icon="pi pi-filter"   (click)="clickChips()"  class="mr-2 grid-header-right-icon"
+                  [ngClass]="{ clicked: enableFilters }"  [pTooltip]="'Filter' | translate"  tooltipPosition="bottom"
+                ></button>
+                </ng-template>
+            </p-toolbar>
+              
+            </ng-template>
+  
+              <ng-template pTemplate="header" let-columns>
+                <tr>
+                  <!-- <th style="width: 3rem">
+                      <p-tableHeaderCheckbox> </p-tableHeaderCheckbox>
+                    </th> -->
+                  <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                    {{ col.header | translate }}
+                    <p-sortIcon field="code" ></p-sortIcon>
+                    <p-columnFilter
+                      type="text"
+                      [field]="col.field"
+                      display="menu"
+                      *ngIf="enableFilters"
+                    ></p-columnFilter>
+                  </th>
+                  <th pFrozenColumn alignFrozen="right">{{'Action' | translate}}</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-data>
+                <tr [pSelectableRow]="data">
+                  <!-- <td>
+                      <p-tableCheckbox [value]="data"></p-tableCheckbox>
+                    </td> -->
+                  <td>
+                    <span class="image-text">{{ data.edasreqno }}</span>
+                  </td>
+                  <td>
+                    <span class="image-text">{{ data.entitycode }}</span>
+                  </td>
+                  <td>
+                    <span class="image-text">{{ data.invoiceno }}</span>
+                  </td>
+                  <td style="text-align: right;">
+                    <span class="image-text">{{ data.invoiceamount }}</span>
+                  </td>
+                  <td>
+                    <span class="image-text">{{ data.invoicecurrency }}</span>
+                  </td>
+                  <td>
+                    <span class="image-text">{{
+                      splitdatetime1(data.invoicedate)?.date
+                    }}</span>
+                  </td>
+                  <td>
+                    <p-tag [value]="data.statusname" [severity]="'success'"></p-tag>
+                  </td>
+                  <td pFrozenColumn alignFrozen="right">
+                    <span (click)="openNew(data)" style="padding:15px; cursor: pointer;" pTooltip="Expand Details"  class="image-text viewaction">
+                      <mat-icon class="action_eye_icon" >visibility</mat-icon>
+                        </span>
+  
+                 
+  </td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="10">{{ "noDataFound" | translate }}</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+      </div>
+    </div>
+   
+  
+    <!-- modal1  -->
+  
+    <p-dialog [(visible)]="AddInvoiceDialog" style="top:20%" [style]="{ width: '750px' }" header="{{'Physical Attestation Details' | translate}}" [modal]="true" styleClass="p-fluid">
+      <div class="viewmore">
+        <div class="more-content-section">
+          <div class="grid grid-cols-2">
+            <ng-container >
+             
+              <div class="more-content" *ngFor="let field of fields">
+                <mat-label class="title-label">{{ field.label | translate }}</mat-label>
+                <div class="more-content-body">
+                  <mat-label class="more-content-block">{{ field.value }}</mat-label>
+                </div>
+              </div>
+              
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <ng-template pTemplate="footer">
+        <p-button icon="pi pi-times" (click)="AddInvoiceDialog = false" label="{{'Cancel' | translate}}" styleClass="p-confirm-dialog-reject"></p-button>
+    </ng-template>
+  
+  </p-dialog>

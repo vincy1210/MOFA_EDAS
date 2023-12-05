@@ -1,0 +1,125 @@
+<mat-divider></mat-divider>
+
+<div class="body-bg registration-page">
+
+    <div class="container registration-window alreadyregisteredapproved-section">
+        <div class="w-50 m-auto">
+            <mat-card>
+                <div class="p-4">
+                    
+                    <div class="grid grid-cols-1 pb-5">
+                        <div class="flex justify-center">
+                            <img src="./assets/svg/check-circle.svg" width="35px" height="auto">
+                        </div>
+                        <div class="flex justify-center mt-3 mb-5">
+                            <h1 class="db-sub-title">{{'Transaction is Successful' | translate}}</h1>
+                        </div>
+                        <div class="grid grid-cols-1 ">
+                            <ul>
+                                <li class="border-t-2">
+                                    <div class="grid grid-cols-2 my-3">
+                                        <div><strong>{{'Payment ID' | translate}}    </strong></div>
+                                        <div>{{this.paymentid}}</div>
+                                    </div>
+                                </li>
+                                <li class="border-t-2">
+                                    <div class="grid grid-cols-2 my-3">
+                                        <div><strong>{{'Transaction Id' | translate}}   </strong></div>
+                                        <div>{{this.tranid}}</div>
+                                    </div>
+                                </li>
+                                <li class="border-t-2">
+                                    <div class="grid grid-cols-2 my-3">
+                                        <div><strong>{{'Reference Number' |translate}}      </strong></div>
+                                        <div>{{this.ref}}</div>
+                                    </div>
+                                </li>
+                                <li class="border-t-2">
+                                    <div class="grid grid-cols-2 my-3">
+                                        <div><strong>{{'Status' |translate}}       </strong></div>
+                                        <div><div>
+                <mat-label *ngIf="this.status === 'CAPTURED'; else failureLabel">{{'Successful' |translate}}  &nbsp;</mat-label>
+                <ng-template #failureLabel>{{'Failure' |translate}}</ng-template>
+              </div></div>
+                                    </div>
+                                </li>
+                                <li class="border-t-2">
+                                    <div class="grid grid-cols-2 my-3">
+                                        <div><strong>{{'Service Amount' | translate}}         </strong></div>
+                                        <div> {{'AED' | translate}} {{this.amt}}</div>
+                                    </div>
+                                </li>
+                                <li class="border-t-2">
+                                    <div class="grid grid-cols-2 my-3">
+                                        <div><strong>{{'Service Charge' | translate}}         </strong></div>
+                                        <div>  {{'AED' | translate}} {{servicecharge}}</div>
+                                    </div>
+                                </li>
+                                <li class="border-t-2">
+                                    <div class="grid grid-cols-2 my-3">
+                                        <div><strong>{{'VAT on Service Charge' | translate}}         </strong></div>
+                                        <div>  {{'AED' | translate}} {{vatoncharge}}</div>
+                                    </div>
+                                </li>
+                                <li class="border-t-2">
+                                    <div class="grid grid-cols-2 my-3">
+                                        <div><strong>{{'Transaction Amount' | translate}}         </strong></div>
+                                        <div>  {{'AED' | translate}} {{totalamount}}</div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+              
+                    </div>
+					<div  *ngIf="paymentsuccess">
+  <!-- <span style="color: rgb(1, 50, 87); font-size: 10px;"> Powered by Magnati </span> -->
+  <div class="flex items-center justify-center col-span-2">
+    <a class="powered_by" >{{'Powered by' | translate}}</a> &nbsp;<a class="magnati">{{'magnati' | translate}}</a>
+  </div>
+</div>
+                    
+                    <div class="grid grid-cols-1 mt-8">
+                        <div class="text-right">
+                           
+                            <button mat-flat-button color="primary" class="x-btn-pad"
+                                (click)="redirect()" >{{'Proceed' | translate}}</button>
+                        </div>
+                    </div>
+                </div>
+            </mat-card>
+
+        </div>
+
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

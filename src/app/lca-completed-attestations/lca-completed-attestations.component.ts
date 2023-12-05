@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { CdkDragStart, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ApiService } from 'src/service/api.service';
@@ -9,8 +9,8 @@ import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import { HttpClient } from '@angular/common/http';
-
-
+import { DatePipe } from '@angular/common';
+import { MatToolbar } from '@angular/material/toolbar';
 import { saveAs } from 'file-saver';
 interface Column {
   field: string;
@@ -23,27 +23,31 @@ interface ExportColumn {
   dataKey: string;
 }
 
-
 @Component({
   selector: 'app-lca-completed-attestations',
   templateUrl: './lca-completed-attestations.component.html',
   styleUrls: ['./lca-completed-attestations.component.css']
 })
 export class LcaCompletedAttestationsComponent implements OnInit {
+  @ViewChild('tableref', { static: true }) tableref: any;
+  today: Date = new Date(); 
+oneMonthAgo = new Date();
+todayModel:Date=new Date();
+enableFilters: boolean = false;
+
 
   
   loading: boolean = true;
-  customers:any;
+  list:any;
   representatives:any;
   statuses:any;
   products: any;
 datasource:any;
     cols: any;
-    totalrecords:any;
+    totalrecords:number=0;
     isLoading=false;
 
   activityValues: number[] = [0, 100];
-  list:any;
   selectedAttestations:any;
   public shouldShow = false;
   previewvisible:boolean=true;
@@ -78,75 +82,154 @@ AttestationList:any;
 isPending:boolean=true;
 base64PdfString: any;
 uuid:any;
+currentcompany:any;
 
+AddInvoiceDialog:boolean=false;
 
-  constructor(private http:HttpClient,private _liveAnnouncer: LiveAnnouncer, private api:ApiService, private common:CommonService, private consts:ConstantsService) { }
+currentrow:any;
+isfilenotfouund:boolean=false;
+
+fields: { label: string, value: any }[] = [];
+isButtonDisabled = false;
+  constructor(private datePipe: DatePipe, private http:HttpClient,private _liveAnnouncer: LiveAnnouncer, private api:ApiService, public common:CommonService, private consts:ConstantsService) {
+    this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
+   }
+
+   filterTableByDate() {
+    // Convert dates to string format
+    const fromDateStr = this.datePipe.transform(this.oneMonthAgo, 'yyyy-MM-dd');
+    const toDateStr = this.datePipe.transform(this.today, 'yyyy-MM-dd');
+
+    // Apply filtering to the table
+    this.tableref.filter([
+      { field: 'createdatefrom', value: fromDateStr, matchMode: 'gte' },
+      { field: 'createdateto', value: toDateStr, matchMode: 'lte' },
+    ]);
+  }
 
   ngOnInit(): void {
 
-    this.common.getSelectedCompany().subscribe(data => {
-      this.redirectselectedcompanyData = data;
-      console.log(this.redirectselectedcompanyData)
-    });
+   
+
+    this.currentcompany=this.common.getSelectedCompany().companyuno;
+
+    
     this.loading = true;
-    let resp;
-    let data=this.redirectselectedcompanyData;
-    console.log(data);
+   
 
     let data11=this.common.getUserProfile();
-    data11=JSON.parse(data11)
-    console.log(data11)
     let uuid;
-
-    if(data11!=null){
+    if(data11!=null || data11!=undefined){
+      data11=JSON.parse(data11)
       console.log(data11.Data)
       uuid=data11.Data.uuid;
       this.uuid=uuid;
 
     }
     else{
-      this.common.showErrorMessage("Invalid Session!")
-      console.log("Invalid session in lca completed attestation page while getting user profile details")
-      return;
+      console.log("Invalid Session")
+
+     // this.common.logoutUser()
     }
+    this.cols = [
+      { field: 'edasattestno', header: 'Attestation No', width:'25%' },
+      { field: 'companyname', header: 'Company Name', width:'20%' },
+      { field: 'invoiceamount', header: 'Invoice Amount', width:'20%' },
+      { field: 'invoicenumber', header: 'Invoice ID' , width:'25%'},
+      { field: 'declarationumber', header: 'Declaration No', width:'25%' },
+      { field: 'declarationdate', header: 'Declaration Date', width:'15%' },
+      { field: 'attestreqdate', header: 'Created' , width:'15%'},
+      { field: 'statusname', header: 'lcaname', width:'20%' },
+      { field: 'statusname', header: 'Status', width:'20%' },
+      // { field: 'Noofdaysleft', header: 'Days Left' },
+  
+  ];
 
+  
+  //this.getimagebase64();
+  //this.InitTable()
 
+  
+   
+  }
+
+  globalFilter(row: any, globalFilterValue: string): boolean {
+    for (const key in row) {
+      if (row[key] && row[key].toString().toLowerCase().includes(globalFilterValue.toLowerCase())) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  sortData(data: any[], field: string, order: number): any[] {
+    return data.sort((a, b) => {
+      const valueA = a[field];
+      const valueB = b[field];
+      if (valueA < valueB) {
+        return order === 1 ? -1 : 1;
+      } else if (valueA > valueB) {
+        return order === 1 ? 1 : -1;
+      }
+      return 0;
+    });
+  }
+  
+  InitTable($event:LazyLoadEvent){
+
+    this.common.showLoading();
+    let resp;
+    let data;
     data={
-      "companyuno":0,
-      "uuid":uuid
-    }
+      "Companyuno":this.currentcompany,
+      "uuid":this.uuid,
+      "startnum":$event.first,
+      "limit":200 + ($event.first ?? 0),
+      "status":0,
+      "Startdate":this.common.formatDateTime_API_payload(this.oneMonthAgo.toDateString()),
+      "Enddate":this.common.formatDateTime_API_payload(this.todayModel.toDateString())
+  }
+this.loading=true;
+this.common.showLoading();
 
     this.api.post(this.consts.lcaCompletedAttestList,data).subscribe({next:(success:any)=>{
+      this.common.hideLoading();
+
+ this.loading=false;
       resp=success;
       if(resp.dictionary.responsecode==1){
-        this.customers=resp.dictionary.data
+        this.list=resp.dictionary.data
         this.datasource=resp.dictionary.data;
-        this.totalrecords=resp.dictionary.data.length;
+        this.totalrecords=resp.dictionary.recordcount;
         this.loading = false;
         this.Reduce();
-        this.common.showSuccessMessage('Data retrived'); // Show the verification alert
+
+        if ($event.globalFilter) {
+          this.datasource = this.datasource.filter((row: any) => this.globalFilter(row, $event.globalFilter));
+          this.list=this.datasource;
+          this.totalrecords=this.list.length;
+        }
+        if ($event.sortField) {
+          let sortorder=$event.sortOrder || 1;
+          this.datasource = this.sortData(this.datasource, $event.sortField, sortorder);
+          this.list=this.list.length;
+          this.totalrecords=this.list.length;
+        }
+        console.log(this.datasource);
+       // this.common.showSuccessMessage('Data retrived'); // Show the verification alert
 
       }
       else{
-        this.common.showErrorMessage('Data retrived Failed')
+        this.common.showErrorMessage('Something went wrong')
         this.loading=false;
       }
     }
   })
+  setTimeout(() => {
+    this.common.hideLoading(); // Assuming you have a hideLoading method to hide the loading indicator
+  }, 100);
 
-  this.getimagebase64();
 
-  this.cols = [
-    { field: 'edasattestno', header: 'Attestation No.' },
-    { field: 'invoicenumber', header: 'Invoice ID' },
-    { field: 'declarationumber', header: 'Declaration No.' },
-    { field: 'declarationdate', header: 'Declaration date.' },
-    { field: 'attestreqdate', header: 'Creation Date' },
-    { field: 'Noofdaysleft', header: 'Days Left' },
-
-];
-
-   
   }
 
   
@@ -160,7 +243,7 @@ Reduce(){
     'Noofdaysleft', // Make sure this property name matches your actual data
   ];
 
-  const selectedData = this.customers.map((customer:any) => {
+  const selectedData = this.list.map((customer:any) => {
     const selectedCustomer: Record<string, any> = {}; // Initialize as an empty object
   
     // Iterate through the selected property names and copy them to the new object
@@ -177,42 +260,77 @@ Reduce(){
 }
 
 
-getimagebase64(){
+getimagebase64(attestfilelocation:any){
   let resp;
-
-  let attestfilelocation=this.common.encryptWithPublicKey("D:\\mofafile\\LCARequest\\PDF\\\\20161220423\\INV00000_New.PDF")
   let data={
     "attestfilelocation":attestfilelocation,
     "uuid":this.uuid
   }
-  this.api.post(this.consts.lcaCompletedAttestList,data).subscribe({next:(success:any)=>{
+  this.common.showLoading();
+
+  this.api.post(this.consts.getAttestationFileContent,data).subscribe({next:(success:any)=>{
+    this.common.hideLoading();
+
     resp=success;
     if(resp.responsecode==1){
     this.base64PdfString=resp.data;
 
-    const source = `data:application/pdf;base64,${this.base64PdfString}`;
-    const link = document.createElement("a");
-    link.href = source;
-    link.download = `attachment.pdf`
-    link.click();
-    this.src=link;
+        const base64 = this.base64PdfString.replace('data:application/pdf;base64,', '');
+
+          // Convert base64 to a byte array
+          const byteArray = new Uint8Array(atob(base64).split('').map(char => char.charCodeAt(0)));
+
+          // Create a Blob and download the file
+          const file = new Blob([byteArray], { type: 'application/pdf' });
+          const fileUrl = URL.createObjectURL(file);
+
+          const link = document.createElement('a');
+          link.href = fileUrl;
+          link.download = 'Attestation_.pdf'; // You can customize the file name here
+
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+
     }
     else{
-      this.common.showErrorMessage('Attachment load failed!')
+      this.common.showErrorMessage('Attachment load failed')
       this.loading=false;
     }
   }
 })
+return this.base64PdfString;
 
 }
 
 exportExcel() {
-  import('xlsx').then((xlsx) => {
-      const worksheet = xlsx.utils.json_to_sheet(this.AttestationList);
-      const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
-      const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
-      this.saveAsExcelFile(excelBuffer, 'Attestations');
+  const jsonData: { [key: string]: string } = {};
+  this.cols.forEach((col:any) => {
+    jsonData[col.field] = col.header;
   });
+  
+  // const dataList1: any = [];
+  
+  const dataList: any[] = this.list.map((item: any) => {
+    const dataItem: any = {};
+  
+    this.cols.forEach((col:any) => {
+      if (col.header === 'Declaration Date' || col.header === 'Created') {
+        dataItem[col.header] = this.common.splitdatetime(item[col.field])?.date;
+      } else if (col.header === 'Age') {
+        dataItem[col.header] = this.common.calculateDifference(item.attestreqdate);
+      } else {
+        dataItem[col.header] = item[col.field];
+      }
+    });
+  
+    return dataItem;
+  });
+  
+  const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataList);
+      const wb: XLSX.WorkBook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Attestation-Completed');
+      XLSX.writeFile(wb, 'Attestation_Completed.xlsx');
 }
 
 saveAsExcelFile(buffer: any, fileName: string): void {
@@ -230,15 +348,34 @@ saveFile() {
   saveAs(blob, 'example.txt');
 }
 
-splitdatetime(datetimeString:any) {
+// splitdatetime(datetimeString:any) {
+//   if (datetimeString && typeof datetimeString === 'string') {
+//       const dateTimeParts = datetimeString.split('T'); // Splitting the string at 'T'
+//       if (dateTimeParts.length === 2) {
+//           return {
+//               date: dateTimeParts[0],
+//               time: dateTimeParts[1]
+//           };
+//       }
+//   }
+//   return null; // Invalid or null datetime string
+// }
+splitdatetime(datetimeString: any) {
   if (datetimeString && typeof datetimeString === 'string') {
-      const dateTimeParts = datetimeString.split('T'); // Splitting the string at 'T'
-      if (dateTimeParts.length === 2) {
-          return {
-              date: dateTimeParts[0],
-              time: dateTimeParts[1]
-          };
-      }
+    const dateTimeParts = datetimeString.split('T'); // Splitting the string at 'T'
+    if (dateTimeParts.length === 2) {
+      return {
+        date: this.datePipe.transform(dateTimeParts[0], 'dd-MMM-yyyy'),
+        time: dateTimeParts[1],
+      };
+    }
+    else{
+      return {
+        date: this.datePipe.transform(dateTimeParts[0], 'dd-MMM-yyyy'),
+        time: '',
+      };
+
+    }
   }
   return null; // Invalid or null datetime string
 }
@@ -254,85 +391,132 @@ loadsidepanel(event:any){
   console.log(this.selectedAttestations);
   this.noOfInvoicesSelected=this.selectedAttestations.length;
 
-  // const totalFineAmount = this.noOfInvoicesSelected.reduce((total, item) => total + item.fineamount, 0);
   this.totalFineAmount = this.selectedAttestations.reduce((total: any, item:any) => total + item.fineamount, 0);
 
   this.totalAttestationFee = this.selectedAttestations.reduce((total: any, item:any) => total + item.feesamount, 0);
 
   this.totalFee=this.totalFineAmount+this.totalAttestationFee;
   
-  this.shouldShow=true;
-  if(this.selectedAttestations.length>1){
-    this.previewvisible=false;
-    this.Timelinevisible=false;
-  }
-  else if(this.selectedAttestations.length==0){
-    this.shouldShow=false;
-  }
-  else{
-    let status;
-    this.previewvisible=true;
-    this.Timelinevisible=true;
-    let createddate=this.splitdatetime(this.selectedAttestations[0]?.attestreqdate);
-    this.createddate=createddate?.date;
-    this.createdTime=createddate?.time;
-    let approveddate=this.splitdatetime(this.selectedAttestations[0]?.approvedon);
-    this.approveddate=approveddate?.date;
-    this.approvedTime=approveddate?.time;
-    let paymentdate=this.splitdatetime(this.selectedAttestations[0]?.paidon);
-    this.paymentdate=paymentdate?.date;
-    this.paymentTime=paymentdate?.time;
-    let attestationdate=this.splitdatetime(this.selectedAttestations[0]?.attestedon);
-    this.attestationdate=attestationdate?.date
-    this.attestationTime=attestationdate?.time
-    let completedDate=this.splitdatetime(this.selectedAttestations[0]?.completedon);
-    this.completedDate=completedDate?.date;
-    this.completedTime=completedDate?.time;
-    if(this.selectedAttestations[0].statusuno==0){
-      this.status0='current'
-      this.status1=''
-      this.status2=''
-      this.status3=''
-      this.status4=''
+  this.shouldShow = true;
+  if (this.selectedAttestations.length > 1) {
+    this.shouldShow = false;
 
+  } else if (this.selectedAttestations.length == 0) {
+    this.shouldShow = false;
+  } else {
+    if(this.selectedAttestations[0]?.attestfilelocation!='' || this.selectedAttestations[0]?.attestfilelocation != null){
+      this.getimagebase64(this.selectedAttestations[0]?.attestfilelocation);
+     }
+  }
+
+}
+clickChips() {
+  this.enableFilters = !this.enableFilters;
+}
+FilterInitTable(){
   
-    }
-    else if(this.selectedAttestations[0].statusuno==1){
-      this.status0='active'
-      this.status1='current'
-      this.status2=''
-      this.status3=''
-      this.status4=''
-    }
-    else if(this.selectedAttestations[0].statusuno==2){
-      this.status0='active'
-      this.status1='active'
-      this.status2='current'
-      this.status3=''
-      this.status4=''
-      
-    }else if(this.selectedAttestations[0].statusuno==3){
-      this.status0='active'
-      this.status1='active'
-      this.status2='active'
-      this.status3='current'
-      this.status4=''
-      
-    }else if(this.selectedAttestations[0].statusuno==4){
-      this.status0='active'
-      this.status1='active'
-      this.status2='active'
-      this.status3='active'
-      this.status4='current'
-      
+  this.common.showLoading();
+
+  let resp;
+  let data;
+  data={
+    "Companyuno":this.currentcompany,
+    "uuid":this.uuid,
+    "startnum":0,
+    "limit":10,
+    "status":0,
+    "Startdate":this.common.formatDateTime_API_payload(this.oneMonthAgo.toDateString()),
+    "Enddate":this.common.formatDateTime_API_payload(this.todayModel.toDateString())
+}
+this.common.showLoading();
+
+  this.api.post(this.consts.lcaCompletedAttestList,data).subscribe({next:(success:any)=>{
+    this.common.hideLoading();
+
+    resp=success;
+    if(resp.dictionary.responsecode==1){
+      this.list=resp.dictionary.data
+      this.datasource=resp.dictionary.data;
+      this.totalrecords=resp.dictionary.data.length;
+      this.loading = false;
+      this.Reduce();
+      console.log('Data retrived'); // Show the verification alert
+
     }
     else{
-      this.common.showErrorMessage("Something went wrong!")
+      this.common.showErrorMessage('Something went wrong')
+      this.loading=false;
     }
   }
+})
+setTimeout(() => {
+  this.common.hideLoading(); // Assuming you have a hideLoading method to hide the loading indicator
+}, 500);
 
 
 
 }
+
+
+openNew(data:any) {
+  console.log(data);
+  this.currentrow=data;
+  this.AddInvoiceDialog=true
+  const fieldMappings: { [key: string]: string } = {
+    edasattestno: 'Attestation No',
+    reqappnumber: 'Request Application Number',
+    attestreqdate: 'Attestation Request Date',
+    declarationdate: 'Declaration Date',
+    invoicenumber: 'Invoice Number',
+    declarationumber: 'Declaration Number',
+    invoicedate: 'Invoice Date',
+    invoiceamount: 'Invoice Amount',
+    currencycode: 'Currency Code',
+    feesamount: 'Fees Amount',
+    paidon: 'Paid On',
+    paidby: 'Paid By',
+    approvedon: 'Approved On',
+    statusname: 'Status',
+    enteredon: 'Entered On',
+    importername: 'Importer Name',
+    exportportname: 'Export Port Name',
+    invoiceid: 'Invoice ID',
+    companyname: 'Company Name',
+    comments: 'Comments',
+    lcaname: 'LCA Name'
+    // Add more fields as needed
+  };
+
+  if (data) {
+    this.fields = Object.keys(fieldMappings).map(key => {
+      let value = data[key];
+      if (key=="attestreqdate" || key=="declarationdate" ||key=="invoicedate" || key=="paidon" || key=="approvedon" || key=="enteredon") {
+        const splitResult = this.splitdatetime(value);
+
+        if (splitResult?.date === '01-Jan-1970' || splitResult?.date === '01-Jan-0001') {
+          value = ''; // Set value to an empty string
+        } else {
+          value = splitResult?.date;
+        }
+      }
+      else if(key=="invoiceamount" || key=="feesamount"){
+        value =this.common.formatAmount(value);
+      }
+
+      return {
+        label: fieldMappings[key],
+        value: value
+      };
+    });
+  }
+  
+
+}
+
+DownloadFile(attestfilelocation:any){
+
+  this.getimagebase64(attestfilelocation);
+
+ }
 
 }

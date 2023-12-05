@@ -11,12 +11,33 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { NgxEchartsModule } from 'ngx-echarts';
 import * as echarts from 'echarts';
+import { UserslistComponent } from './userslist/userslist.component';
+import { TableModule } from 'primeng/table';
+import { ToolbarModule } from 'primeng/toolbar';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { FormsModule } from '@angular/forms';
+import { DialogModule } from 'primeng/dialog';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ButtonModule } from 'primeng/button'; 
+import { TranslateModule } from '@ngx-translate/core';
+import { MatRadioModule } from '@angular/material/radio';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+// import { PhoneMaskDirective } from '../phone-mask.directive';
+import { PhoneMaskDirective } from './userslist/phone-mask.directive';
+import { EidFormatterPipe } from '../eid-formatter.pipe';
+import { TooltipModule } from 'primeng/tooltip';
+
+
 
 
 const routes: Routes = [
   {
     path: 'Dashboard',
     component: DashboardComponent,
+  },
+  {
+    path: 'userslist',
+    component: UserslistComponent,
   }
 ]
 
@@ -24,16 +45,23 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    DashboardComponent
+    DashboardComponent,
+    UserslistComponent,PhoneMaskDirective, EidFormatterPipe
   ],
   imports: [
-    CommonModule,
+    TableModule, ToolbarModule,MatDatepickerModule,FormsModule,DialogModule,ReactiveFormsModule,ButtonModule,TranslateModule,MatRadioModule,TooltipModule,
+    CommonModule,ConfirmDialogModule,
     MatFormFieldModule,
     MatSelectModule,
     MatInputModule,MatListModule, MatIconModule, NgxEchartsModule,  NgxEchartsModule.forRoot({
       echarts,
     }),
+    
 
+  ]
+  ,
+  exports: [
+    PhoneMaskDirective
   ]
 })
 export class DashboardModule { }

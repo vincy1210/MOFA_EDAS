@@ -1,0 +1,80 @@
+.cooPayments-window {
+  min-height: 100vh;
+  // padding: 0.4rem;
+}
+
+.add-button {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.grid-search {
+  margin-right: 1rem;
+}
+
+.grid-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  line-height: 18px;
+  .grid-header-right {
+    display: flex;
+    gap: 0.25rem;
+    align-items: center;
+  }
+}
+
+.clicked {
+  background: var(--primary-color);
+  color: var(--white-color);
+}
+
+.show-p-5 {
+  padding: 0 0.25rem;
+}
+
+.custom-mat-form-field {
+  // height: 60px;
+}
+
+.custom-container {
+  // height: 60px;
+}
+
+.full-content {
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.grid-header-right:hover .full-content {
+  opacity: 1;
+}
+
+.action-width-body {
+  justify-content: center;
+  height: 10px;
+  button {
+    height: -webkit-fill-available; 
+  }
+}
+
+td[class="lg:noaction-width-header"] {
+  max-width: 250px;
+  white-space: wrap;
+  width: auto;
+  min-width: 90px;
+}
+
+td.action-width-header {
+  min-width: 75px;
+  max-width: 140px;
+}
+
+.image-text {
+  overflow-wrap: break-word;
+}
+
+.amount-text {
+  display: flex;
+  justify-content: flex-end;
+}

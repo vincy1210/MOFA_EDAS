@@ -1,0 +1,12 @@
+mat-error ::ng-deep{
+    color: red!important;
+}
+
+.login-window {
+    height: calc(100vh - 100px);
+    padding-top: 30px;
+    padding-bottom: 30px;
+    margin: auto;
+    align-items: center;
+    display: flex;
+}

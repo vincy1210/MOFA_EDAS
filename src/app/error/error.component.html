@@ -1,1 +1,42 @@
-<p>error works!</p>
+
+<div id="loading"  style="display: none;" ></div>
+
+<div class="body-bg registration-page" style="height: 500px;">
+<form >
+<div class="container registration-window">
+  <div class="w-50 m-auto">
+    <mat-card>
+      <div class="p-4" style="text-align: center;">
+        <p style="font-size: large;" class="pageTitle"> {{'You have been successfully logged out, we look forward to serve you again' | translate}}</p>
+<br>
+        <p  style="font-size: small;" class="pageTitle"> {{'YOUR SESSION SUMMARY' | translate}} {{timenow}} </p>
+
+        <br>
+
+        <p class="greytitle">{{"It's a good idea to close all browser windows." | translate}}
+        </p>
+        <br>
+
+        <div style="border: 1px solid grey; padding: 10px; border-radius: 7px;">
+            <p>{{'Would you like to login again? Press the button below.' | translate}}</p>
+            <br>
+            <!-- <button mat-raised-button color="primary" matDatepickerApply>login</button> -->
+            <div class="flex justify-center" mat-dialog-actions>
+              <div class="grid grid-cols-1 w-30">
+                <button
+                  mat-flat-button
+                  color="primary"
+                  class="green-filled-btn w-100 btn-w-30" (click)="redirecttologin()"
+                  
+                >
+                  {{'Login' | translate}}
+                </button>
+              </div>
+            </div>
+        </div>
+        </div></mat-card></div>
+      
+      </div></form></div>
+
+      
+      

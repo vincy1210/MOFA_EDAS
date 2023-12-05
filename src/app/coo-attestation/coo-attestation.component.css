@@ -1,16 +1,4 @@
-.cooAttestDetails-window {
-  min-height: 100vh;
-  padding: 1rem;
-}
 
-.add-button {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.grid-search {
-  margin-right: 1rem;
-}
 
 .grid-header {
   display: flex;
@@ -22,7 +10,62 @@
   }
 }
 
-.clicked {
-  background: var(--primary-color);
-  color: var(--white-color);
+/* .mat-form-field-appearance-outline .mat-form-field-wrapper {
+  margin: 0 !important;
+} */
+
+/* .mat-form-field-wrapper {
+  padding-bottom: 0 !important;
+} */
+td{
+  padding: 0.4rem !important;
+  font-size: 12px;
 }
+th{
+  padding: 0.4rem !important;
+  font-size: 13px;
+
+}
+/* input{
+  padding: 0.6rem !important;
+  font-size: 13px;
+  height: 0px;
+} */
+
+p-table{
+  font-size: 13px;
+}
+
+
+
+.viewaction{
+  color: #b68a35;
+  background-color: transparent;
+  border: none;
+  height: 2rem;
+}
+
+
+.viewaction:hover {
+  color: black;
+  background-color: #b68a35 transparent;
+}
+
+/* title start -25-10-2023 */
+
+
+
+/* title end - 25-10-2023 */
+
+
+
+.filter_datepicker{
+  height: 20px;
+   margin: 0;
+   padding-top: 0;
+   margin-top: -2.89em !important;
+   width: 170px;
+  }
+
+
+

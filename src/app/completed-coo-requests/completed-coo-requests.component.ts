@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ApiService } from 'src/service/api.service';
 import { ConstantsService } from 'src/service/constants.service';
 import { DatePipe } from '@angular/common';
 import * as XLSX from 'xlsx';
 import { ModalPopupService } from 'src/service/modal-popup.service';
+import { CommonService } from 'src/service/common.service';
 
 @Component({
   selector: 'app-completed-coo-requests',
@@ -13,6 +13,8 @@ import { ModalPopupService } from 'src/service/modal-popup.service';
   styleUrls: ['./completed-coo-requests.component.css'],
 })
 export class CompletedCooRequestsComponent implements OnInit {
+  @ViewChild('tableref', { static: true }) tableref: any;
+  public shouldShow = false;
   progress_val: number = 0;
   selectedAttestations: any;
   totalrecords: number = 0;
@@ -20,55 +22,113 @@ export class CompletedCooRequestsComponent implements OnInit {
   cols: any;
   loading: boolean = false;
   enableFilters: boolean = false;
+  today: Date = new Date(); 
+oneMonthAgo = new Date();
+todayModel:Date=new Date();
+currentcompany:any;
+uuid:string='';
 
+AddInvoiceDialog:boolean=false;
+
+currentrow:any;
+isfilenotfouund:boolean=false;
+
+fields: { label: string, value: any }[] = [];
+ 
+isButtonDisabled = false;
   constructor(
     private modalPopupService: ModalPopupService,
     public translate: TranslateService,
     public apiservice: ApiService,
     public consts: ConstantsService,
-    private datePipe: DatePipe
-  ) {}
+    private datePipe: DatePipe, public common:CommonService
+  ) {
+this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
+
+  }
+  filterTableByDate() {
+    // Convert dates to string format
+    const fromDateStr = this.datePipe.transform(this.oneMonthAgo, 'yyyy-MM-dd');
+    const toDateStr = this.datePipe.transform(this.today, 'yyyy-MM-dd');
+
+    // Apply filtering to the table
+    this.tableref.filter([
+      { field: 'createdatefrom', value: fromDateStr, matchMode: 'gte' },
+      { field: 'createdateto', value: toDateStr, matchMode: 'lte' },
+    ]);
+  }
 
   ngOnInit(): void {
-    this.progress_val = 0;
+    this.currentcompany=this.common.getSelectedCompany().companyuno;
+   
+    let data11=this.common.getUserProfile();
+    let uuid;
+    if(data11!=null || data11!=undefined){
+      data11=JSON.parse(data11)
+      console.log(data11.Data)
+      uuid=data11.Data.uuid;
+      this.uuid=uuid;
+
+    }
+    else{
+     
+      // this.common.logoutUser()
+      console.log("Invalid Session")
+
+    }
+   
     this.cols = [
       {
         field: 'declarationumber',
-        header: 'label.completedCooRequests.completedCooList.declarationumber',
+        header: 'declarationumber',
+        width:'20%'
       },
       {
         field: 'edasattestno',
-        header: 'label.completedCooRequests.completedCooList.edasattestno',
+        header: 'edasattestno',
+        width:'20%'
       },
-      // { field: 'entityshareamount', header: 'label.completedCooRequests.completedCooList.entityshareamount' },
+      // { field: 'entityshareamount', header: 'entityshareamount' },
       {
         field: 'totalamount',
-        header: 'label.completedCooRequests.completedCooList.totalamount',
+        header: 'totalamount',
+        width:'20%'
       },
       {
         field: 'declarationdate',
-        header: 'label.completedCooRequests.completedCooList.declarationdate',
+        header: 'declarationdate',
+        width:'15%'
       },
       {
         field: 'attestreqdate',
-        header: 'label.completedCooRequests.completedCooList.attestreqdate',
+        header: 'attestreqdate',
+        width:'15%'
       },
     ];
-    this.getCooAttestations();
+    this.InitTable();
   }
 
-  getCooAttestations() {
+  InitTable() {
     let data = {
-      uuid: '12223',
-      token: '12332',
+      "Companyuno":this.currentcompany,
+      "uuid":this.uuid,
+      "startnum":0,
+      "status":0,
+      "limit":10,
+      "Startdate":this.common.formatDateTime_API_payload(this.oneMonthAgo.toDateString()),
+      "Enddate":this.common.formatDateTime_API_payload(this.todayModel.toDateString())
     };
+    this.common.showLoading();
+
     this.apiservice
       .post(this.consts.getcompletedCOORequests, data)
       .subscribe((response: any) => {
-        if (`${response.responseCode}` === '200') {
-          const dataArray = response.data;
-          if (dataArray?.dictionary) {
-            this.cooAttestationLists = dataArray?.dictionary?.data;
+        this.common.hideLoading();
+
+        if (`${response.dictionary.responsecode}` === '1') {
+          const dataArray = response.dictionary?.data;
+          if (dataArray) {
+            this.cooAttestationLists = dataArray;
           }
         }
       });
@@ -111,23 +171,23 @@ export class CompletedCooRequestsComponent implements OnInit {
   exportExcel() {
     const jsonData = {
       declarationumber: this.translate.instant(
-        'label.completedCooRequests.completedCooList.declarationumber'
+        'label.cooAttestDetails.cooAttestList.declarationumber',
       ),
       edasattestno: this.translate.instant(
-        'label.completedCooRequests.completedCooList.edasattestno'
+        'label.cooAttestDetails.cooAttestList.edasattestno'
       ),
-      // entityshareamount: this.translate.instant(
-      //   'label.completedCooRequests.completedCooList.entityshareamount'
-      // ),
       totalamount: this.translate.instant(
-        'label.completedCooRequests.completedCooList.totalamount'
+        'label.cooAttestDetails.cooAttestList.totalamount'
       ),
       declarationdate: this.translate.instant(
-        'label.completedCooRequests.completedCooList.declarationdate'
+        'label.cooAttestDetails.cooAttestList.declarationdate'
       ),
       attestreqdate: this.translate.instant(
-        'label.completedCooRequests.completedCooList.attestreqdate'
+        'label.cooAttestDetails.cooAttestList.attestreqdate'
       ),
+      status: this.translate.instant(
+        'status'
+      )
     };
     const dataList: any = [];
     this.cooAttestationLists.map((item: any) => {
@@ -136,13 +196,63 @@ export class CompletedCooRequestsComponent implements OnInit {
       dataItem[jsonData.edasattestno] = item.edasattestno;
       // dataItem[jsonData.entityshareamount] = item.entityshareamount;
       dataItem[jsonData.totalamount] = item.totalamount;
-      dataItem[jsonData.declarationdate] = item.declarationdate;
-      dataItem[jsonData.attestreqdate] = item.attestreqdate;
+      dataItem[jsonData.declarationdate] = this.common.splitdatetime(item.declarationdate)?.date;
+      dataItem[jsonData.attestreqdate] = this.common.splitdatetime(item.attestreqdate)?.date;
+      dataItem[jsonData.status] = item.status;
       dataList.push(dataItem);
     });
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataList);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Coo Attestation');
-    XLSX.writeFile(wb, 'completed-coo-attestation.xlsx');
+    XLSX.utils.book_append_sheet(wb, ws, 'COO Attestation-Completed');
+    XLSX.writeFile(wb, 'COO-attestation-Completed.xlsx');
   }
+
+
+  
+
+openNew(data:any) {
+  console.log(data);
+  this.currentrow=data;
+  this.AddInvoiceDialog=true
+  const fieldMappings: { [key: string]: string } = {
+    coorequestno: 'COO Request No',
+    lcarequestno: 'LCA Request No',
+    declarationumber: 'Declaration No',
+    declarationdate: 'Declaration Date',
+    enteredon: 'Creation',
+    edasattestno: 'EDAS Attestation No',
+    attestreqdate: 'Attestationn Request Date',
+    feesamount: 'Fees Amount',
+    totalamount: 'Total Amount',
+    comments: 'Comments',
+    feespaid: 'Fees Paid',
+    statusname: 'Status'
+  };
+
+  if (data) {
+    this.fields = Object.keys(fieldMappings).map(key => {
+      let value = data[key];
+      if (key=="declarationdate" || key=="enteredon" ||key=="attestreqdate" ) {
+        const splitResult = this.common.splitdatetime(value);
+
+        if (splitResult?.date === '01-Jan-1970' || splitResult?.date === '01-Jan-0001') {
+          value = ''; // Set value to an empty string
+        } else {
+          value = splitResult?.date;
+        }
+      }
+      else if(key=="totalamount" || key=="feesamount"){
+        value =this.common.formatAmount(value);
+      }
+
+      return {
+        label: fieldMappings[key],
+        value: value
+      };
+    });
+  }
+  
+
+}
+  
 }

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonService } from 'src/service/common.service';
 import { Router } from '@angular/router';
+import { ApiService } from 'src/service/api.service';
+import { ConstantsService } from 'src/service/constants.service';
 @Component({
   selector: 'app-landing-page',
   templateUrl: './landing-page.component.html',
@@ -11,46 +13,111 @@ export class LandingPageComponent implements OnInit {
   CompanyListforAdmin: any;
 selectedCompany:any;
 setselcompany:any;
+uuid:any;
+today: Date = new Date(); 
+oneMonthAgo = new Date();
 
 uuiddetails:any;
-  constructor(private common:CommonService, private router:Router) { }
+isanycompanyavailable:boolean=false;
+isButtonDisabled = false;
+initialCompanyList: any;
+  constructor(private common:CommonService, private router:Router, private apicall:ApiService, private consts:ConstantsService) { 
+    this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
+  }
 
   ngOnInit(): void {
 
-    // this.common.getUserIfoData().subscribe(data => {
-    //   this.uuiddetails = data;
-    //   console.log(this.uuiddetails)
-
-      
-    // });
-
+   
     this.uuiddetails=this.common.getUserProfile();
 
-    this.uuiddetails=JSON.parse(this.uuiddetails);
-    this.uuiddetails=this.uuiddetails.Data;
+    let uuid;
+    if(this.uuiddetails!=null || this.uuiddetails!=undefined){
+      this.uuiddetails=JSON.parse(this.uuiddetails)
+      uuid=this.uuiddetails.Data.uuid;
+      this.uuid=uuid;
 
+    }
+    else{
+      console.log("Invalid Session")
 
-    this.CompanyListforAdmin=this.common.getCompanyList();
-    console.log(this.CompanyListforAdmin)
-
-    // this.common.getRegisteredCompanyDetails().subscribe(data => {
-    //   this.CompanyListforAdmin = data;
-    //   console.log(this.CompanyListforAdmin)
-    // });
-
-    //comment it
-
-//    this.CompanyListforAdmin=[
-//     {
-//       "companyname":"test1",
-//       "tradelicensenumber":"123456789",
-//       "companyuno": 0,
-//     }
+     // this.common.logoutUser()
+    }
    
-// ]
 
-
+    this.getcompanylist();
+   
   }
+
+  getcompanylist() {
+    let data = {
+      "uuid": this.uuid,
+      "startnum": 0,
+      "limit": 10,
+      "status": 0,
+      "startdate": this.common.formatDateTime_API_payload(this.oneMonthAgo.toDateString()),
+      "enddate": this.common.formatDateTime_API_payload(this.today.toDateString())
+    };
+  
+    let resp;
+    this.common.showLoading();
+    this.apicall.post(this.consts.getCompanyList, data).subscribe({
+      next: (success: any) => {
+        this.common.hideLoading();
+  
+        resp = success;
+        if (resp.dictionary.responsecode == 1) {
+          // Store the initial list when it is loaded
+          if (!this.initialCompanyList) {
+            this.initialCompanyList = [...resp.dictionary.data];
+          }
+  
+          this.CompanyListforAdmin = resp.dictionary.data;
+          this.common.favink1 = resp.dictionary.data.recentusedlink1;
+          this.common.favink2 = resp.dictionary.data.recentusedlink2;
+        } else {
+          this.CompanyListforAdmin = null;
+        }
+  
+        this.isanycompanyavailable = this.CompanyListforAdmin !== null;
+      }
+    });
+  }
+  
+
+  // getcompanylist(){
+  //   let data={
+  //     "uuid":this.uuid,
+  //     "startnum":0,
+  //     "limit":10,
+  //     "status":0,
+  //     "startdate":this.common.formatDateTime_API_payload(this.oneMonthAgo.toDateString()),
+  //     "enddate":this.common.formatDateTime_API_payload(this.today.toDateString())
+
+  //   }
+  //   let resp;
+  //   this.common.showLoading();
+  //   this.apicall.post(this.consts.getCompanyList,data).subscribe({next:(success:any)=>{
+  //   this.common.hideLoading();
+
+  //   resp=success;
+  //   if(resp.dictionary.responsecode==1){
+  //     this.CompanyListforAdmin=resp.dictionary.data;
+  //     this.common.favink1=resp.dictionary.data.recentusedlink1
+  //     this.common.favink2=resp.dictionary.data.recentusedlink2
+  //   }
+  //   else{
+  //     this.CompanyListforAdmin=null;
+  //   }
+  //   if(this.CompanyListforAdmin==null){
+  //     this.isanycompanyavailable=false;
+
+  //   }
+  //   else{
+  //     this.isanycompanyavailable=true;
+  //   }
+  // }})
+
+  // }
   toggleSelected(selectedCompany: any) {
     // Reset selection for all companies
     this.CompanyListforAdmin.forEach((company: any) => {
@@ -65,33 +132,56 @@ uuiddetails:any;
 
   RedirectRegistrationPage(){
      this.router.navigateByUrl('/registration')
-
-     
     //  this.router.navigateByUrl('/companydetails')
 
   }
   selectedCompanyProceed(){
     console.log(this.selectedCompany)
+    if(this.selectedCompany=='' ||this.selectedCompany==null ||this.selectedCompany==undefined){
+      this.common.showErrorMessage("Select a company to proceed");
+      return;
+    }
     let companyuno=this.selectedCompany.companyuno;
+    let business_name=this.selectedCompany.nameofbusiness;
+    let role=this.selectedCompany.rolename;
+
+
     let uuid=this.uuiddetails.uuid;
 
 
-    let data={
-      "companyuno":companyuno,
-      "uuid":uuid
-  }
 
    this.setselcompany={
-      "companyuno":companyuno,
-      "uuid":uuid
-    }
+    "companyuno":companyuno,
+    "business_name":business_name,
+    "role":role
+  }
+    
 
   this.common.setSelectedCompany(this.setselcompany)
+  console.log(this.common.getSelectedCompany().companyuno)
     this.router.navigateByUrl('/attestation')
 
     this.common.setSidebarVisibility(true);
    
 
   }
+
+  // Add this property and method to your existing class
+searchKeyword: string = '';
+
+searchCompanies() {
+  if (this.searchKeyword.trim() !== '') {
+    // Filter the initialCompanyList based on the searchKeyword
+    const filteredCompanies = this.initialCompanyList.filter((company: any) => {
+      return company.nameofbusiness.toLowerCase().includes(this.searchKeyword.toLowerCase());
+    });
+
+    // Update the displayed company list
+    this.CompanyListforAdmin = filteredCompanies;
+  } else {
+    // If the search box is empty, reset the list to the initial data
+    this.CompanyListforAdmin = [...this.initialCompanyList];
+  }
+}
 
 }

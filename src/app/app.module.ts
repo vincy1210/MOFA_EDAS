@@ -24,7 +24,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MAT_CHIPS_DEFAULT_OPTIONS, MatChipsModule } from '@angular/material/chips';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -73,7 +73,8 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { CompanydetailsComponent } from './companydetails/companydetails.component';
 import { NgxOtpInputModule } from 'ngx-otp-input';
 import { ToastrModule } from 'ngx-toastr';
-
+import { LoginComponent } from './login/login.component';
+import { ToolbarModule } from 'primeng/toolbar';
 
 import {
   RecaptchaModule,
@@ -120,7 +121,20 @@ import { AttestationWorkflowComponent } from './shared/components/attestation-wo
 import { CompletedCooRequestsComponent } from './completed-coo-requests/completed-coo-requests.component';
 import { LcaCompletedAttestationsComponent } from './lca-completed-attestations/lca-completed-attestations.component';
 import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
-// import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
+import { ESealTestComponent } from './e-seal-test/e-seal-test.component';
+import { PaymentinfoComponent } from './paymentinfo/paymentinfo.component';
+import { CooinreviewComponent } from './coo-attestation/cooinreview/cooinreview.component';
+import { PhysicalinreviewComponent } from './physical-attestation/physicalinreview/physicalinreview.component';
+import { TagModule } from 'primeng/tag';
+import {NgIdleKeepaliveModule} from '@ng-idle/keepalive'
+
+// import { EidFormatterPipe } from './eid-formatter.pipe';
+//import { PhoneMaskDirective } from './phone-mask.directive';
+// import { TwoWayBindDirective } from './two-way-bind.directive';
+// import { AttestationDetailsModalComponent } from './attestation/attestation-details-modal/attestation-details-modal.component';
+// // import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
+// import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+// import {MatButtonModule} from '@angular/material/button';
 
 
 // import { PrimeIcons } from 'primeng/api';
@@ -129,12 +143,21 @@ import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
 
 const RECAPTCHA_V3_STACKBLITZ_KEY = environment.recaptcha.siteKey;
 const RECAPTCHA_V2_DUMMY_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
+// import { DialogModule } from 'primeng/dialog';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ReportsComponent } from './reports/reports.component';
+import { LCAComponent } from './reports/lca/lca.component';
+import { COOComponent } from './reports/coo/coo.component';
+import { PhysicalComponent } from './reports/physical/physical.component';
+import { FinesComponent } from './reports/fines/fines.component';
+
 
 
 
 
 @NgModule({
   declarations: [
+    
     AppComponent,
     RegistrationComponent,
     CompanydetailsComponent,
@@ -146,12 +169,15 @@ const RECAPTCHA_V2_DUMMY_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
     CooAttestationComponent,
     CooAttestationCreateComponent,
     CompletedAttestationComponent,LeftMenuDrawerComponent, AttestationWorkflowComponent, CompletedCooRequestsComponent,
-    LcaCompletedAttestationsComponent, 
+    LcaCompletedAttestationsComponent,
+    ESealTestComponent, LoginComponent, PaymentinfoComponent, CooinreviewComponent, PhysicalinreviewComponent, ReportsComponent, LCAComponent, COOComponent, PhysicalComponent, FinesComponent, 
+    //PhoneMaskDirective, 
 
     
       ],
 
   imports: [
+    NgIdleKeepaliveModule.forRoot() ,//vincy
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -244,7 +270,7 @@ const RECAPTCHA_V2_DUMMY_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
     InputTextModule,
     ToastModule,
     PdfViewerModule,   RecaptchaFormsModule,
-    RecaptchaV3Module, 
+    RecaptchaV3Module, ToolbarModule, DialogModule, ConfirmDialogModule, TagModule, NgIdleKeepaliveModule
   ],
   providers: [
     {
@@ -268,6 +294,9 @@ const RECAPTCHA_V2_DUMMY_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
     DatePipe,
   ],
   bootstrap: [AppComponent],
+  // exports: [
+  //   PhoneMaskDirective
+  // ],
 })
 export class AppModule {}
 export function HttpLoaderFactory(http: HttpClient) {

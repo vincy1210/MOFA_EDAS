@@ -11,13 +11,42 @@ export class ConstantsService {
   SendOTPForCompanyRegn = 'Company/saveOTPforCompanyRegn';
   validateOTPforCompanyRegn='Company/validateOTPforCompanyRegn'
   getFreezonetypes = 'Company/getFreezonetypes';
-  pendingattestation = 'Company/lcapendingAttestList';
+  pendingattestation = 'User/lcaMypendingAttestList';
   //UAEPassprofile="Company/lcapendingAttestList"
-  getInvoiceAttestations = 'Common/getInvoiceAttestations'; // invoice attest lists
-  invoiceAttestation = 'Common/invoiceAttestation'; // invoice attest request
-  getCooRequests = 'Company/getCOORequests'; // completed attest lists
+  getInvoiceAttestations = 'User/getMyInvoiceAttestations'; // invoice attest lists
+  invoiceAttestation = 'Common/invoiceAttestation'; // invoice attest request // invoice attest request
+  getCooRequests = 'User/getMyCOORequests'; // completed attest lists
   updateCOORequests = 'Company/updateCOORequests'; // completed attest update
-  lcaCompletedAttestList='Company/lcaCompletedAttestList';
+  lcaCompletedAttestList='User/lcaMyCompletedAttestList';
   sendMailGeneric="Company/sendMailGeneric"
-  getcompletedCOORequests = 'Company/getcompletedCOORequests'; // completed COO Request
+  getcompletedCOORequests = 'User/getMycompletedCOORequests'; // completed COO Request
+  getAttestationFileContent='Company/getAttestationFileContent'
+  getCompanyList='User/getMyCompanyList'
+  getInReviewCOOReq='User/getInReviewCOOReq'
+  getInReviewAttestReq='User/getInReviewAttestReq'
+  checkCompanyUser='user/checkCompanyUser'
+
+
+  
+
+
+  mpaypurchaseRequest='lca/mpaypurchaseRequest'
+  LCAmpayinquiryTransaction='lca/mpayinquiryTransaction'
+
+  getPhysicalAttestpaymentdetails='entity/getPhysicalAttestpaymentdetails'
+  getCOOAttestpaymentdetails='entity/getCOOAttestpaymentdetails'
+
+  getcompletedInvoiceAttestList='User/getMycompletedInvoiceAttestList'
+
+  managecompanyuser="Admin/managecompanyuser"  //manage user
+  getCompanyUserList="Admin/getCompanyUserList"
+
+
+
+  eSealSoapGatewayUrl = 'https://stg-id.uaepass.ae/trustedx-gw/SoapGateway';
+
+
+  //payment
+
+  getLCAPaymentdetails='LCA/getLCAPaymentdetails';
 }

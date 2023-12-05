@@ -17,18 +17,21 @@ interface DeclarationAttestModel {
   attachment: File;
 }
 
+
 @Component({
   selector: 'app-coo-attestation-create',
   templateUrl: './coo-attestation-create.component.html',
   styleUrls: ['./coo-attestation-create.component.css'],
 })
 export class CooAttestationCreateComponent implements OnInit {
+  sel_file_test:any;
   registrationForm!: FormGroup;
   today: Date = new Date();
   isLoading = false;
   issuingAuthorities: { typeuno: string; typename: string }[] = [];
   listOfFiles: File[] = [];
-
+  uuid:string='';
+  isButtonDisabled = false;
   constructor(
     public dialogRef: MatDialogRef<CooAttestationCreateComponent>,
     private FormBuilder: FormBuilder,
@@ -37,7 +40,25 @@ export class CooAttestationCreateComponent implements OnInit {
     public consts: ConstantsService,
     private commonService: CommonService,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  ) {
+
+    let data11=this.commonService.getUserProfile();
+    let uuid;
+    if(data11!=null || data11!=undefined){
+      data11=JSON.parse(data11)
+      console.log(data11.Data)
+      uuid=data11.Data.uuid;
+      this.uuid=uuid;
+      //mobile
+
+    }
+    else{
+      console.log("Invalid Session")
+
+    //  this.commonService.logoutUser()
+    }
+
+  }
 
   ngOnInit(): void {
     this.registrationForm = this.FormBuilder.group({
@@ -48,23 +69,35 @@ export class CooAttestationCreateComponent implements OnInit {
   }
 
   onFileChanged(event: any) {
+    console.log(event);
     this.isLoading = true;
     this.listOfFiles = [];
+    var companylicense=this.commonService.getSelectedCompany();
+    console.log(companylicense);
     for (var i = 0; i <= event.target.files.length - 1; i++) {
       var selectedFile = event.target.files[i];
+      this.sel_file_test=selectedFile;
       if (selectedFile) {
         if (selectedFile.size <= 2 * 1024 * 1024) {
           this.listOfFiles.push(selectedFile);
+          const timestamp = new Date().getTime();
+          const newFileName = 'COO_'+companylicense.companyuno +'_'+timestamp+ '.pdf'; 
+          const renamedFile = new File([selectedFile], newFileName, { type: selectedFile.type });
+          this.sel_file_test=renamedFile;
+
         } else {
           this.registrationForm.get('uploadDeclarationFile')?.setValue(null);
           //alert
           this.commonService.showErrorMessage(
-            'File size exceeds the allowed limit (2 MB).'
+            'File size should be less than or equal to 2 MB'
           );
         }
       }
     }
-    this.isLoading = false;
+    setTimeout(() => {
+      // After the upload is complete
+      this.isLoading = false;
+    }, 3000);
   }
 
   removeSelectedFile(index: number) {
@@ -83,24 +116,28 @@ export class CooAttestationCreateComponent implements OnInit {
     if (this.registrationForm.valid) {
       let formData: FormData = new FormData();
       const { coorequestno } = this.registrationForm.getRawValue();
-      const data = { uuid: '211', coorequestno: coorequestno };
+      const data = { uuid: this.uuid, coorequestno: coorequestno };
       formData.append('data', JSON.stringify(data));
-      formData.append('attachment', this.listOfFiles[0]);
+      formData.append('attachment', this.sel_file_test);
       this.submitDeclarationAttestations(formData);
     } else {
       // alert
-      this.commonService.showErrorMessage('Fill mandatory fields!!!');
+      this.commonService.showErrorMessage('Fill mandatory fields');
     }
   }
 
   submitDeclarationAttestations(data: FormData) {
+    this.commonService.showLoading();
+
     this.apiservice
       .post(this.consts.updateCOORequests, data)
       .subscribe((response: any) => {
+        this.commonService.hideLoading();
+
         const dataArray = response;
         if (`${response.responsecode}` === '1') {
           //alert
-          this.commonService.showSuccessMessage(`Successfully submitted`);
+          this.commonService.showSuccessMessage(`COO Request Send for Approval`);
           this.clearDatas();
           this.onClose(true);
         } else {

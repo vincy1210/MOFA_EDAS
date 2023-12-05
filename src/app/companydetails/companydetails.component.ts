@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, TemplateRef, VERSION } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, VERSION, ElementRef } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormControl, MinLengthValidator, ValidatorFn, AbstractControl } from '@angular/forms';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { NgxOtpInputConfig } from 'ngx-otp-input';
@@ -21,6 +21,8 @@ import { ReCaptchaV3Service } from 'ng-recaptcha';
   styleUrls: ['./companydetails.component.css']
 })
 export class CompanydetailsComponent implements OnInit {
+
+  @ViewChild('fileInput') fileInput: any;
 
   @ViewChild('invisible') invisibleRecaptcha: any;
   companyDetailsForm: FormGroup;//
@@ -61,7 +63,7 @@ export class CompanydetailsComponent implements OnInit {
   freezonelist:any;
   showResendLink:boolean=false;
   
-
+  isButtonDisabled = false;
   constructor(private recaptchaV3Service:ReCaptchaV3Service,private common:CommonService ,private _activatedRoute: ActivatedRoute,private formBuilder:FormBuilder, public dialog: MatDialog, private Common:CommonService, public apiservice:ApiService, public consts:ConstantsService, public router:Router) {
 
 
@@ -156,7 +158,11 @@ if(this.reg_form_data==undefined){
     let data={
       "useruno":"1"
     }
+    this.common.showLoading();
+
       this.apiservice.post(this.consts.GetLegalTypes, data).subscribe((response: any) => {
+        this.common.hideLoading();
+
         const dataArray = response.data; // Access the 'data' property from the response
         console.log(dataArray);
         this.legalTypeOptions=dataArray.dictionary.data;
@@ -175,24 +181,42 @@ if(this.reg_form_data==undefined){
   sitekey:string='';
 
   onFileChanged(event: any) {
+    const file = event.target.files[0];
 
-    const form = { ...this.companyDetailsForm.value };
-    this.isLoading = true;
-    this.fileList=[];
-    this.listOfFiles=[];
-    for (var i = 0; i <= event.target.files.length - 1; i++) {
-      var selectedFile = event.target.files[i];
-      this.sel_file_test=selectedFile;
-        this.fileList.push(selectedFile);
-        this.listOfFiles.push(selectedFile.name);
+    if (file) {
+      // Check if the file size is less than or equal to 2 MB (in bytes)
+      if (file.size <= 2 * 1024 * 1024) {
+        // Add the selected file to the list
+        //this.listOfFiles.push(file.name);
+        const form = { ...this.companyDetailsForm.value };
+        this.isLoading = true;
+        this.fileList=[];
+        this.listOfFiles=[];
+        for (var i = 0; i <= event.target.files.length - 1; i++) {
+          var selectedFile = event.target.files[i];
+          this.sel_file_test=selectedFile;
+            this.fileList.push(selectedFile);
+            this.listOfFiles.push(selectedFile.name);
+        }
+        setTimeout(() => {
+          // After the upload is complete
+          this.isLoading = false;
+        }, 3000);
+        const timestamp = new Date().getTime();
+        const newFileName = form.trade_Licence +'_'+timestamp+ '.pdf'; 
+        const renamedFile = new File([selectedFile], newFileName, { type: selectedFile.type });
+        this.sel_file_test=renamedFile;
+      } else {
+        // Notify the user that the file size is too large
+        this.common.showErrorMessage('File size should be less than or equal to 2 MB');
+        // Clear the file input
+        this.companyDetailsForm.get('Upload_trade_license')?.setValue('');
+        this.fileInput.nativeElement.value = '';
+      }
     }
-    this.isLoading = false;
-    const timestamp = new Date().getTime();
-    const newFileName = form.trade_Licence +'_'+timestamp+ '.pdf'; 
 
-    const renamedFile = new File([selectedFile], newFileName, { type: selectedFile.type });
+
     
-    this.sel_file_test=renamedFile;
 
   }
 
@@ -418,7 +442,11 @@ if(this.reg_form_data==undefined){
       }
       console.log(data);
       let otpresponse;
+      this.common.showLoading();
+
       this.apiservice.post(this.consts.SendOTPForCompanyRegn,data).subscribe({next:(success)=>{
+        this.common.hideLoading();
+
       otpresponse=success;
       console.log(otpresponse);
       }

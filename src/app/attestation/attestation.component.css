@@ -1,57 +1,4 @@
-/* table{
-  width: 100%;
- }
- mat-paginator{
-  width: 100%;
- }
 
- .p-column-filter-buttonbar .p-button {
-  width: auto;
-  background-color: #b68a35 !important;
-  color: white;
-}
-
-mat-grid-tile {
-  background: lightblue;
-} */
-
-/* .mat-grid-tile-content
-{
-    flex-direction: row;
-}   */
-
-/* .Frame-18799 {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: stretch;
-  gap: 56px;
-  margin: 0 0 52.5px;
-  padding: 0;
-
-  font-size: 14px;
-  font-weight: bold;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1;
-  letter-spacing: normal;
-  text-align: left;
-  color: #000;
-  flex-grow: 0;
-} */
-
-
-/* .grid-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  .grid-header-right {
-    display: flex;
-    gap: 0.5rem;
-  }
-} */
 
 .grid-header {
   display: flex;
@@ -61,4 +8,184 @@ mat-grid-tile {
     display: flex;
     gap: 0.5rem;
   }
+}
+
+/* .mat-form-field-appearance-outline .mat-form-field-wrapper {
+  margin: 0 !important;
+} */
+
+/* .mat-form-field-wrapper {
+  padding-bottom: 0 !important;
+} */
+td{
+  padding: 0.4rem !important;
+  font-size: 12px;
+}
+th{
+  padding: 0.4rem !important;
+  font-size: 13px;
+
+}
+/* input{
+  padding: 0.6rem !important;
+  font-size: 13px;
+  height: 0px;
+} */
+
+p-table{
+  font-size: 13px;
+}
+
+
+
+
+.viewaction{
+  color: #b68a35;
+  background-color: transparent;
+  border: none;
+  height: 2rem;
+}
+
+
+.viewaction:hover {
+  color: black;
+  background-color: #b68a35 transparent;
+}
+
+/* title start -25-10-2023 */
+
+
+
+/* title end - 25-10-2023 */
+
+
+
+.filter_datepicker{
+  height: 20px;
+   margin: 0;
+   padding-top: 0;
+   margin-top: -2.89em !important;
+   width: 170px;
+  }
+
+
+
+
+
+
+
+
+
+
+
+  /* navod css */
+
+  ::ng-deep .cdk-overlay-connected-position-bounding-box {
+    z-index: 10000 !important;
+  }
+   
+  ::ng-deep .cdk-global-overlay-wrapper {
+    z-index: 1000 !important;
+  }
+   
+  /* ::ng-deep .cdk-overlay-pane {
+    padding: 2rem;
+  } */
+   
+  ::ng-deep .cdk-dialog-container {
+    overflow: hidden;
+  }
+   
+  .moredetails-window {
+    min-height: calc(100vh - 150px);
+    min-width: 100%;
+     /* padding: 0.4rem; */
+  }
+   
+  h1.page-title-02 {
+    font-family: "robotobold" !important;
+    margin-bottom: 10px !important;
+    font-size: x-large;
+  }
+   
+  .w-30 {
+    width: 30%;
+  }
+   
+  .btn-w-30 {
+    padding: 0 1rem;
+  }
+   
+  .cd-upload {
+    width: 100%;
+  }
+   
+  .cd-upload-field {
+    width: inherit;
+  }
+   
+  .upload-field-invoice {
+    display: flex;
+  }
+   
+  button.mat-stroked-button {
+    border: #b68a35 1px solid;
+  }
+   
+  .file-upload-action {
+    display: flex;
+    gap: 1rem;
+    padding: 0 0.5rem 0.5rem;
+    align-items: center;
+  }
+   
+  .file-upload-action-btn {
+    /* margin: 0 0.5rem 0.5rem 0; */
+  }
+   
+
+  .more-header {
+    display: flex;
+    justify-content: space-between;
+  }
+   
+  .more-body {
+    overflow-y: scroll;
+    height: calc(100vh - 130px);
+    padding: 0.5rem;
+  }
+   
+  mat-form-field {
+    width: 100%;
+  }
+   
+  ::ng-deep .mat-radio-button.mat-accent .mat-radio-inner-circle {
+    border-color: var(--primary-color);
+    background-color: var(--primary-color);
+  }
+   
+  .broker-company {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 50px;
+    gap: 1rem;
+  }
+   
+
+ 
+  
+	.mat-form-field-appearance-outline .mat-form-field-flex {
+    padding: 0 0.75em 0 0.75em;
+    margin-top: -0.25em;
+    position: relative;
+    height: 2.7rem !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.caption_apply_button{
+  padding: 5px;
+    height: 3.2rem;
 }

@@ -1,8 +1,9 @@
 <!-- <app-loader></app-loader> -->
+<div id="loading" style="display: none;"></div>
 <div>
 <div class="grid grid-cols-1" color="primary" class="page-header">
 
-  <h3 (click)="mainpage()">{{'label.registration.mainpage.title' | translate }} </h3>
+  <h3 (click)="mainpage()">{{'Registration' | translate }} </h3>
 </div>
 <div class="company-bg registration-page">
   <div class="registration-progress">
@@ -17,17 +18,17 @@
         <div class="back pr-2  cursor-pointer" routerLink="/registration">
           <mat-icon>arrow_back</mat-icon><span>{{'backbtn' | translate }}</span>
         </div>
-        <h1 class="mt-0 mb-0 page-title-01"> {{'label.companydetails.page.title' | translate }}</h1>
-        <p class="mt-0 page-title-para">{{'label.companydetails.pagetitle.para' | translate }}
+        <h1 class="mt-0 mb-0 page-title-01"> {{'Company Details' | translate }}</h1>
+        <p class="mt-0 page-title-para">{{'Ensuring data accuracy and security is our top priority. Kindly verify your details first and then the company contact number through OTP to complete the submission with confidence.' | translate }}
         </p>
       </div>
       <div class="grid grid-cols-1">
 
         <mat-form-field appearance="outline">
-          <mat-label>{{'label.companydetails.nameofthebusinessaspertradelicense' | translate }}</mat-label>
-          <input class="amount-input" autocomplete="off" formControlName="name_of_Business" name="name_of_Business" maxlength="100"  matInput placeholder="Example Technologies L.L.C">
-          <mat-error *ngIf="companyDetailsForm.get('name_of_Business')?.hasError('required')">{{'alerts.companydetails.Name of the Business is required' | translate }} </mat-error>
-          <mat-error *ngIf="companyDetailsForm.get('name_of_Business')?.hasError('pattern')">{{'alerts.companydetails.Name of the Business is required' | translate }} </mat-error>
+          <mat-label>{{'nameofthebusinessaspertradelicense' | translate }}</mat-label>
+          <input class="amount-input" autocomplete="off" formControlName="name_of_Business" name="name_of_Business" maxlength="100"  matInput placeholder="{{'Example Technologies L.L.C' | translate}}">
+          <mat-error *ngIf="companyDetailsForm.get('name_of_Business')?.hasError('required')">{{'Name of the Business is required' | translate }} </mat-error>
+          <mat-error *ngIf="companyDetailsForm.get('name_of_Business')?.hasError('pattern')">{{'Name of the Business is required' | translate }} </mat-error>
           
         </mat-form-field>
 
@@ -35,10 +36,10 @@
       <div class="grid grid-cols-1">
 
         <mat-form-field appearance="outline">
-          <mat-label>{{'label.companydetails.tradelicensenumber' | translate }}</mat-label>
+          <mat-label>{{'tradelicensenumber' | translate }}</mat-label>
           <input readonly [disabled]="true"  autocomplete="off" formControlName="trade_Licence" name="trade_Licence" matInput placeholder="123456">
-        <mat-error *ngIf="companyDetailsForm.get('trade_Licence')?.hasError('required')">{{'alerts.companydetails.Trade License number is required' | translate }} </mat-error>
-        <mat-error *ngIf="companyDetailsForm.get('trade_Licence')?.hasError('pattern')">{{'alerts.companydetails.Trade License number is required' | translate }} </mat-error>
+        <mat-error *ngIf="companyDetailsForm.get('trade_Licence')?.hasError('required')">{{'Trade License number is required' | translate }} </mat-error>
+        <mat-error *ngIf="companyDetailsForm.get('trade_Licence')?.hasError('pattern')">{{'Trade License number is required' | translate }} </mat-error>
 
         </mat-form-field>
 
@@ -49,36 +50,36 @@
 
         <div>
           <mat-form-field class="example-form-field">
-            <mat-label>{{'label.companydetails.tradelicenseissuedate' | translate }}</mat-label>
+            <mat-label>{{'tradelicenseissuedate' | translate }}</mat-label>
             <input matInput readonly  [max]="today"  autocomplete="off" [disabled]="true" formControlName="trade_Licence_Issue_Date" name="trade_Licence_Issue_Date" [matDatepicker]="tlissuedate" placeholder="19/02/1972">
 
             <mat-datepicker-toggle matSuffix [for]="tlissuedate"></mat-datepicker-toggle>
             <mat-datepicker #tlissuedate>
               <mat-datepicker-actions>
-                <button mat-button matDatepickerCancel>{{'label.registration.cancelbtn' | translate }}</button>
-                <button mat-raised-button color="primary" matDatepickerApply>{{'label.registration.applybtn' | translate
+                <button mat-button matDatepickerCancel>{{'cancelbtn' | translate }}</button>
+                <button mat-raised-button color="primary" matDatepickerApply>{{'applybtn' | translate
                   }}</button>
               </mat-datepicker-actions>
             </mat-datepicker>
-            <mat-error *ngIf="companyDetailsForm.get('trade_Licence_Issue_Date')?.hasError('required')">{{'alerts.companydetails.Trade License issue Date is required' | translate }}</mat-error>
+            <mat-error *ngIf="companyDetailsForm.get('trade_Licence_Issue_Date')?.hasError('required')">{{'Trade License issue Date is required' | translate }}</mat-error>
 
           </mat-form-field>
         </div>
 
         <div>
           <mat-form-field class="example-form-field">
-            <mat-label>{{'label.companydetails.tradelicenseexpirydate' | translate }}</mat-label>
+            <mat-label>{{'tradelicenseexpirydate' | translate }}</mat-label>
             <input matInput  autocomplete="off" [min]="today" formControlName="trade_Licence_Expiry_Date" name="trade_Licence_Expiry_Date" [matDatepicker]="tlexpirydate" placeholder="19/10/2025">
             <mat-datepicker-toggle matSuffix [for]="tlexpirydate"></mat-datepicker-toggle>
             <span matSuffix >&nbsp;{{'EDIT' | translate }}</span>
             <mat-datepicker #tlexpirydate>
               <mat-datepicker-actions>
-                <button mat-button matDatepickerCancel>{{'label.registration.cancelbtn' | translate }}</button>
-                <button mat-raised-button color="primary" matDatepickerApply>{{'label.registration.applybtn' | translate
+                <button mat-button matDatepickerCancel>{{'cancelbtn' | translate }}</button>
+                <button mat-raised-button color="primary" matDatepickerApply>{{'applybtn' | translate
                   }}</button>
               </mat-datepicker-actions>
             </mat-datepicker>
-            <mat-error *ngIf="companyDetailsForm.get('trade_Licence_Expiry_Date')?.hasError('required')">{{'alerts.companydetails.Trade License Expiry Date is required' | translate }} </mat-error>
+            <mat-error *ngIf="companyDetailsForm.get('trade_Licence_Expiry_Date')?.hasError('required')">{{'Trade License Expiry Date is required' | translate }} </mat-error>
           </mat-form-field>
         </div>
       </div>
@@ -86,10 +87,10 @@
       <div class="grid grid-cols-1">
 
         <mat-form-field appearance="outline">
-          <mat-label>{{'label.companydetails.licenseissuingauthority' | translate }}</mat-label>
+          <mat-label>{{'licenseissuingauthority' | translate }}</mat-label>
           <input matInput readonly [disabled]="true"  autocomplete="off" formControlName="Licence_issuing_auth" name="Licence_issuing_auth" placeholder="Free zone">
-          <mat-error *ngIf="companyDetailsForm.get('Licence_issuing_auth')?.hasError('required')">{{'alerts.companydetails.License issuing authority is required' | translate }} </mat-error>
-          <mat-error *ngIf="companyDetailsForm.get('Licence_issuing_auth')?.hasError('pattern')">{{'alerts.companydetails.License issuing authority is required' | translate }} </mat-error>
+          <mat-error *ngIf="companyDetailsForm.get('Licence_issuing_auth')?.hasError('required')">{{'License issuing authority is required' | translate }} </mat-error>
+          <mat-error *ngIf="companyDetailsForm.get('Licence_issuing_auth')?.hasError('pattern')">{{'License issuing authority is required' | translate }} </mat-error>
         
         </mat-form-field>
 
@@ -98,13 +99,13 @@
 
       <div class="grid grid-cols-1">
         <mat-form-field appearance="outline">
-          <mat-label>{{ 'label.companydetails.legaltype' | translate }}</mat-label>
+          <mat-label>{{ 'legaltype' | translate }}</mat-label>
           <mat-select name="legal_Type" formControlName="legal_Type">
             <mat-option *ngFor="let option of legalTypeOptions" [value]="option.typeuno">
               {{ option.typename }}
             </mat-option>
           </mat-select>
-          <mat-error class="error" *ngIf="companyDetailsForm.get('legal_Type')?.hasError('required')">{{'alerts.companydetails.Legal Type is required' | translate }}</mat-error>
+          <mat-error class="error" *ngIf="companyDetailsForm.get('legal_Type')?.hasError('required')">{{'Legal Type is required' | translate }}</mat-error>
         </mat-form-field>
       </div>
 
@@ -112,24 +113,24 @@
 
         <div>
           <mat-form-field appearance="outline">
-            <mat-label>{{'label.companydetails.companyregisteredemailaddress' | translate }} </mat-label>
+            <mat-label>{{'companyregisteredemailaddress' | translate }} </mat-label>
             <input matInput  autocomplete="off" formControlName="Comp_Reg_Email_Address" name="Comp_Reg_Email_Address" placeholder="example@etech.com">
             <span matSuffix>&nbsp;{{'EDIT' | translate }}</span>
-            <mat-error *ngIf="companyDetailsForm.get('Comp_Reg_Email_Address')?.hasError('required')">{{'alerts.companydetails.Company Registered Email Address is required' | translate }} </mat-error>
-            <mat-error *ngIf="companyDetailsForm.get('Comp_Reg_Email_Address')?.hasError('email')">{{ 'alerts.companydetails.Invalid Email format' | translate }}
+            <mat-error *ngIf="companyDetailsForm.get('Comp_Reg_Email_Address')?.hasError('required')">{{'Company Registered Email Address is required' | translate }} </mat-error>
+            <mat-error *ngIf="companyDetailsForm.get('Comp_Reg_Email_Address')?.hasError('email')">{{ 'Invalid Email format' | translate }}
             </mat-error>
           </mat-form-field>
         </div>
 
         <div>
           <mat-form-field appearance="outline" floatLabel="always">
-            <mat-label>{{'label.companydetails.companycontactnumber' | translate }}   </mat-label>
+            <mat-label>{{'companycontactnumber' | translate }}   </mat-label>
             <input matInput type="tel"  autocomplete="off" maxlength="9" formControlName="Comp_contact_number" name="Comp_contact_number"    placeholder="55 1234 567">
             <span matPrefix>+971&nbsp;</span>
             <span matSuffix>&nbsp;{{'EDIT' | translate }}</span>
-            <mat-error *ngIf="!(companyDetailsForm.get('Comp_contact_number')?.hasError('minlength')|| companyDetailsForm.get('Comp_contact_number')?.hasError('maxlength'))&&companyDetailsForm.get('Comp_contact_number')?.hasError('pattern')">{{'alerts.companydetails.Invalid Company Contact Number' | translate }} </mat-error>
-            <mat-error *ngIf="companyDetailsForm.get('Comp_contact_number')?.hasError('minlength')|| companyDetailsForm.get('Comp_contact_number')?.hasError('maxlength')">{{'alerts.companydetails.Company Contact Number must be 9 characters long' | translate }}</mat-error>
-            <mat-error *ngIf="companyDetailsForm.get('Comp_contact_number')?.hasError('required')">{{'alerts.companydetails.Company Contact Number is required' | translate }} </mat-error>
+            <mat-error *ngIf="!(companyDetailsForm.get('Comp_contact_number')?.hasError('minlength')|| companyDetailsForm.get('Comp_contact_number')?.hasError('maxlength'))&&companyDetailsForm.get('Comp_contact_number')?.hasError('pattern')">{{'Invalid Company Contact Number' | translate }} </mat-error>
+            <mat-error *ngIf="companyDetailsForm.get('Comp_contact_number')?.hasError('minlength')|| companyDetailsForm.get('Comp_contact_number')?.hasError('maxlength')">{{'Company Contact Number must be 9 characters long' | translate }}</mat-error>
+            <mat-error *ngIf="companyDetailsForm.get('Comp_contact_number')?.hasError('required')">{{'Company Contact Number is required' | translate }} </mat-error>
           </mat-form-field>
         </div>
 
@@ -137,40 +138,42 @@
       <div class="grid grid-cols-2 gap-4">
 
         <div class="cd-upload">
+          
+
+          <!-- {{companyDetailsForm.get('Upload_trade_license')?.value}}  {{companyDetailsForm.get('Upload_trade_license')?.value!=''}}   &nbsp; &nbsp; &nbsp; -->
           <mat-form-field appearance="outline" floatLabel="always">
-            <mat-label>{{'label.companydetails.uploadtradelicense' | translate }}</mat-label>
-            <button mat-button color="primary" (click)="fileInput.click()" class="float-right">{{'UPLOAD' | translate }}</button>
+            <mat-label>{{'uploadtradelicense' | translate }}</mat-label>
+            <a mat-button color="primary" (click)="fileInput.click()" class="float-right"><span *ngIf="!isLoading">
+              {{ companyDetailsForm.get('Upload_trade_license')?.value === '' ? ('UPLOAD' | translate) : ('Re-upload' | translate ) }}
+            </span>
+            <span  *ngIf="isLoading">
+              <mat-spinner diameter="35"></mat-spinner>
+            </span>
+          </a>
             <input type="text" formControlName="Upload_trade_license" name="Upload_trade_license" readonly matInput />
 
             <input accept=".pdf" style="display: none" formControlName="Upload_trade_license" name="Upload_trade_license" #attachments type="file" (change)="onFileChanged($event)" #fileInput
               />
             <div *ngFor="let selected of listOfFiles; let index = index" class="cd-file-list">
-             <span class="doc_selected">{{ selected }}</span> <mat-icon>check_circle_outline</mat-icon>
+             <span class="doc_selected" >{{ selected }}</span> &nbsp; &nbsp; &nbsp;<mat-icon>check_circle_outline</mat-icon>
               <small (click)="removeSelectedFile(index)">{{'Remove' | translate }}</small>
             </div>
-        <mat-error *ngIf="companyDetailsForm.get('Upload_trade_license')?.hasError('required')"> {{'alerts.companydetails.Trade License is required' | translate }} </mat-error>
+        <mat-error *ngIf="companyDetailsForm.get('Upload_trade_license')?.hasError('required')"> {{'Trade License is required' | translate }} </mat-error>
 
           </mat-form-field>
-
+<!--  style="width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" -->
           
-          <p *ngIf="isLoading">Loading.....</p>
+          <!-- <p *ngIf="isLoading">Loading.....</p> -->
         </div>
-        <div class="grid grid-cols-2 mt-4">
-          <!-- <mat-radio-group  >
-            <div class="grid grid-cols-1">
-              <mat-radio-button color="primary" class="example-radio-button mb-5" *ngFor="let te of typeExpress" [value]="te">
-                {{ te }}
-              </mat-radio-button>
-            <mat-error class="error" *ngIf="companyDetailsForm.get('isbroker')?.hasError('required') && this.radiochosenornot">{{'alerts.registration.Please select the type of Issuing Authority.'| translate }}</mat-error>
-            </div>
-          </mat-radio-group> --> 
-           <!-- {{radiochosenornot}} {{companyDetailsForm.get('isbroker')?.hasError('required')}} -->
+        <div class="grid grid-cols-2 mt-4" style="margin-top: 10px; display: block;">
+         
           <mat-radio-group formControlName="isbroker" aria-label="Are you a Broker?">
-          <mat-label style="font-weight: 600;">{{'label.companydetails.AreyouaBroker' | translate }}</mat-label> &nbsp; &nbsp; &nbsp; &nbsp;
-
+            <SPAN>
+          <mat-label style="font-weight: 600;">{{'AreyouaBroker' | translate }}</mat-label> &nbsp; &nbsp; &nbsp; &nbsp;</SPAN>
+<span>
             <mat-radio-button  value="1">{{'Yes' | translate }}</mat-radio-button>
-            <mat-radio-button value="2">{{'No' | translate }}</mat-radio-button>
-            <mat-error class="error" *ngIf="companyDetailsForm.get('isbroker')?.hasError('required') && radiochosenornot ">{{'alerts.companydetails.Please select the option'| translate }}</mat-error>
+            <mat-radio-button value="2">{{'No' | translate }}</mat-radio-button></span>
+            <mat-error class="error" *ngIf="companyDetailsForm.get('isbroker')?.hasError('required') && radiochosenornot ">{{'Please select the option'| translate }}</mat-error>
 
           </mat-radio-group>
         </div>
@@ -183,17 +186,17 @@
       </div>
       <div class="grid grid-cols-1 mt-5">
         
-        <h1 class="mt-0 mb-0 page-title-01"> {{'label.companydetails.second.page.title' | translate }}</h1>
-        <p class="mt-0 page-title-para">{{'label.companydetails.second.pagetitle.para' | translate }}
+        <h1 class="mt-0 mb-0 page-title-01"> {{'Company Representative Details' | translate }}</h1>
+        <p class="mt-0 page-title-para">{{'These provided details will serve as the credentials for accessing the company profile once it has been approved.' | translate }}
         </p>
       </div>
       <div class="grid grid-cols-1">
 
         <mat-form-field appearance="outline">
-          <mat-label>{{'label.companydetails.fullname' | translate }}</mat-label>
+          <mat-label>{{'fullname' | translate }}</mat-label>
           <input matInput  autocomplete="off" formControlName="companyrep_fullname" name="companyrep_fullname" placeholder="MOHAMMED ALI">
-          <mat-error *ngIf="companyDetailsForm.get('companyrep_fullname')?.hasError('required')">{{'alerts.companydetails.Full name is required' | translate }} </mat-error>
-          <mat-error *ngIf="companyDetailsForm.get('companyrep_fullname')?.hasError('pattern')">{{'alerts.companydetails.Full name is required' | translate }} </mat-error>
+          <mat-error *ngIf="companyDetailsForm.get('companyrep_fullname')?.hasError('required')">{{'Full name is required' | translate }} </mat-error>
+          <mat-error *ngIf="companyDetailsForm.get('companyrep_fullname')?.hasError('pattern')">{{'Full name is required' | translate }} </mat-error>
 
         </mat-form-field>
 
@@ -202,22 +205,22 @@
 
         <div>
           <mat-form-field appearance="outline">
-            <mat-label>{{'label.companydetails.representativeemailaddress' | translate }}</mat-label>
+            <mat-label>{{'representativeemailaddress' | translate }}</mat-label>
             <input matInput  autocomplete="off" formControlName="companyrep_EmailAddress" name="companyrep_EmailAddress" placeholder="Mohammed@etech.com">
-            <mat-error *ngIf="companyDetailsForm.get('companyrep_EmailAddress')?.hasError('required')">{{'alerts.companydetails.Representative Email address is required' | translate }} </mat-error>
-            <mat-error *ngIf="companyDetailsForm.get('companyrep_EmailAddress')?.hasError('email')">{{ 'alerts.companydetails.Invalid Email format' | translate }}</mat-error>
+            <mat-error *ngIf="companyDetailsForm.get('companyrep_EmailAddress')?.hasError('required')">{{'Representative Email address is required' | translate }} </mat-error>
+            <mat-error *ngIf="companyDetailsForm.get('companyrep_EmailAddress')?.hasError('email')">{{ 'Invalid Email format' | translate }}</mat-error>
           </mat-form-field>
         </div>
 
         <div>
           <mat-form-field appearance="outline" floatLabel="always">
-            <mat-label>{{'label.companydetails.mobilenumber' | translate }} </mat-label>
+            <mat-label>{{'mobilenumber' | translate }} </mat-label>
             <input matInput  autocomplete="off" maxlength="9" formControlName="companyrep_MobileNumber" name="companyrep_MobileNumber" type="tel" placeholder="55 1234 567">
             <span matPrefix>+971&nbsp;</span>
 
-            <mat-error *ngIf="!(companyDetailsForm.get('companyrep_MobileNumber')?.hasError('minlength')|| companyDetailsForm.get('companyrep_MobileNumber')?.hasError('maxlength'))&&companyDetailsForm.get('companyrep_MobileNumber')?.hasError('pattern')"> {{'alerts.companydetails.Invalid Mobile Number' | translate }} </mat-error>
-            <mat-error *ngIf="companyDetailsForm.get('companyrep_MobileNumber')?.hasError('minlength')|| companyDetailsForm.get('companyrep_MobileNumber')?.hasError('maxlength')">{{'alerts.companydetails.Mobile Number must be 9 characters long' | translate }}</mat-error>
-            <mat-error *ngIf="companyDetailsForm.get('companyrep_MobileNumber')?.hasError('required')"> {{'alerts.companydetails.Mobile Number is required' | translate }} </mat-error>
+            <mat-error *ngIf="!(companyDetailsForm.get('companyrep_MobileNumber')?.hasError('minlength')|| companyDetailsForm.get('companyrep_MobileNumber')?.hasError('maxlength'))&&companyDetailsForm.get('companyrep_MobileNumber')?.hasError('pattern')"> {{'Invalid Mobile Number' | translate }} </mat-error>
+            <mat-error *ngIf="companyDetailsForm.get('companyrep_MobileNumber')?.hasError('minlength')|| companyDetailsForm.get('companyrep_MobileNumber')?.hasError('maxlength')">{{'Mobile Number must be 9 characters long' | translate }}</mat-error>
+            <mat-error *ngIf="companyDetailsForm.get('companyrep_MobileNumber')?.hasError('required')"> {{'Mobile Number is required' | translate }} </mat-error>
             
 
             
@@ -228,10 +231,10 @@
       </div>
       <div class="grid grid-cols-1">
         <div class="text-right">
-          <!-- <button (click)="submit()"  *ngIf="OTP_verified"  disabled="isDisabled" mat-flat-button color="primary" >{{'label.companydetails.submitbtn' | translate }}</button> -->
-          <div *ngIf="OTP_verified"  class="verified-text"><mat-icon class="mr-2">check_circle_outline</mat-icon>{{'label.companydetails.Verified' | translate }}</div> &nbsp;&nbsp;
-          <button *ngIf="!OTP_verified" mat-button color="primary" class="mr-2" (click)="openOTPPopup(myDialogshortcut)">{{'label.companydetails.Verify Company Contact Number' | translate }}</button>
-          <button mat-flat-button color="primary" [disabled]="!OTP_verified"  (click)="submit()" >{{'label.companydetails.submitbtn' | translate }}</button>
+          <!-- <button (click)="submit()"  *ngIf="OTP_verified"  disabled="isDisabled" mat-flat-button color="primary" >{{'submitbtn' | translate }}</button> -->
+          <div *ngIf="OTP_verified"  class="verified-text"><mat-icon class="mr-2">check_circle_outline</mat-icon>{{'Verified' | translate }}</div> &nbsp;&nbsp;
+          <button *ngIf="!OTP_verified" mat-button color="primary" class="mr-2" (click)="openOTPPopup(myDialogshortcut)">{{'Verify Company Contact Number' | translate }}</button>
+          <button mat-flat-button color="primary" [disabled]="!OTP_verified"  (click)="submit()" >{{'submitbtn' | translate }}</button>
         </div>
       </div>
       
@@ -250,14 +253,14 @@
 <br>
 <br>
   <span class="REF-231192">
-    {{'label.companydetails.RegistrationReferenceNumber' |translate}}    : # {{response_code_after_submit}} 
+    {{'RegistrationReferenceNumber' |translate}}    : # {{response_code_after_submit}} 
   </span>
 <br>
 <br>
-  <span class="Texts">{{'label.companydetails.Kindlymakeanoteofyour' |translate}}
+  <span class="Texts">{{'Kindlymakeanoteofyour' |translate}}
    
-    <span class="text-style-1">{{'label.companydetails.referenceID' |translate}}</span>
-    {{'label.companydetails.forallfuturecomm' |translate}}
+    <span class="text-style-1">{{'referenceID' |translate}}</span>
+    {{'forallfuturecomm' |translate}}
   </span>
   <br>
   <br>
@@ -273,13 +276,13 @@
   </span>
   <!-- <div class="Frame-18642">
     <span class="VISIT-MOFAGOVAE Heading">
-      {{'label.companydetails.VISIT' |translate}} MOFA.GOV.AE
+      {{'VISIT' |translate}} MOFA.GOV.AE
     </span>
   </div> -->
 
   <div class="Frame-18642">
     <a href="https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2" target="_blank" class="VISIT-MOFAGOVAE Heading">
-      {{ 'label.companydetails.VISIT' | translate }} MOFA.GOV.AE
+      {{ 'VISIT' | translate }} MOFA.GOV.AE
     </a>
   </div>
   
@@ -297,10 +300,10 @@
 
 <ng-template #myDialogshortcut>
   <h1 mat-dialog-title>
-    {{'label.companydetails.OTP Verification' | translate }}   </h1>
+    {{'OTP Verification' | translate }}   </h1>
   <div mat-dialog-content>
       <div class="grid grid-cols-1 mt-3">
-       <p> {{'label.companydetails.Enter the verification code sent to' | translate }}  <br>
+       <p> {{'Enter the verification code sent to' | translate }}  <br>
         {{this.companyDetailsForm.get('companyrep_MobileNumber')?.value}}</p>
       </div>
       <div class="grid grid-cols-1 my-4">
@@ -309,10 +312,12 @@
       <div class="grid grid-cols-1">
       <ngx-otp-input [config]="otpInputConfig" #ngxotp (fill)="handleFillEvent($event)">
       </ngx-otp-input>
+      <br>
       <p class="mat-error"  *ngIf="incorrectOTP">{{ 'Incorrect OTP. Please try again.' | translate }}</p>
     </div>
-    <div class="grid grid-cols-1 otp-receive-msg">
-    <p>{{'label.companydetails.DidntreceivetheOTP' | translate }} <strong (click)="SendOTP()" class="cursor-pointer">{{'label.companydetails.Resend' | translate }} </strong></p>
+    <!-- {{showResendLink}} -->
+    <div class="grid grid-cols-1 otp-receive-msg" *ngIf="showResendLink">
+    <p>{{'DidntreceivetheOTP' | translate }} <strong (click)="SendOTP()" class="cursor-pointer">{{'Resend' | translate }} </strong></p>
   </div>
   </div>
   <div mat-dialog-actions>

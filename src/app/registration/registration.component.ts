@@ -47,7 +47,7 @@ export class RegistrationComponent {
   user_info_taken_using_authtoken:any;
   freezone:any;
   freezone1:any;
-
+  isButtonDisabled = false;
   constructor(private consts:ConstantsService,private recaptchaV3Service: ReCaptchaV3Service,private http:HttpClient ,private common:CommonService,private FormBuilder:FormBuilder, private router:Router, private _activatedRoute:ActivatedRoute, private apiservice:ApiService){
     this.common.getData().subscribe(data => {
       this.reg_form_data = data;
@@ -55,7 +55,7 @@ export class RegistrationComponent {
     });
     
     this.registrationForm = this.FormBuilder.group({
-      tradeLicenseNumber: [this.reg_form_data.tradeLicenseNumber, Validators.required],
+      tradeLicenseNumber: [this.reg_form_data.tradeLicenseNumber, [Validators.required, Validators.minLength(4)]],
       chosenDate: [this.reg_form_data.chosenDate, Validators.required],
       issuingAuthority: [this.reg_form_data.issuingAuthority, Validators.required],
       expressType: [this.reg_form_data.expressType, Validators.required],
@@ -83,15 +83,11 @@ export class RegistrationComponent {
     this.registrationForm.markAllAsTouched()
    
     console.log(this.registrationForm.get('tradeLicenseNumber'));
-
-    // this.reg_form_data= this.common.getUserProfile();
-
-    // if(this.reg_form_data==undefined || this.reg_form_data==null)
-    //uncomment
+  
     if(this.userinfo===""||this.userinfo==undefined)
     {
       console.log("Missing Data!!!")
-      this.common.showErrorMessage("Something went wrong!")
+      this.common.showErrorMessage("Something went wrong")
       return;
 
     }
@@ -106,30 +102,54 @@ export class RegistrationComponent {
       this.common.setData(formData); 
       console.log(formData);
 
-      // this.common.getUserIfoData().subscribe(data => {
-      //   this.user_info_taken_using_authtoken = data;
-      //   console.log(this.user_info_taken_using_authtoken)
-      // });
+      
 
       this.user_info_taken_using_authtoken=this.common.getUserProfile().Data;
       let data=
       {
         "tradelicensenumber": this.reg_form_data.tradeLicenseNumber,
-         "uuid":this.userinfo.Data.uuid
-
+         "uuid":this.userinfo.Data.uuid,
      }
+     let data2=
+     {
+      //  "tradelicensenumber": this.reg_form_data.tradeLicenseNumber,
+        "uuid":this.userinfo.Data.uuid,
+        "startnum":1,
+        "endnum":10,
+        "status":1
+    }
      let response;
+    this.common.showLoading();
 
      try{
+
       this.apiservice.post(this.consts.CheckCompanyRegStatus,data).subscribe({next:(success:any)=>{
         response=success;
-        if(response.responseCode==200){
-         if(response.data.dictionary.data.length>0){
-         //  this.common.setRegisteredCompanyDetails(response.data.dictionary.data)
+        this.common.hideLoading();
 
-this.common.setCompanyList(response.data.dictionary.data);
-           
-           this.router.navigateByUrl('/landingpage')
+        if(response.responseCode==200){
+         if(response.data.dictionary.data.length>0 && response.data.dictionary.data.status!="Pending"){
+          // this.common.setCompanyList(response.data.dictionary.data);
+          //  this.router.navigateByUrl('/landingpage')
+
+          this.apiservice.post(this.consts.getCompanyList,data2).subscribe({next:(success:any)=>{
+            response=success;
+            if(response.dictionary.responsecode===1){
+             if(response.dictionary.data.length>0){
+              this.common.setCompanyList(response.dictionary.data);
+               this.router.navigateByUrl('/landingpage')
+             }
+             else{
+               this.router.navigateByUrl('/companydetails')
+             }
+            }
+            else{
+              this.common.showErrorMessage("Something went wrong.")
+              console.log("error in getCompanyList") 
+              return;
+            }
+         }})
+         
          }
          else{
            this.router.navigateByUrl('/companydetails')
@@ -137,12 +157,14 @@ this.common.setCompanyList(response.data.dictionary.data);
         }
         else if(response.responseCode==500){
           this.proceed();
-          // vincy -- remove this condition while moving to production. this is just for packet error
         }
         else{
           console.log() 
         }
      }})
+
+     
+
 
      }
      finally{
@@ -167,9 +189,10 @@ this.common.setCompanyList(response.data.dictionary.data);
 
   }
   ngOnInit() {
-    //this.common.showLoading();
+     this.common.showLoading();
 
-
+    try{
+      
     console.log('---------');
     this._activatedRoute.queryParams.subscribe((params: Params) => {
       // Access and capture the parameters here
@@ -187,11 +210,16 @@ this.common.setCompanyList(response.data.dictionary.data);
     });
 
     this.reg_form_data= this.common.getUserProfile();
+
     console.log(this.reg_form_data);
     let data={
       "useruno":"1"
     }
+    this.common.showLoading();
+
     this.apiservice.post(this.consts.getFreezonetypes, data).subscribe((response: any) => {
+      this.common.hideLoading();
+
       const dataArray = response.data; // Access the 'data' property from the response
       this.freezone1=dataArray.dictionary.data;
       this.common.setfreezone(this.freezone1)
@@ -213,6 +241,11 @@ this.common.setCompanyList(response.data.dictionary.data);
 
         console.log("redirect parameters undefined");
         this.common.showErrorMessage("Something went wrong! Please try again")
+
+         // Delay the execution of this.common.logoutUser() by 2 seconds
+  setTimeout(() => {
+    this.common.logoutUser();
+  }, 2000); // 2000 milliseconds = 2 seconds
         return;
       }
 
@@ -229,6 +262,12 @@ this.common.setCompanyList(response.data.dictionary.data);
       
 
     }
+    //this.common.hideLoading();
+    
+  }
+  finally{
+    this.common.hideLoading()
+  }
 
   }
   radio(event:any){
@@ -262,7 +301,6 @@ this.common.setCompanyList(response.data.dictionary.data);
       email: this.param3
     }
     this.sRetriveUserProfile();
-   // this.getToken(objTxData);
   }
 //commented for testing
   sRetriveUserProfile() {
@@ -290,17 +328,20 @@ this.common.setCompanyList(response.data.dictionary.data);
 // Set the user profile data in SessionStorage
        // sessionStorage.setItem('userProfile', userProfileString);
 
+       //verify the user whether he already has company and if he already having redirect him to company listing page
+       this.useralreadyhavingcompany(this.userinfo.Data);
+
           console.log(response.IsSucceeded);
         } 
         else if (response.IsSucceeded === "False") {
           console.log(response.message)
-          this.common.showErrorMessage("Something went wrong!");
+          this.common.showErrorMessage("Something went wrong");
           console.log("Auth1 failed")
           return;
         }
   
         if (this.userinfo == undefined) {
-          this.common.showErrorMessage("Something went wrong!");
+          this.common.showErrorMessage("Something went wrong");
           console.log("Auth2 Failed!!!");
           return;
         }
@@ -316,7 +357,7 @@ this.common.setCompanyList(response.data.dictionary.data);
   //   console.log(objDepartment)
 
   //   if(this.param1==undefined || this.param3==undefined){
-  //     this.common.showErrorMessage("Invalid Parameters!")
+  //     this.common.showErrorMessage("Invalid Parameters")
   //     return;
   //   }
   //   this.apiservice.GetAuthToken(this.param1, this.param3)
@@ -334,7 +375,7 @@ this.common.setCompanyList(response.data.dictionary.data);
   //         this.getUserToken(response.Data.AccessToken);
   //       }
   //       else{
-  //         this.common.showErrorMessage("Auth1 Failed!!!");
+  //         this.common.showErrorMessage("Auth1 Failed");
   //         return;
   //       }
   //     })
@@ -358,7 +399,7 @@ this.common.setCompanyList(response.data.dictionary.data);
 //         console.log(response);
 
 //         if(this.userinfo==undefined){
-//           this.common.showErrorMessage("Auth2 Failed!!!");
+//           this.common.showErrorMessage("Auth2 Failed");
 //           return;
 //         }
         
@@ -442,5 +483,37 @@ this.common.setCompanyList(response.data.dictionary.data);
 
 
   // }
+
+  useralreadyhavingcompany(userinfo:any){
+
+    let response, data;
+    data={
+      "uuid": userinfo.uuid,
+      "emiratesid": userinfo.idn,
+      "email": userinfo.email,
+      "mobile": userinfo.mobile,
+      "firstname": userinfo.firstnameEN
+  }
+  this.common.showLoading();
+
+    this.apiservice.post(this.consts.checkCompanyUser,data).subscribe({next:(success:any)=>{
+      this.common.hideLoading();
+
+      response=success;
+      this.common.hideLoading();
+
+      if(response.responsecode==1){
+       if(response.data==="User not available"){
+        return;
+       }
+       else{
+        this.router.navigateByUrl('/landingpage');
+       }
+      
+      }
+      
+      }});
+
+  }
 
 }

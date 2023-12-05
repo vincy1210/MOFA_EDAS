@@ -2,49 +2,57 @@
 <div>
   <div class="grid grid-cols-1" color="primary" class="page-header">
     <h3>
-     Company Details
+     {{'Company Details' | translate}}
     </h3>
   </div>
   <div class="company-bg cooAttestDetails-page">
     <div class="mx-auto cooAttestDetails-window">
       <div class="grid grid-cols-3 gap-4">
         <div
-          class="bg-white rounded-lg p-5 col-span-3"
-         
-        >
-        
-
-
+          class="bg-white rounded-lg p-5 col-span-3">
         <div >
   
-          <!-- Drawer start -->
-          
-          <!-- Drawer Ends -->
             <div >
-                <div class="w-50 m-auto">
+                <div class="w-60 m-auto">
                   <mat-card>
-                    <div class="p-4">
-                      <h1 class="pageTitle"> {{'label.landingPage.ChooseCompany'|translate}} </h1>
-                      <p class="greytitle"> {{'label.landingPage.LoginProfile'|translate}} 
+                    <div class="p-4" *ngIf="isanycompanyavailable">
+                      <h1 class="pageTitle"> {{'ChooseCompany'|translate}} </h1>
+                      <p class="greytitle"> {{'LoginProfile'|translate}} 
                       </p>
+                      <!-- Add this within your existing HTML structure -->
+<!-- <div class="search-container">
+  <input type="text" placeholder="Search for a company..." [(ngModel)]="searchKeyword"  (input)="searchCompanies()"  />
+</div> -->
+<br>
+<!-- <ng-template pTemplate="left"> -->
+  <div style="padding: 5px;" class="col-md-3 col-lg-3 col-sm-6">
+          <mat-form-field class="searchboxinput" floatLabel="always"  >
+            <!-- <mat-label><mat-icon style="font-size:larger;">search</mat-icon>Search Company Name</mat-label> -->
+            <input  matInput type="text" [(ngModel)]="searchKeyword" (input)="searchCompanies()" placeholder="{{'Search Company' | translate}}">
+          </mat-form-field>
+  </div>
+
+<!-- </ng-template> -->
+
+
                       <div class=" mt-3 grid grid-cols-1 rtl-form">
-                          <mat-grid-list  cols="2"  rowHeight="2:1">
+                          <mat-grid-list  cols="2"  rowHeight="3:1">
                             <mat-grid-tile  *ngFor="let list of CompanyListforAdmin">
-                                <div  class="company-info Rectangle-9260" (click)="toggleSelected(list)" [class.selected]="list.isSelected" style="height: 90%; width:90%">
+                                <div  style=" overflow: hidden; padding: 10px;"  class="company-info"  (click)="toggleSelected(list)" [class.selected]="list.isSelected" >
                                     <div style="height:10%;" class="row">
                                         <mat-icon style="margin-left: 90%; color: #b68a35;" *ngIf="list.isSelected">check_circle_outline</mat-icon>
                                     </div>
                                     
                                     <div class="row">
                                         <div class="col-6">
-                                            <span class="CompanyName">{{list.companyname}}</span>
+                                            <span class="CompanyName">{{list.nameofbusiness}}</span>
                                         </div>
                                         <div class="col-6"></div>
                                     </div>
                                     <div class="row">
                                         <div class="col">
-                                            <label style="font-weight:bold; font-size: 11px;">{{'label.landingPage.TradeLicenseNo'|translate}}   </label> &nbsp;
-                                            <span>{{list.tradelicensenumber}}</span>
+                                            <label style="font-weight:bold;">{{'TradeLicenseNo'|translate}}   </label> &nbsp;
+                                            <span>{{list.tradelicenseno}}</span>
                                         </div>
                                     </div>
                                     <br>
@@ -53,11 +61,18 @@
                           </mat-grid-list>
                           <br>
                     <div class="text-right">
-                  <button (click)="RedirectRegistrationPage()"  mat-button color="primary" class="mr-2" > {{'label.landingPage.RegisterNewCompany'|translate}} </button>
+                  <button (click)="RedirectRegistrationPage()"  mat-button color="primary" class="mr-2" > {{'RegisterNewCompany'|translate}} </button>
                           &nbsp;&nbsp;
-                      <button (click)="selectedCompanyProceed()" mat-flat-button color="primary" >{{'label.registration.proceedbtn' | translate }}</button>
+                      <button (click)="selectedCompanyProceed()" mat-flat-button color="primary" >{{'proceedbtn' | translate }}</button>
                     </div>
                     </div>
+                    </div>
+                    <div *ngIf="!isanycompanyavailable">
+                      <p>
+                        {{'Norecordsavailable'|translate}}
+                       
+                      </p>
+
                     </div>
                   </mat-card>
                 </div>
@@ -69,25 +84,7 @@
 
 
         </div>
-        <!-- <div
-          class="bg-white rounded-lg p-5 mofa-tab-section show"
-          
-        > -->
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-
-          <!-- <app-attestation-workflow [selectedAttestations]="selectedAttestations"></app-attestation-workflow> -->
-        <!-- </div> -->
+      
       </div>
 
     </div>

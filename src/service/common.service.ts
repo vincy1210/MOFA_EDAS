@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 
 
 import { DatePipe } from '@angular/common';
+import { AbstractControl, ValidatorFn } from '@angular/forms';
 
 
 
@@ -15,6 +16,21 @@ import { DatePipe } from '@angular/common';
   providedIn: 'root',
 })
 export class CommonService {
+
+   favink1:string=''
+  favink2:string=''
+  private userloggedinSubject = new BehaviorSubject<boolean>(false);
+  userloggedin$ = this.userloggedinSubject.asObservable();
+
+  private userCompanysubject = new BehaviorSubject<string>('');
+  userCompany$ = this.userCompanysubject.asObservable();
+
+  private isAdmin = new BehaviorSubject<boolean>(false);
+  isAdmin$ = this.isAdmin.asObservable();
+
+  private userprofilesubject = new BehaviorSubject<string>('');
+  userprofile$ = this.userprofilesubject.asObservable();
+
   private dataSubject = new BehaviorSubject<string>('');
   private userinfo = new BehaviorSubject<string>('');
   private RegisteredCompanyDetails = new BehaviorSubject<string>('');
@@ -27,6 +43,8 @@ export class CommonService {
 
   // private sidebarOpen = false;
   private isDrawerOpenSubject = new BehaviorSubject<boolean>(false);
+
+ // userloggedin:boolean=false;
   
 
 
@@ -35,7 +53,52 @@ export class CommonService {
     private translate: TranslateService,
     private Toastr: ToastrService,
     private datePipe: DatePipe,private Router:Router
-  ) {}
+  ) {
+
+    let data:any;
+    data=sessionStorage.getItem('currentcompany');
+    console.log(data);
+
+    if(data!=undefined || data !=null){
+      this.userloggedinSubject.next(true);
+     // this.userloggedin=true;
+            let abc=JSON.parse(data)
+            abc=abc.role;
+            console.log(data)
+            this.userCompanysubject.next(data.business_name)
+
+            if(abc=="Admin"){
+            this.isAdmin.next(true);
+            }
+            else{
+            this.isAdmin.next(false);
+              
+            }
+      }
+      else{
+     // this.userloggedin=false;
+      this.userloggedinSubject.next(false);
+      this.userCompanysubject.next('');
+      }
+
+      //for user
+
+     // data=sessionStorage.getItem('userProfile');
+      let data2=sessionStorage.getItem('userProfile');
+      if(data2!=undefined || data2 !=null){
+        // this.userprofilesubject.next(true);
+       // this.userloggedin=true;
+              let abc=JSON.parse(data2)
+              // console.log(data)
+              this.userprofilesubject.next(abc.Data?.firstnameEN);
+
+      }
+
+
+
+      
+    
+  }
 
   
 
@@ -102,21 +165,78 @@ export class CommonService {
     return this.RegisteredCompanyDetails.asObservable();
   }
 
+  
+
+  // showLoading(): void {
+  //   $('#loading').show();
+  // }
   showLoading(): void {
     $('#loading').show();
+  
+    setTimeout(() => {
+      $('#loading').hide(); // Hide the loader after 5 seconds
+    }, 30000); // 5000 milliseconds = 5 seconds
   }
+  
+
+  formatDateString(dateString: string): string {
+    const year = dateString.substring(0, 4);
+    const month = dateString.substring(4, 6);
+    const day = dateString.substring(6, 8);
+    return `${day}/${month}/${year}`;
+  }
+  
 
   hideLoading(): void {
     $('#loading').hide();
   }
 
-  setSelectedCompany(data: string) {
-    this.selectedcompany.next(data);
-  }
+  // setSelectedCompany(data: string) {
+  //   this.selectedcompany.next(data);
+  // }
 
-  getSelectedCompany() {
-    return this.selectedcompany.asObservable();
-  }
+  // getSelectedCompany() {
+  //   return this.selectedcompany.asObservable();
+  // }
+  setSelectedCompany(data: any) {
+    // this.RegisteredCompanyDetails.next(data);
+     sessionStorage.setItem('currentcompany', JSON.stringify(data));
+     if(data!=undefined || data !=null){
+      this.userloggedinSubject.next(true);
+      this.userCompanysubject.next(data.business_name)
+     // this.userloggedin=true;
+          //  let abc=JSON.parse(data)
+          let  abc=data.role;
+            if(abc=="Admin"){
+            this.isAdmin.next(true);
+            }
+            else{
+            this.isAdmin.next(false);
+              
+            }
+      }
+      else{
+     // this.userloggedin=false;
+      this.userloggedinSubject.next(false);
+      this.userCompanysubject.next('')
+      }
+   }
+ 
+   getSelectedCompany() {
+     const myselectedcompany = sessionStorage.getItem('currentcompany');
+      if (myselectedcompany) {
+       return JSON.parse(myselectedcompany);
+     }
+     else{
+      let dat=sessionStorage.getItem('userProfile');
+      if(dat!=undefined ||dat!=null)
+      {
+        this.Router.navigateByUrl('/landingpage');
+      }
+     }
+     //return null;
+   }
+ 
 
   setfreezone(data: string) {
     this.freeZone.next(data);
@@ -164,14 +284,33 @@ export class CommonService {
   }
   
   
+  // splitdatetime(datetimeString: any) {
+  //   if (datetimeString && typeof datetimeString === 'string') {
+  //     const dateTimeParts = datetimeString.split('T'); // Splitting the string at 'T'
+  //     if (dateTimeParts.length === 2) {
+  //       return {
+  //         date: dateTimeParts[0],
+  //         time: dateTimeParts[1],
+  //       };
+  //     }
+  //   }
+  //   return null; // Invalid or null datetime string
+  // }
   splitdatetime(datetimeString: any) {
     if (datetimeString && typeof datetimeString === 'string') {
       const dateTimeParts = datetimeString.split('T'); // Splitting the string at 'T'
       if (dateTimeParts.length === 2) {
         return {
-          date: dateTimeParts[0],
+          date: this.datePipe.transform(dateTimeParts[0], 'dd-MMM-yyyy'),
           time: dateTimeParts[1],
         };
+      }
+      else{
+        return {
+          date: this.datePipe.transform(dateTimeParts[0], 'dd-MMM-yyyy'),
+          time: '',
+        };
+  
       }
     }
     return null; // Invalid or null datetime string
@@ -198,6 +337,18 @@ export class CommonService {
     console.log(userProfile);
     sessionStorage.setItem('userProfile', JSON.stringify(userProfile));
     this.startInactivityTimer();
+    let userdata=JSON.parse(userProfile)
+
+    //this.userprofilesubject.next(userdata);
+
+    if(userdata!=undefined || userdata !=null){
+            // let abc=JSON.parse(userdata)
+            this.userprofilesubject.next(userdata.Data?.firstnameEN);
+
+    }
+
+
+    
   }
 
   getUserProfile() {
@@ -206,7 +357,15 @@ export class CommonService {
       console.log(userProfileString);
       return JSON.parse(userProfileString);
     }
-    return null;
+    else{
+
+      //dont put logout here as getuserprofile is getting called before set
+    //  this.Router.navigateByUrl('/logout')
+
+    //  this.Router.navigateByUrl('https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2')
+
+    }
+   // return null;
   }
 
   setCompanyList(companylist: any) {
@@ -220,6 +379,20 @@ export class CommonService {
     if (companylistString) {
       console.log(companylistString);
       return JSON.parse(companylistString);
+    }
+    return null;
+  }
+  setpaymentdetails(paymentidandinvuno: any) {
+    console.log(paymentidandinvuno);
+    sessionStorage.setItem('PID', JSON.stringify(paymentidandinvuno));
+    this.startInactivityTimer();
+  }
+
+  getpaymentdetails() {
+    const paymentidandinvunoString = sessionStorage.getItem('PID');
+    if (paymentidandinvunoString) {
+      console.log(paymentidandinvunoString);
+      return JSON.parse(paymentidandinvunoString);
     }
     return null;
   }
@@ -244,8 +417,11 @@ export class CommonService {
   
   logoutUser() {
     // Perform logout actions here, e.g., remove user data from SessionStorage
+    sessionStorage.clear();
+    this.userloggedinSubject.next(false);
     sessionStorage.removeItem('userProfile');
-this.Router.navigateByUrl('https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2')
+//this.Router.navigateByUrl('https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2')
+  //window.location.href = "https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2"
     
     // Redirect to the login page or perform other logout-related tasks
   }
@@ -266,4 +442,76 @@ this.Router.navigateByUrl('https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-
     // For example, you can open it in a new window:
     window.open(url);
   }
+  formatDateTime_API_payload(dateTimeString: string): string {
+    const date = new Date(dateTimeString);
+  
+    // Get date components
+    const day = date.getDate();
+    const month = date.toLocaleString('default', { month: 'short' });
+    const year = date.getFullYear().toString().slice(-2); // Get the last two digits of the year
+  
+    return `${day}-${month}-${year}`;
+  }
+
+  calculateDifference(attestreqdate: string) {
+    const today = new Date();
+    const reqDate = new Date(attestreqdate); // Convert to date if not already
+    const differenceInDays = Math.floor((today.getTime() - reqDate.getTime()) / (1000 * 3600 * 24));
+    return 15 - differenceInDays;
+  }
+  // calculateDifference(attestreqdate: string) {
+  //   // Assuming attestreqdate is in 'yyyyMMdd' format
+  //   const year = +attestreqdate.substring(0, 4); // Extract year
+  //   const month = +attestreqdate.substring(4, 6) - 1; // Extract month (0-indexed)
+  //   const day = +attestreqdate.substring(6, 8); // Extract day
+  //   const reqDate = new Date(year, month, day); // Create a date object
+  
+  //   const today = new Date();
+  //   const differenceInDays = Math.floor((today.getTime() - reqDate.getTime()) / (1000 * 3600 * 24));
+  //   return 15 - differenceInDays;
+  // }
+
+   formatAmount(amount: number | undefined): string {
+    if (amount === undefined || isNaN(amount)) {
+      return '';
+    }
+  
+    // Use toLocaleString to format the number with commas
+    return amount.toLocaleString(undefined, { maximumFractionDigits: 2 });
+  }
+
+  
+
+
+  // formatAmount(amount: number): string {
+  //   // Use toLocaleString to format the number with commas
+  //   return amount.toLocaleString(undefined, { maximumFractionDigits: 2 });
+  // }
+
+
+  // formatAmount(amount: number): string {
+  //   // Use toLocaleString to format the number with commas
+  //   if(amount!=undefined || amount!=null || amount!='')
+  //   {
+  //     return amount.toLocaleString(undefined, { maximumFractionDigits: 2 });
+
+  //   }
+  //   else{
+  //     return ''
+  //   }
+  // }
+
+   static blankInputValidator(fieldName: string): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const value = control.value;
+
+      if (!value || value.trim() === '') {
+        return { blankInput: `${fieldName} cannot be blank.` };
+      }
+
+      return null; // No error
+    };
+  }
+  
+  
 }

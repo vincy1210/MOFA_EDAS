@@ -13,15 +13,6 @@ export interface attachmentResponse {
     limit:number;
 
 
-    // this.cols = [
-    //     { field: 'edasattestno', header: 'Attestation No.' },
-    //     { field: 'invoicenumber', header: 'Invoice ID' },
-    //     { field: 'declarationumber', header: 'Declaration No.' },
-    //     { field: 'declarationdate', header: 'Declaration date.' },
-    //     { field: 'attestreqdate', header: 'Creation Date' },
-    //     { field: 'Noofdaysleft', header: 'No of Days Left' },
-  
-    // ];
 }
 export interface Attestations {
 }

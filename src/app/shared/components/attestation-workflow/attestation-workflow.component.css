@@ -4,7 +4,7 @@
 }
 
 .payment-header-label {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: bold;
     font-stretch: normal;
     font-style: normal;
@@ -15,10 +15,10 @@
     font-stretch: normal;
     font-style: normal;
     .payment-total-amount1 {
-        font-size: 16px;
+        font-size: 13px;
     }
     .payment-total-amount2 {
-        font-size: 30px;
+        font-size: 20px;
     }
     .payment-total-amount3 {
         font-size: 10px;

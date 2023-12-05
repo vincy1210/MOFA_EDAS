@@ -8,7 +8,7 @@ import { EChartsOption } from 'echarts';
 })
 export class DashboardComponent implements OnInit {
 
-
+  isButtonDisabled = false;
   constructor() { }
 
 

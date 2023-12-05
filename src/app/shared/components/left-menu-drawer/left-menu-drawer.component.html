@@ -1,32 +1,82 @@
-<div class="grid grid-cols-1 mofa-side-nav">
-  <div class="grid grid-cols-1 recently-used">
-    <h6>Recently Used</h6>
-    <ul class="my-3">
-      <li>Dashboard</li>
-      <li>Attestations</li>
-    </ul>
-  </div>
+<div  class="grid grid-cols-1 mofa-side-nav">
+  <!-- <div class="grid grid-cols-1 recently-used">
+    <h6>{{'Recently Used' | translate}}</h6>
+   
+    <br>
+    <mat-list>
+      <div mat-subheader>{{common.favink1 | translate}}</div>
+      <div mat-subheader>{{common.favink2 | translate}}</div>
+    </mat-list>
+    
+  </div> -->
 
-  <div class="grid grid-cols-1 mofa-side-menus">
-    <mat-expansion-panel
+  <div >
+    <br>
+    <br>
+    <div style="display: flex;
+    justify-content: center;
+    font-size: 50px;
+    zoom: 2;">
+      <mat-icon color="primary">person</mat-icon>
+
+    </div>
+<div style="text-align: center;
+font-weight: 600;">
+   {{username}}
+
+</div>
+    <br>
+    <br>
+
+  </div>
+  <mat-divider></mat-divider>
+  <div  class="grid grid-cols-1 mofa-side-menus">
+    <mat-expansion-panel [hideToggle]="true"
       #myPanel
       [class.mat-elevation-z0]="true"
       *ngFor="let items of menuList"
     >
-      <mat-expansion-panel-header  (click)="onPanelClick(items)">
+      <mat-expansion-panel-header *ngIf="!items.hasubMenu" (click)="onSubMenuClick(items)" >
         <span class="mat-items">
           <mat-icon>{{ items.icon }}</mat-icon
-          ><span>{{ items.menu }}</span>
+          ><span>{{ items.menu | translate }}</span>
         </span>
       </mat-expansion-panel-header>
-      <mat-nav-list *ngFor="let item of items.subMenus">
+      <mat-nav-list style="padding: 0%;" *ngFor="let item of items.subMenus">
         <span class="mat-items">
-          <a mat-list-item [routerLink]="item.link">
+          <a mat-list-item    [routerLink]="item.link">
             <mat-icon>{{ item.icon }}</mat-icon
-            ><span>{{ item.menu }}</span>
+            ><span style="font-size: 13px !important;">{{ item.menu | translate }}</span>
           </a>
         </span>
       </mat-nav-list>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel
+      #myPanel
+      [class.mat-elevation-z0]="true"
+      *ngFor="let items of menuList ; let i = index" [expanded]="currentlyExpandedIndex === i"
+    >
+      <mat-expansion-panel-header *ngIf="items.hasubMenu" (click)="onMainPanelClick(i)" >
+        <span class="mat-items">
+          <mat-icon>{{ items.icon }}</mat-icon
+          ><span>{{ items.menu | translate }}</span>
+        </span>
+      </mat-expansion-panel-header>
+      <!-- <div class="indicator-line" [style.top]="calculateLinePosition()"> -->
+
+      <mat-nav-list style="padding: 0%;" *ngFor="let item of items.subMenus ; let j = index">
+        <span class="mat-items">
+          <a mat-list-item   (click)="onSubMenuClick(items, j)" routerLinkActive="active-link"  [routerLink]="item.link">
+            <!-- <span>hi</span> -->
+            <mat-icon>{{ item.icon }}</mat-icon
+            ><span style="font-size: 13px !important;">{{ item.menu | translate }}</span>
+          </a>
+        </span>
+      </mat-nav-list>
+    <!-- </div> -->
+
+      
     </mat-expansion-panel>
   </div>
 </div>

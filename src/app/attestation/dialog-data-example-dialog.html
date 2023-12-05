@@ -1,0 +1,77 @@
+<p-dialog [(visible)]="AddInvoiceDialog" [style]="{ width: '750px' }" header="Add Invoice" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        
+      <form [formGroup]="form" class="example-form">
+        <div class="row">
+          <div class="col">
+            <!-- class="col-md-3 col-lg-3  col-md-6" -->
+            <mat-form-field style="width: 100%;" class="example-full-width">
+              <mat-label>Attestation No</mat-label>
+              <input matInput maxlength="100" placeholder="Attestation No" formControlName="attestationNo" name="attestationNo">
+             
+            </mat-form-field>
+            
+          </div>
+          <div class="col">
+            <mat-form-field style="width: 100%;" class="example-full-width">
+              <mat-label>Invoice Date</mat-label>
+              <input matInput readonly="true"  formControlName="invoiceDate" name="invoiceDate" placeholder="Select Invoice Date">
+            </mat-form-field>
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="col">
+            <mat-form-field style="width: 100%;" class="example-full-width">
+              <mat-label>Invoice Amount</mat-label>
+              <input matInput maxlength="20" placeholder="Invoice Amount" formControlName="invAmount" name="invAmount">
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field style="width: 100%;" class="example-full-width">
+              <mat-label>Invoice Number</mat-label>
+              <input maxlength="50" matInput placeholder="Invoice Number" formControlName="invoiceNum" name="invoiceNum">
+            </mat-form-field>
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="col">
+            <mat-form-field style="width: 100%;" class="example-full-width">
+              <mat-label>Invoice Currency</mat-label>
+              <input maxlength="10" matInput placeholder="Invoice Currency" name="invCurrency" formControlName="invCurrency">
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field style="width: 100%;" class="example-full-width">
+              <mat-label>Company Name</mat-label>
+              <input maxlength="100" matInput placeholder="Company Name" name="companyName" formControlName="companyName">
+            </mat-form-field>
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="col">
+            <mat-form-field style="width: 100%;" class="example-full-width">
+              <mat-label>Invoice ID</mat-label>
+              <input maxlength="50" matInput placeholder="Invoice ID" name="invoiceID" formControlName="invoiceID">
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field style="width: 100%;" class="example-full-width">
+              <mat-label>Remarks</mat-label>
+              <input maxlength="100" matInput placeholder="Remarks" name="remarks1" formControlName="remarks1">
+            </mat-form-field>
+          </div>
+        </div>
+      </form>
+    </ng-template>
+  
+    <ng-template pTemplate="footer">
+      <button pButton pRipple label="Cancel" style="background-color: #b68a35; color: white !important;" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+      <!-- <button pButton pRipple label="Save" style="background-color: #b68a35; color: white !important;" icon="pi pi-check" class="p-button-text" (click)="onSubmitmodal()"></button> -->
+    </ng-template>
+  </p-dialog>
+  
+  <!-- <p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog> -->
+  

@@ -81,3 +81,8 @@
 .mat-radio-button ~ .mat-radio-button {
   margin-left: 16px;
 }
+
+.normalpopupBackdropClass {
+  background-color: rgba(0, 0, 0, 0.5); /* Add your desired background styling */
+}
+

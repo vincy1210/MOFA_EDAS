@@ -13,24 +13,18 @@ import { PhysicalAttestationComponent } from './physical-attestation/physical-at
 import { CooAttestationComponent } from './coo-attestation/coo-attestation.component';
 import { CompletedAttestationComponent } from './completed-attestation/completed-attestation.component';
 import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
+import { ESealTestComponent } from './e-seal-test/e-seal-test.component';
+import { LoginComponent } from './login/login.component';
+import { PaymentinfoComponent } from './paymentinfo/paymentinfo.component';
+import { UserslistComponent } from './dashboard/userslist/userslist.component';
+import { CooinreviewComponent } from './coo-attestation/cooinreview/cooinreview.component';
+import { PhysicalinreviewComponent } from './physical-attestation/physicalinreview/physicalinreview.component';
+import { ErrorComponent } from './error/error.component';
+import { LCAComponent } from './reports/lca/lca.component';
+import { COOComponent } from './reports/coo/coo.component';
+import { PhysicalComponent } from './reports/physical/physical.component';
+import { FinesComponent } from './reports/fines/fines.component';
 
-// const routes: Routes = [
-
-//   {
-//     path: "home/:param1/:param2/:param3", component: RegistrationComponent 
-//   },
-//   {
-//     path: "login/:param1/:param2/:param3", component: RegistrationComponent 
-//   },
-//   {
-//     path: 'landing',
-//     component: LandingPageComponent,
-//   },
-//   {
-//     path:'Attestation',
-//     component:AttestationComponent
-//   }
-// ];
 
 const routes: Routes = [
   {
@@ -46,10 +40,27 @@ const routes: Routes = [
     { path: 'completedattestation', component: CompletedAttestationComponent },
   {path:'landingpage',component:LandingPageComponent},
   {path:'attestationworkflow',component:AttestationWorkflowComponent},
-  {path:'CompletedCooRequests',component:CompletedCooRequestsComponent},
+  {path:'CompletedCooRequest',component:CompletedCooRequestsComponent},
   {path:'attestation',component:AttestationComponent},
   {path:'lcacompletedattestation',component:LcaCompletedAttestationsComponent},
   {path:'dashboard',component:DashboardComponent},
+  {path:'ESealTest', component:ESealTestComponent},
+  {path:'login', component:LoginComponent},
+  {path:'paymentdetails', component:PaymentinfoComponent},
+  {path:'userslist', component:UserslistComponent},
+  {path:'cooinreview', component:CooinreviewComponent},
+  {path:'physicalinreview', component:PhysicalinreviewComponent},
+  {path:'logout', component:ErrorComponent},
+
+  {path:'lca', component:LCAComponent},
+  {path:'coo', component:COOComponent},
+  {path:'physical', component:PhysicalComponent},
+  {path:'fines', component:FinesComponent},
+
+
+
+  
+
 
   
 

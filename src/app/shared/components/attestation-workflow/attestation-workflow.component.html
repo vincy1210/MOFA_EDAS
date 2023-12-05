@@ -44,7 +44,7 @@
           </div>
         </div>
 
-        <div class="timeline-block timeline-block-right {{ status2 }}">
+        <!-- <div class="timeline-block timeline-block-right {{ status2 }}">
           <div class="marker"></div>
           <div class="timeline-content">
             <div class="float-left ml-3">
@@ -53,7 +53,6 @@
                   <mat-chip-list>
                     <h6 class="al-title">
                       <span>PAYMENT</span>
-                      <!-- <mat-icon>check</mat-icon> -->
                     </h6>
                   </mat-chip-list>
                 </div>
@@ -64,7 +63,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
 
         <div class="timeline-block timeline-block-right {{ status3 }}">
           <div class="marker"></div>
@@ -112,50 +111,9 @@
       </div>
     </div>
   </mat-tab>
-  <mat-tab label="Payment">
-    <div class="flex grid grid-cols-2 gap-10 p-5">
-      <div class="p-1"><mat-label class="payment-header-label">No. of Invoices selected</mat-label></div>
-      <div class="p-1">{{ noOfInvoicesSelected }}</div>
-      <div class="p-1"><mat-label class="payment-header-label">Total Fines(0)</mat-label></div>
-      <div class="p-1">{{ totalFineAmount }}</div>
-      <div class="p-1"><mat-label class="payment-header-label">Attestation Fees</mat-label></div>
-      <div class="p-1">{{ totalAttestationFee }}</div>
-      <!-- nil -->
-      <div class="p-1"></div>
-      <div class="p-1 payment-total-amount">
-        <div class="row">
-          <span><mat-label class="payment-total-amount1">Total Amount</mat-label></span>
-        </div>
-        <div class="row">
-          <span
-            ><mat-label class="payment-total-amount2">AED {{ totalFee }}</mat-label></span
-          >
-        </div>
-        <div class="row">
-          <span><mat-label class="payment-total-amount3">incl.VAT</mat-label></span>
-        </div>
-      </div>
-      <div class="gap-4 flex items-center justify-center col-span-2">
-        <button
-          mat-flat-button
-          color="primary"
-          (click)="AttestationPay()"
-          class="pay-btn"
-        >
-          pay
-        </button>
-      </div>
-      <div class="flex gap-4 items-center justify-center col-span-2">
-        <span class="payment-header-label">Powered by</span
-        ><span class="payment-header-label">Magnati</span>
-      </div>
-    </div>
-  </mat-tab>
-  <mat-tab *ngIf="previewvisible" label="Preview">
+  
+  <mat-tab *ngIf="previewvisible" label="{{'Preview' | translate}}">
     <div class="grid grid-cols-1">
-      <p *ngIf="isLoading">Loading...</p>
-
-      <!-- <div id="pdfContainer"></div> -->
       <div id="outerContainer">
         <div class="pdf-container">
           <pdf-viewer

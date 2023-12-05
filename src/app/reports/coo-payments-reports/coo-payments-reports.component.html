@@ -1,0 +1,407 @@
+<!-- <app-loader></app-loader> -->
+<div>
+  <div class="grid grid-cols-1" color="primary" class="page-header">
+    <h3>
+      <ng-container *ngIf="routesname === 'pending'">{{
+        "label.reports.cooPayments.page.title" | translate
+      }}</ng-container>
+      <ng-container *ngIf="routesname === 'approve'">{{
+        "label.reports.cooPayments.page.title" | translate
+      }}</ng-container>
+    </h3>
+  </div>
+  <div class="company-bg cooPayments-page">
+    <div class="mx-auto cooPayments-window">
+      <div class="cooPayments-window grid gap-2">
+        <!-- Content here -->
+        <div
+          class="bg-white rounded-lg col-span-3"
+          [ngClass]="{
+            'col-span-2 hidden sm:hidden lg:block': shouldShow,
+            'col-span-3': !shouldShow
+          }"
+        >
+          <p-table
+            [responsiveLayout]="responsiveLayout"
+            [scrollable]="responsiveLayout === 'scroll' ? true : false"
+            [(selection)]="selectedRows"
+            dataKey="attestationrequno"
+            selectionMode="single"
+            [lazy]="true"
+            (onLazyLoad)="loadDatas($event)"
+            #tableref
+            [rowHover]="true"
+            [paginator]="true"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [filterDelay]="0"
+            [totalRecords]="totalrecords"
+            [value]="invoiceRequestListsFilter"
+            [rows]="50"
+            [columns]="cols"
+            [showCurrentPageReport]="true"
+            [rowsPerPageOptions]="[10, 25, 50]"
+            [loading]="loading"
+            styleClass="p-datatable-customers p-datatable-gridlines"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [globalFilterFields]="[
+              'invoiceid',
+              'companyname',
+              'entityname',
+              'noofattest',
+              'nooffines',
+              'invoiceamount',
+              'fineamount',
+              'totalamount',
+              'paymentstatus',
+              ''
+            ]"
+          >
+            <ng-template pTemplate="caption">
+              <div class="p-d-flex grid-header">
+                <div class="grid-header-left">
+                  <span class="p-input-icon-left p-ml-auto grid-search">
+                    <i class="pi pi-search"></i>
+                    <input
+                      pInputText
+                      type="text"
+                      (input)="
+                        tableref.filterGlobal(
+                          $any($event.target).value,
+                          'contains'
+                        )
+                      "
+                      placeholder="Search"
+                      appTrimInput
+                    />
+                  </span>
+                </div>
+                <div class="grid-header-right">
+                  <ng-container *ngIf="enableFilters">
+                    <div
+                      class="hidden lg:flex gap-2 full-content"
+                      *ngIf="!shouldShow"
+                    >
+                      <!-- fromdate -->
+                      <div class="custom-container">
+                        <mat-form-field
+                          class="example-form-field custom-mat-form-field"
+                        >
+                          <mat-label>{{
+                            "label.completedCooRequests.fromdate" | translate
+                          }}</mat-label>
+                          <input
+                            matInput
+                            [matDatepicker]="fromdate"
+                            placeholder="DD-MMM-YYYY"
+                            name="fromdate"
+                            [(ngModel)]="selectedFilterOption.Startdate"
+                            appDisableKeyboardInput
+                            appTrimInput
+                          />
+                          <mat-datepicker-toggle
+                            matSuffix
+                            [for]="fromdate"
+                          ></mat-datepicker-toggle>
+                          <mat-datepicker #fromdate>
+                            <mat-datepicker-actions>
+                              <button mat-button matDatepickerCancel>
+                                {{ "label.cancelbtn" | translate }}
+                              </button>
+                              <button
+                                mat-raised-button
+                                color="primary"
+                                matDatepickerApply
+                                (click)="onClickFilterOptionDate(true)"
+                              >
+                                {{ "label.applybtn" | translate }}
+                              </button>
+                            </mat-datepicker-actions>
+                          </mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                      <!-- todate -->
+                      <div class="custom-container">
+                        <mat-form-field
+                          class="example-form-field custom-mat-form-field"
+                        >
+                          <mat-label>{{
+                            "label.completedCooRequests.todate" | translate
+                          }}</mat-label>
+                          <input
+                            matInput
+                            [matDatepicker]="todate"
+                            placeholder="DD-MMM-YYYY"
+                            name="todate"
+                            [(ngModel)]="selectedFilterOption.Enddate"
+                            appDisableKeyboardInput
+                            appTrimInput
+                          />
+                          <mat-datepicker-toggle
+                            matSuffix
+                            [for]="todate"
+                          ></mat-datepicker-toggle>
+                          <mat-datepicker #todate>
+                            <mat-datepicker-actions>
+                              <button mat-button matDatepickerCancel>
+                                {{ "label.cancelbtn" | translate }}
+                              </button>
+                              <button
+                                mat-raised-button
+                                color="primary"
+                                matDatepickerApply
+                                (click)="onClickFilterOptionDate(true)"
+                              >
+                                {{ "label.applybtn" | translate }}
+                              </button>
+                            </mat-datepicker-actions>
+                          </mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="custom-container">
+                      <mat-form-field
+                        class="example-form-field custom-mat-form-field"
+                        *ngIf="routesname === 'approve'"
+                      >
+                        <mat-select
+                          [value]="filterOptions[0]"
+                          (selectionChange)="onClickFilterOption($event.value)"
+                        >
+                          <mat-option
+                            *ngFor="let option of filterOptions"
+                            [value]="option"
+                            >{{ option.value }}</mat-option
+                          >
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </ng-container>
+                  <button
+                    type="button"
+                    pButton
+                    pRipple
+                    icon="pi pi-file-excel"
+                    (click)="exportExcel()"
+                    class="mr-2 grid-header-right-icon"
+                    [pTooltip]="'label.excelExport' | translate"
+                    tooltipPosition="bottom"
+                  ></button>
+                  <button
+                    type="button"
+                    pButton
+                    pRipple
+                    icon="pi pi-filter"
+                    (click)="clickChips()"
+                    class="mr-2 grid-header-right-icon"
+                    [ngClass]="{ clicked: enableFilters }"
+                    pTooltip="Filter"
+                    tooltipPosition="bottom"
+                  ></button>
+                </div>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <th
+                  *ngFor="let col of columns"
+                  [pSortableColumn]="col.field"
+                  pFrozenColumn
+                  [frozen]="col.field === 'action'"
+                  alignFrozen="right"
+                  [ngClass]="{
+                    frozen1: col.field === 'action'
+                  }"
+                >
+                  <span class="table-head-column">
+                    <span> {{ col.header | translate }}</span>
+                    <p-sortIcon
+                      field="code"
+                      *ngIf="col.field !== 'action'"
+                    ></p-sortIcon>
+                    <p-columnFilter
+                      type="text"
+                      [field]="col.field"
+                      display="menu"
+                      *ngIf="col.field !== 'action' && enableFilters"
+                    ></p-columnFilter>
+                  </span>
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-data>
+              <tr
+                [ngClass]="{
+                  active:
+                    selectedRows &&
+                    selectedRows.length > 0 &&
+                    selectedRows[0] === data
+                }"
+              >
+                <td class="lg:noaction-width-header">
+                  <span class="p-column-title">{{
+                    "label.reports.invoiceDetails.invoiceDetailsList.invoiceid"
+                      | translate
+                  }}</span>
+                  <span class="image-text">{{ data.invoiceid }}</span>
+                </td>
+                <td class="lg:noaction-width-header">
+                  <span class="p-column-title">{{
+                    "label.reports.invoiceDetails.invoiceDetailsList.companyname"
+                      | translate
+                  }}</span>
+                  <span class="image-text">{{ data.companyname }}</span>
+                </td>
+                <td class="lg:noaction-width-header">
+                  <span class="p-column-title">{{
+                    "label.reports.invoiceDetails.invoiceDetailsList.entityname"
+                      | translate
+                  }}</span>
+                  <span class="image-text">{{ data.entityname }}</span>
+                </td>
+                <td class="">
+                  <span class="p-column-title">{{
+                    "label.reports.invoiceDetails.invoiceDetailsList.noofattest"
+                      | translate
+                  }}</span>
+                  <span class="image-text">{{ data.noofattest }}</span>
+                </td>
+                <td class="">
+                  <span class="p-column-title">{{
+                    "label.reports.invoiceDetails.invoiceDetailsList.nooffines"
+                      | translate
+                  }}</span>
+                  <span class="image-text">{{ data.nooffines }}</span>
+                </td>
+                <td class="lg:noaction-width-header">
+                  <span class="p-column-title">{{
+                    "label.reports.invoiceDetails.invoiceDetailsList.invoiceamount"
+                      | translate
+                  }}</span>
+                  <span class="image-text amount-text">{{
+                    data.invoiceamount | customCurrency
+                  }}</span>
+                </td>
+                <td class="lg:noaction-width-header">
+                  <span class="p-column-title">{{
+                    "label.reports.invoiceDetails.invoiceDetailsList.fineamount"
+                      | translate
+                  }}</span>
+                  <span class="image-text amount-text">{{
+                    data.fineamount | customCurrency
+                  }}</span>
+                </td>
+                <td class="lg:noaction-width-header">
+                  <span class="p-column-title">{{
+                    "label.reports.invoiceDetails.invoiceDetailsList.totalamount"
+                      | translate
+                  }}</span>
+                  <span class="image-text amount-text">{{
+                    data.totalamount | customCurrency
+                  }}</span>
+                </td>
+                <td class="lg:noaction-width-header frozen2">
+                  <span class="p-column-title">{{
+                    "label.reports.invoiceDetails.invoiceDetailsList.paymentstatus"
+                      | translate
+                  }}</span>
+                  <span class="image-text">
+                    <p-tag
+                      [value]="data.paymentstatus"
+                      [severity]="'success'"
+                    ></p-tag>
+                  </span>
+                </td>
+                <!-- <td class="lg:noaction-width-header frozen2">
+                  <span class="image-text">{{ data.paymentcancelled }}</span>
+                </td> -->
+                <td
+                  class="action-width-header frozen1"
+                  pFrozenColumn
+                  [frozen]="true"
+                  alignFrozen="right"
+                >
+                  <div class="flex action-width-body">
+                    <ng-container>
+                      <button
+                        type="button"
+                        (click)="invoicepaymenttransactionreport(selectedRows)"
+                        [pTooltip]="'label.view' | translate"
+                        tooltipPosition="bottom"
+                        class="p-element mr-2 grid-header-right-icon p-button p-component p-button-icon-only"
+                        *ngIf="permission.view"
+                      >
+                        <i class="fa fa-eye"></i>
+                      </button>
+                    </ng-container>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template
+              pTemplate="footer"
+              *ngIf="invoiceRequestListsFilter.length > 0"
+            >
+              <tr>
+                <td colspan="5">
+                  {{ "label.companydetails.totals" | translate }}
+                </td>
+                <td class="text-right">
+                  {{ totals?.totalinvoiceamount | customCurrency : "AED" }}
+                </td>
+                <td class="text-right">
+                  {{ totals?.totalfineamount | customCurrency : "AED" }}
+                </td>
+                <td class="text-right">
+                  {{ totals?.totaltotalamount | customCurrency : "AED" }}
+                </td>
+                <td colspan="100" class="text-right"></td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="100">{{ "noDataFound" | translate }}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+        <div
+          class="bg-white rounded-lg mofa-tab-section show"
+          [ngClass]="{ show: shouldShow, hide: !shouldShow }"
+        >
+          <div class="flex g-2 workflow-header">
+            <div class="workflow-header-left">
+              <div>
+                <button
+                  type="button"
+                  (click)="invoicepaymenttransactionreport(selectedRows)"
+                  class="p-element mr-2 grid-header-right-icon p-button p-component p-button-icon-only"
+                  [pTooltip]="'label.details' | translate"
+                  tooltipPosition="bottom"
+                  *ngIf="permission.view"
+                >
+                  <i class="fa fa-list"></i>
+                </button>
+              </div>
+            </div>
+            <div class="workflow-header-right">
+              <button mat-icon-button class="close-button">
+                <mat-icon
+                  class="close-icon"
+                  color="warn"
+                  (click)="closeWorkflow()"
+                  >close</mat-icon
+                >
+              </button>
+            </div>
+          </div>
+          <div class="show-p-5">
+            <app-attestation-workflow
+              [selectedRows]="selectedRows"
+              [fileContentEncode]="fileContentEncode"
+            ></app-attestation-workflow>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
