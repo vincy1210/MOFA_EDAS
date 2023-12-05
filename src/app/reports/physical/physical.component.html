@@ -140,6 +140,29 @@
   </td>
                 </tr>
               </ng-template>
+
+              <ng-template
+              pTemplate="footer"
+              *ngIf="invoiceRequestLists.length > 0"
+            >
+              <tr>
+                <td colspan="2">
+                  {{ "Total" | translate }}
+                </td>
+                <td style="text-align: right;"> AED
+                  {{ common.formatAmount(total_invoiceamount) }}
+                </td>
+                <td class="text-right">
+                  <!-- {{ totals?.totalfineamount | customCurrency : "AED" }} -->
+                </td>
+                <td class="text-right">
+                  <!-- {{ totals?.totaltotalamount | customCurrency : "AED" }} -->
+                </td>
+                <td colspan="100" class="text-right"></td>
+              </tr>
+            </ng-template>
+
+
               <ng-template pTemplate="emptymessage">
                 <tr>
                   <td colspan="10">{{ "noDataFound" | translate }}</td>

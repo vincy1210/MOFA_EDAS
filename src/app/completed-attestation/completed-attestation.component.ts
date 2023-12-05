@@ -24,13 +24,10 @@ export class CompletedAttestationComponent implements OnInit {
   cols: any;
   loading: boolean = false;
   enableFilters: boolean = false;
-<<<<<<< HEAD
   today: Date = new Date(); 
 oneMonthAgo = new Date();
 todayModel:Date=new Date();
 currentcompany:any;
-=======
->>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
 
 uuid:string='';
 
@@ -50,7 +47,6 @@ isButtonDisabled = false;
   ) {
 this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
 
-<<<<<<< HEAD
   }
   filterTableByDate() {
     // Convert dates to string format
@@ -108,64 +104,14 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
       "limit":10,
       "Startdate":this.common.formatDateTime_API_payload(this.oneMonthAgo.toDateString()),
       "Enddate":this.common.formatDateTime_API_payload(this.todayModel.toDateString())
-=======
-  ngOnInit(): void {
-    this.progress_val = 0;
-    this.cols = [
-      // { field: 'attestationrequno', header: 'Attestation No.' },
-      {
-        field: 'edasreqno',
-        header: 'label.completedAttestDetails.completedAttestList.edasreqno',
-      },
-      {
-        field: 'entitycode',
-        header: 'label.completedAttestDetails.completedAttestList.entitycode',
-      },
-      {
-        field: 'invoiceno',
-        header: 'label.completedAttestDetails.completedAttestList.invoiceno',
-      },
-      {
-        field: 'invoiceamount',
-        header:
-          'label.completedAttestDetails.completedAttestList.invoiceamount',
-      },
-      {
-        field: 'invoicecurrency',
-        header:
-          'label.completedAttestDetails.completedAttestList.invoicecurrency',
-      },
-      {
-        field: 'invoicedate',
-        header: 'label.completedAttestDetails.completedAttestList.invoicedate',
-      },
-    ];
-    this.getInvoiceAttestations();
-  }
-
-  getInvoiceAttestations() {
-    this.loading = true;
-    let data = {
-      companyuno: 1,
-      uuid: '1111',
-      startnum: 0,
-      endnum: 10,
-      status: 0,
->>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
     };
     this.common.showLoading();
 
     this.apiservice
-<<<<<<< HEAD
       .post(this.consts.getcompletedInvoiceAttestList, data)
       .subscribe((response: any) => {
         this.common.hideLoading();
 
-=======
-      .post(this.consts.getCompletedInvoiceAttestations, data)
-      .subscribe((response: any) => {
-        this.loading = false;
->>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
         if (`${response.responsecode}` === '1') {
           const dataArray = response.data;
           this.invoiceRequestLists = dataArray;

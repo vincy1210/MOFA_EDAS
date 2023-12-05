@@ -38,6 +38,8 @@ isfilenotfouund:boolean=false;
 
 fields: { label: string, value: any }[] = [];
 isButtonDisabled = false;
+total_invoiceamount:any;
+
   constructor(
     private modalPopupService: ModalPopupService,
     public translate: TranslateService,
@@ -109,12 +111,17 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
 
     this.apiservice
       .post(this.consts.getcompletedInvoiceAttestList, data)
-      .subscribe((response: any) => {
+      .subscribe((resp: any) => {
         this.common.hideLoading();
 
-        if (`${response.responsecode}` === '1') {
-          const dataArray = response.data;
+        if (`${resp.responsecode}` === '1') {
+          const dataArray = resp.data;
           this.invoiceRequestLists = dataArray;
+
+          const totalInvoiceAmount = resp.dictionary.data.reduce((total:any, item:any) => total + item.feesamount, 0);
+          console.log(totalInvoiceAmount)
+          
+                  this.total_invoiceamount=totalInvoiceAmount;
         }
       });
   }

@@ -92,13 +92,9 @@ export class PhysicalAttestationCreateComponent implements OnInit {
     this.apiservice
       .post(this.consts.getFreezonetypes, data)
       .subscribe((response: any) => {
-<<<<<<< HEAD
         this.common.hideLoading();
 
         if (`${response.responseCode}` === '200') {
-=======
-        if (`${response.responsecode}` === '1') {
->>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
           const dataArray = response.data;
           this.issuingAuthorities = dataArray.dictionary.data;
           console.log(response)
@@ -201,11 +197,7 @@ export class PhysicalAttestationCreateComponent implements OnInit {
       
 
         const dataArray = response.data;
-<<<<<<< HEAD
         if (response.responseCode === 200) {
-=======
-        if (`${response.responsecode}` === '1') {
->>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
           //alert
           this.dialogRef.close(response);
           this.clearDatas();

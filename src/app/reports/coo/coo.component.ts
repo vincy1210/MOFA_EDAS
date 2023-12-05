@@ -34,6 +34,8 @@ currentrow:any;
 isfilenotfouund:boolean=false;
 
 fields: { label: string, value: any }[] = [];
+
+total_invoiceamount:any;
  
 isButtonDisabled = false;
   constructor(
@@ -122,14 +124,21 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
 
     this.apiservice
       .post(this.consts.getcompletedCOORequests, data)
-      .subscribe((response: any) => {
+      .subscribe((resp: any) => {
         this.common.hideLoading();
 
-        if (`${response.dictionary.responsecode}` === '1') {
-          const dataArray = response.dictionary?.data;
+        if (`${resp.dictionary.responsecode}` === '1') {
+          const dataArray = resp.dictionary?.data;
           if (dataArray) {
             this.cooAttestationLists = dataArray;
           }
+
+          const totalInvoiceAmount = resp.dictionary.data.reduce((total:any, item:any) => total + item.feesamount, 0);
+console.log(totalInvoiceAmount)
+
+        this.total_invoiceamount=totalInvoiceAmount;
+
+
         }
       });
   }

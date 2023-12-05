@@ -1,12 +1,8 @@
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { AttestationStatusEnum } from '../../models/attestation-status.model';
 import { CommonService } from 'src/service/common.service';
-<<<<<<< HEAD
 import { ApiService } from 'src/service/api.service';
 import { ConstantsService } from 'src/service/constants.service';
-=======
-
->>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
 @Component({
   selector: 'app-attestation-workflow',
   templateUrl: './attestation-workflow.component.html',
@@ -14,15 +10,12 @@ import { ConstantsService } from 'src/service/constants.service';
 })
 export class AttestationWorkflowComponent implements OnInit {
   @Input() selectedAttestations: any[] = [];
-<<<<<<< HEAD
   @Input() invoiceamt: number = 0;
   @Input() fineamount: number = 0;
   @Input() totalamount: number = 0;
   @Input() src: any;
 
 
-=======
->>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
   noOfInvoicesSelected: number = 0;
   totalFineAmount: number = 0;
   totalAttestationFee: number = 0;
@@ -36,29 +29,19 @@ export class AttestationWorkflowComponent implements OnInit {
   attestationDateTime: any;
   completedDateTime: any;
   isLoading=false;
-<<<<<<< HEAD
   // src: string = '';
-=======
-  src: string = '';
->>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
   //
   status0:string='';
   status1:string='';
   status2:string='';
   status3:string='';
   status4:string='';
-<<<<<<< HEAD
   isButtonDisabled = false;
   constructor(private common: CommonService, private api:ApiService) {}
-=======
-
-  constructor(private common: CommonService) {}
->>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
 
   ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
-<<<<<<< HEAD
     // console.log(this.src);
     if(changes['src']){
       console.log(this.src);
@@ -71,13 +54,6 @@ export class AttestationWorkflowComponent implements OnInit {
 
       if (this.selectedAttestations && this.selectedAttestations.length >= 0) {
          this.noOfInvoicesSelected = this.selectedAttestations.length;
-=======
-    if (changes['selectedAttestations']) {
-      const attestationLists = changes['selectedAttestations'].currentValue;
-      this.selectedAttestations = attestationLists;
-      if (this.selectedAttestations && this.selectedAttestations.length >= 0) {
-        this.noOfInvoicesSelected = this.selectedAttestations.length;
->>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
         this.totalFineAmount = this.selectedAttestations.reduce(
           (total: any, item: any) => total + (item.fineamount ? item.fineamount : 0),
           0
@@ -92,15 +68,12 @@ export class AttestationWorkflowComponent implements OnInit {
           this.previewvisible = false;
           this.Timelinevisible = false;
         } else {
-<<<<<<< HEAD
 
           // if(this.selectedAttestations[0]?.attestfilelocation!='' || this.selectedAttestations[0]?.attestfilelocation != null){
           //   this.getimagebase64(this.selectedAttestations[0]?.attestfilelocation);
           //  }
 
 
-=======
->>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
           this.previewvisible = true;
           this.Timelinevisible = true;
           this.createdDateTime = this.common.splitdatetime(
@@ -149,16 +122,11 @@ export class AttestationWorkflowComponent implements OnInit {
             this.status3 = 'active';
             this.status4 = 'current';
           } else {
-<<<<<<< HEAD
             this.common.showErrorMessage('Something went wrong');
-=======
-            this.common.showErrorMessage('Something went wrong!');
->>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
           }
         }
       }
     }
-<<<<<<< HEAD
   
 }
 
@@ -189,11 +157,4 @@ export class AttestationWorkflowComponent implements OnInit {
 // })
 
 //}
-=======
-  }
-
-  AttestationPay(){
-
-  }
->>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
 }

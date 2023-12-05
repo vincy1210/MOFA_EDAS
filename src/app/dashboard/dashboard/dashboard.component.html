@@ -37,7 +37,7 @@
                   <div style="width:100px" class="float-left">
                     <mat-form-field appearance="outline" >
                         <mat-label>{{'Select' | translate}}</mat-label>
-                      <mat-select>
+                      <mat-select (selectionChange)="onClickFilterOption('lca', $event.value)">
                         <mat-option value="01">{{'Week' | translate}}</mat-option>
                         <mat-option value="02">{{'Month' | translate}}</mat-option>
                         <mat-option value="03">{{'Year' | translate}}</mat-option>

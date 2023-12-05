@@ -1,19 +1,11 @@
-<<<<<<< HEAD
 import { Component, OnInit, ViewChild } from '@angular/core';
-=======
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
->>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
 import { TranslateService } from '@ngx-translate/core';
 import { ApiService } from 'src/service/api.service';
 import { ConstantsService } from 'src/service/constants.service';
 import { DatePipe } from '@angular/common';
 import * as XLSX from 'xlsx';
 import { ModalPopupService } from 'src/service/modal-popup.service';
-<<<<<<< HEAD
 import { CommonService } from 'src/service/common.service';
-=======
->>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
 
 @Component({
   selector: 'app-completed-coo-requests',
@@ -21,11 +13,8 @@ import { CommonService } from 'src/service/common.service';
   styleUrls: ['./completed-coo-requests.component.css'],
 })
 export class CompletedCooRequestsComponent implements OnInit {
-<<<<<<< HEAD
   @ViewChild('tableref', { static: true }) tableref: any;
   public shouldShow = false;
-=======
->>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
   progress_val: number = 0;
   selectedAttestations: any;
   totalrecords: number = 0;
@@ -33,7 +22,6 @@ export class CompletedCooRequestsComponent implements OnInit {
   cols: any;
   loading: boolean = false;
   enableFilters: boolean = false;
-<<<<<<< HEAD
   today: Date = new Date(); 
 oneMonthAgo = new Date();
 todayModel:Date=new Date();
@@ -48,15 +36,11 @@ isfilenotfouund:boolean=false;
 fields: { label: string, value: any }[] = [];
  
 isButtonDisabled = false;
-=======
-
->>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
   constructor(
     private modalPopupService: ModalPopupService,
     public translate: TranslateService,
     public apiservice: ApiService,
     public consts: ConstantsService,
-<<<<<<< HEAD
     private datePipe: DatePipe, public common:CommonService
   ) {
 this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
@@ -143,55 +127,6 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
 
         if (`${response.dictionary.responsecode}` === '1') {
           const dataArray = response.dictionary?.data;
-=======
-    private datePipe: DatePipe
-  ) {}
-
-  ngOnInit(): void {
-    this.progress_val = 0;
-    this.cols = [
-      {
-        field: 'declarationumber',
-        header: 'label.completedCooRequests.completedCooList.declarationumber',
-      },
-      {
-        field: 'edasattestno',
-        header: 'label.completedCooRequests.completedCooList.edasattestno',
-      },
-      // { field: 'entityshareamount', header: 'label.completedCooRequests.completedCooList.entityshareamount' },
-      {
-        field: 'totalamount',
-        header: 'label.completedCooRequests.completedCooList.totalamount',
-      },
-      {
-        field: 'declarationdate',
-        header: 'label.completedCooRequests.completedCooList.declarationdate',
-      },
-      {
-        field: 'attestreqdate',
-        header: 'label.completedCooRequests.completedCooList.attestreqdate',
-      },
-    ];
-    this.getCooAttestations();
-  }
-
-  getCooAttestations() {
-    this.loading = true;
-    let data = {
-      companyuno: '1',
-      uuid: '1222',
-      statusuno: 0,
-      startnum: 0,
-      endnum: 0,
-    };
-    this.apiservice
-      .post(this.consts.getcompletedCOORequests, data)
-      .subscribe((response: any) => {
-        this.loading = false;
-        let response1 = response?.dictionary;
-        if (`${response1.responsecode}` === '1') {
-          const dataArray = response1.data;
->>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
           if (dataArray) {
             this.cooAttestationLists = dataArray;
           }
@@ -236,7 +171,6 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
   exportExcel() {
     const jsonData = {
       declarationumber: this.translate.instant(
-<<<<<<< HEAD
         'label.cooAttestDetails.cooAttestList.declarationumber',
       ),
       edasattestno: this.translate.instant(
@@ -254,25 +188,6 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
       status: this.translate.instant(
         'status'
       )
-=======
-        'label.completedCooRequests.completedCooList.declarationumber'
-      ),
-      edasattestno: this.translate.instant(
-        'label.completedCooRequests.completedCooList.edasattestno'
-      ),
-      // entityshareamount: this.translate.instant(
-      //   'label.completedCooRequests.completedCooList.entityshareamount'
-      // ),
-      totalamount: this.translate.instant(
-        'label.completedCooRequests.completedCooList.totalamount'
-      ),
-      declarationdate: this.translate.instant(
-        'label.completedCooRequests.completedCooList.declarationdate'
-      ),
-      attestreqdate: this.translate.instant(
-        'label.completedCooRequests.completedCooList.attestreqdate'
-      ),
->>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
     };
     const dataList: any = [];
     this.cooAttestationLists.map((item: any) => {
@@ -281,19 +196,13 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
       dataItem[jsonData.edasattestno] = item.edasattestno;
       // dataItem[jsonData.entityshareamount] = item.entityshareamount;
       dataItem[jsonData.totalamount] = item.totalamount;
-<<<<<<< HEAD
       dataItem[jsonData.declarationdate] = this.common.splitdatetime(item.declarationdate)?.date;
       dataItem[jsonData.attestreqdate] = this.common.splitdatetime(item.attestreqdate)?.date;
       dataItem[jsonData.status] = item.status;
-=======
-      dataItem[jsonData.declarationdate] = item.declarationdate;
-      dataItem[jsonData.attestreqdate] = item.attestreqdate;
->>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
       dataList.push(dataItem);
     });
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataList);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
-<<<<<<< HEAD
     XLSX.utils.book_append_sheet(wb, ws, 'COO Attestation-Completed');
     XLSX.writeFile(wb, 'COO-attestation-Completed.xlsx');
   }
@@ -346,9 +255,4 @@ openNew(data:any) {
 
 }
   
-=======
-    XLSX.utils.book_append_sheet(wb, ws, 'Coo Attestation');
-    XLSX.writeFile(wb, 'completed-coo-attestation.xlsx');
-  }
->>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
 }

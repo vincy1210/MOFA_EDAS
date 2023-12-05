@@ -1,20 +1,3 @@
-<<<<<<< HEAD
-
-=======
-.completedCooRequests-window {
-  min-height: 100vh;
-  padding: 1rem;
-}
-
-.add-button {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.grid-search {
-  margin-right: 1rem;
-}
->>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
 
 .grid-header {
   display: flex;
@@ -26,7 +9,6 @@
   }
 }
 
-<<<<<<< HEAD
 /* .mat-form-field-appearance-outline .mat-form-field-wrapper {
   margin: 0 !important;
 } */
@@ -110,9 +92,3 @@ p-table{
 
 
 
-=======
-.clicked {
-  background: var(--primary-color);
-  color: var(--white-color);
-}
->>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb

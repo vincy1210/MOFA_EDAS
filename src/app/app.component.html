@@ -1,26 +1,17 @@
 <!-- <app-loader></app-loader> -->
 <div id="loading" style="display: none"></div>
-<<<<<<< HEAD
 <div 
-=======
-<div
->>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
   class="app-container"
   [ngClass]="'currentTheme' | translate"
   [dir]="currentLanguageDirection"
 >
   <!-- {{'currentTheme' | translate}} -->
-<<<<<<< HEAD
   <mat-toolbar class="main-header" style="position: sticky; top: 0;
   left: 0;
   right: 0;
   z-index: 100;">
   <!-- common.getSelectedCompany()  getUserProfile -->
     <a (click)="drawer.toggle()" *ngIf="userloggedin"  class="mr-2 cursor-pointer">
-=======
-  <mat-toolbar class="main-header">
-    <a (click)="toggleDrawer()" class="mr-2 cursor-pointer">
->>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
       <mat-icon color="primary">menu</mat-icon>
     </a>
     <img
@@ -345,11 +336,7 @@
 
   <mat-drawer-container class="example-container" autosize>
     <mat-drawer #drawer class="example-sidenav app-sidenav" mode="over">
-<<<<<<< HEAD
       <app-left-menu-drawer (submenuClicked)="closeDrawer(drawer)" ></app-left-menu-drawer>
-=======
-      <app-left-menu-drawer></app-left-menu-drawer>
->>>>>>> c680799d3ff292b0cd1b35279b01705f3cfd99eb
     </mat-drawer>
 
     <div class="example-sidenav-content">
