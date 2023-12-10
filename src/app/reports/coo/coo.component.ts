@@ -94,18 +94,23 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
       {
         field: 'totalamount',
         header: 'totalamount',
-        width:'20%'
+        width:'15%'
       },
       {
         field: 'declarationdate',
         header: 'declarationdate',
-        width:'15%'
+        width:'13%'
       },
       {
         field: 'attestreqdate',
         header: 'attestreqdate',
-        width:'15%'
+        width:'13%'
       },
+      {
+        field:'statusname',
+        header:'statusname',
+        width:'9%'
+      }
     ];
     this.InitTable();
   }
@@ -180,19 +185,19 @@ console.log(totalInvoiceAmount)
   exportExcel() {
     const jsonData = {
       declarationumber: this.translate.instant(
-        'label.cooAttestDetails.cooAttestList.declarationumber',
+        'declarationumber',
       ),
       edasattestno: this.translate.instant(
-        'label.cooAttestDetails.cooAttestList.edasattestno'
+        'edasattestno'
       ),
       totalamount: this.translate.instant(
-        'label.cooAttestDetails.cooAttestList.totalamount'
+        'totalamount'
       ),
       declarationdate: this.translate.instant(
-        'label.cooAttestDetails.cooAttestList.declarationdate'
+        'declarationdate'
       ),
       attestreqdate: this.translate.instant(
-        'label.cooAttestDetails.cooAttestList.attestreqdate'
+        'attestreqdate'
       ),
       status: this.translate.instant(
         'status'

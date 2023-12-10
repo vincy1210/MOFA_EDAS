@@ -13,7 +13,7 @@ import { CommonService } from 'src/service/common.service';
 import { ConstantsService } from 'src/service/constants.service';
 
 interface DeclarationAttestModel {
-  data: { uuid: string; coorequestno: number };
+  data: { uuid: string; coorequestno: number, invoiceuno:number };
   attachment: File;
 }
 
@@ -64,8 +64,11 @@ export class CooAttestationCreateComponent implements OnInit {
     this.registrationForm = this.FormBuilder.group({
       coorequestno: [, Validators.required],
       uploadDeclarationFile: [, Validators.required],
+      invoiceuno:[, Validators.required]
     });
     this.registrationForm.get('coorequestno')?.setValue(this.data.coorequestno);
+    this.registrationForm.get('invoiceuno')?.setValue(this.data.invoiceuno);
+
   }
 
   onFileChanged(event: any) {
@@ -116,7 +119,9 @@ export class CooAttestationCreateComponent implements OnInit {
     if (this.registrationForm.valid) {
       let formData: FormData = new FormData();
       const { coorequestno } = this.registrationForm.getRawValue();
-      const data = { uuid: this.uuid, coorequestno: coorequestno };
+      const { invoiceuno } = this.registrationForm.getRawValue();
+
+      const data = { uuid: this.uuid, coorequestno: coorequestno, invoiceuno:invoiceuno };
       formData.append('data', JSON.stringify(data));
       formData.append('attachment', this.sel_file_test);
       this.submitDeclarationAttestations(formData);

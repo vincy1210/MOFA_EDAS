@@ -27,6 +27,7 @@ oneMonthAgo = new Date();
 todayModel:Date=new Date();
 currentcompany:any;
 uuid:string='';
+src:any;
 
 AddInvoiceDialog:boolean=false;
 
@@ -92,18 +93,23 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
       {
         field: 'totalamount',
         header: 'totalamount',
-        width:'20%'
+        width:'15%'
       },
       {
         field: 'declarationdate',
         header: 'declarationdate',
-        width:'15%'
+        width:'13%'
       },
       {
         field: 'attestreqdate',
         header: 'attestreqdate',
-        width:'15%'
+        width:'13%'
       },
+      {
+        fiels:'statusname',
+        header:'statusname',
+        width:'10%'
+      }
     ];
     this.InitTable();
   }
@@ -171,19 +177,19 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
   exportExcel() {
     const jsonData = {
       declarationumber: this.translate.instant(
-        'label.cooAttestDetails.cooAttestList.declarationumber',
+        'declarationumber',
       ),
       edasattestno: this.translate.instant(
-        'label.cooAttestDetails.cooAttestList.edasattestno'
+        'edasattestno'
       ),
       totalamount: this.translate.instant(
-        'label.cooAttestDetails.cooAttestList.totalamount'
+        'totalamount'
       ),
       declarationdate: this.translate.instant(
-        'label.cooAttestDetails.cooAttestList.declarationdate'
+        'declarationdate'
       ),
       attestreqdate: this.translate.instant(
-        'label.cooAttestDetails.cooAttestList.attestreqdate'
+        'attestreqdate'
       ),
       status: this.translate.instant(
         'status'
@@ -213,6 +219,18 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
 openNew(data:any) {
   console.log(data);
   this.currentrow=data;
+  
+
+  this.common.getPaymentReceiptbase64(this.currentrow.invoiceuno)
+  .then((result) => {
+    this.src = result;
+    console.log(this.src);
+
+  })
+  .catch((error) => {
+    console.error("Error fetching payment receipt:", error);
+  });
+  
   this.AddInvoiceDialog=true
   const fieldMappings: { [key: string]: string } = {
     coorequestno: 'COO Request No',

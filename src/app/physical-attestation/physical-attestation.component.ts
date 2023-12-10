@@ -47,13 +47,13 @@ AddInvoiceDialog:boolean=false;
 payorpayall:string='pay';
   timelineItems = [
     { status: '', title: 'IN DRAFT', icon: 'check', date: '', time: '' },
-    { status: '', title: 'IN RISK', icon: 'check', date: '', time: '' },
+    // { status: '', title: 'IN RISK', icon: 'check', date: '', time: '' },
     { status: '', title: 'PAYMENT', icon: 'check', date: '', time: '' },
     { status: '', title: 'IN REVIEW', icon: 'check', date: '', time: '' },
-    { status: '', title: 'PENDING', icon: 'check', date: '', time: '' },
+    // { status: '', title: 'PENDING', icon: 'check', date: '', time: '' },
     { status: '', title: 'APPROVED', icon: 'check', date: '', time: '' },
-    { status: '', title: 'RETURNED', icon: 'check', date: '', time: '' },
-    { status: '', title: 'ON HOLD', icon: 'check', date: '', time: '' },
+    // { status: '', title: 'RETURNED', icon: 'check', date: '', time: '' },
+    // { status: '', title: 'ON HOLD', icon: 'check', date: '', time: '' },
     { status: '', title: 'ATTESTED', icon: 'check', date: '', time: '' },
     { status: '', title: 'COMPLETED', icon: 'check', date: '', time: '' },
   ];

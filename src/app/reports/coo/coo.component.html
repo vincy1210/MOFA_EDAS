@@ -130,10 +130,16 @@
                       common.splitdatetime(data.attestreqdate)?.date
                     }}</span>
                   </td>
+                  <td>
+                    <!-- <span class="image-text">{{ data.statusname }}</span> -->
+                    <p-tag [value]="data.statusname" [severity]="'success'"></p-tag>
+                  </td>
                   <td pFrozenColumn alignFrozen="right">
-                    <span (click)="openNew(data)" style="padding:15px; cursor: pointer;" pTooltip="{{'Expand Details' | translate}}"  class="image-text viewaction">
+                    <span (click)="openNew(data)" style="padding:15px; cursor: pointer;" pTooltip="{{'Details' | translate}}"  class="image-text viewaction">
                       <mat-icon class="action_eye_icon" >visibility</mat-icon>
                         </span>
+                        <span (click)="this.common.getimagebase64(data.attachment)" style="padding:15px; cursor: pointer;" tooltipPosition="bottom" pTooltip="Download"  class="image-text viewaction">
+                          <mat-icon class="action_eye_icon" >download</mat-icon> </span>
   
                  
   </td>
@@ -143,7 +149,7 @@
 
               <ng-template
               pTemplate="footer"
-              *ngIf="cooAttestationLists.length > 0"
+              
             >
               <tr>
                 <td colspan="2">
@@ -177,7 +183,7 @@
     <br>
   
     
-    <p-dialog [(visible)]="AddInvoiceDialog" style="top:20%" [style]="{ width: '750px' }" header="COO Attestation Details" [modal]="true" styleClass="p-fluid">
+    <p-dialog [(visible)]="AddInvoiceDialog" [draggable]="false" style="top:20%" [style]="{ width: '750px' }" header="COO Attestation Details" [modal]="true" styleClass="p-fluid">
       <div class="viewmore">
         <div class="more-content-section">
           <div class="grid grid-cols-2">

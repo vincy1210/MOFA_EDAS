@@ -86,6 +86,7 @@ export class PhysicalAttestationCreateComponent implements OnInit {
   getIssuingAuthorities() {
     let data = {
       useruno: '1',
+      languagecode:0
     };
     this.common.showLoading();
 

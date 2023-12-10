@@ -9,12 +9,17 @@ import { Router } from '@angular/router';
 
 import { DatePipe } from '@angular/common';
 import { AbstractControl, ValidatorFn } from '@angular/forms';
+import { ApiService } from './api.service';
+import { ConstantsService } from './constants.service';
 
 
 
 @Injectable({
   providedIn: 'root',
 })
+
+
+
 export class CommonService {
 
    favink1:string=''
@@ -27,6 +32,9 @@ export class CommonService {
 
   private isAdmin = new BehaviorSubject<boolean>(false);
   isAdmin$ = this.isAdmin.asObservable();
+
+  public userType = new BehaviorSubject<string>('');
+  userType$ = this.userType.asObservable();
 
   private userprofilesubject = new BehaviorSubject<string>('');
   userprofile$ = this.userprofilesubject.asObservable();
@@ -45,16 +53,17 @@ export class CommonService {
   private isDrawerOpenSubject = new BehaviorSubject<boolean>(false);
 
  // userloggedin:boolean=false;
-  
-
-
+ uuid:string='';
+ src:any;
+ base64PdfString:any;
   publicKey!: string;
   constructor(
     private translate: TranslateService,
     private Toastr: ToastrService,
-    private datePipe: DatePipe,private Router:Router
+    private datePipe: DatePipe,private Router:Router, private apicall:ApiService, private consts:ConstantsService
   ) {
 
+    // this.getimagebase64('');
     let data:any;
     data=sessionStorage.getItem('currentcompany');
     console.log(data);
@@ -69,10 +78,15 @@ export class CommonService {
 
             if(abc=="Admin"){
             this.isAdmin.next(true);
+            this.userType.next('Admin');
+            }
+            else if(abc=="User"){
+            this.isAdmin.next(false);
+            this.userType.next('User');
             }
             else{
-            this.isAdmin.next(false);
-              
+              this.isAdmin.next(false);
+              this.userType.next('LCAAdmin');
             }
       }
       else{
@@ -86,10 +100,7 @@ export class CommonService {
      // data=sessionStorage.getItem('userProfile');
       let data2=sessionStorage.getItem('userProfile');
       if(data2!=undefined || data2 !=null){
-        // this.userprofilesubject.next(true);
-       // this.userloggedin=true;
               let abc=JSON.parse(data2)
-              // console.log(data)
               this.userprofilesubject.next(abc.Data?.firstnameEN);
 
       }
@@ -218,10 +229,17 @@ export class CommonService {
           let  abc=data.role;
             if(abc=="Admin"){
             this.isAdmin.next(true);
+            
+            this.userType.next('Admin');
+            }
+            else if(abc=="User"){
+            this.isAdmin.next(false);
+              
+            this.userType.next('User');
             }
             else{
             this.isAdmin.next(false);
-              
+              this.userType.next('LCAAdmin');
             }
       }
       else{
@@ -363,7 +381,10 @@ export class CommonService {
   getUserProfile() {
     const userProfileString = sessionStorage.getItem('userProfile');
     if (userProfileString) {
-      console.log(userProfileString);
+      let abc=JSON.parse(userProfileString);
+      let abc1=JSON.parse(abc);
+
+      console.log(abc1);
       return JSON.parse(userProfileString);
     }
     else{
@@ -372,6 +393,7 @@ export class CommonService {
     //  this.Router.navigateByUrl('/logout')
 
     //  this.Router.navigateByUrl('https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2')
+    return null
 
     }
    // return null;
@@ -426,9 +448,10 @@ export class CommonService {
   
   logoutUser() {
     // Perform logout actions here, e.g., remove user data from SessionStorage
-    sessionStorage.clear();
-    this.userloggedinSubject.next(false);
-    sessionStorage.removeItem('userProfile');
+    // sessionStorage.clear();   //keep it back
+    // this.userloggedinSubject.next(false);
+    // sessionStorage.removeItem('userProfile');
+   // this.Router.navigateByUrl("/logout")
 //this.Router.navigateByUrl('https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2')
   //window.location.href = "https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2"
     
@@ -489,26 +512,6 @@ export class CommonService {
     return amount.toLocaleString(undefined, { maximumFractionDigits: 2 });
   }
 
-  
-
-
-  // formatAmount(amount: number): string {
-  //   // Use toLocaleString to format the number with commas
-  //   return amount.toLocaleString(undefined, { maximumFractionDigits: 2 });
-  // }
-
-
-  // formatAmount(amount: number): string {
-  //   // Use toLocaleString to format the number with commas
-  //   if(amount!=undefined || amount!=null || amount!='')
-  //   {
-  //     return amount.toLocaleString(undefined, { maximumFractionDigits: 2 });
-
-  //   }
-  //   else{
-  //     return ''
-  //   }
-  // }
 
    static blankInputValidator(fieldName: string): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
@@ -521,6 +524,101 @@ export class CommonService {
       return null; // No error
     };
   }
+
+  async getPaymentReceiptbase64(invoiceuno: any): Promise<any> {
+    return new Promise((resolve, reject) => {
+      let data2 = sessionStorage.getItem('userProfile');
   
+      if (data2 != undefined || data2 != null) {
+        let abc = JSON.parse(data2);
+        let bcd = JSON.parse(abc);
+        this.uuid = bcd.Data?.uuid;
+      } else {
+        reject("User profile not found");
+        return;
+      }
+  
+      let data = {
+        "uuid": this.uuid,
+        "invoiceuno": invoiceuno.toString()
+      };
+  
+      this.showLoading();
+  
+      this.apicall.post(this.consts.getPaymentReceipt, data).subscribe({
+        next: (success: any) => {
+          this.hideLoading();
+          const resp = success;
+  
+          if (resp.responsecode == 1) {
+            this.base64PdfString = resp.data;
+            var binary_string = this.base64PdfString.replace(/\\n/g, '');
+            binary_string = window.atob(this.base64PdfString);
+            var len = binary_string.length;
+            var bytes = new Uint8Array(len);
+  
+            for (var i = 0; i < len; i++) {
+              bytes[i] = binary_string.charCodeAt(i);
+            }
+  
+            this.src = bytes.buffer;
+            console.log("payment receipt is success");
+            resolve(this.src);
+          } else {
+            this.showErrorMessage('Attachment load failed');
+            reject("Attachment load failed");
+          }
+        },
+        error: (error: any) => {
+          this.hideLoading();
+          console.error("Error fetching payment receipt:", error);
+          reject(error);
+        }
+      });
+    });
+  }
+  
+  getimagebase64(attestfilelocation:any){
+    let resp;
+    let data={
+      "attestfilelocation":attestfilelocation,
+      "uuid":this.uuid
+    }
+    this.showLoading();
+  
+    this.apicall.post(this.consts.getAttestationFileContent,data).subscribe({next:(success:any)=>{
+      this.hideLoading();
+  
+      resp=success;
+      if(resp.responsecode==1){
+      this.base64PdfString=resp.data;
+  
+          const base64 = this.base64PdfString.replace('data:application/pdf;base64,', '');
+  
+            // Convert base64 to a byte array
+            const byteArray = new Uint8Array(atob(base64).split('').map(char => char.charCodeAt(0)));
+  
+            // Create a Blob and download the file
+            const file = new Blob([byteArray], { type: 'application/pdf' });
+            const fileUrl = URL.createObjectURL(file);
+  
+            const link = document.createElement('a');
+            link.href = fileUrl;
+            link.download = 'Attestation_.pdf'; // You can customize the file name here
+  
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+  
+      }
+      else{
+        this.showErrorMessage('Attachment load failed')
+        //this.loading=false;
+      }
+    }
+  })
+  return this.base64PdfString;
+  
+  }
   
 }

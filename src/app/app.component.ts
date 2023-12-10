@@ -33,6 +33,7 @@ export class AppComponent {
   copyrightyear=environment.appdetails.year;
   version=environment.appdetails.version;
   selectedlanguage:string='';
+  selectedpalette:string='';
 
   title = 'uaemofa';
   overlayContainer: any;
@@ -191,6 +192,14 @@ this.userwasIdle=true;
     });
    
     this.selectedlanguage=sessionStorage.getItem('language') || '';
+    this.selectedpalette=sessionStorage.getItem('Palette') || '';
+if(this.selectedpalette===""){
+this.classRoot='theme-default';
+}
+else{
+  this.classRoot = this.selectedpalette;
+}
+
 
     if(this.selectedlanguage===""){
       translate.addLangs(['en', 'ar']);
@@ -253,6 +262,13 @@ this.userwasIdle=true;
     this.translate.use(language);
   }
 
+  usePalette(palette: string) {
+    sessionStorage.setItem('Palette',palette)
+    this.selectedpalette=palette;
+    this.classRoot = palette
+    // this.translate.use(language);
+  }
+
   goToHome() {
     this.router.navigate(['/dashboard']); // Replace '/home' with the desired URL
   }
@@ -265,7 +281,8 @@ this.userwasIdle=true;
 
     sessionStorage.clear();
    //this.commonService.logoutUser();
-    this.router.navigateByUrl('/logout')
+    //this.router.navigateByUrl('/logout')
+    window.location.href = "https://stg-id.uaepass.ae/idshub/logout?redirect_uri=https://stg-selfcare.uaepass.ae"
 
   }
 

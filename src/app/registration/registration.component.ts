@@ -213,7 +213,8 @@ export class RegistrationComponent {
 
     console.log(this.reg_form_data);
     let data={
-      "useruno":"1"
+      "useruno":"1",
+      "languagecode":0
     }
     this.common.showLoading();
 
@@ -507,7 +508,32 @@ export class RegistrationComponent {
         return;
        }
        else{
-        this.router.navigateByUrl('/landingpage');
+
+        let lcauser: boolean = false;
+
+        // Iterate through the JSON data
+        for (const data of response.data) {
+          if (data.lcauno === 11 || data.lcauno === 12) {
+            lcauser = true;
+            break; // No need to continue checking once condition is met
+          }
+        }
+        // Now lcauser will be true if any lcauno is 11 or 12
+        console.log("Is lcauser true?", lcauser);
+
+        if(lcauser){
+
+          this.common.userType.next('LCAAdmin');
+          this.router.navigateByUrl('/attestationslca');
+
+          
+        }
+        else{
+          this.common.userType.next('CompanyUsers');
+
+          this.router.navigateByUrl('/landingpage');
+
+        }
        }
       
       }

@@ -93,12 +93,18 @@
               <th pFrozenColumn alignFrozen="right">{{'Action' | translate}}</th>
           </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-customer let-columns="columns" let-idx="idx">
-          <tr (click)="highlighted = idx">
-            <td><p-tableCheckbox (click)="loadsidepanel(customer)" [disabled]="isCOONotPaid(customer)" [value]="customer"></p-tableCheckbox></td>
-            <td><span class="image-text">{{customer.edasattestno}}</span></td>
+        <ng-template pTemplate="body" let-customer let-columns="columns" >
+            <tr [ngClass]="{
+              'highlighted-row': customer.isSelected,
+              'custom-text-color': customer.isSelected,
+              'bold-text': customer.isSelected
+            }">
+              <td><p-tableCheckbox (click)="loadsidepanel(customer)" [disabled]="isCOONotPaid(customer)" [value]="customer"></p-tableCheckbox> </td>
+            <td><span class="image-text">{{customer.edasattestno}} {{columns.isSelected}}</span></td>
             <td><span class="image-text">{{customer.companyname}}</span></td>
             <td style="text-align: right;"><span class="image-text">{{common.formatAmount(customer.invoiceamount)}}</span></td>
+            <td style="text-align: right;"><span class="image-text">{{common.formatAmount(customer.feesamount)}}</span></td>
+
             <td><span class="image-text">{{customer.invoiceid}}</span></td>
             <td><span class="image-text">{{customer.declarationumber}}</span></td>
             <td><span class="image-text">{{splitdatetime(customer.declarationdate)?.date}}</span></td>
@@ -113,7 +119,7 @@
 
             <td><span class="image-text">{{common.calculateDifference(customer.attestreqdate)}}</span></td>
             <td pFrozenColumn alignFrozen="right">
-              <span (click)="openNew(customer)" style="padding:15px; cursor: pointer;" pTooltip="{{'Expand Details' | translate}}"  class="image-text viewaction">
+              <span (click)="openNew(customer)" style="padding:15px; cursor: pointer;" pTooltip="{{'Details' | translate}}"  class="image-text viewaction">
                 <mat-icon class="action_eye_icon" >visibility</mat-icon>
                   </span>
 
@@ -136,7 +142,7 @@
                 <div class="ng_show_close_icon">
                   <br>
                   <span (click)="closesidetab()">
-                    <mat-icon class="rounded-icon" pTooltip="{{'close' | translate}}" >chevron_right</mat-icon>
+                    <mat-icon class="rounded-icon" style="color: white;" pTooltip="{{'close' | translate}}" >chevron_right</mat-icon>
 
                   </span>
                   <br>
@@ -214,9 +220,6 @@
                   </mat-tab>
                   <mat-tab *ngIf="previewvisible" label="{{'Preview' | translate}}">
                     <div class="grid grid-cols-1">
-                      <!-- <p *ngIf="isLoading">Loading...</p> -->
-                
-                      <!-- <div id="pdfContainer"></div> -->
                       <div id="outerContainer">
                         <div class="pdf-container">
                           <pdf-viewer
@@ -263,7 +266,7 @@
   
   
     <!-- modal details popup -->
-    <p-dialog [(visible)]="AddInvoiceDialog" style="top:20%" [style]="{ width: '750px' }" header="{{'Attestation Details' | translate}}" [modal]="true" styleClass="p-fluid">
+    <p-dialog [(visible)]="AddInvoiceDialog" style="top:20%" [draggable]="false" [style]="{ width: '750px' }" header="{{'Attestation Details' | translate}}" [modal]="true" styleClass="p-fluid">
           <div class="viewmore">
             <div class="more-content-section">
               <div class="grid grid-cols-2">

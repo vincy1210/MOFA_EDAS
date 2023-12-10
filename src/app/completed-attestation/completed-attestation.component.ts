@@ -28,7 +28,7 @@ export class CompletedAttestationComponent implements OnInit {
 oneMonthAgo = new Date();
 todayModel:Date=new Date();
 currentcompany:any;
-
+src:any;
 uuid:string='';
 
 AddInvoiceDialog:boolean=false;
@@ -88,7 +88,7 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
       { field: 'invoiceamount', header: 'invoiceamount', width:'15%' },
       { field: 'invoicecurrency', header: 'invoicecurrency', width:'10%' },
       { field: 'invoicedate', header: 'invoicedate', width:'15%' },
-      { field: 'statusname', header: 'Status', width:'15%' },
+      { field: 'wfstatus', header: 'Status', width:'15%' },
 
 
       //statusname
@@ -98,12 +98,13 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
 
   InitTable() {
     let data = {
-      "Companyuno":this.currentcompany,
+      "companyuno":this.currentcompany,
       "uuid":this.uuid,
+      "status":0, 
       "startnum":0,
       "limit":10,
-      "Startdate":this.common.formatDateTime_API_payload(this.oneMonthAgo.toDateString()),
-      "Enddate":this.common.formatDateTime_API_payload(this.todayModel.toDateString())
+      "startdate":this.common.formatDateTime_API_payload(this.oneMonthAgo.toDateString()),
+      "enddate":this.common.formatDateTime_API_payload(this.todayModel.toDateString())
     };
     this.common.showLoading();
 
@@ -197,20 +198,27 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
 openNew(data:any) {
   console.log(data);
   this.currentrow=data;
+  
+
+  this.common.getPaymentReceiptbase64(this.currentrow.invoiceuno)
+  .then((result) => {
+    this.src = result;
+    console.log(this.src);
+
+  })
+  .catch((error) => {
+    console.error("Error fetching payment receipt:", error);
+  });
   this.AddInvoiceDialog=true
   const fieldMappings: { [key: string]: string } = {
-    coorequestno: 'COO Request No',
-    lcarequestno: 'LCA Request No',
-    declarationumber: 'Declaration No',
-    declarationdate: 'Declaration Date',
+    attestationrequno: 'Attestation Request No',
+    edasreqno: 'Edas Ref No',
+    invoiceno: 'Declaration No',
+    invoicedate: 'Declaration Date',
+    invoiceamount:'Invoice Amount',
     enteredon: 'Creation',
-    edasattestno: 'EDAS Attestation No',
-    attestreqdate: 'Attestationn Request Date',
     feesamount: 'Fees Amount',
-    totalamount: 'Total Amount',
-    comments: 'Comments',
-    feespaid: 'Fees Paid',
-    statusname: 'Status'
+    wfstatus: 'Status'
   };
 
   if (data) {
@@ -238,4 +246,5 @@ openNew(data:any) {
   
 
 }
+
 }

@@ -86,6 +86,8 @@ currentcompany:any;
 
 AddInvoiceDialog:boolean=false;
 total_invoiceamount:any;
+total_feesamount:any;
+
 
 currentrow:any;
 isfilenotfouund:boolean=false;
@@ -136,11 +138,14 @@ isButtonDisabled = false;
       { field: 'edasattestno', header: 'Attestation No', width:'25%' },
       { field: 'companyname', header: 'Company Name', width:'20%' },
       { field: 'invoiceamount', header: 'Invoice Amount', width:'20%' },
+      
+      { field: 'feesamount', header: 'Fees Amount', width:'20%' },
       { field: 'invoicenumber', header: 'Invoice ID' , width:'25%'},
       { field: 'declarationumber', header: 'Declaration No', width:'25%' },
       { field: 'declarationdate', header: 'Declaration Date', width:'15%' },
       { field: 'attestreqdate', header: 'Created' , width:'15%'},
-      { field: 'statusname', header: 'lcaname', width:'20%' },
+      { field: 'statusname', header: 'LCA', width:'20%' },
+      
       { field: 'statusname', header: 'Status', width:'20%' },
       // { field: 'Noofdaysleft', header: 'Days Left' },
   
@@ -206,7 +211,11 @@ this.common.showLoading();
         const totalInvoiceAmount = resp.dictionary.data.reduce((total:any, item:any) => total + item.invoiceamount, 0);
 console.log(totalInvoiceAmount)
 
+const totalFeeAmount = resp.dictionary.data.reduce((total:any, item:any) => total + item.feesamount, 0);
+console.log(totalFeeAmount)
+
         this.total_invoiceamount=totalInvoiceAmount;
+        this.total_feesamount=totalFeeAmount;
 
         this.loading = false;
         this.Reduce();
@@ -469,6 +478,16 @@ openNew(data:any) {
   console.log(data);
   this.currentrow=data;
   this.AddInvoiceDialog=true
+
+  this.common.getPaymentReceiptbase64(this.currentrow.invoiceuno)
+  .then((result) => {
+    this.src = result;
+    console.log(this.src);
+
+  })
+  .catch((error) => {
+    console.error("Error fetching payment receipt:", error);
+  });
   const fieldMappings: { [key: string]: string } = {
     edasattestno: 'Attestation No',
     reqappnumber: 'Request Application Number',
@@ -490,7 +509,7 @@ openNew(data:any) {
     invoiceid: 'Invoice ID',
     companyname: 'Company Name',
     comments: 'Comments',
-    lcaname: 'LCA Name'
+    lcaname: 'LCA'
     // Add more fields as needed
   };
 

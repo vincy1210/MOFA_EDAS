@@ -684,6 +684,7 @@ openDialog(customer:any) {
 openNew(data:any) {
   console.log(data);
   this.currentrow=data;
+  
   this.AddInvoiceDialog=true
   const fieldMappings: { [key: string]: string } = {
     coorequestno: 'COO Request No',

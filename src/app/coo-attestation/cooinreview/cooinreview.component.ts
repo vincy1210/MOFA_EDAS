@@ -57,7 +57,7 @@ currentcompany:any;
 contactno:string='';
 timelineItems = [
   { status: '', title: 'IN DRAFT', icon: 'check', date: '', time: '' },
-  { status: '', title: 'IN RISK', icon: 'check', date: '', time: '' },
+  // { status: '', title: 'IN RISK', icon: 'check', date: '', time: '' },
   { status: '', title: 'PAYMENT', icon: 'check', date: '', time: '' },
   { status: '', title: 'IN REVIEW', icon: 'check', date: '', time: '' },
   { status: '', title: 'APPROVED', icon: 'check', date: '', time: '' },
@@ -69,6 +69,7 @@ invoiceunoresponse:number=0;
 payment_button_isdisabled:boolean=true;
 base64PdfString: any;
 src:any;
+src1:any;
 isLoading=false;
 AddInvoiceDialog:boolean=false;
 form:FormGroup;
@@ -374,30 +375,30 @@ loadsidepanel(event:any){
  
  if (statusuno >= 0 && statusuno <= 10) {
    for (let i = 0; i < statusuno; i++) {
-     this.timelineItems[i].status = 'active';
      if(statusuno==4 && createddate!=null){
+     this.timelineItems[0].status = 'active';
        this.timelineItems[0].date=createddate?.date || '';
        this.timelineItems[0].time=createddate.time;
 
-      if(approveddate!=null){
-       this.timelineItems[i].date=approveddate.date || '';
-       this.timelineItems[i].time=approveddate.time;
-     }
+    //   if(approveddate!=null){
+    //    this.timelineItems[i].date=approveddate.date || '';
+    //    this.timelineItems[i].time=approveddate.time;
+    //  }
       if(paymentdate!=null){
-       this.timelineItems[2].date=paymentdate.date || '';
-       this.timelineItems[2].time=paymentdate.time;
+     this.timelineItems[1].status = 'active';
+
+       this.timelineItems[1].date=paymentdate.date || '';
+       this.timelineItems[1].time=paymentdate.time;
      }
      this.timelineItems[3].date=''
        this.timelineItems[3].time=''
-       this.timelineItems[1].date=''
-       this.timelineItems[1].time=''
     }
      else{
        this.timelineItems[i].date=''
        this.timelineItems[i].time=''
      }
    }
-   this.timelineItems[statusuno-1].status = 'current';
+   this.timelineItems[2].status = 'current';
 //  else {
   //  this.common.showErrorMessage("Something went wrong" + statusuno);
 //  }
@@ -531,17 +532,20 @@ if(attachment!="" || attachment !=undefined || attachment !=null){
     for (var i = 0; i < len; i++)        {
         bytes[i] = binary_string.charCodeAt(i);
     }
-    this.src= bytes.buffer;
+    this.src1= bytes.buffer;
     this.fileisthere=true;
     }
     else{
-      this.common.showErrorMessage('')
+      // this.common.showErrorMessage('')
       this.loading=false;
+      this.src1='';
+  this.fileisthere=false;
     }
   }
 })
 }
 else{
+  this.src1='';
   this.fileisthere=false;
 
 }
@@ -623,31 +627,22 @@ openDialog(customer:any) {
   // });
 }
 
-// openNew(data:any) {
-//   // this.LInvoice_c={};
-//   this.AddInvoiceDialog=true
-//   // this.submitted = false;
-
-//   this.form.patchValue({
-//     coorequestno: data.coorequestno,
-//     lcarequestno: data.lcarequestno,
-//     declarationumber: data.declarationumber,
-//     declarationdate: data.declarationdate,
-//     enteredon: data.enteredon,
-//     edasattestno: data.edasattestno,
-//     attestreqdate: data.attestreqdate,
-//     feesamount: data.feesamount,
-//     totalamount: data.totalamount,
-//     comments: data.comments,
-//     feespaid: data.feespaid,
-//     statusname: data.statusname
-//   });
-// }
-
 
 openNew(data:any) {
   console.log(data);
   this.currentrow=data;
+  
+
+  this.common.getPaymentReceiptbase64(this.currentrow.invoiceuno)
+  .then((result) => {
+    this.src = result;
+    console.log(this.src);
+
+  })
+  .catch((error) => {
+    console.error("Error fetching payment receipt:", error);
+  });
+
   this.AddInvoiceDialog=true
   const fieldMappings: { [key: string]: string } = {
     coorequestno: 'COO Request No',
@@ -731,17 +726,7 @@ FilterInittable(){
 closesidetab(){
   this.shouldShow=false;
   this.selectedAttestations=[]
-//   this.confirmationService.confirm({
-//     message: 'Are you sure you want to clear the item(s) selected for payment?',
-//     header: 'Confirm',
-//     icon: 'pi pi-exclamation-triangle',
-//     accept: () => {
-//         this.shouldShow=false;
-//   this.selectedAttestations=[]
-//       //  this.deleteuser(list)
-//         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Removed Successfully', life: 3000 });
-//     }
-// });
+
 }
 
 

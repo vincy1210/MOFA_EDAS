@@ -1,0 +1,68 @@
+import {
+  // StatusEnums,
+  CompanyStatusEnums,
+  AttestationStatusEnums,
+} from "../constants/status-enum";
+
+export type FilterTypeCompany = {
+  uuid?: string;
+  id:
+    | CompanyStatusEnums.Pending
+    | CompanyStatusEnums.Approved
+    | CompanyStatusEnums.Rejected;
+  value: "Pending" | "Approved" | "Rejected";
+  startnum?: number;
+  rows?: number;
+  Startdate?: Date;
+  Enddate?: Date;
+  StartdateStr?: string;
+  EnddateStr?: string;
+};
+
+export type FilterTypeAttestation = {
+  uuid?: string;
+  id:
+    | AttestationStatusEnums.InDraft
+    | AttestationStatusEnums.InRisk
+    | AttestationStatusEnums.Payment
+    | AttestationStatusEnums.InReview
+    | AttestationStatusEnums.Pending
+    | AttestationStatusEnums.Approved
+    | AttestationStatusEnums.Returned
+    | AttestationStatusEnums.OnHold
+    | AttestationStatusEnums.Attested
+    | AttestationStatusEnums.Completed;
+  value:
+    | "InDraft"
+    | "InRisk"
+    | "Payment"
+    | "InReview"
+    | "Pending"
+    | "Approved"
+    | "Returned"
+    | "OnHold"
+    | "Attested"
+    | "Completed";
+  startnum?: number;
+  rows?: number;
+  Startdate?: Date;
+  Enddate?: Date;
+  StartdateStr?: string;
+  EnddateStr?: string;
+};
+
+export type SortFilterType = {
+  sortOrder: number | undefined;
+  sortField: string | undefined;
+};
+
+export type ViewDataType = {
+  key?: string;
+  label: string;
+  value: string;
+}
+
+export type FilterTypeGeneric = {
+  uuid?: string;
+  companyuno?: number;
+}

@@ -1,10 +1,27 @@
 import { Injectable } from '@angular/core';
 
+export const ActionConstants = {
+  load: "Load",
+  destroy: "Destroy",
+  submit: "Submit",
+  workflowview: "View Workflow",
+  addcompany: "Add Company",
+  viewcompany: "View Company",
+  editcompany: "Edit Company",
+  deletecompany: "Delete Company",
+};
+
 @Injectable({
   providedIn: 'root',
 })
+
+
+
+
 export class ConstantsService {
   constructor() {}
+  Updatecompanyuser="Company/Updatecompanyuser";
+  getPaymentReceipt='payment/getPaymentReceipt';
   registercompany = 'Company/RegisterCompany';
   CheckCompanyRegStatus = 'Company/checkCompanyRegnStatus';
   GetLegalTypes = 'Company/getLegalTypes';
@@ -54,8 +71,11 @@ export class ConstantsService {
   getDailyStatistics="dashboard/getDailyStatistics";
   getWeeklyStatistics="dashboard/getWeeklyStatistics";
   getMonthlyStatistics="dashboard/getMonthlyStatistics";
+  saveSiteAnalytics="/dashboard/saveSiteAnalytics";
 
   // this.consts.getDailyStatistics: filterType === "weekly"? this.consts.getWeeklyStatistics: this.consts.getMonthlyStatistics;
+
+  
 
 
 }

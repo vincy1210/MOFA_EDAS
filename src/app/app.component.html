@@ -65,7 +65,7 @@
       >
         <button
           mat-menu-item
-          (click)="classRoot = 'theme-default'"
+          (click)="usePalette('theme-default')"
           class="palette-brown"
         >
           <mat-icon class="menudd-default">lens</mat-icon>
@@ -73,7 +73,7 @@
         <mat-divider></mat-divider>
         <button
           mat-menu-item
-          (click)="classRoot = 'theme-red'"
+          (click)="usePalette('theme-red')"
           class="palette-red"
         >
           <mat-icon class="menudd-red">lens</mat-icon>
@@ -81,7 +81,7 @@
         <mat-divider></mat-divider>
         <button
           mat-menu-item
-          (click)="classRoot = 'theme-green'"
+          (click)="usePalette('theme-green')"
           class="palette-green"
         >
           <mat-icon class="menudd-green">lens</mat-icon>
@@ -89,7 +89,7 @@
         <mat-divider></mat-divider>
         <button
           mat-menu-item
-          (click)="classRoot = 'theme-grey'"
+          (click)="usePalette('theme-grey')"
           class="palette-grey"
         >
           <mat-icon class="menudd-grey">lens</mat-icon>
@@ -346,11 +346,12 @@
     </div>
   </mat-drawer-container>
   <div class="grid grid-cols-3 gap-4 footer-top-section">
+    
+    <div style="text-align: left;">
+      <p>{{'© Copyright' | translate}} {{copyrightyear}} {{'Ministry of Foreign Affairs' | translate}}, {{'Version' | translate}} {{version}}</p>
+    </div>
     <div>
      
-    </div>
-    <div style="text-align: center;">
-      <p>{{'© Copyright' | translate}} {{copyrightyear}} {{'Ministry of Foreign Affairs' | translate}}, {{'Version' | translate}} {{version}}</p>
     </div>
     <div style="text-align: end;">
       <p>{{'For Inquiries around the clock (24/7)' | translate}}  +97180044444</p> 
@@ -373,7 +374,7 @@
   
 </div>
 
-<p-dialog [(visible)]="userwasIdle" style="top:20%" [style]="{ width: '750px' }" [modal]="true" styleClass="p-fluid">
+<p-dialog [(visible)]="userwasIdle" [draggable]="false" style="top:20%" [style]="{ width: '750px' }" [modal]="true" styleClass="p-fluid">
   <div class="viewmore">
     <div class="more-content-section">
    

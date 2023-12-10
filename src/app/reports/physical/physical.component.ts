@@ -28,7 +28,7 @@ export class PhysicalComponent implements OnInit {
 oneMonthAgo = new Date();
 todayModel:Date=new Date();
 currentcompany:any;
-
+src:any;
 uuid:string='';
 
 AddInvoiceDialog:boolean=false;
@@ -90,7 +90,7 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
       { field: 'invoiceamount', header: 'invoiceamount', width:'15%' },
       { field: 'invoicecurrency', header: 'invoicecurrency', width:'10%' },
       { field: 'invoicedate', header: 'invoicedate', width:'15%' },
-      { field: 'statusname', header: 'Status', width:'15%' },
+      { field: 'wfstatus', header: 'Status', width:'15%' },
 
 
       //statusname
@@ -102,6 +102,7 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
     let data = {
       "Companyuno":this.currentcompany,
       "uuid":this.uuid,
+      "status":0, 
       "startnum":0,
       "limit":10,
       "Startdate":this.common.formatDateTime_API_payload(this.oneMonthAgo.toDateString()),
@@ -118,8 +119,10 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
           const dataArray = resp.data;
           this.invoiceRequestLists = dataArray;
 
-          const totalInvoiceAmount = resp.dictionary.data.reduce((total:any, item:any) => total + item.feesamount, 0);
+          const totalInvoiceAmount = resp.data.reduce((total:any, item:any) => total + item.invoiceamount, 0);
           console.log(totalInvoiceAmount)
+
+          
           
                   this.total_invoiceamount=totalInvoiceAmount;
         }
@@ -204,20 +207,25 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
 openNew(data:any) {
   console.log(data);
   this.currentrow=data;
+this.common.getPaymentReceiptbase64(this.currentrow.invoiceuno)
+  .then((result) => {
+    this.src = result;
+    console.log(this.src);
+
+  })
+  .catch((error) => {
+    console.error("Error fetching payment receipt:", error);
+  });
   this.AddInvoiceDialog=true
   const fieldMappings: { [key: string]: string } = {
-    coorequestno: 'COO Request No',
-    lcarequestno: 'LCA Request No',
-    declarationumber: 'Declaration No',
-    declarationdate: 'Declaration Date',
+     attestationrequno: 'Attestation Request No',
+    edasreqno: 'Edas Ref No',
+    invoiceno: 'Declaration No',
+    invoicedate: 'Declaration Date',
+    invoiceamount:'Invoice Amount',
     enteredon: 'Creation',
-    edasattestno: 'EDAS Attestation No',
-    attestreqdate: 'Attestationn Request Date',
     feesamount: 'Fees Amount',
-    totalamount: 'Total Amount',
-    comments: 'Comments',
-    feespaid: 'Fees Paid',
-    statusname: 'Status'
+    wfstatus: 'Status'
   };
 
   if (data) {

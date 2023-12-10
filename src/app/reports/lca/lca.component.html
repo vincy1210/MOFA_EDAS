@@ -113,6 +113,7 @@
                 </td>
                 <td><span class="image-text">{{customer.companyname}}</span></td>
                 <td style="text-align: right;"><span class="image-text">{{common.formatAmount(customer.invoiceamount)}}</span></td>
+                <td style="text-align: right;"><span class="image-text">{{common.formatAmount(customer.feesamount)}}</span></td>
                 <td>
                     <span class="image-text">{{customer.invoicenumber}}</span>
                 </td>
@@ -132,7 +133,7 @@
                   <!-- <span class="image-text">{{customer.statusname}}</span> -->
                 </td>
                 <td pFrozenColumn alignFrozen="right">
-                  <span (click)="openNew(customer)" style="padding:15px; cursor: pointer;" pTooltip="Expand Details" tooltipPosition="bottom"  class="image-text viewaction">
+                  <span (click)="openNew(customer)" style="padding:15px; cursor: pointer;" pTooltip="Details" tooltipPosition="bottom"  class="image-text viewaction">
                     <mat-icon class="action_eye_icon" >visibility</mat-icon>
   
                       </span>
@@ -152,16 +153,16 @@
                 <td colspan="2">
                   {{ "Total" | translate }}
                 </td>
-                <td style="text-align: right;"> AED
+                <td class="text-align"> AED
                   {{ common.formatAmount(total_invoiceamount) }}
                 </td>
-                <td class="text-right">
-                  <!-- {{ totals?.totalfineamount | customCurrency : "AED" }} -->
+                <td class="text-align">AED
+                  {{ common.formatAmount(total_feesamount) }}
                 </td>
-                <td class="text-right">
+                <td class="text-align">
                   <!-- {{ totals?.totaltotalamount | customCurrency : "AED" }} -->
                 </td>
-                <td colspan="100" class="text-right"></td>
+                <td colspan="100" class="text-align"></td>
               </tr>
             </ng-template>
 			
@@ -186,7 +187,9 @@
       <!-- </div> -->
   
   
-      <p-dialog [(visible)]="AddInvoiceDialog" style="top:20%" [style]="{ width: '750px' }" header="Attestation Details" [modal]="true" styleClass="p-fluid">
+      <p-dialog [(visible)]="AddInvoiceDialog" [draggable]="false" style="top:20%" [style]="{ width: '750px' }" header="Attestation Details" [modal]="true" styleClass="p-fluid">
+        <p-tabView>
+          <p-tabPanel header="Details">
         <div class="viewmore">
           <div class="more-content-section">
             <div class="grid grid-cols-2">
@@ -203,6 +206,32 @@
             </div>
           </div>
         </div>
+      </p-tabPanel>
+      <p-tabPanel header="Receipt">
+        <!-- {{this.src}} -->
+        <div class="grid grid-cols-1">
+          <div id="outerContainer">
+            <div class="pdf-container">
+              <pdf-viewer
+                [src]="src"
+                [rotation]="0"
+                [original-size]="false"
+                [show-all]="true"
+                [fit-to-page]="false"
+                [zoom]="1"
+                [zoom-scale]="'page-width'"
+                [stick-to-page]="false"
+                [render-text]="true"
+                [external-link-target]="'blank'"
+                [autoresize]="true"
+                [show-borders]="false"
+                style="width: 100%; height: 600px"
+              ></pdf-viewer>
+            </div>
+          </div>
+        </div>
+      </p-tabPanel>
+    </p-tabView>
         <ng-template pTemplate="footer">
           <p-button icon="pi pi-times" (click)="AddInvoiceDialog = false" label="{{'Cancel' | translate}}" styleClass="p-confirm-dialog-reject"></p-button>
       </ng-template>

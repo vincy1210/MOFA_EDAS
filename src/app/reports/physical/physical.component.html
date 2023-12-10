@@ -129,10 +129,10 @@
                     }}</span>
                   </td>
                   <td>
-                    <p-tag [value]="data.statusname" [severity]="'success'"></p-tag>
+                    <p-tag [value]="data.wfstatus" [severity]="'success'"></p-tag>
                   </td>
                   <td pFrozenColumn alignFrozen="right">
-                    <span (click)="openNew(data)" style="padding:15px; cursor: pointer;" pTooltip="Expand Details"  class="image-text viewaction">
+                    <span (click)="openNew(data)" style="padding:15px; cursor: pointer;" pTooltip="Details"  class="image-text viewaction">
                       <mat-icon class="action_eye_icon" >visibility</mat-icon>
                         </span>
   
@@ -140,13 +140,12 @@
   </td>
                 </tr>
               </ng-template>
-
               <ng-template
               pTemplate="footer"
-              *ngIf="invoiceRequestLists.length > 0"
+             
             >
               <tr>
-                <td colspan="2">
+                <td colspan="3">
                   {{ "Total" | translate }}
                 </td>
                 <td style="text-align: right;"> AED
@@ -177,7 +176,7 @@
   
     <!-- modal1  -->
   
-    <p-dialog [(visible)]="AddInvoiceDialog" style="top:20%" [style]="{ width: '750px' }" header="{{'Physical Attestation Details' | translate}}" [modal]="true" styleClass="p-fluid">
+    <p-dialog [(visible)]="AddInvoiceDialog" [draggable]="false" style="top:20%" [style]="{ width: '750px' }" header="{{'Physical Attestation Details' | translate}}" [modal]="true" styleClass="p-fluid">
       <div class="viewmore">
         <div class="more-content-section">
           <div class="grid grid-cols-2">
@@ -199,3 +198,6 @@
     </ng-template>
   
   </p-dialog>
+
+
+  

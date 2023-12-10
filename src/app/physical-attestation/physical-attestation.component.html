@@ -143,7 +143,7 @@
                   </td>
                   <td pFrozenColumn alignFrozen="right">
                     <!-- <span class="image-text"></span> -->
-                    <span (click)="openNew(data)" style="padding:15px; cursor: pointer;" pTooltip="Expand Details"  class="image-text viewaction">
+                    <span (click)="openNew(data)" style="padding:15px; cursor: pointer;" pTooltip="Details"  class="image-text viewaction">
                       <!-- <mat-icon>text-size-icon</mat-icon> -->
                       <mat-icon class="action_eye_icon" >visibility</mat-icon>
                         </span>
@@ -165,7 +165,7 @@
             <div class="ng_show_close_icon">
               <br>
               <span (click)="closesidetab()">
-                <mat-icon  class="rounded-icon" pTooltip="{{'close' | translate}}">chevron_right</mat-icon>
+                <mat-icon  class="rounded-icon" style="color: white;" pTooltip="{{'close' | translate}}">chevron_right</mat-icon>
   
               </span>
               <br>
@@ -279,7 +279,7 @@
           class="bg-white rounded-lg p-5 mofa-tab-section show"
           [ngClass]="{ show: shouldShow, hide: !shouldShow }"
         >
-          <app-attestation-workflow [selectedAttestations]="selectedAttestations"></app-attestation-workflow>
+          <!-- <app-attestation-workflow [selectedAttestations]="selectedAttestations"></app-attestation-workflow> -->
         </div>
       </div>
   
@@ -287,7 +287,7 @@
     <p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
   
   
-    <p-dialog [(visible)]="AddInvoiceDialog" style="top:20%" [style]="{ width: '750px' }" header="{{'Physical Attestation Details' | translate}}" [modal]="true" styleClass="p-fluid">
+    <p-dialog [(visible)]="AddInvoiceDialog" [draggable]="false" style="top:20%" [style]="{ width: '750px' }" header="{{'Physical Attestation Details' | translate}}" [modal]="true" styleClass="p-fluid">
       <div class="viewmore">
         <div class="more-content-section">
           <div class="grid grid-cols-2">

@@ -135,11 +135,13 @@ isButtonDisabled = false;
       { field: 'edasattestno', header: 'Attestation No', width:'25%' },
       { field: 'companyname', header: 'Company Name', width:'20%' },
       { field: 'invoiceamount', header: 'Invoice Amount', width:'20%' },
+      { field: 'feesamount', header: 'Fees Amount', width:'20%' },
+
       { field: 'invoicenumber', header: 'Invoice ID' , width:'25%'},
       { field: 'declarationumber', header: 'Declaration No', width:'25%' },
       { field: 'declarationdate', header: 'Declaration Date', width:'15%' },
       { field: 'attestreqdate', header: 'Created' , width:'15%'},
-      { field: 'statusname', header: 'lcaname', width:'20%' },
+      { field: 'lcaname', header: 'LCA', width:'15%' },
       { field: 'statusname', header: 'Status', width:'20%' },
       // { field: 'Noofdaysleft', header: 'Days Left' },
   
@@ -260,48 +262,7 @@ Reduce(){
 }
 
 
-getimagebase64(attestfilelocation:any){
-  let resp;
-  let data={
-    "attestfilelocation":attestfilelocation,
-    "uuid":this.uuid
-  }
-  this.common.showLoading();
 
-  this.api.post(this.consts.getAttestationFileContent,data).subscribe({next:(success:any)=>{
-    this.common.hideLoading();
-
-    resp=success;
-    if(resp.responsecode==1){
-    this.base64PdfString=resp.data;
-
-        const base64 = this.base64PdfString.replace('data:application/pdf;base64,', '');
-
-          // Convert base64 to a byte array
-          const byteArray = new Uint8Array(atob(base64).split('').map(char => char.charCodeAt(0)));
-
-          // Create a Blob and download the file
-          const file = new Blob([byteArray], { type: 'application/pdf' });
-          const fileUrl = URL.createObjectURL(file);
-
-          const link = document.createElement('a');
-          link.href = fileUrl;
-          link.download = 'Attestation_.pdf'; // You can customize the file name here
-
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-
-    }
-    else{
-      this.common.showErrorMessage('Attachment load failed')
-      this.loading=false;
-    }
-  }
-})
-return this.base64PdfString;
-
-}
 
 exportExcel() {
   const jsonData: { [key: string]: string } = {};
@@ -404,9 +365,9 @@ loadsidepanel(event:any){
   } else if (this.selectedAttestations.length == 0) {
     this.shouldShow = false;
   } else {
-    if(this.selectedAttestations[0]?.attestfilelocation!='' || this.selectedAttestations[0]?.attestfilelocation != null){
-      this.getimagebase64(this.selectedAttestations[0]?.attestfilelocation);
-     }
+    // if(this.selectedAttestations[0]?.attestfilelocation!='' || this.selectedAttestations[0]?.attestfilelocation != null){
+    //   this.getimagebase64(this.selectedAttestations[0]?.attestfilelocation);
+    //  }
   }
 
 }
@@ -458,9 +419,21 @@ setTimeout(() => {
 }
 
 
-openNew(data:any) {
+ openNew(data:any) {
   console.log(data);
   this.currentrow=data;
+  // this.src=  this.common.getPaymentReceiptbase64(this.currentrow.invoiceuno)
+
+  this.common.getPaymentReceiptbase64(this.currentrow.invoiceuno)
+  .then((result) => {
+    this.src = result;
+    console.log(this.src);
+
+  })
+  .catch((error) => {
+    console.error("Error fetching payment receipt:", error);
+  });
+  console.log(this.src)
   this.AddInvoiceDialog=true
   const fieldMappings: { [key: string]: string } = {
     edasattestno: 'Attestation No',
@@ -483,9 +456,10 @@ openNew(data:any) {
     invoiceid: 'Invoice ID',
     companyname: 'Company Name',
     comments: 'Comments',
-    lcaname: 'LCA Name'
+    lcaname: 'LCA ',
     // Add more fields as needed
   };
+
 
   if (data) {
     this.fields = Object.keys(fieldMappings).map(key => {
@@ -515,7 +489,7 @@ openNew(data:any) {
 
 DownloadFile(attestfilelocation:any){
 
-  this.getimagebase64(attestfilelocation);
+  this.common.getimagebase64(attestfilelocation);
 
  }
 

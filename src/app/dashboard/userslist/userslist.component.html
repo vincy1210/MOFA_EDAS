@@ -100,7 +100,7 @@
                   display="menu"
                 ></p-columnFilter>
               </th>
-              <th>{{'Action' | translate}}</th>
+              <th pFrozenColumn alignFrozen="right">{{'Action' | translate}}</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-list>
@@ -143,7 +143,7 @@
               </td>
           
             
-            <td>
+            <td pFrozenColumn alignFrozen="right">
                 <!-- Actions -->
                 <span class="image-text">
                   <span (click)="deleteuserpopup(list)" ><mat-icon style="cursor: pointer;" pTooltip="{{'Delete' | translate}}"  class="icon_user">delete</mat-icon></span>
@@ -172,7 +172,7 @@
 
 
   <!-- modal details popup -->
-  <p-dialog [(visible)]="AddUserDialog" style="font-size: inherit;" [style]="{ width: '90%' }" header="User Details" [modal]="true" styleClass="p-fluid">
+  <p-dialog [(visible)]="AddUserDialog" [draggable]="false" style="font-size: inherit;" [style]="{ width: '90%' }" header="User Details" [modal]="true" styleClass="p-fluid">
     <!-- <h6>Please complete the following form section with accurate and up-to-date details.</h6> -->
     <p-header>
         <h2>{{ dialogTitle | translate }}</h2>
@@ -225,7 +225,7 @@
       <div style="flex: 1;">
         <mat-form-field style="width: 100%;" class="example-full-width">
          
-          <mat-label>{{'label.companydetails.mobilenumber' | translate }} </mat-label>
+          <mat-label>{{'mobilenumber' | translate }} </mat-label>
           <input matInput  autocomplete="off" maxlength="9" formControlName="mobilenumber" name="mobilenumber" type="tel" placeholder="55 1234 567" (input)="onInput($event)">
           <span matPrefix>+971&nbsp;</span>
 
@@ -271,12 +271,10 @@
   </form>
   <ng-template pTemplate="footer">
     <button pButton pRipple label="{{'Cancel' | translate}}" icon="pi pi-times" class="p-confirm-dialog-reject" (click)="hideDialog()"></button>
-    <button pButton pRipple label="{{ dialogActionButtonLabel | translate }}"  icon="pi pi-check" [disabled]="isButtonDisabled"  (click)="onSubmitDialogModal()"></button>
+    <button style="color: white;" pButton pRipple label="{{ dialogActionButtonLabel | translate }}"  icon="pi pi-check" [disabled]="isButtonDisabled"  (click)="onSubmitDialogModal()"></button>
 <br>
 <br>
-    <div *ngIf="dialogTitle == 'Edit User'" style="padding: 5px;
-    background: #0093ff3b;
-    color: blue; text-align: center;" class="grid grid-cols-1">
+    <div *ngIf="dialogTitle == 'Edit User'" class="grid grid-cols-1 edit_footer">
       <div > <small>{{'Created on' | translate}} <strong>{{createdtime.date}}</strong> {{'at' | translate}} <strong>{{createdtime.time}} </strong>  {{'by' | translate}} {{createdby}}</small>
         <span  *ngIf="last_modifiedby!=''">
 <br>

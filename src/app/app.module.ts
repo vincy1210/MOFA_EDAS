@@ -153,6 +153,11 @@ import { LCAComponent } from './reports/lca/lca.component';
 import { COOComponent } from './reports/coo/coo.component';
 import { PhysicalComponent } from './reports/physical/physical.component';
 import { FinesComponent } from './reports/fines/fines.component';
+import { TabViewModule } from 'primeng/tabview';
+import { AttestationsComponent } from './LCA_USERS/LCA_ADMIN/attestations/attestations.component';
+import { ImportAttestationsComponent } from './LCA_USERS/LCA_ADMIN/import-attestations/import-attestations.component';
+import { PendingAttestationsComponent } from './LCA_USERS/LCA_ADMIN/pending-attestations/pending-attestations.component';
+import { CompletedAttestationsComponent } from './LCA_USERS/LCA_ADMIN/completed-attestations/completed-attestations.component';
 
 
 
@@ -173,7 +178,7 @@ import { FinesComponent } from './reports/fines/fines.component';
     CooAttestationCreateComponent,
     CompletedAttestationComponent,LeftMenuDrawerComponent, AttestationWorkflowComponent, CompletedCooRequestsComponent,
     LcaCompletedAttestationsComponent,
-    ESealTestComponent, LoginComponent, PaymentinfoComponent, CooinreviewComponent, PhysicalinreviewComponent, ReportsComponent, LCAComponent, COOComponent, PhysicalComponent, FinesComponent, 
+    ESealTestComponent, LoginComponent, PaymentinfoComponent, CooinreviewComponent, PhysicalinreviewComponent, ReportsComponent, LCAComponent, COOComponent, PhysicalComponent, FinesComponent, AttestationsComponent, ImportAttestationsComponent, PendingAttestationsComponent, CompletedAttestationsComponent, 
     //PhoneMaskDirective, 
 
     
@@ -273,7 +278,7 @@ import { FinesComponent } from './reports/fines/fines.component';
     InputTextModule,
     ToastModule,
     PdfViewerModule,   RecaptchaFormsModule,
-    RecaptchaV3Module, ToolbarModule, DialogModule, ConfirmDialogModule, TagModule, NgIdleKeepaliveModule
+    RecaptchaV3Module, ToolbarModule, DialogModule, ConfirmDialogModule, TagModule, NgIdleKeepaliveModule, TabViewModule
   ],
   providers: [
     {

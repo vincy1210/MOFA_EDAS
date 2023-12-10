@@ -134,7 +134,7 @@
                     <p-tag [value]="data.feespaid" [severity]="getSeverity(data.feespaid)"></p-tag>
                   </td>
                   <td pFrozenColumn alignFrozen="right"  >
-                    <span (click)="openNew(data)" style="padding:15px; cursor: pointer;" pTooltip="{{'Expand Details' | translate}}"  class="image-text viewaction">
+                    <span (click)="openNew(data)" style="padding:15px; cursor: pointer;" pTooltip="{{'Details' | translate}}"  class="image-text viewaction">
                       <mat-icon class="action_eye_icon" >visibility</mat-icon>
                         </span>
   
@@ -160,7 +160,7 @@
           <div class="ng_show_close_icon">
             <br>
             <span (click)="closesidetab()">
-              <mat-icon  class="rounded-icon" pTooltip="{{'close' | translate}}">chevron_right</mat-icon>
+              <mat-icon  class="rounded-icon" style="color: white;" pTooltip="{{'close' | translate}}">chevron_right</mat-icon>
   
             </span>
             <br>
@@ -197,7 +197,7 @@
                   </div>
                 </div>
               </mat-tab>
-              <mat-tab label="INVOICE">
+              <!-- <mat-tab label="INVOICE">
                 <div class="flex grid grid-cols-2 gap-6 p-5 payment-header-label">
                   <div class="p-1"><mat-label class="payment-header-label">{{'No. of COO selected' | translate}}</mat-label></div>
                   <div class="amount_right_align">{{ noOfInvoicesSelected }}</div>
@@ -217,7 +217,7 @@
                     <a class="powered_by" >{{'Powered by' | translate}}</a> &nbsp;<a class="magnati">{{'magnati' | translate}}</a>
                   </div>
                 </div>
-              </mat-tab>
+              </mat-tab> -->
               <mat-tab *ngIf="previewvisible" label="{{'Preview' | translate}}">
                 <div  class="grid grid-cols-1">
                   <span *ngIf="fileisthere">
@@ -226,7 +226,7 @@
                   <div id="outerContainer">
                     <div class="pdf-container">
                       <pdf-viewer
-                        [src]="src"
+                        [src]="src1"
                         [rotation]="0"
                         [original-size]="false"
                         [show-all]="true"
@@ -243,7 +243,8 @@
                     </div>
                   </div>
                 </span>
-                <span *ngIf="!fileisthere">
+                <span style="margin: 6rem;
+                font-size: inherit;" *ngIf="!fileisthere">
                   {{'No File Uploaded Yet' | translate}}
                 </span>
   
@@ -262,7 +263,9 @@
     <p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
   
   
-    <p-dialog [(visible)]="AddInvoiceDialog" style="top:20%" [style]="{ width: '750px' }" header="COO Attestation Details" [modal]="true" styleClass="p-fluid">
+    <p-dialog [(visible)]="AddInvoiceDialog" [draggable]="false" style="top:20%" [style]="{ width: '750px' }" header="COO Attestation Details" [modal]="true" styleClass="p-fluid">
+      <p-tabView>
+        <p-tabPanel header="Details">
       <div class="viewmore">
         <div class="more-content-section">
           <div class="grid grid-cols-2">
@@ -279,6 +282,32 @@
           </div>
         </div>
       </div>
+    </p-tabPanel>
+    <p-tabPanel header="Receipt">
+      <!-- {{this.src}} -->
+      <div class="grid grid-cols-1">
+        <div id="outerContainer">
+          <div class="pdf-container">
+            <pdf-viewer
+              [src]="src"
+              [rotation]="0"
+              [original-size]="false"
+              [show-all]="true"
+              [fit-to-page]="false"
+              [zoom]="1"
+              [zoom-scale]="'page-width'"
+              [stick-to-page]="false"
+              [render-text]="true"
+              [external-link-target]="'blank'"
+              [autoresize]="true"
+              [show-borders]="false"
+              style="width: 100%; height: 600px"
+            ></pdf-viewer>
+          </div>
+        </div>
+      </div>
+    </p-tabPanel>
+  </p-tabView>
       <ng-template pTemplate="footer">
         <p-button icon="pi pi-times" (click)="AddInvoiceDialog = false" label="{{'Cancel' | translate}}" styleClass="p-confirm-dialog-reject"></p-button>
     </ng-template>

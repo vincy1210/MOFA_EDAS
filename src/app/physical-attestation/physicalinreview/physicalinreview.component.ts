@@ -38,13 +38,8 @@ export class PhysicalinreviewComponent implements OnInit {
 
   timelineItems = [
     { status: '', title: 'IN DRAFT', icon: 'check', date: '', time: '' },
-    { status: '', title: 'IN RISK', icon: 'check', date: '', time: '' },
     { status: '', title: 'PAYMENT', icon: 'check', date: '', time: '' },
     { status: '', title: 'IN REVIEW', icon: 'check', date: '', time: '' },
-    { status: '', title: 'PENDING', icon: 'check', date: '', time: '' },
-    { status: '', title: 'APPROVED', icon: 'check', date: '', time: '' },
-    { status: '', title: 'RETURNED', icon: 'check', date: '', time: '' },
-    { status: '', title: 'ON HOLD', icon: 'check', date: '', time: '' },
     { status: '', title: 'ATTESTED', icon: 'check', date: '', time: '' },
     { status: '', title: 'COMPLETED', icon: 'check', date: '', time: '' },
   ];
@@ -53,6 +48,8 @@ export class PhysicalinreviewComponent implements OnInit {
   payment_button_isdisabled:boolean=true;
   base64PdfString: any;
   src:any;
+  src1:any;
+
   isLoading=false;
   previewvisible:boolean=true;
   Timelinevisible:boolean=true;
@@ -232,121 +229,68 @@ paymentcount=environment.appdetails.payment_count;
     return this.common.splitdatetime1(date);
   }
 
-  // loadsidepanel(event: any) {
-  //   this.noOfInvoicesSelected = this.selectedAttestations.length;
-  //   this.totalFineAmount = this.selectedAttestations.reduce(
-  //     (total: any, item: any) => total + item.fineamount,
-  //     0
-  //   );
-  //   this.totalAttestationFee = this.selectedAttestations.reduce(
-  //     (total: any, item: any) => total + item.feesamount,
-  //     0
-  //   );
-  //   this.totalFee = this.totalFineAmount + this.totalAttestationFee;
-  //   this.shouldShow = true;
-  //   if (this.selectedAttestations.length > 1) {
-  //     // this.previewvisible = false;
-  //     // this.Timelinevisible = false;
-  //   } else if (this.selectedAttestations.length == 0) {
-  //     this.shouldShow = false;
-  //   } else {
-  //   }
-  // }
   
-loadsidepanel(event:any){
-  // this.common.showLoading();
-   console.log(event);
-   console.log(this.selectedAttestations);
- 
- 
-   const isRowSelected = this.selectedAttestations.some((selectedRow: any) => {
-     return selectedRow.edasreqno === event.edasreqno;
-   });
+  
 
-   if(this.selectedAttestations.length>this.paymentcount){
-    this.common.showErrorMessage("Can't pay more than "+ this.paymentcount +" items at a time");
-    return;
-  }
- 
-   if (isRowSelected) {
-     // Row exists in selectedAttestations array, execute API call.
-     this.executeApi1(event);
-   } else {
-     // Row doesn't exist in selectedAttestations array, execute another action.
-     this.executeApi2(event);
-   }
- 
-   this.noOfInvoicesSelected=this.selectedAttestations.length;
- 
-   this.shouldShow=true;
-   if(this.selectedAttestations.length>1){
-     this.previewvisible=false;
-     this.Timelinevisible=false;
-   }
-   else if(this.selectedAttestations.length==0){
-     this.shouldShow=false;
-   }
-   else{
- if(this.selectedAttestations[0]?.filepath!='' || this.selectedAttestations[0]?.filepath != null){
-  this.getimagebase64(this.selectedAttestations[0]?.filepath);
- }
- 
-  let createddate=this.splitdatetime(this.selectedAttestations[0]?.attestreqdate);
-     let approveddate=this.splitdatetime(this.selectedAttestations[0]?.approvedon);
-     let paymentdate=this.splitdatetime(this.selectedAttestations[0]?.paidon);
-     let attestationdate=this.splitdatetime(this.selectedAttestations[0]?.attestedon);
-     let completedDate=this.splitdatetime(this.selectedAttestations[0]?.completedon);
- 
- console.log(this.timelineItems);
- this.timelineItems.forEach(item => (item.status = ''));
- 
- const statusuno = this.selectedAttestations[0].statusuno;
- 
- if (statusuno >= 0 && statusuno <= 10) {
-   for (let i = 0; i < statusuno; i++) {
-     this.timelineItems[i].status = 'active';
-     if(statusuno==1 && createddate!=null){
-       this.timelineItems[i].date=createddate?.date || '';
-       this.timelineItems[i].time=createddate.time;
-     }
-     else if(statusuno==6 && approveddate!=null){
-       this.timelineItems[i].date=approveddate.date || '';
-       this.timelineItems[i].time=approveddate.time;
-     }
-     else if(statusuno==3 && paymentdate!=null){
-       this.timelineItems[i].date=paymentdate.date || '';
-       this.timelineItems[i].time=paymentdate.time;
-     }
-     else if(statusuno==9 && attestationdate!=null){
-       this.timelineItems[i].date=attestationdate.date || '';
-       this.timelineItems[i].time=attestationdate.time;
-     }
-     else if(statusuno==10 && completedDate!=null){
-       this.timelineItems[i].date=completedDate.date || '';
-       this.timelineItems[i].time=completedDate.time;
-     }
-     else{
-       this.timelineItems[i].date=''
-       this.timelineItems[i].time=''
-     }
-   }
-   this.timelineItems[statusuno-1].status = 'current';
- } else {
-   this.common.showErrorMessage("Something went wrong" + statusuno);
- }
- console.log(this.selectedAttestations[0].statusuno);
- console.log(this.timelineItems);
- 
-   }
- 
- }
-  executeApi1(event:any){
+  
+  loadsidepanel(event:any){
+    // this.common.showLoading();
+     console.log(event);
+     console.log(this.selectedAttestations);
    
- }
- executeApi2(event:any){
    
- 
- }
+     this.shouldShow=true;
+   if(event.data.filepath!='' || event.data.filepath != null){
+    this.getimagebase64(event.data.filepath);
+   }
+   
+    let createddate=this.splitdatetime(event.data.enteredon);
+       let approveddate=this.splitdatetime(event.data.approvedon);
+       let paymentdate=this.splitdatetime(event.data.paidon);
+       let attestationdate=this.splitdatetime(event.data.attestedon);
+       let completedDate=this.splitdatetime(event.data.completedon);
+   
+   console.log(this.timelineItems);
+   this.timelineItems.forEach(item => (item.status = ''));
+   
+   const statusuno = event.data[0].statusuno;
+   
+   if (statusuno >= 0 && statusuno <= 10) {
+     for (let i = 0; i < statusuno; i++) {
+       this.timelineItems[i].status = 'active';
+       if(statusuno==1 && createddate!=null){
+         this.timelineItems[i].date=createddate?.date || '';
+         this.timelineItems[i].time=createddate.time;
+       }
+       else if(statusuno==6 && approveddate!=null){
+         this.timelineItems[i].date=approveddate.date || '';
+         this.timelineItems[i].time=approveddate.time;
+       }
+       else if(statusuno==3 && paymentdate!=null){
+         this.timelineItems[i].date=paymentdate.date || '';
+         this.timelineItems[i].time=paymentdate.time;
+       }
+       else if(statusuno==9 && attestationdate!=null){
+         this.timelineItems[i].date=attestationdate.date || '';
+         this.timelineItems[i].time=attestationdate.time;
+       }
+       else if(statusuno==10 && completedDate!=null){
+         this.timelineItems[i].date=completedDate.date || '';
+         this.timelineItems[i].time=completedDate.time;
+       }
+       else{
+         this.timelineItems[i].date=''
+         this.timelineItems[i].time=''
+       }
+     }
+     this.timelineItems[statusuno-1].status = 'current';
+   
+   console.log(event.data[0].statusuno);
+   console.log(this.timelineItems);
+   
+     }
+   
+   }
  
 getimagebase64(attestfilelocation:any){
   let resp;
@@ -371,7 +315,7 @@ getimagebase64(attestfilelocation:any){
     for (var i = 0; i < len; i++)        {
         bytes[i] = binary_string.charCodeAt(i);
     }
-    this.src= bytes.buffer;
+    this.src1= bytes.buffer;
     }
     else{
       this.common.showErrorMessage('Attachment load failed')
@@ -493,6 +437,20 @@ splitdatetime(datetimeString: any) {
 openNew(data:any) {
   console.log(data);
   this.currentrow=data;
+  let invnumber;
+  if(this.currentrow?.invoiceuno!=0 || this.currentrow?.invoiceuno!=null || this.currentrow?.invoiceuno !=undefined){
+    invnumber=parseInt(this.currentrow?.invoiceuno,10);
+    this.common.getPaymentReceiptbase64(invnumber)
+    .then((result) => {
+      this.src = result;
+      console.log(this.src);
+  
+    })
+    .catch((error) => {
+      console.error("Error fetching payment receipt:", error);
+    });
+  }
+ 
   this.AddInvoiceDialog=true
   const fieldMappings: { [key: string]: string } = {
       edasreqno: 'EDAS Request No',
@@ -502,13 +460,16 @@ openNew(data:any) {
     invoicecurrency: 'Currency',
     invoicedate: 'Invoice date',
     statusname: 'Status',
-    companyname: 'Company Name'
+    enteredon:'Entered',
+
   };
 
   if (data) {
     this.fields = Object.keys(fieldMappings).map(key => {
       let value = data[key];
-      if (key=="invoicedate" || key=="enteredon" ||key=="attestreqdate" ) {
+
+     
+      if ( key=="enteredon" ||key=="attestreqdate" ) {
         const splitResult = this.common.splitdatetime(value);
 
         if (splitResult?.date === '01-Jan-1970' || splitResult?.date === '01-Jan-0001') {
@@ -520,6 +481,9 @@ openNew(data:any) {
       else if(key=="invoiceamount" || key=="feesamount"){
         value =this.common.formatAmount(value);
       }
+      else if(key=="invoicedate"){
+        value=this.common.splitdatetime1(value)?.date;
+      }
 
       return {
         label: fieldMappings[key],
@@ -529,5 +493,74 @@ openNew(data:any) {
   }
   
 
+}
+
+FilterInitTable() {
+  //this.currentcompany
+  let data = {
+    "Companyuno":this.currentcompany,
+    "uuid":this.uuid,
+    "startnum":0,
+    "limit":10,
+    "Startdate":this.common.formatDateTime_API_payload(this.oneMonthAgo.toDateString()),
+    "Enddate":this.common.formatDateTime_API_payload(this.todayModel.toDateString())
+  };
+  this.common.showLoading();
+
+  this.apiservice
+    .post(this.consts.getInReviewAttestReq, data)
+    .subscribe((response: any) => {
+      this.common.hideLoading();
+
+      if (`${response.responsecode}` === '1') {
+        const dataArray = response.data;
+        this.invoiceRequestLists = dataArray;
+        this.invoiceRequestLists.map((row: any) => {
+          if (row.statusuno === AttestationStatusEnum.Status0) {
+            row.status = 'Created';
+          } else if (row.statusuno === AttestationStatusEnum.Status1) {
+            row.status = 'Approved';
+          } else if (row.statusuno === AttestationStatusEnum.Status2) {
+            row.status = 'Payment';
+          } else if (row.statusuno === AttestationStatusEnum.Status3) {
+            row.status = 'Attestation';
+          } else if (row.statusuno === AttestationStatusEnum.Status4) {
+            row.status = 'Completed';
+          } else {
+            row.status = '';
+          }
+        });
+      }
+    });
+}
+
+closesidetab(){
+  this.shouldShow=false;
+  this.selectedAttestations=[]
+
+}
+
+
+
+globalFilter(row: any, globalFilterValue: string): boolean {
+  for (const key in row) {
+    if (row[key] && row[key].toString().toLowerCase().includes(globalFilterValue.toLowerCase())) {
+      return true;
+    }
+  }
+  return false;
+}
+
+sortData(data: any[], field: string, order: number): any[] {
+  return data.sort((a, b) => {
+    const valueA = a[field];
+    const valueB = b[field];
+    if (valueA < valueB) {
+      return order === 1 ? -1 : 1;
+    } else if (valueA > valueB) {
+      return order === 1 ? 1 : -1;
+    }
+    return 0;
+  });
 }
 }

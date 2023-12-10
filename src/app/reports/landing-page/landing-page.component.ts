@@ -1,12 +1,14 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
-import { CommonService } from "src/app/services/common.service";
+import { CommonService } from "src/service/common.service";
 import { NavigationEnd, NavigationStart, Router } from "@angular/router";
-import {
-  ActionConstants,
-  ConstantsService,
-} from "src/app/services/constants.service";
-import { ApiService } from "src/app/services/api.service";
-import { ModalPopupService } from "src/app/services/modal-popup.service";
+import { ConstantsService, ActionConstants } from "src/service/constants.service";
+
+// import {
+//   ActionConstants,
+//   ConstantsService,
+// } from "src/app/services/constants.service";
+import { ApiService } from "src/service/api.service";
+// import { ModalPopupService } from "src/app/services/modal-popup.service";
 import { TranslateService } from "@ngx-translate/core";
 import { EChartsOption } from "echarts";
 import { LayoutModel } from "src/app/shared/models/layout-model";
@@ -55,7 +57,7 @@ export class LandingPageComponent extends LayoutModel implements OnInit {
     public override apiservice: ApiService,
     public override common: CommonService,
     public override translate: TranslateService,
-    private modalPopupService: ModalPopupService
+    
   ) {
     super(router, consts, apiservice, common, translate);
     this.progress_val = 0;
@@ -63,9 +65,9 @@ export class LandingPageComponent extends LayoutModel implements OnInit {
     this.routesurl = url;
     this.routesname =
       this.routesurl === "/landingpagepending" ? "pending" : "approve";
-    if (this.routesname === "pending" || this.routesname === "approve") {
-      this.checkPermissionAllPage("landingpage");
-    }
+    // if (this.routesname === "pending" || this.routesname === "approve") {
+    //   this.checkPermissionAllPage("landingpage");
+    // }
   }
 
   ngOnInit(): void {
@@ -103,11 +105,11 @@ export class LandingPageComponent extends LayoutModel implements OnInit {
   onClickFilterOptionDate(type: "daily" | "weekly" | "monthly") {
     const { Startdate, Enddate } = this.selectedFilterOption;
     this.selectedFilterOption.StartdateStr = this.common
-      .splitdatetime(Startdate, "dd-MMM-yyyy")
-      ?.date?.toString();
+      .splitdatetime(Startdate)
+      ?.date?.toString();  //, "dd-MMM-yyyy"
     this.selectedFilterOption.EnddateStr = this.common
-      .splitdatetime(Enddate, "dd-MMM-yyyy")
-      ?.date?.toString();
+      .splitdatetime(Enddate)
+      ?.date?.toString();  //, "dd-MMM-yyyy"
     this.onClickFilterOptionDailyMonthlyWeekly(type);
   }
 
@@ -123,13 +125,13 @@ export class LandingPageComponent extends LayoutModel implements OnInit {
     } else if (filterType === "weekly") {
       payload = {
         week: 43,
-        year: this.common.splitdatetime(this.currentDate, "yyyy")?.date,
+        year: this.common.splitdatetime(this.currentDate)?.date,  //, "yyyy"
         uuid: this.selectedFilterOption.uuid,
       };
     } else if (filterType === "monthly") {
       payload = {
-        Month: this.common.splitdatetime(this.currentDate, "MMM-yyyy")?.date,
-        year: this.common.splitdatetime(this.currentDate, "yyyy")?.date,
+        Month: this.common.splitdatetime(this.currentDate)?.date,   //, "MMM-yyyy"
+        year: this.common.splitdatetime(this.currentDate)?.date,   //, "yyyy"
         uuid: this.selectedFilterOption.uuid,
       };
     }

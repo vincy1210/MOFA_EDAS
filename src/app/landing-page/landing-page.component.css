@@ -9,23 +9,8 @@
     width: 300px;
   }
 
-  .company-info {
-    width: 90%; /* Expand the container to fill the available space */
-    justify-content: space-between; /* Create two columns */
-    align-items: center;
-    padding: 8.5px 9px 27.5px 22px;
-    border-radius: 8px;
-    border:solid 1px rgba(19, 19, 19, 0.15);
-    background-color: #fff;
-    cursor: pointer; /* Add cursor pointer to indicate interactivity */
-    height: 90%;
-  }
-
-  .company-info.selected {
-    border: solid 2px #b68a35;
-    background-color: #f8f3ea;
-    box-shadow: 7px 5px 5px #b68a35;
-  }
+ 
+  
 
   .column {
     /* Style for each column within the company-info div */

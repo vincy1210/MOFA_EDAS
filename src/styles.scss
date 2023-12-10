@@ -7,11 +7,41 @@
 
 :root {
   --primary-color: #b68a35;
+  --light-primary-color: #f9f7ed;
+  --medium-primary-color: #e6d1a8;
   --white-color: #fff;
   --black-color: #000;
   --red-color: #c8102e;
+  --light-red-color: #fcd9de;
+  --medium-red-color: #f68b9c;
   --green-color: #0f9c34;
+  --light-green-color: #e1fce8;
+  --medium-green-color: #55ef91;
+  --grey-color: #494a49;
+  --light-grey-color: rgb(212, 212, 212);
+  --medium-grey-color: #848684;
+
 }
+
+.company-info {
+  width: 90%; /* Expand the container to fill the available space */
+  justify-content: space-between; /* Create two columns */
+  align-items: center;
+  padding: 8.5px 9px 27.5px 22px;
+  border-radius: 8px;
+  border:solid 1px rgba(19, 19, 19, 0.15);
+  background-color: #fff;
+  cursor: pointer; /* Add cursor pointer to indicate interactivity */
+  height: 90%;
+}
+
+
+.company-info.selected {
+  border: solid 2px var(--primary-color);
+  background-color: #fff;
+  box-shadow: 7px 5px 5px var(--primary-color);
+}
+
 .ltr {
   @import "themes/_en";
 }
@@ -129,8 +159,8 @@ img.footer-main-logo {
 }
 
 .white-icon-btn.mat-icon-button.mat-primary {
-  border: 1px solid var(--black-color);
-  color: var(--black-color);
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
   box-shadow: none !important;
   font-weight: bold;
   border-radius: 30px;
@@ -891,6 +921,7 @@ button.white-icon-button.mat-menu-item {
   vertical-align: middle;
 }
 .mofa-side-menus .mat-icon {
+  color: var(--primary-color);
   margin-right: 10px;
 }
 .mofa-side-menus .mat-expansion-panel-header {
@@ -916,6 +947,17 @@ button.white-icon-button.mat-menu-item {
   .mat-expansion-panel-header.mat-expanded
   .mat-expansion-indicator {
   transform: rotate(90deg) !important;
+}
+
+.edit_footer{
+  padding: 5px;
+  text-align: left;
+  color: var(--primary-color);
+}
+[dir='rtl'] 
+.edit_footer{
+  padding: 5px;
+  text-align: right;
 }
 
 .mofa-side-menus
@@ -1354,7 +1396,7 @@ button.white-icon-button.mat-menu-item {
 .ng-trigger {
   .p-button {
     border: 1px solid var(--primary-color);
-    background: var(--primary-color) !important;
+    background: var(--primary-color);
   }
   .p-button:hover {
     background: transparent;
@@ -1920,6 +1962,7 @@ button.white-icon-button.mat-menu-item {
 .p-datatable .p-datatable-tbody > tr.p-highlight > td {
   background-color: #f1eee6;
   color: #b68a35;
+  font-weight: 600;
 }
 
 
@@ -2088,6 +2131,31 @@ button.white-icon-button.mat-menu-item {
 
 .main_loader.app_loader .background {
   background: none;
+}
+
+.text-align{
+  text-align: right !important;
+}
+
+
+/* Styles for the highlighted row */
+.highlighted-row {
+  background: #f1eee6 !important;
+}
+
+/* Styles for the custom text color */
+.custom-text-color {
+  color: #b68a35 !important;
+}
+
+/* Styles for bold text */
+.bold-text {
+  font-weight: 600 !important;
+}
+
+.mat-tab-label .mat-tab-label-content {
+  color:#fff;
+  font-weight: 600;
 }
 
 

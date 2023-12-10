@@ -76,7 +76,11 @@ datasource:any;
     isLoading=false;
 
   activityValues: number[] = [0, 100];
-  selectedAttestations:any;
+  // selectedAttestations:any;
+  // Initialize selectedAttestations as an empty array
+selectedAttestations: any[] = [];
+
+  highlightedrow:any;
   public shouldShow = false;
   previewvisible:boolean=true;
   Timelinevisible:boolean=true;
@@ -102,7 +106,7 @@ datasource:any;
   completedTime:any;
   redirectselectedcompanyData:any
   src:any;
-  noOfInvoicesSelected: any[]=[]
+  noOfInvoicesSelected: any;
   totalFineAmount:number=0.0;
   totalAttestationFee:number=0.0;
 totalFee:number=0.0;
@@ -124,7 +128,7 @@ currentcompany:any;
 payment_button_isdisabled:boolean=true;
 timelineItems = [
   { status: '', title: 'IN DRAFT', icon: 'check', date: '', time: '' },
-  { status: '', title: 'IN RISK', icon: 'check', date: '', time: '' },
+  // { status: '', title: 'IN RISK', icon: 'check', date: '', time: '' },
   { status: '', title: 'PAYMENT', icon: 'check', date: '', time: '' },
   // { status: '', title: 'IN REVIEW', icon: 'check', date: '', time: '' },
   // { status: '', title: 'PENDING', icon: 'check', date: '', time: '' },
@@ -136,7 +140,7 @@ timelineItems = [
 ];
 statusess = [
   'IN DRAFT',
-  'IN RISK',
+  // 'IN RISK',
   'PAYMENT',
   // 'IN REVIEW',
   // 'PENDING', 
@@ -155,6 +159,9 @@ isfilenotfouund:boolean=false;
 paymentcount=environment.appdetails.payment_count;
 fields: { label: string, value: any }[] = [];
 isButtonDisabled = false;
+
+highlightColor: string = 'red'; 
+
   constructor(private translate:TranslateService,private fb:FormBuilder,private confirmationService:ConfirmationService,private messageService:MessageService, public dialog: MatDialog, private router:Router, private apicall:ApiService, public common:CommonService, private consts:ConstantsService, public datepipe:DatePipe){
     this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
 
@@ -182,6 +189,7 @@ isButtonDisabled = false;
  
 
   ngOnInit() {
+    
     this.currentcompany=this.common.getSelectedCompany().companyuno;
     if(this.currentcompany==null){
       this.router.navigateByUrl('/landingpage')
@@ -216,11 +224,13 @@ isButtonDisabled = false;
       { field: 'edasattestno', header: 'Attestation No', width:'20%' },
       { field: 'companyname', header: 'Company Name', width:'20%' },
       { field: 'invoiceamount', header: 'Invoice Amount', width:'20%' },
+      { field: 'feesamount', header: 'Fees Amount', width:'20%' },
+
       { field: 'invoicenumber', header: 'Invoice ID', width:'20%' },
       { field: 'declarationumber', header: 'Declaration No' , width:'20%' },
       { field: 'declarationdate', header: 'Declaration Date' , width:'200px' },
       { field: 'attestreqdate', header: 'Created' , width:'200px' },
-      { field: 'lcaname', header: 'LCA Name', width:'15%' },
+      { field: 'lcaname', header: 'LCA', width:'15%' },
 
       { field: 'canpay', header: 'Status', width:'20%' },
       { field: 'Noofdaysleft', header: 'Age',  width:'5%' }
@@ -317,6 +327,8 @@ isButtonDisabled = false;
               resp=success;
               if(resp.dictionary.responsecode==1){
               this.list=resp.dictionary.data
+              this.list = this.list.map((item:any) => ({ ...item, selected: false }));
+              console.log(this.list)
                 this.datasource=resp.dictionary.data;
                 this.totalrecords=resp.dictionary.recordcount;
                 this.loading = false;
@@ -486,13 +498,55 @@ executeApi2(event:any){
 
 }
 
+// Add this to your component class
+isSelected(customer: any): string {
+  let abc=this.selectedAttestations.includes(customer);
+  if(abc){
+    return 'active';
+
+  }
+  else{
+    return 'inactive'
+  }
+}
+
+settingbackgroundcolors(event:any){
+  
+  this.list.forEach((row: any) => {
+    row.isSelected = false;
+  });
+  
+  if (this.selectedAttestations.length > 0) {
+    // If multiple rows are selected
+    this.selectedAttestations.forEach((eventRow: any) => {
+      const selectedRow = this.list.find((row: any) => row.edasattestno === eventRow.edasattestno);
+      if (selectedRow) {
+        selectedRow.isSelected = true;
+      }
+    });
+  } else {
+    // If a single row is selected
+    const selectedRow = this.list.find((row: any) => row.edasattestno === this.selectedAttestations[0].edasattestno);
+    if (selectedRow) {
+      selectedRow.isSelected = true;
+    }
+  }
+
+
+  console.log(this.list)
+
+
+}
+
+
 
 loadsidepanel(event:any){
+
+this.settingbackgroundcolors(event)
+
   let isRowSelected;
 
   if(event.length>0){
-
-
 
      isRowSelected = event.some((eventRow: any) => {
       return this.selectedAttestations.some((selectedRow: any) => {
@@ -521,7 +575,7 @@ loadsidepanel(event:any){
     this.executeApi2(event);
   }
 
-  this.noOfInvoicesSelected=this.selectedAttestations.length;
+  this.noOfInvoicesSelected=this.selectedAttestations.length || null;
 
   this.shouldShow=true;
   this.Timelinevisible=true;
@@ -808,18 +862,7 @@ convertBase64ToPdf(base64Data: string): void {
   this.common.convertBase64ToPdf(base64Data);
 }
 
-// openDialog(customer:any){
-//   console.log(customer);
 
-// }
-// openDialog(customer:any) {
-//   console.log(customer);
-//   this.dialog.open(DialogDataExampleDialog, {
-//     data: {
-//       animal: 'panda',
-//     },
-//   });
-// }
 
 openOTPPopup(templateRef: TemplateRef<any>) {
 
@@ -870,7 +913,7 @@ openNew(data:any) {
     invoiceid:  this.translate.instant('Invoice ID'),
     companyname:  this.translate.instant('Company Name'),
     comments:  this.translate.instant('Comments'),
-    lcaname:  this.translate.instant('LCA Name')
+    lcaname:  this.translate.instant('LCA')
     // Add more fields as needed
   };
 

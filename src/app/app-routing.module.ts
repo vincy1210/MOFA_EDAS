@@ -24,6 +24,10 @@ import { LCAComponent } from './reports/lca/lca.component';
 import { COOComponent } from './reports/coo/coo.component';
 import { PhysicalComponent } from './reports/physical/physical.component';
 import { FinesComponent } from './reports/fines/fines.component';
+import { AttestationsComponent } from './LCA_USERS/LCA_ADMIN/attestations/attestations.component';
+import { ImportAttestationsComponent } from './LCA_USERS/LCA_ADMIN/import-attestations/import-attestations.component';
+import { PendingAttestationsComponent } from './LCA_USERS/LCA_ADMIN/pending-attestations/pending-attestations.component';
+import { CompletedAttestationsComponent } from './LCA_USERS/LCA_ADMIN/completed-attestations/completed-attestations.component';
 
 
 const routes: Routes = [
@@ -57,10 +61,10 @@ const routes: Routes = [
   {path:'physical', component:PhysicalComponent},
   {path:'fines', component:FinesComponent},
 
-
-
-  
-
+  {path:'attestationslca', component:FinesComponent},
+  {path:'importslca', component:FinesComponent},
+  {path:'pendinglca', component:FinesComponent},
+  {path:'completedlca', component:FinesComponent},
 
   
 

@@ -138,7 +138,7 @@
                     <p-tag [value]="data.feespaid" [severity]="getSeverity(data.feespaid)"></p-tag>
                   </td>
                   <td pFrozenColumn alignFrozen="right"  >
-                    <span (click)="openNew(data)" style="padding:15px; cursor: pointer;" pTooltip="Expand Details"  class="image-text viewaction">
+                    <span (click)="openNew(data)" style="padding:15px; cursor: pointer;" pTooltip="Details"  class="image-text viewaction">
                       <mat-icon class="action_eye_icon" >visibility</mat-icon>
                         </span>
   
@@ -164,7 +164,7 @@
           <div class="ng_show_close_icon">
             <br>
             <span (click)="closesidetab()">
-              <mat-icon  class="rounded-icon" pTooltip="{{'close' | translate}}">chevron_right</mat-icon>
+              <mat-icon  class="rounded-icon" style="color: white;" pTooltip="{{'close' | translate}}">chevron_right</mat-icon>
   
             </span>
             <br>
@@ -244,11 +244,8 @@
                   </div>
                 </div>
               </mat-tab>
-              <mat-tab *ngIf="previewvisible" label="{{'Preview' | translate}}">
+              <!-- <mat-tab *ngIf="previewvisible" label="{{'Preview' | translate}}">
                 <div class="grid grid-cols-1">
-                  <!-- <p *ngIf="isLoading">Loading...</p> -->
-            
-                  <!-- <div id="pdfContainer"></div> -->
                   <div id="outerContainer">
                     <div class="pdf-container">
                       <pdf-viewer
@@ -269,7 +266,7 @@
                     </div>
                   </div>
                 </div>
-              </mat-tab>
+              </mat-tab> -->
             </mat-tab-group>
           </div>
         </div>
@@ -277,7 +274,7 @@
           class="bg-white rounded-lg p-5 mofa-tab-section show"
           [ngClass]="{ show: shouldShow, hide: !shouldShow }"
         >
-          <app-attestation-workflow [selectedAttestations]="selectedAttestations"></app-attestation-workflow>
+          <!-- <app-attestation-workflow [selectedAttestations]="selectedAttestations"></app-attestation-workflow> -->
         </div>
       </div>
     </div>
@@ -288,7 +285,7 @@
     <p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
   
   
-    <p-dialog [(visible)]="AddInvoiceDialog" style="top:20%" [style]="{ width: '750px' }" header="{{'COO Attestation Details' | translate}}" [modal]="true" styleClass="p-fluid">
+    <p-dialog [(visible)]="AddInvoiceDialog" [draggable]="false" style="top:20%" [style]="{ width: '750px' }" header="{{'COO Attestation Details' | translate}}" [modal]="true" styleClass="p-fluid">
       <div class="viewmore">
         <div class="more-content-section">
           <div class="grid grid-cols-2">
