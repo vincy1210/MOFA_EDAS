@@ -189,7 +189,13 @@
                   notvalidrow: data.Status !== 'Valid'
                 }"
               >
-                <td class="lg:noaction-width-header">
+                <td
+                  class="lg:noaction-width-header"
+                  [ngClass]="{
+                    'error-style':
+                      getErrorAvailable(data, 'LCACode').valid === false
+                  }"
+                >
                   <span class="p-column-title">{{
                     "lcadetails.lcadetailList.LCACode" | translate
                   }}</span>
@@ -207,7 +213,13 @@
                   }}</span>
                   <span class="image-text">{{ data.RequestDate }}</span>
                 </td>
-                <td class="">
+                <td
+                  class=""
+                  [ngClass]="{
+                    'error-style':
+                      getErrorAvailable(data, 'DeclarationNo').valid === false
+                  }"
+                >
                   <span class="p-column-title">{{
                     "lcadetails.lcadetailList.DeclarationNo" | translate
                   }}</span>
@@ -219,13 +231,25 @@
                   }}</span>
                   <span class="image-text">{{ data.DeclarationDate }}</span>
                 </td>
-                <td class="">
+                <td
+                  class=""
+                  [ngClass]="{
+                    'error-style':
+                      getErrorAvailable(data, 'TradelicenceNo').valid === false
+                  }"
+                >
                   <span class="p-column-title">{{
                     "lcadetails.lcadetailList.TradelicenceNo" | translate
                   }}</span>
                   <span class="image-text">{{ data.TradelicenceNo }}</span>
                 </td>
-                <td class="">
+                <td
+                  class=""
+                  [ngClass]="{
+                    'error-style':
+                      getErrorAvailable(data, 'ConsigneeName').valid === false
+                  }"
+                >
                   <span class="p-column-title">{{
                     "lcadetails.lcadetailList.ConsigneeName" | translate
                   }}</span>

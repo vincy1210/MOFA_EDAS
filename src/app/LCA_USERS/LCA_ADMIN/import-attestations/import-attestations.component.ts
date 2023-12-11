@@ -44,7 +44,7 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
   globalFilter: string = '';
   sortFilter: SortFilterType = {} as SortFilterType;
   filters: any = {};
-  cols: any;
+  cols: { field: string; header: string; errorrs: string[] }[] = [];
   loading: boolean = false;
   enableFilters: boolean = false;
   // for workflow
@@ -100,94 +100,117 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
       {
         field: 'LCACode',
         header: 'lcadetails.lcadetailList.LCACode',
+        errorrs: [],
       },
       {
         field: 'RequestNo',
         header: 'lcadetails.lcadetailList.RequestNo',
+        errorrs: [],
       },
       {
         field: 'RequestDate',
         header: 'lcadetails.lcadetailList.RequestDate',
+        errorrs: [],
       },
       {
         field: 'DeclarationNo',
         header: 'lcadetails.lcadetailList.DeclarationNo',
+        errorrs: [],
       },
       {
         field: 'DeclarationDate',
         header: 'lcadetails.lcadetailList.DeclarationDate',
+        errorrs: [],
       },
       {
         field: 'TradelicenceNo',
         header: 'lcadetails.lcadetailList.TradelicenceNo',
+        errorrs: [],
       },
       {
         field: 'ConsigneeName',
         header: 'lcadetails.lcadetailList.ConsigneeName',
+        errorrs: [],
       },
       {
         field: 'EmailAddress',
         header: 'lcadetails.lcadetailList.EmailAddress',
+        errorrs: [],
       },
       {
         field: 'ContactNo',
         header: 'lcadetails.lcadetailList.ContactNo',
+        errorrs: [],
       },
       {
         field: 'DocType',
         header: 'lcadetails.lcadetailList.DocType',
+        errorrs: [],
       },
       {
         field: 'ExpPortCode',
         header: 'lcadetails.lcadetailList.ExpPortCode',
+        errorrs: [],
       },
       {
         field: 'ExpPortName',
         header: 'lcadetails.lcadetailList.ExpPortName',
+        errorrs: [],
       },
       {
         field: 'Mode',
         header: 'lcadetails.lcadetailList.Mode',
+        errorrs: [],
       },
       {
         field: 'AttestationNo',
         header: 'lcadetails.lcadetailList.AttestationNo',
+        errorrs: [],
       },
       {
         field: 'InvoiceDate',
         header: 'lcadetails.lcadetailList.InvoiceDate',
+        errorrs: [],
       },
       {
         field: 'InvoiceAmount',
         header: 'lcadetails.lcadetailList.InvoiceAmount',
+        errorrs: [],
       },
       {
         field: 'InvoiceNo',
         header: 'lcadetails.lcadetailList.InvoiceNo',
+        errorrs: [],
       },
       {
         field: 'InvoiceCurrency',
         header: 'lcadetails.lcadetailList.InvoiceCurrency',
+        errorrs: [],
       },
       {
         field: 'InvoiceId',
         header: 'lcadetails.lcadetailList.InvoiceId',
+        errorrs: [],
       },
       {
         field: 'CompanyName',
         header: 'lcadetails.lcadetailList.CompanyName',
+        errorrs: [],
       },
       {
         field: 'Remarks',
         header: 'lcadetails.lcadetailList.Remarks',
+        errorrs: [],
       },
       {
         field: 'Status',
         header: 'lcadetails.lcadetailList.Status',
+        errorrs: [],
       },
       {
         field: 'action',
         header: 'actions',
+        errorrs: [],
       },
     ];
     //
@@ -287,10 +310,13 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
           typeof LCACode === 'string' &&
           LCACode.trim().length > 0
         ) {
-          let Status = 'Not valid';
-          if (LCACode && TradelicenceNo && ConsigneeName && DeclarationNo) {
-            Status = 'Valid';
-          }
+          const error = {
+            LCACode: LCACode,
+            TradelicenceNo: TradelicenceNo,
+            ConsigneeName: ConsigneeName,
+            DeclarationNo: DeclarationNo,
+          };
+          const Status: string = this.errorsChecker(error);
           this.excelLists.push({
             rowNum: index + 1,
             LCACode: typeof LCACode === 'string' ? LCACode.trim() : '',
@@ -333,6 +359,35 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
       });
     }
     this.excelListsFilter = this.excelLists;
+  }
+
+  errorsChecker(error: any) {
+    let Status = 'Not valid';
+    if (
+      error.LCACode &&
+      error.TradelicenceNo &&
+      error.ConsigneeName &&
+      error.DeclarationNo
+    ) {
+      Status = 'Valid';
+    } else {
+      Status = 'Not valid';
+    }
+    return Status;
+  }
+
+  getErrorAvailable(data: any, field: string) {
+    let result: { valid: boolean; text: string } = { valid: true, text: '' };
+    if (!data.LCACode && field === 'LCACode') {
+      result = { valid: false, text: 'Not valid' };
+    } else if (!data.TradelicenceNo && field === 'TradelicenceNo') {
+      result = { valid: false, text: 'Not valid' };
+    } else if (!data.ConsigneeName && field === 'ConsigneeName') {
+      result = { valid: false, text: 'Not valid' };
+    } else if (!data.DeclarationNo && field === 'DeclarationNo') {
+      result = { valid: false, text: 'Not valid' };
+    }
+    return result;
   }
 
   getLcaDetailList(data: any) {

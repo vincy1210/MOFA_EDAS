@@ -238,3 +238,7 @@ mat-form-field {
 .notvalidrow {
   background-color: var(--light-red-color) !important;
 }
+
+.error-style {
+  background-color: var(--medium-red-color);
+}
