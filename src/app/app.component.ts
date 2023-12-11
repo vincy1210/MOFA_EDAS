@@ -23,7 +23,7 @@ export class AppComponent {
   countdown?: number;
   lastPing?: Date;
   userwasIdle:boolean=false;
-
+usertype:string='';
 
   userprofile:any;
   @HostBinding('class') classRoot = 'theme-default';
@@ -84,6 +84,8 @@ export class AppComponent {
   role: any;
 
   ngOnInit(): void {
+
+    console.log(this.userloggedin);
     
     this.reset();
     this.bigScreen = window.innerWidth > 786;
@@ -110,6 +112,16 @@ export class AppComponent {
     private idle: Idle, keepalive: Keepalive, cd: ChangeDetectorRef //vincy
 
   ) {
+
+    // let usertype=sessionStorage.getItem('usertype');
+    // this.usertype=usertype || '';
+
+    this.usertype=this.common.getUserType() || '';
+    if(this.usertype!='LCAAdmin'){
+      this.usertype='CompanyUser';
+    }
+    console.log(this.usertype)
+
 
     idle.setIdle(1500); // how long can they be inactive before considered idle, in seconds
     idle.setTimeout(300); // how long can they be idle before considered timed out, in seconds
@@ -228,6 +240,8 @@ else{
       this.userloggedin = loggedIn;
     });
 
+if(this.usertype==''){
+  console.log('usertype empty')
     this.common.userCompany$.subscribe((loggedIn) => {
       this.companyname = loggedIn;
     });
@@ -236,15 +250,13 @@ else{
       //  this.userprofile = username;
       this.username=username;
     });
-
-
     let data=this.common.getUserProfile();
     if(data!=undefined  || data!=null){
       
     let abc=JSON.parse(data);
     console.log(JSON.parse(data))
     this.username=abc.Data.firstnameEN;
-
+    console.log("calling getselected company")
     let companyname1=this.common.getSelectedCompany()
     console.log(companyname1)
     this.companyname=companyname1?.business_name || '';
@@ -253,6 +265,10 @@ else{
   else{
     this.common.logoutUser();
   }
+}
+else{
+
+}
 
   }
 

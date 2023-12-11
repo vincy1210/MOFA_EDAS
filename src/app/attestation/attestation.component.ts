@@ -189,9 +189,12 @@ highlightColor: string = 'red';
  
 
   ngOnInit() {
+console.log("calling getselected company")
     
     this.currentcompany=this.common.getSelectedCompany().companyuno;
     if(this.currentcompany==null){
+      console.log("to landing page from attestation page line 195")
+
       this.router.navigateByUrl('/landingpage')
     }
     this.totalFineAmount=0.0;

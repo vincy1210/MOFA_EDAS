@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonService } from 'src/service/common.service';
 
 @Component({
   selector: 'app-attestations',
@@ -7,9 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AttestationsComponent implements OnInit {
 
-  constructor() { }
+  usertype:string='';
+
+  constructor(private common:CommonService) { }
 
   ngOnInit(): void {
+
+this.usertype=this.common.getUserType() || '';
+
+
   }
+
+
 
 }

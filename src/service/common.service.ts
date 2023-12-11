@@ -56,6 +56,7 @@ export class CommonService {
  uuid:string='';
  src:any;
  base64PdfString:any;
+ usertypedata:string='';
   publicKey!: string;
   constructor(
     private translate: TranslateService,
@@ -63,14 +64,19 @@ export class CommonService {
     private datePipe: DatePipe,private Router:Router, private apicall:ApiService, private consts:ConstantsService
   ) {
 
-    // this.getimagebase64('');
-    let data:any;
+
+     this.usertypedata=this.getUserType() || '';
+    if(this.usertypedata!=undefined || this.usertypedata !=null || this.usertypedata!=''){
+      this.userloggedinSubject.next(true);
+    }
+    else{
+
+      let data:any;
     data=sessionStorage.getItem('currentcompany');
     console.log(data);
 
     if(data!=undefined || data !=null){
       this.userloggedinSubject.next(true);
-     // this.userloggedin=true;
             let abc=JSON.parse(data)
             abc=abc.role;
             console.log(data)
@@ -78,32 +84,31 @@ export class CommonService {
 
             if(abc=="Admin"){
             this.isAdmin.next(true);
-            this.userType.next('Admin');
             }
             else if(abc=="User"){
             this.isAdmin.next(false);
-            this.userType.next('User');
             }
             else{
               this.isAdmin.next(false);
-              this.userType.next('LCAAdmin');
             }
       }
       else{
-     // this.userloggedin=false;
       this.userloggedinSubject.next(false);
       this.userCompanysubject.next('');
       }
 
-      //for user
+      
+     let data2=sessionStorage.getItem('userProfile');
+     if(data2!=undefined || data2 !=null){
+             let abc=JSON.parse(data2)
+             this.userprofilesubject.next(abc.Data?.firstnameEN);
 
-     // data=sessionStorage.getItem('userProfile');
-      let data2=sessionStorage.getItem('userProfile');
-      if(data2!=undefined || data2 !=null){
-              let abc=JSON.parse(data2)
-              this.userprofilesubject.next(abc.Data?.firstnameEN);
+     }
 
-      }
+    }
+
+
+    
 
 
 
@@ -218,6 +223,18 @@ export class CommonService {
   // getSelectedCompany() {
   //   return this.selectedcompany.asObservable();
   // }
+
+  getUserType(){
+    let usertype=sessionStorage.getItem('ussertype');
+    return usertype;
+  }
+
+
+  setUserType(usertype:string){
+    sessionStorage.setItem('ussertype', usertype);
+    this.userType.next(usertype);
+  }
+
   setSelectedCompany(data: any) {
     // this.RegisteredCompanyDetails.next(data);
      sessionStorage.setItem('currentcompany', JSON.stringify(data));
@@ -229,17 +246,12 @@ export class CommonService {
           let  abc=data.role;
             if(abc=="Admin"){
             this.isAdmin.next(true);
-            
-            this.userType.next('Admin');
             }
             else if(abc=="User"){
             this.isAdmin.next(false);
-              
-            this.userType.next('User');
             }
             else{
             this.isAdmin.next(false);
-              this.userType.next('LCAAdmin');
             }
       }
       else{
@@ -256,8 +268,11 @@ export class CommonService {
      }
      else{
       let dat=sessionStorage.getItem('userProfile');
-      if(dat!=undefined ||dat!=null)
+      let usertype=this.getUserType() || '';
+
+      if(dat!=undefined ||dat!=null && usertype!='LCAAdmin')
       {
+        console.log("to landing page from common service line 284")
         this.Router.navigateByUrl('/landingpage');
       }
      }

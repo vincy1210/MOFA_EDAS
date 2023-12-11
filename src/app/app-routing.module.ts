@@ -61,10 +61,10 @@ const routes: Routes = [
   {path:'physical', component:PhysicalComponent},
   {path:'fines', component:FinesComponent},
 
-  {path:'attestationslca', component:FinesComponent},
-  {path:'importslca', component:FinesComponent},
-  {path:'pendinglca', component:FinesComponent},
-  {path:'completedlca', component:FinesComponent},
+  {path:'lcadashboard', component:AttestationsComponent},
+  {path:'importslca', component:ImportAttestationsComponent},
+  {path:'pendinglca', component:PendingAttestationsComponent},
+  {path:'completedlca', component:CompletedAttestationsComponent},
 
   
 

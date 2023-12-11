@@ -27,7 +27,7 @@ export class LeftMenuDrawerComponent implements OnInit {
 
   username:any;
   companyname:any;
-
+usertype:string='';
   isAdmin:boolean=false;
   menuList: MenuModel[] = [];
   @ViewChild('myPanel') myPanel!: MatExpansionPanel;
@@ -36,38 +36,60 @@ export class LeftMenuDrawerComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.common.userprofile$.subscribe((username) => {
-      //  this.userprofile = username;
-      this.username=username;
-    });
-
-    this.common.userCompany$.subscribe((loggedIn) => {
-      this.companyname = loggedIn;
-    });
-
-
     let data=this.common.getUserProfile();
     if(data!=undefined  || data!=null){
-      
     let abc=JSON.parse(data);
     console.log(JSON.parse(data))
     this.username=abc.Data.firstnameEN;
     }
+
+
+    let usertype=this.common.getUserType() || '';
+if(usertype=='' || usertype==null){
+  
+  this.common.userType$.subscribe((usertype_) => {
+    this.usertype = usertype_;
+    console.log(this.usertype);
+  });
+
+}
+else{
+  this.usertype=usertype;
+  this.getMenuItemLists();
+}
+if(usertype!='LCAAdmin'){
+  
+
+   
+   
+    this.common.userCompany$.subscribe((loggedIn) => {
+      this.companyname = loggedIn;
+    });
     let companyname1=this.common.getSelectedCompany()
     console.log(companyname1)
     this.companyname=companyname1?.business_name || '';
 
     this.common.isAdmin$.subscribe((isAdmin_) => {
       this.isAdmin = isAdmin_;
-      console.log(this.isAdmin);
-    this.getMenuItemLists();
-    });
+      if(this.usertype!='LCAAdmin'){
+        this.getMenuItemLists();
 
+      }
+      console.log(this.isAdmin);
+    });
+    
+  
+}
     
   }
 
   getMenuItemLists() {
     this.menuList=[];
+
+  console.log(this.usertype)
+
+  if(this.usertype!='LCAAdmin'){
+    
     this.menuList.push(
       {
         id: 1,
@@ -140,6 +162,25 @@ export class LeftMenuDrawerComponent implements OnInit {
       }
 
     }
+  }
+  else{
+    //
+    console.log('menu for LCA Admin is loading')
+
+    this.menuList.push( {
+      id: 1,
+      menu: 'Attestations',
+      hasubMenu:true,
+        icon: 'feed',
+        subMenus: [
+          { id: 1, menu: 'Import', icon: 'play_arrow', link: '/importslca' },
+          { id: 2, menu: 'Pending', icon: 'play_arrow',link: '/pendinglca' },
+          { id: 3, menu: 'Completed', icon: 'play_arrow',link: '/completedlca' },
+        ]
+    });
+
+   
+  }
   }
   
   onPanelClick(items: any) {

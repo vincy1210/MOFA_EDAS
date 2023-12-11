@@ -29,7 +29,7 @@
 <span *ngIf="userloggedin">
       <button mat-icon-button class="white-icon-button" color="primary" pTooltip="Switch Company" tooltipPosition="bottom">
         <!-- <mat-icon  routerLink="/landingpage" *ngIf="userloggedin"  svgIcon="company_switch" style="padding: 2px"></mat-icon> -->
-        <mat-icon  routerLink="/landingpage" *ngIf="userloggedin" color="primary">apps</mat-icon>
+        <mat-icon  routerLink="/landingpage" *ngIf="userloggedin && this.usertype=='CompanyUser'" color="primary">apps</mat-icon>
         
       </button>
       <mat-menu 
@@ -157,7 +157,7 @@
       </mat-menu>
      
 
-      <button mat-icon-button class="white-icon-button" *ngIf="userloggedin"   pTooltip="Home" color="primary" (click)="goToHome()">
+      <button mat-icon-button class="white-icon-button" *ngIf="userloggedin && this.usertype=='CompanyUser'"   pTooltip="Home" color="primary" (click)="goToHome()">
         <i class="fa fa-home"></i>
       </button>
       <!-- <mat-toolbar color="primary"> -->

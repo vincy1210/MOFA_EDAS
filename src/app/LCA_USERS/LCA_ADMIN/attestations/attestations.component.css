@@ -1,0 +1,15 @@
+
+
+
+.weclome_text{
+    margin: auto;
+    height: 100px;
+    width: 50%;
+    background: azure;
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 4rem;
+}

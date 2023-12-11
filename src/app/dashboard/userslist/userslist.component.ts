@@ -50,6 +50,8 @@ todayModel:Date=new Date();
     this.currentcompany_name=this.common.getSelectedCompany()?.business_name;
     console.log(this.currentcompany)
     if(this.currentcompany==null){
+      console.log("to landing page from userlist page line 53")
+
       this.router.navigateByUrl('/landingpage')
     }
 

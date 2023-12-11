@@ -137,6 +137,8 @@ export class RegistrationComponent {
             if(response.dictionary.responsecode===1){
              if(response.dictionary.data.length>0){
               this.common.setCompanyList(response.dictionary.data);
+        console.log("to landing page from reg page line 140")
+
                this.router.navigateByUrl('/landingpage')
              }
              else{
@@ -513,7 +515,7 @@ export class RegistrationComponent {
 
         // Iterate through the JSON data
         for (const data of response.data) {
-          if (data.lcauno === 11 || data.lcauno === 12) {
+          if (data.roleuno === 11 || data.roleuno === 12) {
             lcauser = true;
             break; // No need to continue checking once condition is met
           }
@@ -522,14 +524,18 @@ export class RegistrationComponent {
         console.log("Is lcauser true?", lcauser);
 
         if(lcauser){
-
-          this.common.userType.next('LCAAdmin');
-          this.router.navigateByUrl('/attestationslca');
+this.common.setUserType('LCAAdmin');
+          // sessionStorage.setItem('usertype','LCAAdmin')
+          // this.common.userType.next('LCAAdmin');
+          this.router.navigateByUrl('/lcadashboard');
 
           
         }
         else{
-          this.common.userType.next('CompanyUsers');
+          sessionStorage.setItem('usertype','CompanyUser')
+
+          this.common.userType.next('CompanyUser');
+          console.log("to landing page from registration page line 535")
 
           this.router.navigateByUrl('/landingpage');
 
