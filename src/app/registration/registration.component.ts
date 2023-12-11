@@ -524,9 +524,7 @@ export class RegistrationComponent {
         console.log("Is lcauser true?", lcauser);
 
         if(lcauser){
-this.common.setUserType('LCAAdmin');
-          // sessionStorage.setItem('usertype','LCAAdmin')
-          // this.common.userType.next('LCAAdmin');
+          this.common.setUserRole('LCAAdmin');
           this.router.navigateByUrl('/lcadashboard');
 
           

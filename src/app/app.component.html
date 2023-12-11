@@ -6,12 +6,13 @@
   [dir]="currentLanguageDirection"
 >
   <!-- {{'currentTheme' | translate}} -->
+   <!-- {{userloggedin}} {{this.common.getUserType()==undefined}} -->
   <mat-toolbar class="main-header" style="position: sticky; top: 0;
   left: 0;
   right: 0;
   z-index: 100;">
   <!-- common.getSelectedCompany()  getUserProfile -->
-    <a (click)="drawer.toggle()" *ngIf="userloggedin"  class="mr-2 cursor-pointer">
+    <a (click)="drawer.toggle()" *ngIf="userloggedin || lcauserloggedin"  class="mr-2 cursor-pointer">
       <mat-icon color="primary">menu</mat-icon>
     </a>
     <img
@@ -24,12 +25,13 @@
     <span class="example-spacer"></span>
     <div *ngIf="bigScreen">
 
-   
+   <!-- {{this.usertype}}  -->
+     <!-- {{lcauserloggedin}}  {{userloggedin}} -->
 <!-- start -->
-<span *ngIf="userloggedin">
+<span *ngIf="userloggedin || lcauserloggedin">
       <button mat-icon-button class="white-icon-button" color="primary" pTooltip="Switch Company" tooltipPosition="bottom">
         <!-- <mat-icon  routerLink="/landingpage" *ngIf="userloggedin"  svgIcon="company_switch" style="padding: 2px"></mat-icon> -->
-        <mat-icon  routerLink="/landingpage" *ngIf="userloggedin && this.usertype=='CompanyUser'" color="primary">apps</mat-icon>
+        <mat-icon  routerLink="/landingpage" *ngIf="userloggedin"  color="primary">apps</mat-icon>
         
       </button>
       <mat-menu 
@@ -157,12 +159,12 @@
       </mat-menu>
      
 
-      <button mat-icon-button class="white-icon-button" *ngIf="userloggedin && this.usertype=='CompanyUser'"   pTooltip="Home" color="primary" (click)="goToHome()">
+      <button mat-icon-button class="white-icon-button" *ngIf="userloggedin"   pTooltip="Home" color="primary" (click)="goToHome()">
         <i class="fa fa-home"></i>
       </button>
       <!-- <mat-toolbar color="primary"> -->
         <!-- Your existing header content here -->
-      <span *ngIf="userloggedin" class="userdetailsheader">
+      <span *ngIf="userloggedin || lcauserloggedin" class="userdetailsheader">
         <span class="fill-remaining-space"></span>
         <!-- <span>{{'Welcome' | translate}}, {{ username }}</span> -->
         <button mat-icon-button [matMenuTriggerFor]="menu">

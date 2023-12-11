@@ -9,7 +9,7 @@ import { MatDrawer } from '@angular/material/sidenav';
 import { environment } from 'src/environments/environment';
 import { Idle, DEFAULT_INTERRUPTSOURCES } from '@ng-idle/core';//vincy
 import { Keepalive } from '@ng-idle/keepalive';
-
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -23,11 +23,11 @@ export class AppComponent {
   countdown?: number;
   lastPing?: Date;
   userwasIdle:boolean=false;
-usertype:string='';
 
   userprofile:any;
   @HostBinding('class') classRoot = 'theme-default';
   userloggedin: boolean = false;
+  lcauserloggedin:boolean=false
   username:string='';
   companyname:string='';
   copyrightyear=environment.appdetails.year;
@@ -86,6 +86,8 @@ usertype:string='';
   ngOnInit(): void {
 
     console.log(this.userloggedin);
+    console.log(this.lcauserloggedin);
+
     
     this.reset();
     this.bigScreen = window.innerWidth > 786;
@@ -101,9 +103,10 @@ usertype:string='';
   // toggleDrawer(): void {
   //   this.drawer.toggle();
   // }
-
+userrole:string='';
+role2:string='';
   showHead: boolean = false;
-
+  private userRoleSubscription!: Subscription;
   constructor(
     private router: Router,
     private translate: TranslateService,
@@ -113,15 +116,27 @@ usertype:string='';
 
   ) {
 
-    // let usertype=sessionStorage.getItem('usertype');
-    // this.usertype=usertype || '';
 
-    this.usertype=this.common.getUserType() || '';
-    if(this.usertype!='LCAAdmin'){
-      this.usertype='CompanyUser';
+    let role2=this.common.getuserRole();
+    this.role2=role2;
+    console.log(role2)
+
+    let role=this.common.userRole;
+    if(!role){
+      this.userRoleSubscription = this.common.userRole$.subscribe(() => {
+        // this.getMenuItemLists();
+        const userRole = this.common.userRole;
+        this.userrole=userRole;
+        this.role2=this.userrole;
+        console.log(userRole);
+      });
+  
     }
-    console.log(this.usertype)
+    else{
+      this.userrole=role;
+    }
 
+   
 
     idle.setIdle(1500); // how long can they be inactive before considered idle, in seconds
     idle.setTimeout(300); // how long can they be idle before considered timed out, in seconds
@@ -240,7 +255,11 @@ else{
       this.userloggedin = loggedIn;
     });
 
-if(this.usertype==''){
+    this.common.lcauserloggedin$.subscribe((lcaloggedIn) => {
+      this.lcauserloggedin = lcaloggedIn;
+    });
+
+if(this.userrole){
   console.log('usertype empty')
     this.common.userCompany$.subscribe((loggedIn) => {
       this.companyname = loggedIn;

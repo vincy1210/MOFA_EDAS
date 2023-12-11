@@ -12,6 +12,9 @@ import { AbstractControl, ValidatorFn } from '@angular/forms';
 import { ApiService } from './api.service';
 import { ConstantsService } from './constants.service';
 
+import { Subject, Observable } from 'rxjs';
+
+
 
 
 @Injectable({
@@ -24,8 +27,11 @@ export class CommonService {
 
    favink1:string=''
   favink2:string=''
-  private userloggedinSubject = new BehaviorSubject<boolean>(false);
+  public userloggedinSubject = new BehaviorSubject<boolean>(false);
   userloggedin$ = this.userloggedinSubject.asObservable();
+
+  public lcauserloggedinSubject = new BehaviorSubject<boolean>(false);
+  lcauserloggedin$ = this.lcauserloggedinSubject.asObservable();
 
   private userCompanysubject = new BehaviorSubject<string>('');
   userCompany$ = this.userCompanysubject.asObservable();
@@ -45,6 +51,12 @@ export class CommonService {
   private selectedcompany = new BehaviorSubject<string>('');
   private freeZone = new BehaviorSubject<string>('');
 
+
+  private userRoleSubject = new Subject<string>();
+  userRole$ = this.userRoleSubject.asObservable();
+  userRole: string=''; // You might want to initialize this with a default value if needed
+
+
   private inactivityTimer: any;
   private readonly INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minutes in milliseconds
   isSidebar:boolean=false
@@ -52,7 +64,6 @@ export class CommonService {
   // private sidebarOpen = false;
   private isDrawerOpenSubject = new BehaviorSubject<boolean>(false);
 
- // userloggedin:boolean=false;
  uuid:string='';
  src:any;
  base64PdfString:any;
@@ -65,12 +76,36 @@ export class CommonService {
   ) {
 
 
-     this.usertypedata=this.getUserType() || '';
-    if(this.usertypedata!=undefined || this.usertypedata !=null || this.usertypedata!=''){
-      this.userloggedinSubject.next(true);
-    }
-    else{
+    
 
+//start for lca user
+
+let data2=sessionStorage.getItem('userProfile');
+if(data2!=undefined || data2 !=null){
+        let abc=JSON.parse(data2)
+        this.userprofilesubject.next(abc.Data?.firstnameEN);
+        this.usertypedata=this.getuserRole() || '';
+        if(this.usertypedata!=undefined || this.usertypedata !=null){
+   this.lcauserloggedinSubject.next(true)
+        }
+        else{
+         this.lcauserloggedinSubject.next(false)
+   
+        }
+
+}
+else{
+  this.lcauserloggedinSubject.next(false)
+
+}
+
+
+
+//end for lca user
+
+
+
+//Start for company user
       let data:any;
     data=sessionStorage.getItem('currentcompany');
     console.log(data);
@@ -96,24 +131,10 @@ export class CommonService {
       this.userloggedinSubject.next(false);
       this.userCompanysubject.next('');
       }
-
+// end for company user
       
-     let data2=sessionStorage.getItem('userProfile');
-     if(data2!=undefined || data2 !=null){
-             let abc=JSON.parse(data2)
-             this.userprofilesubject.next(abc.Data?.firstnameEN);
+   
 
-     }
-
-    }
-
-
-    
-
-
-
-      
-    
   }
 
   
@@ -224,16 +245,16 @@ export class CommonService {
   //   return this.selectedcompany.asObservable();
   // }
 
-  getUserType(){
-    let usertype=sessionStorage.getItem('ussertype');
-    return usertype;
-  }
+  // getUserType(){
+  //   let usertype=sessionStorage.getItem('ussertype');
+  //   return usertype;
+  // }
 
 
-  setUserType(usertype:string){
-    sessionStorage.setItem('ussertype', usertype);
-    this.userType.next(usertype);
-  }
+  // setUserType(usertype:string){
+  //   sessionStorage.setItem('ussertype', usertype);
+  //   this.userType.next(usertype);
+  // }
 
   setSelectedCompany(data: any) {
     // this.RegisteredCompanyDetails.next(data);
@@ -268,9 +289,8 @@ export class CommonService {
      }
      else{
       let dat=sessionStorage.getItem('userProfile');
-      let usertype=this.getUserType() || '';
 
-      if(dat!=undefined ||dat!=null && usertype!='LCAAdmin')
+      if(dat!=undefined ||dat!=null )
       {
         console.log("to landing page from common service line 284")
         this.Router.navigateByUrl('/landingpage');
@@ -636,4 +656,20 @@ export class CommonService {
   
   }
   
+  getuserRole(): string {
+    // Retrieve user role from localStorage
+    return localStorage.getItem('userrole') || '';
+    
+  }
+
+  setUserRole(role: string): void {
+    this.userRole = role;
+    // this.userRoleSubject.next(role);
+this.lcauserloggedinSubject.next(true)
+
+    localStorage.setItem('userrole', role);
+    this.userRoleSubject.next(role);
+  }
+
+
 }

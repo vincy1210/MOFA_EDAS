@@ -52,7 +52,7 @@ initialCompanyList: any;
     let data = {
       "uuid": this.uuid,
       "startnum": 0,
-      "limit": 10,
+      "limit": 100,
       "status": 0,
       "startdate": this.common.formatDateTime_API_payload(this.oneMonthAgo.toDateString()),
       "enddate": this.common.formatDateTime_API_payload(this.today.toDateString())
