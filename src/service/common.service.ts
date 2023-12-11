@@ -6,24 +6,17 @@ import * as $ from 'jquery';
 import * as forge from 'node-forge';
 import { Router } from '@angular/router';
 
-
 import { DatePipe } from '@angular/common';
 import { AbstractControl, ValidatorFn } from '@angular/forms';
 import { ApiService } from './api.service';
 import { ConstantsService } from './constants.service';
 
-
-
 @Injectable({
   providedIn: 'root',
 })
-
-
-
 export class CommonService {
-
-   favink1:string=''
-  favink2:string=''
+  favink1: string = '';
+  favink2: string = '';
   private userloggedinSubject = new BehaviorSubject<boolean>(false);
   userloggedin$ = this.userloggedinSubject.asObservable();
 
@@ -47,76 +40,152 @@ export class CommonService {
 
   private inactivityTimer: any;
   private readonly INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minutes in milliseconds
-  isSidebar:boolean=false
+  isSidebar: boolean = false;
 
   // private sidebarOpen = false;
   private isDrawerOpenSubject = new BehaviorSubject<boolean>(false);
 
- // userloggedin:boolean=false;
- uuid:string='';
- src:any;
- base64PdfString:any;
- usertypedata:string='';
+  // userloggedin:boolean=false;
+  uuid: string = '';
+  src: any;
+  base64PdfString: any;
+  usertypedata: string = '';
   publicKey!: string;
   constructor(
     private translate: TranslateService,
     private Toastr: ToastrService,
-    private datePipe: DatePipe,private Router:Router, private apicall:ApiService, private consts:ConstantsService
+    private datePipe: DatePipe,
+    private Router: Router,
+    private apicall: ApiService,
+    private consts: ConstantsService
   ) {
-
-
-     this.usertypedata=this.getUserType() || '';
-    if(this.usertypedata!=undefined || this.usertypedata !=null || this.usertypedata!=''){
+    this.usertypedata = this.getUserType() || '';
+    if (
+      this.usertypedata != undefined ||
+      this.usertypedata != null ||
+      this.usertypedata != ''
+    ) {
       this.userloggedinSubject.next(true);
-    }
-    else{
+    } else {
+      let data: any;
+      data = sessionStorage.getItem('currentcompany');
+      console.log(data);
 
-      let data:any;
-    data=sessionStorage.getItem('currentcompany');
-    console.log(data);
+      if (data != undefined || data != null) {
+        this.userloggedinSubject.next(true);
+        let abc = JSON.parse(data);
+        abc = abc.role;
+        console.log(data);
+        this.userCompanysubject.next(data.business_name);
 
-    if(data!=undefined || data !=null){
-      this.userloggedinSubject.next(true);
-            let abc=JSON.parse(data)
-            abc=abc.role;
-            console.log(data)
-            this.userCompanysubject.next(data.business_name)
-
-            if(abc=="Admin"){
-            this.isAdmin.next(true);
-            }
-            else if(abc=="User"){
-            this.isAdmin.next(false);
-            }
-            else{
-              this.isAdmin.next(false);
-            }
-      }
-      else{
-      this.userloggedinSubject.next(false);
-      this.userCompanysubject.next('');
+        if (abc == 'Admin') {
+          this.isAdmin.next(true);
+        } else if (abc == 'User') {
+          this.isAdmin.next(false);
+        } else {
+          this.isAdmin.next(false);
+        }
+      } else {
+        this.userloggedinSubject.next(false);
+        this.userCompanysubject.next('');
       }
 
-      
-     let data2=sessionStorage.getItem('userProfile');
-     if(data2!=undefined || data2 !=null){
-             let abc=JSON.parse(data2)
-             this.userprofilesubject.next(abc.Data?.firstnameEN);
-
-     }
-
+      let data2 = sessionStorage.getItem('userProfile');
+      if (data2 != undefined || data2 != null) {
+        let abc = JSON.parse(data2);
+        this.userprofilesubject.next(abc.Data?.firstnameEN);
+      }
     }
-
-
-    
-
-
-
-      
-    
   }
 
+  filterColumnsClientDataTrim(filters: any) {
+    let filterList: any[] = [];
+    for (const key in filters) {
+      if (filters.hasOwnProperty(key)) {
+        const rows = filters[key];
+        if (rows && rows.length > 0) {
+          const { value } = rows[0];
+          const myObject: { [key: string]: any } = {};
+          if (value && value.length > 0) {
+            myObject[key] = rows;
+            filterList.push(myObject);
+          }
+        }
+      }
+    }
+    return filterList;
+  }
+
+  sortClientData(
+    data: any[],
+    sortKey: string,
+    ascending: boolean = true
+  ): any[] {
+    return data.sort((a, b) => {
+      let valueA = a[sortKey];
+      let valueB = b[sortKey];
+
+      if (valueA === null) valueA = "";
+      if (valueB === null) valueB = "";
+
+      valueA = valueA.toString().toLowerCase();
+      valueB = valueB.toString().toLowerCase();
+
+      if (valueA < valueB) {
+        return ascending ? -1 : 1;
+      } else if (valueA > valueB) {
+        return ascending ? 1 : -1;
+      } else {
+        return 0;
+      }
+    });
+  }
   
+  filterColumnsClientData(data: any[], filterList: any) {
+    return data.filter((item) => {
+      for (const key in item) {
+        if (filterList && Object.keys(filterList).length === 0) {
+          return true;
+        }
+        let filters = filterList[key];
+        let { value1, matchMode1, operator1 } = {
+          value1: "",
+          matchMode1: "",
+          operator1: "",
+        };
+        if (filters && filters.length > 0) {
+          const { value, matchMode, operator } = filters[0];
+          value1 = value;
+          matchMode1 = matchMode;
+          operator1 = operator;
+        }
+        if (value1 && value1.length > 0) {
+          //key === "tradelicenseno"
+          let valuedata = item[key];
+          const result = valuedata === null ? "" : valuedata;
+          if (result.toString().toLowerCase().includes(value1.toLowerCase())) {
+            return true;
+          }
+        }
+      }
+      return false;
+    });
+  }
+
+  filterClientData(data: any[], searchTerm: string) {
+    return data.filter((item) => {
+      for (const key in item) {
+        let value = item[key];
+        const result = value === null ? '' : value;
+        if (
+          result.toString().toLowerCase().includes(searchTerm.toLowerCase())
+        ) {
+          return true;
+        }
+      }
+      return false;
+    });
+  }
 
   //toaster message alerts
   showErrorMessage(data: any) {
@@ -165,7 +234,7 @@ export class CommonService {
     return this.dataSubject.asObservable();
   }
 
-  setDataCommon(objData: { key: string, value: object }) {
+  setDataCommon(objData: { key: string; value: object }) {
     const data = JSON.stringify(objData);
     this.dataSubject.next(data);
   }
@@ -190,19 +259,16 @@ export class CommonService {
     return this.RegisteredCompanyDetails.asObservable();
   }
 
-  
-
   // showLoading(): void {
   //   $('#loading').show();
   // }
   showLoading(): void {
     $('#loading').show();
-  
+
     setTimeout(() => {
       $('#loading').hide(); // Hide the loader after 5 seconds
     }, 30000); // 5000 milliseconds = 5 seconds
   }
-  
 
   formatDateString(dateString: string): string {
     const year = dateString.substring(0, 4);
@@ -210,7 +276,6 @@ export class CommonService {
     const day = dateString.substring(6, 8);
     return `${day}/${month}/${year}`;
   }
-  
 
   hideLoading(): void {
     $('#loading').hide();
@@ -224,61 +289,54 @@ export class CommonService {
   //   return this.selectedcompany.asObservable();
   // }
 
-  getUserType(){
-    let usertype=sessionStorage.getItem('ussertype');
+  getUserType() {
+    let usertype = sessionStorage.getItem('ussertype');
     return usertype;
   }
 
-
-  setUserType(usertype:string){
+  setUserType(usertype: string) {
     sessionStorage.setItem('ussertype', usertype);
     this.userType.next(usertype);
   }
 
   setSelectedCompany(data: any) {
     // this.RegisteredCompanyDetails.next(data);
-     sessionStorage.setItem('currentcompany', JSON.stringify(data));
-     if(data!=undefined || data !=null){
+    sessionStorage.setItem('currentcompany', JSON.stringify(data));
+    if (data != undefined || data != null) {
       this.userloggedinSubject.next(true);
-      this.userCompanysubject.next(data.business_name)
-     // this.userloggedin=true;
-          //  let abc=JSON.parse(data)
-          let  abc=data.role;
-            if(abc=="Admin"){
-            this.isAdmin.next(true);
-            }
-            else if(abc=="User"){
-            this.isAdmin.next(false);
-            }
-            else{
-            this.isAdmin.next(false);
-            }
+      this.userCompanysubject.next(data.business_name);
+      // this.userloggedin=true;
+      //  let abc=JSON.parse(data)
+      let abc = data.role;
+      if (abc == 'Admin') {
+        this.isAdmin.next(true);
+      } else if (abc == 'User') {
+        this.isAdmin.next(false);
+      } else {
+        this.isAdmin.next(false);
       }
-      else{
-     // this.userloggedin=false;
+    } else {
+      // this.userloggedin=false;
       this.userloggedinSubject.next(false);
-      this.userCompanysubject.next('')
-      }
-   }
- 
-   getSelectedCompany() {
-     const myselectedcompany = sessionStorage.getItem('currentcompany');
-      if (myselectedcompany) {
-       return JSON.parse(myselectedcompany);
-     }
-     else{
-      let dat=sessionStorage.getItem('userProfile');
-      let usertype=this.getUserType() || '';
+      this.userCompanysubject.next('');
+    }
+  }
 
-      if(dat!=undefined ||dat!=null && usertype!='LCAAdmin')
-      {
-        console.log("to landing page from common service line 284")
+  getSelectedCompany() {
+    const myselectedcompany = sessionStorage.getItem('currentcompany');
+    if (myselectedcompany) {
+      return JSON.parse(myselectedcompany);
+    } else {
+      let dat = sessionStorage.getItem('userProfile');
+      let usertype = this.getUserType() || '';
+
+      if (dat != undefined || (dat != null && usertype != 'LCAAdmin')) {
+        console.log('to landing page from common service line 284');
         this.Router.navigateByUrl('/landingpage');
       }
-     }
-     //return null;
-   }
- 
+    }
+    //return null;
+  }
 
   setfreezone(data: string) {
     this.freeZone.next(data);
@@ -295,7 +353,6 @@ export class CommonService {
   // isSidebarOpen() {
   //   return this.sidebarOpen;
   // }
-  
 
   isDrawerOpen$ = this.isDrawerOpenSubject.asObservable();
 
@@ -303,9 +360,8 @@ export class CommonService {
     this.isDrawerOpenSubject.next(!this.isDrawerOpenSubject.value);
   }
 
-
   setSidebarVisibility(data: boolean) {
-    this.isSidebar=data;
+    this.isSidebar = data;
   }
 
   GetSidebarVisibility() {
@@ -313,19 +369,17 @@ export class CommonService {
   }
 
   encryptWithPublicKey(valueToEncrypt: string): string {
- 
     this.publicKey = `-----BEGIN PUBLIC KEY-----
     MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQClnd0dRXYSiKkHgmzq53FiEAiR
     dWOU2EZMFDYbICt/t0SB0FLfN7pOaI3t9/WxxBmqHPL6MrFTDdmJi0BLD2LTDQ4E
     sZl4Uj1u7PJyDewjQxpehRv5dZ6u7wXOy0U9/WsNrWMrZo3UiL9Dndb6GUciXo31
     MQyXkegCGYxB/qm19wIDAQAB
     -----END PUBLIC KEY-----`;
-    
+
     const rsa = forge.pki.publicKeyFromPem(this.publicKey);
     return window.btoa(rsa.encrypt(valueToEncrypt.toString()));
   }
-  
-  
+
   // splitdatetime(datetimeString: any) {
   //   if (datetimeString && typeof datetimeString === 'string') {
   //     const dateTimeParts = datetimeString.split('T'); // Splitting the string at 'T'
@@ -346,13 +400,11 @@ export class CommonService {
           date: this.datePipe.transform(dateTimeParts[0], 'dd-MMM-yyyy'),
           time: dateTimeParts[1],
         };
-      }
-      else{
+      } else {
         return {
           date: this.datePipe.transform(dateTimeParts[0], 'dd-MMM-yyyy'),
           time: '',
         };
-  
       }
     }
     return null; // Invalid or null datetime string
@@ -379,39 +431,32 @@ export class CommonService {
     console.log(userProfile);
     sessionStorage.setItem('userProfile', JSON.stringify(userProfile));
     this.startInactivityTimer();
-    let userdata=JSON.parse(userProfile)
+    let userdata = JSON.parse(userProfile);
 
     //this.userprofilesubject.next(userdata);
 
-    if(userdata!=undefined || userdata !=null){
-            // let abc=JSON.parse(userdata)
-            this.userprofilesubject.next(userdata.Data?.firstnameEN);
-
+    if (userdata != undefined || userdata != null) {
+      // let abc=JSON.parse(userdata)
+      this.userprofilesubject.next(userdata.Data?.firstnameEN);
     }
-
-
-    
   }
 
   getUserProfile() {
     const userProfileString = sessionStorage.getItem('userProfile');
     if (userProfileString) {
-      let abc=JSON.parse(userProfileString);
-      let abc1=JSON.parse(abc);
+      let abc = JSON.parse(userProfileString);
+      let abc1 = JSON.parse(abc);
 
       console.log(abc1);
       return JSON.parse(userProfileString);
-    }
-    else{
-
+    } else {
       //dont put logout here as getuserprofile is getting called before set
-    //  this.Router.navigateByUrl('/logout')
+      //  this.Router.navigateByUrl('/logout')
 
-    //  this.Router.navigateByUrl('https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2')
-    return null
-
+      //  this.Router.navigateByUrl('https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2')
+      return null;
     }
-   // return null;
+    // return null;
   }
 
   setCompanyList(companylist: any) {
@@ -460,16 +505,15 @@ export class CommonService {
       this.inactivityTimer = null;
     }
   }
-  
+
   logoutUser() {
     // Perform logout actions here, e.g., remove user data from SessionStorage
     // sessionStorage.clear();   //keep it back
     // this.userloggedinSubject.next(false);
     // sessionStorage.removeItem('userProfile');
-   // this.Router.navigateByUrl("/logout")
-//this.Router.navigateByUrl('https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2')
-  //window.location.href = "https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2"
-    
+    // this.Router.navigateByUrl("/logout")
+    //this.Router.navigateByUrl('https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2')
+    //window.location.href = "https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2"
     // Redirect to the login page or perform other logout-related tasks
   }
 
@@ -477,7 +521,7 @@ export class CommonService {
     const binaryData = atob(base64Data);
     const arrayBuffer = new ArrayBuffer(binaryData.length);
     const uint8Array = new Uint8Array(arrayBuffer);
-    
+
     for (let i = 0; i < binaryData.length; i++) {
       uint8Array[i] = binaryData.charCodeAt(i);
     }
@@ -491,19 +535,21 @@ export class CommonService {
   }
   formatDateTime_API_payload(dateTimeString: string): string {
     const date = new Date(dateTimeString);
-  
+
     // Get date components
     const day = date.getDate();
     const month = date.toLocaleString('default', { month: 'short' });
     const year = date.getFullYear().toString().slice(-2); // Get the last two digits of the year
-  
+
     return `${day}-${month}-${year}`;
   }
 
   calculateDifference(attestreqdate: string) {
     const today = new Date();
     const reqDate = new Date(attestreqdate); // Convert to date if not already
-    const differenceInDays = Math.floor((today.getTime() - reqDate.getTime()) / (1000 * 3600 * 24));
+    const differenceInDays = Math.floor(
+      (today.getTime() - reqDate.getTime()) / (1000 * 3600 * 24)
+    );
     return 15 - differenceInDays;
   }
   // calculateDifference(attestreqdate: string) {
@@ -512,23 +558,22 @@ export class CommonService {
   //   const month = +attestreqdate.substring(4, 6) - 1; // Extract month (0-indexed)
   //   const day = +attestreqdate.substring(6, 8); // Extract day
   //   const reqDate = new Date(year, month, day); // Create a date object
-  
+
   //   const today = new Date();
   //   const differenceInDays = Math.floor((today.getTime() - reqDate.getTime()) / (1000 * 3600 * 24));
   //   return 15 - differenceInDays;
   // }
 
-   formatAmount(amount: number | undefined): string {
+  formatAmount(amount: number | undefined): string {
     if (amount === undefined || isNaN(amount)) {
       return '';
     }
-  
+
     // Use toLocaleString to format the number with commas
     return amount.toLocaleString(undefined, { maximumFractionDigits: 2 });
   }
 
-
-   static blankInputValidator(fieldName: string): ValidatorFn {
+  static blankInputValidator(fieldName: string): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
       const value = control.value;
 
@@ -543,97 +588,101 @@ export class CommonService {
   async getPaymentReceiptbase64(invoiceuno: any): Promise<any> {
     return new Promise((resolve, reject) => {
       let data2 = sessionStorage.getItem('userProfile');
-  
+
       if (data2 != undefined || data2 != null) {
         let abc = JSON.parse(data2);
         let bcd = JSON.parse(abc);
         this.uuid = bcd.Data?.uuid;
       } else {
-        reject("User profile not found");
+        reject('User profile not found');
         return;
       }
-  
+
       let data = {
-        "uuid": this.uuid,
-        "invoiceuno": invoiceuno.toString()
+        uuid: this.uuid,
+        invoiceuno: invoiceuno.toString(),
       };
-  
+
       this.showLoading();
-  
+
       this.apicall.post(this.consts.getPaymentReceipt, data).subscribe({
         next: (success: any) => {
           this.hideLoading();
           const resp = success;
-  
+
           if (resp.responsecode == 1) {
             this.base64PdfString = resp.data;
             var binary_string = this.base64PdfString.replace(/\\n/g, '');
             binary_string = window.atob(this.base64PdfString);
             var len = binary_string.length;
             var bytes = new Uint8Array(len);
-  
+
             for (var i = 0; i < len; i++) {
               bytes[i] = binary_string.charCodeAt(i);
             }
-  
+
             this.src = bytes.buffer;
-            console.log("payment receipt is success");
+            console.log('payment receipt is success');
             resolve(this.src);
           } else {
             this.showErrorMessage('Attachment load failed');
-            reject("Attachment load failed");
+            reject('Attachment load failed');
           }
         },
         error: (error: any) => {
           this.hideLoading();
-          console.error("Error fetching payment receipt:", error);
+          console.error('Error fetching payment receipt:', error);
           reject(error);
-        }
+        },
       });
     });
   }
-  
-  getimagebase64(attestfilelocation:any){
+
+  getimagebase64(attestfilelocation: any) {
     let resp;
-    let data={
-      "attestfilelocation":attestfilelocation,
-      "uuid":this.uuid
-    }
+    let data = {
+      attestfilelocation: attestfilelocation,
+      uuid: this.uuid,
+    };
     this.showLoading();
-  
-    this.apicall.post(this.consts.getAttestationFileContent,data).subscribe({next:(success:any)=>{
-      this.hideLoading();
-  
-      resp=success;
-      if(resp.responsecode==1){
-      this.base64PdfString=resp.data;
-  
-          const base64 = this.base64PdfString.replace('data:application/pdf;base64,', '');
-  
-            // Convert base64 to a byte array
-            const byteArray = new Uint8Array(atob(base64).split('').map(char => char.charCodeAt(0)));
-  
-            // Create a Blob and download the file
-            const file = new Blob([byteArray], { type: 'application/pdf' });
-            const fileUrl = URL.createObjectURL(file);
-  
-            const link = document.createElement('a');
-            link.href = fileUrl;
-            link.download = 'Attestation_.pdf'; // You can customize the file name here
-  
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-  
-      }
-      else{
-        this.showErrorMessage('Attachment load failed')
-        //this.loading=false;
-      }
-    }
-  })
-  return this.base64PdfString;
-  
+
+    this.apicall.post(this.consts.getAttestationFileContent, data).subscribe({
+      next: (success: any) => {
+        this.hideLoading();
+
+        resp = success;
+        if (resp.responsecode == 1) {
+          this.base64PdfString = resp.data;
+
+          const base64 = this.base64PdfString.replace(
+            'data:application/pdf;base64,',
+            ''
+          );
+
+          // Convert base64 to a byte array
+          const byteArray = new Uint8Array(
+            atob(base64)
+              .split('')
+              .map((char) => char.charCodeAt(0))
+          );
+
+          // Create a Blob and download the file
+          const file = new Blob([byteArray], { type: 'application/pdf' });
+          const fileUrl = URL.createObjectURL(file);
+
+          const link = document.createElement('a');
+          link.href = fileUrl;
+          link.download = 'Attestation_.pdf'; // You can customize the file name here
+
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        } else {
+          this.showErrorMessage('Attachment load failed');
+          //this.loading=false;
+        }
+      },
+    });
+    return this.base64PdfString;
   }
-  
 }
