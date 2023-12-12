@@ -60,7 +60,7 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
     value: 'Approved',
   };
   currentDate: Date = new Date();
-  responsiveLayout: 'scroll' | 'stack' = 'stack';
+  responsiveLayout: 'scroll' | 'stack' = 'scroll';
 
   constructor(
     public override router: Router,
@@ -479,9 +479,7 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
   DeleteRow(row: any) {
     row.uno = row.rowNum;
     this.confirmationService.confirm({
-      message: this.translate.instant(
-        'Are you sure you want to delete the selected user?'
-      ),
+      message: this.translate.instant('deleterecord'),
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
@@ -496,7 +494,7 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
         this.messageService.add({
           severity: 'success',
           summary: 'Successful',
-          detail: this.translate.instant('Deleted Successfully'),
+          detail: this.translate.instant('Item_Deleted_Successfully'),
           life: 3000,
         });
       },

@@ -222,6 +222,7 @@
   "nodataexists": "No data exists",
   "couldnotsubmit": "Could not submit! Some of the rows are not valid",
   "nothingtosubmit": "Nothing to submit",
+  "deleterecord": "Are you sure you want to delete the selected record?",
   "lcadetails": {
     "page.approvetitle": "LCA import",
     "submitbtn": "Submit",
