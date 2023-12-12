@@ -297,7 +297,7 @@ $uaemofa-lime-theme: mat.define-light-theme((color: (primary: $uaemofa-lime-prim
     border: 4px solid var (--green-color);
   }
 
-  .dw-container .active .timeline-content h6 span, .edit_footer {
+  .dw-container .active .timeline-content h6 span, .edit_footer, .icon_user {
     color: var(--green-color);
   }
 
@@ -503,7 +503,7 @@ $uaemofa-lime-theme: mat.define-light-theme((color: (primary: $uaemofa-lime-prim
     border: 4px solid var (--red-color);
   }
 
-  .dw-container .active .timeline-content h6 span , .edit_footer{
+  .dw-container .active .timeline-content h6 span , .edit_footer, .icon_user{
     color: var(--red-color);
   }
 
@@ -711,7 +711,7 @@ $uaemofa-lime-theme: mat.define-light-theme((color: (primary: $uaemofa-lime-prim
     border: 4px solid var (--grey-color);
   }
 
-  .dw-container .active .timeline-content h6 span, .edit_footer {
+  .dw-container .active .timeline-content h6 span, .edit_footer, .icon_user {
     color: var(--grey-color);
   }
 
