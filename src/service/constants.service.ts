@@ -66,6 +66,8 @@ export class ConstantsService {
 
   getFinesReport="lca/getFinesReport"
 
-
   requestAttestationFromExcelImport = 'lca/requestAttestationFromExcelImport';
+  getPendingReqforlcauser = "lca/getPendingReqforlcauser";
+  getCompletedReqforlcauser = "lca/getCompletedReqforlcauser";
+  getCompanyListForLcaUser = "lca/getCompanyListForLcaUser";
 }

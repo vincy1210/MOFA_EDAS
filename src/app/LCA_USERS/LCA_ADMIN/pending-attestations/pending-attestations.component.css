@@ -1,0 +1,262 @@
+::ng-deep .cdk-overlay-connected-position-bounding-box {
+  z-index: 10000 !important;
+}
+
+::ng-deep .cdk-global-overlay-wrapper {
+  z-index: 1000 !important;
+}
+
+/* // ::ng-deep .cdk-overlay-pane {
+  //   padding: 2rem;
+  // } */
+
+::ng-deep .cdk-dialog-container {
+  overflow: hidden;
+}
+
+.lcadetails-window {
+  min-height: 100vh;
+  /* padding: 0.4rem; */
+}
+
+.add-button {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.grid-search {
+  margin-right: 1rem;
+}
+
+.grid-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  line-height: 18px;
+  .grid-header-right {
+    display: flex;
+    gap: 0.25rem;
+    align-items: center;
+  }
+}
+
+.clicked {
+  background: var(--primary-color);
+  color: var(--white-color);
+}
+
+.link-span {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.link-span:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.show-p-5 {
+  padding: 0 0.25rem;
+}
+
+.custom-mat-form-field {
+  /* height: 60px; */
+}
+
+.custom-container {
+  /* height: 60px; */
+}
+
+.full-content {
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.grid-header-right:hover .full-content {
+  opacity: 1;
+}
+
+.action-width-body {
+  justify-content: center;
+  height: 10px;
+  margin-top: -14px;
+  button {
+    height: -webkit-fill-available;
+  }
+}
+
+td[class="lg:noaction-width-header"] {
+  max-width: 250px;
+  white-space: wrap;
+  width: auto;
+  min-width: 90px;
+}
+
+td[class="lg:noaction-width-header-max"] {
+  max-width: 250px;
+  white-space: wrap;
+  width: auto;
+  min-width: 250px;
+}
+
+td.action-width-header {
+  min-width: 45px;
+  max-width: 50px;
+}
+
+.image-text {
+  overflow-wrap: break-word;
+}
+
+.amount-text {
+  display: flex;
+  justify-content: flex-end;
+}
+
+h1.page-title-02 {
+  font-family: "robotobold" !important;
+  margin-bottom: 10px !important;
+  font-size: x-large;
+}
+
+.w-30 {
+  width: 30%;
+}
+
+.btn-w-30 {
+  padding: 0 1rem;
+}
+
+.cd-upload {
+  width: 100%;
+}
+
+.cd-upload-field {
+  width: inherit;
+}
+
+.upload-field-invoice {
+  display: flex;
+}
+
+button.mat-stroked-button {
+  border: #b68a35 1px solid;
+}
+
+.file-upload-action {
+  display: flex;
+  gap: 1rem;
+  padding: 0 0.5rem 0.5rem;
+  align-items: center;
+}
+
+.file-upload-action-btn {
+  /* margin: 0 0.5rem 0.5rem 0; */
+}
+
+.cd-file-list {
+  margin-top: 0;
+}
+
+.risk-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.risk-body {
+  overflow-y: scroll;
+  height: calc(100vh - 130px);
+  padding: 0.5rem;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+::ng-deep .mat-radio-button.mat-accent .mat-radio-inner-circle {
+  border-color: var(--primary-color);
+  background-color: var(--primary-color);
+}
+
+.broker-risk {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 50px;
+  gap: 1rem;
+}
+
+.view {
+  .risk-content {
+    padding: 0.5rem 0.5rem;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    margin: 0.25rem;
+    font-family: serif;
+    font-size: unset;
+    color: black;
+    height: 55px;
+    .title-label {
+      font-size: 0.8rem;
+      font-family: system-ui;
+      margin-bottom: 50px !important;
+    }
+    .risk-content-body {
+      display: block;
+      flex: auto;
+      width: 100%;
+      .risk-content-block {
+        font-weight: 600;
+        font-family: "robotobold";
+        color: black;
+      }
+    }
+  }
+}
+
+.chart-table-view {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  button {
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+  }
+}
+
+.grid-header-right-btn {
+  height: 2rem;
+  align-items: center;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+}
+
+.validrow {
+  background-color: var(--light-green-color) !important;
+}
+
+.notvalidrow {
+  background-color: var(--light-red-color) !important;
+}
+
+.error-style {
+  background-color: var(--medium-red-color);
+}
+
+td[class="lg:noaction-width-header"] {
+  max-width: 250px;
+  white-space: wrap;
+  width: auto;
+  min-width: 90px;
+}
+
+td[class="lg:noaction-width-header-max"] {
+  max-width: 250px;
+  white-space: wrap;
+  width: auto;
+  min-width: 250px;
+}
+
+.custom-container {
+  /* margin-top: 10px; */
+}

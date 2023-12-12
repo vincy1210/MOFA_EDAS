@@ -220,6 +220,8 @@
   "deleterecord": "Are you sure you want to delete the selected record?",
   "lcadetails": {
     "page.approvetitle": "LCA import",
+    "page.pendinglcatitle": "LCA",
+    "page.completedlcatitle": "LCA",
     "submitbtn": "Submit",
     "lcadetailList": {
       "LCACode": "LCACode",
