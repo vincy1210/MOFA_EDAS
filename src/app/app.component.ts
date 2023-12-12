@@ -10,6 +10,7 @@ import { environment } from 'src/environments/environment';
 import { Idle, DEFAULT_INTERRUPTSOURCES } from '@ng-idle/core';//vincy
 import { Keepalive } from '@ng-idle/keepalive';
 import { Subscription } from 'rxjs';
+import { AuthService } from 'src/service/auth.service';
 
 
 @Component({
@@ -108,6 +109,7 @@ role2:string='';
   showHead: boolean = false;
   private userRoleSubscription!: Subscription;
   constructor(
+    public auth:AuthService,
     private router: Router,
     private translate: TranslateService,
     private iconRegistry: MatIconRegistry,
@@ -163,7 +165,9 @@ this.userwasIdle=true;
       this.idleState = "TIMED_OUT"
       console.log("session timeout");
       this.common.showSuccessMessage("session timeout");
-      this.logout();   // to do
+      // this.logout();   // to do
+    this.auth.logout();
+
     } );
     // do something as the timeout countdown does its thing
     idle.onTimeoutWarning.subscribe(seconds => this.countdown = seconds);
@@ -282,7 +286,8 @@ if(this.userrole){
     
   }
   else{
-    this.common.logoutUser();
+    // this.common.logoutUser();
+    this.auth.logout();
   }
 }
 else{
@@ -312,14 +317,7 @@ else{
     drawer.close();
   }
 
-  logout(){
-
-    sessionStorage.clear();
-   //this.commonService.logoutUser();
-    //this.router.navigateByUrl('/logout')
-    window.location.href = "https://stg-id.uaepass.ae/idshub/logout?redirect_uri=https://stg-selfcare.uaepass.ae"
-
-  }
+ 
 
   reset() {
     // we'll call this method when we want to start/reset the idle process

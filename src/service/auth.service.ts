@@ -151,4 +151,13 @@ this.lcauserloggedinSubject.next(true)
     return this.isAuthenticated;
   }
 
+  logout(){
+
+    sessionStorage.clear();
+   //this.commonService.logoutUser();
+    //this.router.navigateByUrl('/logout')
+    window.location.href = "https://stg-id.uaepass.ae/idshub/logout?redirect_uri=https://stg-selfcare.uaepass.ae"
+
+  }
+
 }

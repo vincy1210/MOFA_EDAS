@@ -96,9 +96,8 @@
         <ng-template pTemplate="body" let-customer let-columns="columns" >
           <tr [ngClass]="{
             'highlighted-row custom-text-color bold-text': customer.isSelected,
-            'coonotpaidclass': isCOONotPaid(customer)
-          }">
-              <td><p-tableCheckbox (click)="loadsidepanel(customer)" [disabled]="isCOONotPaid(customer)" [value]="customer"></p-tableCheckbox> </td>
+            'coonotpaidclass': isCOONotPaid(customer)}" >
+              <td><p-tableCheckbox  pTooltip="{{ isCOONotPaid(customer) ? 'COO payment is not done' : '' | translate }}" (click)="loadsidepanel(customer)" [disabled]="isCOONotPaid(customer)" [value]="customer"></p-tableCheckbox> </td>
             <td><span class="image-text">{{customer.edasattestno}} </span></td>
             <td><span class="image-text">{{customer.companyname}}</span></td>
             <td style="text-align: right;"><span class="image-text">{{common.formatAmount(customer.invoiceamount)}}</span></td>
@@ -116,7 +115,7 @@
               <p-tag [value]="customer.canpay === 1 ? 'COO paid' : 'COO unpaid'" [severity]="getSeverity(customer.canpay)"></p-tag>
             </td>
 
-            <td><span class="image-text">{{common.calculateDifference(customer.attestreqdate)}}</span></td>
+            <td><span class="image-text">{{customer.noofdaysoverdue}}</span></td>
             <td pFrozenColumn alignFrozen="right">
               <span (click)="openNew(customer)" style="padding:15px; cursor: pointer;" pTooltip="{{'Details' | translate}}"  class="image-text viewaction">
                 <mat-icon class="action_eye_icon" >visibility</mat-icon>
@@ -288,11 +287,11 @@
       </div>
   
   </p-tabPanel>
-<p-tabPanel header="COO Details">
+<!-- <p-tabPanel header="COO Details">
 
 
 
-</p-tabPanel>
+</p-tabPanel> -->
 </p-tabView>
 
 

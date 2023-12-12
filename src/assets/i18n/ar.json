@@ -224,6 +224,11 @@
   "nothingtosubmit": "Nothing to submit",
   "deleterecord": "Are you sure you want to delete the selected record?",
   "lcadetails": {
+    
+    "Import Invoice(s)":"Import LCA Invoice(s)",
+"Pending Attestation(s)":"Pending Attestation(s)",
+"Completed Attestation(s)":"Completed Attestation(s)",
+"Attestations - In Risk":"Attestations - In Risk",
     "page.approvetitle": "LCA import",
     "page.pendinglcatitle": "LCA",
     "page.Risk": "Risk",

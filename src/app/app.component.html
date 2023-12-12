@@ -171,7 +171,7 @@
           <mat-icon color="primary">person</mat-icon> <mat-icon color="primary">arrow_drop_down</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
-          <button mat-menu-item (click)="logout()" > <mat-icon color="primary">exit_to_app</mat-icon> {{'Logout' | translate}}</button>
+          <button mat-menu-item (click)="auth.logout()" > <mat-icon color="primary">exit_to_app</mat-icon> {{'Logout' | translate}}</button>
         </mat-menu>
       <br>
       <!-- <p [pTooltip]="companyname"  style="width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"> {{companyname}}</p> -->

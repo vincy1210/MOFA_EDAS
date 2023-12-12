@@ -10,6 +10,7 @@ import { HttpClient, HttpResponse, HttpErrorResponse, HttpHeaders } from '@angul
 // import { RecaptchaComponent } from 'ng-recaptcha';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { ConstantsService } from 'src/service/constants.service';
+import { AuthService } from 'src/service/auth.service';
 
 
 @Component({
@@ -48,7 +49,7 @@ export class RegistrationComponent {
   freezone:any;
   freezone1:any;
   isButtonDisabled = false;
-  constructor(private consts:ConstantsService,private recaptchaV3Service: ReCaptchaV3Service,private http:HttpClient ,private common:CommonService,private FormBuilder:FormBuilder, private router:Router, private _activatedRoute:ActivatedRoute, private apiservice:ApiService){
+  constructor(private auth:AuthService,private consts:ConstantsService,private recaptchaV3Service: ReCaptchaV3Service,private http:HttpClient ,private common:CommonService,private FormBuilder:FormBuilder, private router:Router, private _activatedRoute:ActivatedRoute, private apiservice:ApiService){
     this.common.getData().subscribe(data => {
       this.reg_form_data = data;
       console.log(this.reg_form_data)
@@ -226,6 +227,7 @@ export class RegistrationComponent {
       const dataArray = response.data; // Access the 'data' property from the response
       this.freezone1=dataArray.dictionary.data;
       this.common.setfreezone(this.freezone1)
+      console.log(this.freezone1);
 
       if(this.freezone1==undefined){
         this.common.showErrorMessage("Error in loading zone type");
@@ -243,11 +245,12 @@ export class RegistrationComponent {
       else{
 
         console.log("redirect parameters undefined");
+
         this.common.showErrorMessage("Something went wrong! Please try again")
 
          // Delay the execution of this.common.logoutUser() by 2 seconds
   setTimeout(() => {
-    this.common.logoutUser();
+    this.auth.logout();
   }, 2000); // 2000 milliseconds = 2 seconds
         return;
       }
@@ -468,6 +471,7 @@ export class RegistrationComponent {
       const filteredData = this.freezone1.filter((item:any) => item.emiratesuno === parseInt(selectedValue, 10));
       console.log(filteredData);
       this.freezone=filteredData;
+    console.log(this.freezone);
     }
 
    
