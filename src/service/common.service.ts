@@ -15,8 +15,6 @@ import { ConstantsService } from './constants.service';
 import { Subject, Observable } from 'rxjs';
 
 
-
-
 @Injectable({
   providedIn: 'root',
 })
@@ -24,9 +22,8 @@ import { Subject, Observable } from 'rxjs';
 
 
 export class CommonService {
-
-   favink1:string=''
-  favink2:string=''
+  favink1: string = '';
+  favink2: string = '';
   public userloggedinSubject = new BehaviorSubject<boolean>(false);
   userloggedin$ = this.userloggedinSubject.asObservable();
 
@@ -64,10 +61,10 @@ export class CommonService {
   // private sidebarOpen = false;
   private isDrawerOpenSubject = new BehaviorSubject<boolean>(false);
 
- uuid:string='';
- src:any;
- base64PdfString:any;
- usertypedata:string='';
+   uuid: string = '';
+  src: any;
+  base64PdfString: any;
+  usertypedata: string = '';
   publicKey!: string;
   constructor(
     private translate: TranslateService,

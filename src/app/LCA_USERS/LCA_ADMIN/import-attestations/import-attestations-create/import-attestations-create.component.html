@@ -1,0 +1,120 @@
+<form class="rtl-form" [formGroup]="AddRiskForm" (ngSubmit)="onSubmit()">
+  <div class="container lcadetails-window">
+    <div class="risk-header">
+      <h1 class="mt-0 mb-0 page-title-02">
+        {{ "lcadetails.page.approvetitle" | translate }}
+      </h1>
+      <button mat-icon-button class="close-button" [mat-dialog-close]="true">
+        <mat-icon class="close-icon" color="warn">close</mat-icon>
+      </button>
+    </div>
+    <div class="risk-body">
+      <!-- add or edit -->
+      <ng-container *ngIf="visibleview === 'edit'">
+        <!-- <div class="grid grid-cols-1">
+            <mat-form-field appearance="outline">
+              <mat-label>{{
+                "lcadetails.lcadetailList.LCACode" | translate
+              }}</mat-label>
+              <input
+                matInput
+                placeholder="Field1"
+                formControlName="LCACode"
+                name="LCACode"
+                appTrimInput
+                maxlength="200"
+              />
+              <mat-error
+                class="error"
+                *ngIf="AddRiskForm.get('LCACode')?.hasError('required')"
+                >{{
+                  "alerts.lcadetails.lcadetailList.LCACode" | translate
+                }}</mat-error
+              >
+            </mat-form-field>
+          </div> -->
+        <div class="flex justify-end">
+          <button
+            type="button"
+            mat-button
+            color="primary"
+            class="float-right"
+            (click)="exportToExcel()"
+          >
+            Download Template
+          </button>
+        </div>
+        <div class="grid grid-cols-1">
+          <mat-form-field appearance="outline" floatLabel="always">
+            <mat-label>{{ "file" | translate }}</mat-label>
+            <button
+              type="button"
+              mat-button
+              color="primary"
+              (click)="fileInput.click()"
+              class="float-right"
+            >
+              Re-upload
+            </button>
+            <input
+              type="text"
+              style="display: none"
+              readonly
+              matInput
+              appTrimInput
+            />
+            <input
+              style="display: none"
+              #attachments
+              type="file"
+              (change)="onFileChanged($event)"
+              #fileInput
+              multiple="true"
+            />
+            <div
+              *ngFor="let selected of listOfFiles; let index = index"
+              class="cd-file-list"
+            >
+              <a
+                [href]="data?.attachment"
+                download="template.xlsx"
+                target="_blank"
+                >{{ selected }} <mat-icon>check_circle_outline</mat-icon></a
+              >
+              <small (click)="removeSelectedFile(index)">Remove</small>
+            </div>
+          </mat-form-field>
+        </div>
+        <div class="flex justify-center gap-4" mat-dialog-actions>
+          <div class="grid grid-cols-1 w-30">
+            <button
+              type="button"
+              mat-stroked-button
+              color="secondary"
+              class="green-filled-btn w-100 btn-w-30"
+              (click)="close()"
+            >
+              {{ "Cancel" | translate }}
+            </button>
+          </div>
+          <div class="grid grid-cols-1 w-30">
+            <button
+              mat-flat-button
+              color="primary"
+              class="green-filled-btn w-100 btn-w-30"
+            >
+              {{ "lcadetails.submitbtn" | translate }}
+            </button>
+          </div>
+        </div>
+        <!-- created-details -->
+        <!-- <ng-container>
+          <app-created-details-listview
+            [parentname]="name"
+            [data]="createddetail"
+          ></app-created-details-listview>
+        </ng-container> -->
+      </ng-container>
+    </div>
+  </div>
+</form>
