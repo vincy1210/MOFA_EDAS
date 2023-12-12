@@ -211,6 +211,12 @@
   "OTP is verified": "OTP is verified",
   "add": "Add",
   "file": "File",
+  "enterValidData": "Enter valid datas",
+  "datareadsuccess": "Data read successfully",
+  "wrongtemplate": "Wrong template",
+  "nodataexists": "No data exists",
+  "couldnotsubmit": "Could not submit! Some of the rows are not valid",
+  "nothingtosubmit": "Nothing to submit",
   "lcadetails": {
     "page.approvetitle": "LCA import",
     "submitbtn": "Submit",
