@@ -94,11 +94,10 @@
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-customer let-columns="columns" >
-            <tr [ngClass]="{
-              'highlighted-row': customer.isSelected,
-              'custom-text-color': customer.isSelected,
-              'bold-text': customer.isSelected
-            }">
+          <tr [ngClass]="{
+            'highlighted-row custom-text-color bold-text': customer.isSelected,
+            'coonotpaidclass': isCOONotPaid(customer)
+          }">
               <td><p-tableCheckbox (click)="loadsidepanel(customer)" [disabled]="isCOONotPaid(customer)" [value]="customer"></p-tableCheckbox> </td>
             <td><span class="image-text">{{customer.edasattestno}} </span></td>
             <td><span class="image-text">{{customer.companyname}}</span></td>

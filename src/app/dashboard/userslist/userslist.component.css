@@ -1,10 +1,7 @@
 .inactive-column {
     background-color: mistyrose; /* or your preferred color */
   }
-  .icon_user{
-    align-self: center; font-size: 18px !important; height: auto; width: 24px;
-    color: #b68a35;
-  }
+ 
 
   /* .mat-input-element {
     font-size: 14px;

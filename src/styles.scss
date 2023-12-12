@@ -2161,3 +2161,17 @@ h1.db-sub-title {
 .text_align_right{
   text-align: right !important;
   }
+
+  .icon_user{
+    align-self: center; font-size: 18px !important; height: auto; width: 24px;
+    color: var(--primary-color);
+  }
+
+  .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+    color: var(--primary-color);
+    width: 250%;
+    height: 10px;
+    border-color: var(--primary-color);
+    text-align: center;
+    display: inherit;
+  }
