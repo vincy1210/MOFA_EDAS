@@ -669,4 +669,93 @@ this.lcauserloggedinSubject.next(true)
   }
 
 
+  filterColumnsClientDataTrim(filters: any) {
+    let filterList: any[] = [];
+    for (const key in filters) {
+      if (filters.hasOwnProperty(key)) {
+        const rows = filters[key];
+        if (rows && rows.length > 0) {
+          const { value } = rows[0];
+          const myObject: { [key: string]: any } = {};
+          if (value && value.length > 0) {
+            myObject[key] = rows;
+            filterList.push(myObject);
+          }
+        }
+      }
+    }
+    return filterList;
+  }
+
+  sortClientData(
+    data: any[],
+    sortKey: string,
+    ascending: boolean = true
+  ): any[] {
+    return data.sort((a, b) => {
+      let valueA = a[sortKey];
+      let valueB = b[sortKey];
+
+      if (valueA === null) valueA = "";
+      if (valueB === null) valueB = "";
+
+      valueA = valueA.toString().toLowerCase();
+      valueB = valueB.toString().toLowerCase();
+
+      if (valueA < valueB) {
+        return ascending ? -1 : 1;
+      } else if (valueA > valueB) {
+        return ascending ? 1 : -1;
+      } else {
+        return 0;
+      }
+    });
+  }
+  
+  filterColumnsClientData(data: any[], filterList: any) {
+    return data.filter((item) => {
+      for (const key in item) {
+        if (filterList && Object.keys(filterList).length === 0) {
+          return true;
+        }
+        let filters = filterList[key];
+        let { value1, matchMode1, operator1 } = {
+          value1: "",
+          matchMode1: "",
+          operator1: "",
+        };
+        if (filters && filters.length > 0) {
+          const { value, matchMode, operator } = filters[0];
+          value1 = value;
+          matchMode1 = matchMode;
+          operator1 = operator;
+        }
+        if (value1 && value1.length > 0) {
+          //key === "tradelicenseno"
+          let valuedata = item[key];
+          const result = valuedata === null ? "" : valuedata;
+          if (result.toString().toLowerCase().includes(value1.toLowerCase())) {
+            return true;
+          }
+        }
+      }
+      return false;
+    });
+  }
+
+  filterClientData(data: any[], searchTerm: string) {
+    return data.filter((item) => {
+      for (const key in item) {
+        let value = item[key];
+        const result = value === null ? '' : value;
+        if (
+          result.toString().toLowerCase().includes(searchTerm.toLowerCase())
+        ) {
+          return true;
+        }
+      }
+      return false;
+    });
+  }
+
 }

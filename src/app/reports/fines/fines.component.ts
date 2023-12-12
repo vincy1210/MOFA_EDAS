@@ -87,6 +87,8 @@ currentcompany:any;
 AddInvoiceDialog:boolean=false;
 total_invoiceamount:any;
 total_feesamount:any;
+total_fineamount:any;
+
 
 
 currentrow:any;
@@ -135,19 +137,16 @@ isButtonDisabled = false;
      // this.common.logoutUser()
     }
     this.cols = [
-      { field: 'edasattestno', header: 'Attestation No', width:'25%' },
-      { field: 'companyname', header: 'Company Name', width:'20%' },
-      { field: 'invoiceamount', header: 'Invoice Amount', width:'20%' },
+      { field: 'edasattestno', header: 'Edas Ref No', width:'25%' },
+      { field: 'declarationumber', header: 'Declaration Number', width:'20%' },
+      { field: 'invoicenumber', header: 'Invoice Number', width:'20%' },
+      { field: 'invoicedate', header: 'Invoice Date' , width:'25%'},
+      { field: 'invoiceamount', header: 'Invoice Amount', width:'25%' },
+      { field: 'feesamount', header: 'Fees Amount', width:'15%' },
+      { field: 'fineamount', header: 'Fine Amount' , width:'15%'},
+      { field: 'lcaname', header: 'LCA', width:'20%' },
       
-      { field: 'feesamount', header: 'Fees Amount', width:'20%' },
-      { field: 'invoicenumber', header: 'Invoice ID' , width:'25%'},
-      { field: 'declarationumber', header: 'Declaration No', width:'25%' },
-      { field: 'declarationdate', header: 'Declaration Date', width:'15%' },
-      { field: 'attestreqdate', header: 'Created' , width:'15%'},
-      { field: 'statusname', header: 'LCA', width:'20%' },
-      
-      { field: 'statusname', header: 'Status', width:'20%' },
-      // { field: 'Noofdaysleft', header: 'Days Left' },
+      { field: 'noofdaysoverdue', header: 'Age', width:'20%' },
   
   ];
 
@@ -186,36 +185,40 @@ isButtonDisabled = false;
     this.common.showLoading();
     let resp;
     let data;
-    data={
-      "Companyuno":this.currentcompany,
-      "uuid":this.uuid,
-      "startnum":$event.first,
-      "limit":200 + ($event.first ?? 0),
-      "status":0,
-      "Startdate":this.common.formatDateTime_API_payload(this.oneMonthAgo.toDateString()),
-      "Enddate":this.common.formatDateTime_API_payload(this.todayModel.toDateString())
+    
+  data={
+    "uuid": this.uuid,
+    "companyuno": this.currentcompany,
+    "startnum": $event.first,
+    "limit": 200 + ($event.first ?? 0),
+    "startdate": this.common.formatDateTime_API_payload(this.oneMonthAgo.toDateString()),
+    "enddate": this.common.formatDateTime_API_payload(this.todayModel.toDateString())
   }
 this.loading=true;
 this.common.showLoading();
 
-    this.api.post(this.consts.lcaCompletedAttestList,data).subscribe({next:(success:any)=>{
+    this.api.post(this.consts.getFinesReport,data).subscribe({next:(success:any)=>{
       this.common.hideLoading();
 
  this.loading=false;
       resp=success;
-      if(resp.dictionary.responsecode==1){
-        this.list=resp.dictionary.data
-        this.datasource=resp.dictionary.data;
-        this.totalrecords=resp.dictionary.recordcount;
+      if(resp.responsecode==1){
+        this.list=resp.data
+        this.datasource=resp.data;
+        this.totalrecords=resp.recordcount;
 
-        const totalInvoiceAmount = resp.dictionary.data.reduce((total:any, item:any) => total + item.invoiceamount, 0);
+        const totalInvoiceAmount = resp.data.reduce((total:any, item:any) => total + item.invoiceamount, 0);
 console.log(totalInvoiceAmount)
 
-const totalFeeAmount = resp.dictionary.data.reduce((total:any, item:any) => total + item.feesamount, 0);
+const totalFeeAmount = resp.data.reduce((total:any, item:any) => total + item.feesamount, 0);
 console.log(totalFeeAmount)
+
+const totalFineAmount = resp.data.reduce((total:any, item:any) => total + item.fineamount, 0);
+console.log(totalFineAmount)
 
         this.total_invoiceamount=totalInvoiceAmount;
         this.total_feesamount=totalFeeAmount;
+        this.total_fineamount=totalFineAmount;
 
         this.loading = false;
         this.Reduce();
@@ -435,25 +438,25 @@ FilterInitTable(){
 
   let resp;
   let data;
-  data={
-    "Companyuno":this.currentcompany,
-    "uuid":this.uuid,
-    "startnum":0,
-    "limit":10,
-    "status":0,
-    "Startdate":this.common.formatDateTime_API_payload(this.oneMonthAgo.toDateString()),
-    "Enddate":this.common.formatDateTime_API_payload(this.todayModel.toDateString())
+
+data={
+  "uuid": this.uuid,
+  "companyuno": this.currentcompany,
+  "startnum": 0,
+  "limit": 10,
+  "startdate": this.common.formatDateTime_API_payload(this.oneMonthAgo.toDateString()),
+  "enddate": this.common.formatDateTime_API_payload(this.todayModel.toDateString())
 }
 this.common.showLoading();
 
-  this.api.post(this.consts.lcaCompletedAttestList,data).subscribe({next:(success:any)=>{
+  this.api.post(this.consts.getFinesReport,data).subscribe({next:(success:any)=>{
     this.common.hideLoading();
 
     resp=success;
-    if(resp.dictionary.responsecode==1){
-      this.list=resp.dictionary.data
-      this.datasource=resp.dictionary.data;
-      this.totalrecords=resp.dictionary.data.length;
+    if(resp.responsecode==1){
+      this.list=resp.data
+      this.datasource=resp.data;
+      this.totalrecords=resp.data.length;
       this.loading = false;
       this.Reduce();
       console.log('Data retrived'); // Show the verification alert
@@ -479,26 +482,28 @@ openNew(data:any) {
   this.currentrow=data;
   this.AddInvoiceDialog=true
 
-  this.common.getPaymentReceiptbase64(this.currentrow.invoiceuno)
-  .then((result) => {
-    this.src = result;
-    console.log(this.src);
+  // this.common.getPaymentReceiptbase64(this.currentrow.invoiceuno)
+  // .then((result) => {
+  //   this.src = result;
+  //   console.log(this.src);
 
-  })
-  .catch((error) => {
-    console.error("Error fetching payment receipt:", error);
-  });
+  // })
+  // .catch((error) => {
+  //   console.error("Error fetching payment receipt:", error);
+  // });
   const fieldMappings: { [key: string]: string } = {
-    edasattestno: 'Attestation No',
+    edasattestno: 'EDAS Attestation No',
     reqappnumber: 'Request Application Number',
     attestreqdate: 'Attestation Request Date',
+    declarationumber: 'Declaration Number',
     declarationdate: 'Declaration Date',
     invoicenumber: 'Invoice Number',
-    declarationumber: 'Declaration Number',
+    invoiceid: 'Invoice ID',
     invoicedate: 'Invoice Date',
     invoiceamount: 'Invoice Amount',
-    currencycode: 'Currency Code',
     feesamount: 'Fees Amount',
+    fineamount: 'Fine Amount',
+    noofdaysoverdue: 'Age',
     paidon: 'Paid On',
     paidby: 'Paid By',
     approvedon: 'Approved On',
@@ -506,10 +511,8 @@ openNew(data:any) {
     enteredon: 'Entered On',
     importername: 'Importer Name',
     exportportname: 'Export Port Name',
-    invoiceid: 'Invoice ID',
-    companyname: 'Company Name',
     comments: 'Comments',
-    lcaname: 'LCA'
+    lcaname: 'LCA',
     // Add more fields as needed
   };
 
@@ -539,10 +542,10 @@ openNew(data:any) {
 
 }
 
-DownloadFile(attestfilelocation:any){
+// DownloadFile(attestfilelocation:any){
 
-  this.getimagebase64(attestfilelocation);
+//   this.getimagebase64(attestfilelocation);
 
- }
+//  }
 
 }

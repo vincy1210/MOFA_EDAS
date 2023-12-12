@@ -534,11 +534,7 @@ settingbackgroundcolors(event:any){
       selectedRow.isSelected = true;
     }
   }
-
-
   console.log(this.list)
-
-
 }
 
 

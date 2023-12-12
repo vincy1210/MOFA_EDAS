@@ -3,42 +3,16 @@
 <div class="company-bg registration-page">
   <div class="container mx-auto px-32 registration-window">
     <div class="grid grid-cols-4 gap-6 px-5 py-3">
-      <div class="grid grid-cols-1 dashboard-card p-5">
-        <p>Entities</p>
-        <h1 class="font-bold dashboard-scores">
-          {{ totalTile.noofentity }}
-        </h1>
-      </div>
-      <div class="grid grid-cols-1 dashboard-card p-5">
-        <p>Companies</p>
-        <h1 class="font-bold dashboard-scores">
-          {{ totalTile.noofcompanyregn }}
-        </h1>
-      </div>
-      <div class="grid grid-cols-1 dashboard-card p-5">
-        <p>Company Approvals</p>
-        <h1 class="font-bold dashboard-scores">
-          {{ totalTile.noofcompanyregnrequestapproved }}
-        </h1>
-      </div>
-      <div class="grid grid-cols-1 dashboard-card p-5">
-        <p>Completed Attestations</p>
-        <h1 class="font-bold dashboard-scores">
-          {{ totalTile.noofcompletedattestation }}
-        </h1>
-      </div>
     </div>
     <div class="grid grid-cols-4 gap-6 px-5 py-3">
       <div class="grid grid-cols-1 dashboard-card p-5">
         <p>Total Requests</p>
         <h1 class="font-bold dashboard-scores">{{ totalTile.noofrequests }}</h1>
       </div>
+     
+      
       <div class="grid grid-cols-1 dashboard-card p-5">
-        <p>Total Requests (Day)</p>
-        <h1 class="font-bold dashboard-scores">{{ totalTile.noofrequests }}</h1>
-      </div>
-      <div class="grid grid-cols-1 dashboard-card p-5">
-        <p>LCA Approvals</p>
+        <p>LCA Attestations</p>
         <h1 class="font-bold dashboard-scores">
           {{ totalTile.nooflcarequestapproved }}
         </h1>
@@ -47,6 +21,12 @@
         <p>COO Attestations</p>
         <h1 class="font-bold dashboard-scores">
           {{ totalTile.noofcoorequestapproved }}
+        </h1>
+      </div>
+      <div class="grid grid-cols-1 dashboard-card p-5">
+        <p>Physical Attestations</p>
+        <h1 class="font-bold dashboard-scores">
+          {{ totalTile.noofphysicalrequestapproved }}
         </h1>
       </div>
     </div>
@@ -60,7 +40,7 @@
               <mat-form-field appearance="outline">
                 <mat-label>Select</mat-label>
                 <mat-select
-                  (selectionChange)="onClickFilterOption('lca', $event.value)"
+                  (selectionChange)="onClickFilterOption('lca', $event.value)" value="01"
                 >
                   <mat-option value="01">Day</mat-option>
                   <mat-option value="02">Week</mat-option>
@@ -82,6 +62,11 @@
                   <mat-icon class="mr-1 kd-dot kdl-chart-color-black"
                     >circle</mat-icon
                   >Number of requests
+                </mat-list-item>
+                <mat-list-item role="listitem">
+                  <mat-icon class="mr-1 kd-dot kdl-chart-color-grey"
+                    >circle</mat-icon
+                  >Pending Requests
                 </mat-list-item>
               </mat-list>
             </div>
@@ -108,7 +93,7 @@
               <mat-form-field appearance="outline">
                 <mat-label>Select</mat-label>
                 <mat-select
-                  (selectionChange)="onClickFilterOption('coo', $event.value)"
+                  (selectionChange)="onClickFilterOption('coo', $event.value)" value="01"
                 >
                   <mat-option value="01">Day</mat-option>
                   <mat-option value="02">Week</mat-option>
@@ -130,6 +115,11 @@
                   <mat-icon class="mr-1 kd-dot kdl-chart-color-black"
                     >circle</mat-icon
                   >Number of requests
+                </mat-list-item>
+                <mat-list-item role="listitem">
+                  <mat-icon class="mr-1 kd-dot kdl-chart-color-grey"
+                    >circle</mat-icon
+                  >Pending Requests
                 </mat-list-item>
               </mat-list>
             </div>
@@ -159,9 +149,7 @@
                 <mat-label>Select</mat-label>
                 <mat-select
                   (selectionChange)="
-                    onClickFilterOption('physical', $event.value)
-                  "
-                >
+                    onClickFilterOption('physical', $event.value) " value="01">
                   <mat-option value="01">Day</mat-option>
                   <mat-option value="02">Week</mat-option>
                   <mat-option value="03">Month</mat-option>
@@ -182,6 +170,11 @@
                   <mat-icon class="mr-1 kd-dot kdl-chart-color-black"
                     >circle</mat-icon
                   >Number of requests
+                </mat-list-item>
+                <mat-list-item role="listitem">
+                  <mat-icon class="mr-1 kd-dot kdl-chart-color-grey"
+                    >circle</mat-icon
+                  >Pending Requests
                 </mat-list-item>
               </mat-list>
             </div>

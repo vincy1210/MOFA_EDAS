@@ -26,7 +26,7 @@ export class PhysicalAttestationComponent implements OnInit {
   progress_val: number = 0;
   selectedAttestations: any;
   totalrecords: number = 0;
-  invoiceRequestLists: [] = [];
+  invoiceRequestLists: any;
   cols: any;
   loading: boolean = false;
   enableFilters: boolean = false;
@@ -220,7 +220,9 @@ paymentcount=environment.appdetails.payment_count;
 
        this.loading=false;
         if (`${response.responsecode}` === '1') {
-          const dataArray = response.data;
+          let dataArray = response.data;
+          
+          // dataArray = dataArray.map((item:any) => ({ ...item, selected: false }));
 	   this.totalrecords=response.recordcount;
           this.invoiceRequestLists = dataArray;
           this.invoiceRequestLists.map((row: any) => {
@@ -252,6 +254,10 @@ paymentcount=environment.appdetails.payment_count;
             this.totalrecords=this.invoiceRequestLists .length;
           }
           console.log(this.datasource);
+
+          this.invoiceRequestLists= this.invoiceRequestLists.map((item:any) => ({ ...item, selected: false }));
+         // dataArray = dataArray.map((item:any) => ({ ...item, selected: false }));
+          //
         }
       });
 
@@ -314,6 +320,9 @@ paymentcount=environment.appdetails.payment_count;
     return this.common.splitdatetime1(date);
   }
 loadsidepanel(event:any){
+
+  this.settingbackgroundcolors(event)
+
   // this.common.showLoading();
    console.log(event);
    console.log(this.selectedAttestations);
@@ -782,6 +791,43 @@ openNew(data:any) {
   }
   
 
+}
+
+
+// Add this to your component class
+isSelected(customer: any): string {
+  let abc=this.selectedAttestations.includes(customer);
+  if(abc){
+    return 'active';
+
+  }
+  else{
+    return 'inactive'
+  }
+}
+
+settingbackgroundcolors(event:any){
+  
+  this.invoiceRequestLists.forEach((row: any) => {
+    row.isSelected = false;
+  });
+  
+  if (this.selectedAttestations.length > 0) {
+    // If multiple rows are selected
+    this.selectedAttestations.forEach((eventRow: any) => {
+      const selectedRow = this.invoiceRequestLists.find((row: any) => row.edasreqno === eventRow.edasreqno);
+      if (selectedRow) {
+        selectedRow.isSelected = true;
+      }
+    });
+  } else {
+    // If a single row is selected
+    const selectedRow = this.invoiceRequestLists.find((row: any) => row.edasreqno === this.selectedAttestations[0].edasreqno);
+    if (selectedRow) {
+      selectedRow.isSelected = true;
+    }
+  }
+  console.log(this.invoiceRequestLists)
 }
 
  

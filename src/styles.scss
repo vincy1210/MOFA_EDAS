@@ -874,8 +874,8 @@ button.white-icon-button.mat-menu-item {
   font-size: 12px;
 }
 .mofa-tab-section .mat-tab-label.mat-tab-label-active {
-  background: var(--white-color);
-  color: #676767;
+  background: var(--primary-color);
+  color: #fff;
   border: 1px solid #676767;
   font-size: 18px;
 }
@@ -1405,8 +1405,9 @@ button.white-icon-button.mat-menu-item {
     color: #64748b;
 
     &:enabled:hover {
-      background: #64748b !important;
-      color: var(--white-color) !important;
+      border-color: #64748b !important;
+      background: #ffffff !important;
+      color: #64748b !important;
     }
   }
 }
@@ -1614,7 +1615,7 @@ p-table {
 
 .mofa-tab-section .mat-tab-label.mat-tab-label-active {
   color: #000b17;
-  background: var(--white-color);
+  background: var(--primary-color);
   border: 1px solid var(--primary-color);
 }
 
@@ -2140,6 +2141,7 @@ h1.db-sub-title {
 }
 
 .mat-tab-label .mat-tab-label-content {
+  // background-color: var(--primary-color);
   color: #fff;
   font-weight: 600;
 }
@@ -2154,3 +2156,8 @@ h1.db-sub-title {
 [dir="rtl"] .frozen1 {
   left: 0;
 }
+
+
+.text_align_right{
+  text-align: right !important;
+  }

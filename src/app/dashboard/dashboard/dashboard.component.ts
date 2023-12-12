@@ -47,11 +47,14 @@ export class DashboardComponent extends LayoutModel implements OnInit {
     noofrequests: 0,
     nooflcarequestapproved: 0,
     noofcoorequestapproved: 0,
+    noofphysicalrequestapproved:0
   };
   lcaChartOptionattestation: EChartsOption = {};
   cooChartOptionattestation: EChartsOption = {};
   physicalChartOptionattestation: EChartsOption = {};
 
+  uuid:any;
+  weekNumber: number=0;
   constructor(
     public override router: Router,
     public override consts: ConstantsService,
@@ -71,7 +74,30 @@ export class DashboardComponent extends LayoutModel implements OnInit {
     // }
   }
 
+  getWeekNumber(date: Date): number {
+    const formattedDate = this.datePipe.transform(date, 'w') || '';
+    return parseInt(formattedDate, 10);
+  }
+
   ngOnInit(): void {
+
+    const today = new Date();
+    this.weekNumber = this.getWeekNumber(today);
+
+    let data11=this.common.getUserProfile();
+    let uuid;
+    if(data11!=null || data11!=undefined){
+      data11=JSON.parse(data11)
+      console.log(data11.Data)
+      uuid=data11.Data.uuid;
+      this.uuid=uuid;
+
+    }
+    else{
+      console.log("Invalid Session")
+      // this.common.logoutUser()
+    }
+
     if (this.routesname === "pending") {
       this.selectedFilterOption = {
         id: 1,
@@ -90,7 +116,7 @@ export class DashboardComponent extends LayoutModel implements OnInit {
     this.selectedFilterOption.Startdate.setDate(
       this.selectedFilterOption.Startdate.getDate() - 30
     );
-    this.selectedFilterOption.uuid = "11122";
+    this.selectedFilterOption.uuid = this.uuid;
     this.onClickFilterOptionDate("daily");
     this.onClickFilterOptionDate("weekly");
     this.onClickFilterOptionDate("monthly");
@@ -123,7 +149,7 @@ export class DashboardComponent extends LayoutModel implements OnInit {
       };
     } else if (filterType === "weekly") {
       payload = {
-        week: 43,
+        week: this.weekNumber,
         year: this.splitdatetime(this.currentDate, "yyyy")?.date,  //, "yyyy"
         uuid: this.selectedFilterOption.uuid,
       };
@@ -184,11 +210,9 @@ export class DashboardComponent extends LayoutModel implements OnInit {
             (total: any, item: any) =>
               total +
               item.nooflcarequest +
-              item.noofentityrequest +
               item.noofphysicalrequest +
-              item.noofcoorequest +
-              item.noofcompanyregnrequest +
-              item.noofuserrequest,
+              item.noofcoorequest 
+              ,
             0
           );
           this.totalTile.nooflcarequestapproved =
@@ -199,6 +223,11 @@ export class DashboardComponent extends LayoutModel implements OnInit {
           this.totalTile.noofcoorequestapproved =
             this.statisticsDailyListsFilter.reduce(
               (total: any, item: any) => total + item.noofcoorequestapproved,
+              0
+            );
+            this.totalTile.noofphysicalrequestapproved =
+            this.statisticsDailyListsFilter.reduce(
+              (total: any, item: any) => total + item.noofphysicalrequestapproved,
               0
             );
           this.bindDataToDaily();
@@ -241,18 +270,24 @@ export class DashboardComponent extends LayoutModel implements OnInit {
     if (type) {
       if (type === "lca") {
         statisticsListsFilter.forEach((row) => {
-          seriesDataRequest.push(row?.nooflcarequest);
+          seriesDataRequest.push(row?.nooflcarequestpending);
+          seriesDataCompleted.push(row?.nooflcarequestapproved);
           seriesDataCompleted.push(row?.nooflcarequestcompleted);
+
         });
       } else if (type === "coo") {
         statisticsListsFilter.forEach((row) => {
           seriesDataRequest.push(row?.noofcoorequest);
           seriesDataCompleted.push(row?.noofcoorequestapproved);
+          seriesDataCompleted.push(row?.noofcoorequestapproved);
+
         });
       } else if (type === "physical") {
         statisticsListsFilter.forEach((row) => {
           seriesDataRequest.push(row?.noofphysicalrequest);
+          seriesDataCompleted.push(row?.noofphysicalrequestapproved);
           seriesDataCompleted.push(row?.noofphysicalrequestcompleted);
+
         });
       }
     }
@@ -283,7 +318,7 @@ export class DashboardComponent extends LayoutModel implements OnInit {
         //height: '90%'
       },
       tooltip: {},
-      color: ["#b68a35", "#1b1d21"],
+      color: ["#b68a35", "#1b1d21", "#ccc"],
       toolbox: {
         feature: {
           saveAsImage: {
@@ -302,19 +337,26 @@ export class DashboardComponent extends LayoutModel implements OnInit {
       },
       series: [
         {
-          name: "Requests completed",
+          name: "Pending Requests",
           type: "line",
           smooth: true,
           stack: "Total",
           data: [],
         },
         {
-          name: "Number of requests",
+          name: "Approved Requests",
           type: "line",
           smooth: true,
           stack: "Total",
           data: [],
         },
+        {
+          name: "Completed Requests",
+          type: "line",
+          smooth: true,
+          stack: "Total",
+          data: [],
+        }
       ],
     };
     if (type === "lca") {
@@ -344,14 +386,21 @@ export class DashboardComponent extends LayoutModel implements OnInit {
       };
       this.lcaChartOptionattestation.series = [
         {
-          name: "Requests completed",
+          name: "Pending Requests",
           type: "line",
           smooth: true,
           stack: "Total",
           data: seriesDataCompleted,
         },
         {
-          name: "Number of requests",
+          name: "Approved requests",
+          type: "line",
+          smooth: true,
+          stack: "Total",
+          data: seriesDataRequest,
+        },
+        {
+          name: "Pending Requests",
           type: "line",
           smooth: true,
           stack: "Total",
@@ -366,14 +415,21 @@ export class DashboardComponent extends LayoutModel implements OnInit {
       };
       this.cooChartOptionattestation.series = [
         {
-          name: "Requests completed",
+          name: "Pending Requests",
           type: "line",
           smooth: true,
           stack: "Total",
           data: seriesDataCompleted,
         },
         {
-          name: "Number of requests",
+          name: "Approved requests",
+          type: "line",
+          smooth: true,
+          stack: "Total",
+          data: seriesDataRequest,
+        },
+        {
+          name: "Pending Requests",
           type: "line",
           smooth: true,
           stack: "Total",
@@ -388,14 +444,20 @@ export class DashboardComponent extends LayoutModel implements OnInit {
       };
       this.physicalChartOptionattestation.series = [
         {
-          name: "Requests completed",
+          name: "Pending Requests",
           type: "line",
           smooth: true,
           stack: "Total",
           data: seriesDataCompleted,
         },
         {
-          name: "Number of requests",
+          name: "Approved requests",
+          type: "line",
+          smooth: true,
+          stack: "Total",
+          data: seriesDataRequest,
+        }, {
+          name: "Pending Requests",
           type: "line",
           smooth: true,
           stack: "Total",

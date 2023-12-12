@@ -5,7 +5,7 @@
 
                 <div class="grid grid-cols-1" color="primary"  class="page-header">
              
-                    <label style="font-size: 14px; color: white; font-weight: bold;">{{'Reports' | translate}} - {{'Attestation(s)' | translate}}</label>
+                    <label style="font-size: 14px; color: white; font-weight: bold;">{{'Reports' | translate}} - {{'Fine(s)' | translate}}</label>
                   </div>
                   
                   <div style="padding: 2px;" >
@@ -19,7 +19,7 @@
                 
           
   
-          <p-table [(selection)]="selectedAttestations"  [resizableColumns]="true" dataKey="edasattestno"  [scrollable]="true"   selectionMode="single"
+          <p-table [(selection)]="selectedAttestations"  [resizableColumns]="true" dataKey="declarationumber"  [scrollable]="true"   selectionMode="single"
           #tableref [rowHover]="true" [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
           [totalRecords]="totalrecords"
           [value]="list"
@@ -30,10 +30,7 @@
           styleClass="p-datatable-customers p-datatable-gridlines"
           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
           [globalFilterFields]="[
-            'edasattestno',
-            'invoicenumber',
-            'declarationumber',
-            'declarationdate', 'attestreqdate'
+            'edasattestno', 'declarationumber', 'invoicenumber', 'invoicedate', 'invoiceamount', 'feesamount', 'fineamount', 'lcaname', 'noofdaysoverdue'
           ]" [lazy]="true" (onLazyLoad)="InitTable($event)" [loading]="loading"
           
           >
@@ -111,34 +108,33 @@
                   <span >{{customer.edasattestno}} </span>
                     
                 </td>
-                <td><span class="image-text">{{customer.companyname}}</span></td>
-                <td style="text-align: right;"><span class="image-text">{{common.formatAmount(customer.invoiceamount)}}</span></td>
-                <td style="text-align: right;"><span class="image-text">{{common.formatAmount(customer.feesamount)}}</span></td>
-                <td>
-                    <span class="image-text">{{customer.invoicenumber}}</span>
+                <td><span class="image-text">{{customer.declarationumber}}</span></td>
+                <td ><span class="image-text">{{(customer.invoicenumber)}}</span></td>
+                <td ><span class="image-text">{{common.splitdatetime1(customer.invoicedate)?.date}}</span></td>
+                <td class="text_align_right">
+                    <span class="image-text">{{common.formatAmount(customer.invoiceamount)}}</span>
                 </td>
-                <td>
-                  <span class="image-text">{{ (customer.declarationumber) }}</span>
+                <td class="text_align_right">
+                  <span class="image-text">{{ common.formatAmount(customer.feesamount) }}</span>
               </td>
               
-                <td>
-                    <span class="image-text">{{splitdatetime(customer.declarationdate)?.date}}</span>
+                <td class="text_align_right">
+                    <span class="image-text"> {{common.formatAmount(customer.fineamount)}} </span>
                 </td>
                 <td>
-                    <span class="image-text">{{splitdatetime(customer.attestreqdate)?.date}}</span>
+                    <span class="image-text"> {{customer.lcaname}}  </span>
                 </td>
-                <td><span class="image-text">{{customer.lcaname}}</span></td>
                 <td>
-                  <p-tag [value]="customer.statusname" severity="success"></p-tag>
-                  <!-- <span class="image-text">{{customer.statusname}}</span> -->
+                  <span class="image-text">{{customer.noofdaysoverdue}}</span>
+                  
                 </td>
                 <td pFrozenColumn alignFrozen="right">
                   <span (click)="openNew(customer)" style="padding:15px; cursor: pointer;" pTooltip="Details" tooltipPosition="bottom"  class="image-text viewaction">
                     <mat-icon class="action_eye_icon" >visibility</mat-icon>
   
                       </span>
-                      <span (click)="DownloadFile(customer.attestfilelocation)" style="padding:15px; cursor: pointer;" tooltipPosition="bottom" pTooltip="Download"  class="image-text viewaction">
-                    <mat-icon class="action_eye_icon" >download</mat-icon> </span>
+                      <!-- <span (click)="DownloadFile(customer.attestfilelocation)" style="padding:15px; cursor: pointer;" tooltipPosition="bottom" pTooltip="Download"  class="image-text viewaction">
+                    <mat-icon class="action_eye_icon" >download</mat-icon> </span> -->
   
   
                 </td>
@@ -150,7 +146,7 @@
               *ngIf="list.length > 0"
             >
               <tr>
-                <td colspan="2">
+                <td colspan="4">
                   {{ "Total" | translate }}
                 </td>
                 <td class="text-align"> AED
@@ -159,7 +155,9 @@
                 <td class="text-align">AED
                   {{ common.formatAmount(total_feesamount) }}
                 </td>
-                <td class="text-align">
+                <td class="text-align">AED
+                  {{ common.formatAmount(total_fineamount) }}
+
                   <!-- {{ totals?.totaltotalamount | customCurrency : "AED" }} -->
                 </td>
                 <td colspan="100" class="text-align"></td>
@@ -187,7 +185,7 @@
       <!-- </div> -->
   
   
-      <p-dialog [(visible)]="AddInvoiceDialog" [draggable]="false" style="top:20%" [style]="{ width: '750px' }" header="Attestation Details" [modal]="true" styleClass="p-fluid">
+      <p-dialog [(visible)]="AddInvoiceDialog" [draggable]="false" style="top:20%" [style]="{ width: '750px' }" header="Fine Details" [modal]="true" styleClass="p-fluid">
         <p-tabView>
           <p-tabPanel header="Details">
         <div class="viewmore">
@@ -207,8 +205,7 @@
           </div>
         </div>
       </p-tabPanel>
-      <p-tabPanel header="Receipt">
-        <!-- {{this.src}} -->
+      <!-- <p-tabPanel header="Receipt">
         <div class="grid grid-cols-1">
           <div id="outerContainer">
             <div class="pdf-container">
@@ -230,7 +227,7 @@
             </div>
           </div>
         </div>
-      </p-tabPanel>
+      </p-tabPanel> -->
     </p-tabView>
         <ng-template pTemplate="footer">
           <p-button icon="pi pi-times" (click)="AddInvoiceDialog = false" label="{{'Cancel' | translate}}" styleClass="p-confirm-dialog-reject"></p-button>
