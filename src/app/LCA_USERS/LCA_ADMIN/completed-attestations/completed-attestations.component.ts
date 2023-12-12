@@ -277,7 +277,7 @@ export class CompletedAttestationsComponent
 
   onClickFilterOptionCommon() {
     let payload = {
-      useruno: 0,
+      useruno: "111",
       lcauno: 0, // should change based on loggedinuser
       companyuno: this.selectedFilterOption.id,
       startnum: this.selectedFilterOption.startnum,
