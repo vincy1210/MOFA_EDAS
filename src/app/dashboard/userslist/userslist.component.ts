@@ -377,7 +377,7 @@ deleteuserpopup(list:any){
     header: 'Confirm',
     icon: 'pi pi-exclamation-triangle',
     accept: () => {
-        // this.invoicesData = this.invoicesData.filter((val:any) => !this.selectedAttestations?.includes(val));
+        // this.invoicesData = this.invoicesData.filter((val:any) => !this.selectedAttestations?.includes(val)); 
         // this.selectedAttestations = null;
         this.deleteuser(list)
 

@@ -3,6 +3,7 @@ import { MatExpansionPanel } from '@angular/material/expansion';
 import { Router } from '@angular/router';
 import { CommonService } from 'src/service/common.service';
 import { EventEmitter, Output } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 interface MenuModel {
   id: number;
@@ -32,38 +33,46 @@ usertype:string='';
   menuList: MenuModel[] = [];
   @ViewChild('myPanel') myPanel!: MatExpansionPanel;
 
+  
+  private userRoleSubscription!: Subscription;
+
   constructor(private router: Router, public common:CommonService) {}
 
-  ngOnInit(): void {
 
+  setusername(){
+    console.log("calling set user name");
     let data=this.common.getUserProfile();
     if(data!=undefined  || data!=null){
     let abc=JSON.parse(data);
     console.log(JSON.parse(data))
     this.username=abc.Data.firstnameEN;
     }
+  }
 
-
-    let usertype=this.common.getUserType() || '';
-if(usertype=='' || usertype==null){
-  
-  this.common.userType$.subscribe((usertype_) => {
-    this.usertype = usertype_;
-    console.log(this.usertype);
-  });
-
-}
-else{
-  this.usertype=usertype;
-  this.getMenuItemLists();
-}
+  ngOnInit(): void {
+ //start of LCA user user flow
+    this.userRoleSubscription = this.common.userRole$.subscribe(() => {
+      this.setusername();
+      this.getMenuItemLists();
+    });
+   this.setusername();
+    let usertype=this.common.getuserRole() || '';
+    if(usertype=='' || usertype==null){
+      this.common.userType$.subscribe((usertype_) => {
+        this.usertype = usertype_;
+        console.log(this.usertype);
+        this.setusername();
+      });
+    }
+    else{
+      this.usertype=usertype;
+      this.getMenuItemLists();
+    }
+  //end of LCA user user flow
 if(usertype!='LCAAdmin'){
-  
-
-   
-   
     this.common.userCompany$.subscribe((loggedIn) => {
       this.companyname = loggedIn;
+     this.setusername();
     });
     let companyname1=this.common.getSelectedCompany()
     console.log(companyname1)
@@ -77,8 +86,6 @@ if(usertype!='LCAAdmin'){
       }
       console.log(this.isAdmin);
     });
-    
-  
 }
     
   }
@@ -87,6 +94,9 @@ if(usertype!='LCAAdmin'){
     this.menuList=[];
 
   console.log(this.usertype)
+
+  const userRole = this.common.userRole;
+  console.log(userRole);
 
   if(this.usertype!='LCAAdmin'){
     

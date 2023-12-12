@@ -108,7 +108,11 @@
                 </tr>
               </ng-template>
               <ng-template pTemplate="body" let-data>
-                <tr>
+                <tr [ngClass]="{
+                  'highlighted-row': data.isSelected,
+                  'custom-text-color': data.isSelected,
+                  'bold-text': data.isSelected
+                }">
                   <td>
                     <p-tableCheckbox
                       (click)="loadsidepanel(data)"  [disabled]="isPaid(data)"

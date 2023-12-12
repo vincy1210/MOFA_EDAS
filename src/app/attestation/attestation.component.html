@@ -100,7 +100,7 @@
               'bold-text': customer.isSelected
             }">
               <td><p-tableCheckbox (click)="loadsidepanel(customer)" [disabled]="isCOONotPaid(customer)" [value]="customer"></p-tableCheckbox> </td>
-            <td><span class="image-text">{{customer.edasattestno}} {{columns.isSelected}}</span></td>
+            <td><span class="image-text">{{customer.edasattestno}} </span></td>
             <td><span class="image-text">{{customer.companyname}}</span></td>
             <td style="text-align: right;"><span class="image-text">{{common.formatAmount(customer.invoiceamount)}}</span></td>
             <td style="text-align: right;"><span class="image-text">{{common.formatAmount(customer.feesamount)}}</span></td>

@@ -30,7 +30,7 @@ export class CooAttestationComponent implements OnInit {
   progress_val: number = 0;
   selectedAttestations: any;
   totalrecords: number = 0;
-  cooAttestationLists: [] = [];
+  cooAttestationLists: any;
   cols: any;
   loading: boolean = false;
   enableFilters: boolean = false;
@@ -204,7 +204,8 @@ this.form = this.fb.group({
 
         this.loading=false;
         if (`${response.dictionary.responsecode}` === '1') {
-          const dataArray = response.dictionary.data;
+          let dataArray = response.dictionary.data;
+          
 	  this.totalrecords=response.dictionary.recordcount;
           this.cooAttestationLists = dataArray;
           this.cooAttestationLists.map((row: any) => {
@@ -224,6 +225,7 @@ this.form = this.fb.group({
           });
           this.datasource=this.cooAttestationLists;
 
+
           if ($event.globalFilter) {
             this.datasource = this.datasource.filter((row: any) => this.globalFilter(row, $event.globalFilter));
             this.cooAttestationLists=this.datasource;
@@ -237,6 +239,7 @@ this.form = this.fb.group({
           }
           console.log(this.datasource);
 
+          this.cooAttestationLists = this.cooAttestationLists.map((item:any) => ({ ...item, selected: false }));
 
         }
       });
@@ -352,6 +355,8 @@ this.form = this.fb.group({
   
 loadsidepanel(event:any){
   // this.common.showLoading();
+
+  this.settingbackgroundcolors(event)
    console.log(event);
    console.log(this.selectedAttestations);
 
@@ -805,6 +810,43 @@ isPaid(data:any) {
 
 isRowSelectable(event:any) {
   return !this.isPaid(event.data);
+}
+
+
+// Add this to your component class
+isSelected(customer: any): string {
+  let abc=this.selectedAttestations.includes(customer);
+  if(abc){
+    return 'active';
+
+  }
+  else{
+    return 'inactive'
+  }
+}
+
+settingbackgroundcolors(event:any){
+  
+  this.cooAttestationLists.forEach((row: any) => {
+    row.isSelected = false;
+  });
+  
+  if (this.selectedAttestations.length > 0) {
+    // If multiple rows are selected
+    this.selectedAttestations.forEach((eventRow: any) => {
+      const selectedRow = this.cooAttestationLists.find((row: any) => row.edasattestno === eventRow.edasattestno);
+      if (selectedRow) {
+        selectedRow.isSelected = true;
+      }
+    });
+  } else {
+    // If a single row is selected
+    const selectedRow = this.cooAttestationLists.find((row: any) => row.edasattestno === this.selectedAttestations[0].edasattestno);
+    if (selectedRow) {
+      selectedRow.isSelected = true;
+    }
+  }
+  console.log(this.cooAttestationLists)
 }
 
 }

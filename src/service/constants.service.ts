@@ -64,5 +64,8 @@ export class ConstantsService {
 
   // this.consts.getDailyStatistics: filterType === "weekly"? this.consts.getWeeklyStatistics: this.consts.getMonthlyStatistics;
 
+  getFinesReport="lca/getFinesReport"
+
+
   requestAttestationFromExcelImport = 'lca/requestAttestationFromExcelImport';
 }

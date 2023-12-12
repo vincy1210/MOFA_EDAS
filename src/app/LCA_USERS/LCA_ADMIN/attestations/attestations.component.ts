@@ -14,7 +14,7 @@ export class AttestationsComponent implements OnInit {
 
   ngOnInit(): void {
 
-this.usertype=this.common.getUserType() || '';
+this.usertype=this.common.getuserRole() || '';
 
 
   }
