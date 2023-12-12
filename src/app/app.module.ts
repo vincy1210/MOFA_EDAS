@@ -159,6 +159,7 @@ import { ImportAttestationsComponent } from './LCA_USERS/LCA_ADMIN/import-attest
 import { PendingAttestationsComponent } from './LCA_USERS/LCA_ADMIN/pending-attestations/pending-attestations.component';
 import { CompletedAttestationsComponent } from './LCA_USERS/LCA_ADMIN/completed-attestations/completed-attestations.component';
 import { ImportAttestationsCreateComponent } from './LCA_USERS/LCA_ADMIN/import-attestations/import-attestations-create/import-attestations-create.component';
+import { RisklcaComponent } from './LCA_USERS/LCA_ADMIN/risklca/risklca.component';
 
 
 
@@ -179,7 +180,7 @@ import { ImportAttestationsCreateComponent } from './LCA_USERS/LCA_ADMIN/import-
     CooAttestationCreateComponent,
     CompletedAttestationComponent,LeftMenuDrawerComponent, AttestationWorkflowComponent, CompletedCooRequestsComponent,
     LcaCompletedAttestationsComponent,
-    ESealTestComponent, LoginComponent, PaymentinfoComponent, CooinreviewComponent, PhysicalinreviewComponent, ReportsComponent, LCAComponent, COOComponent, PhysicalComponent, FinesComponent, AttestationsComponent, ImportAttestationsComponent, PendingAttestationsComponent, CompletedAttestationsComponent, ImportAttestationsCreateComponent, 
+    ESealTestComponent, LoginComponent, PaymentinfoComponent, CooinreviewComponent, PhysicalinreviewComponent, ReportsComponent, LCAComponent, COOComponent, PhysicalComponent, FinesComponent, AttestationsComponent, ImportAttestationsComponent, PendingAttestationsComponent, CompletedAttestationsComponent, ImportAttestationsCreateComponent, RisklcaComponent, 
     //PhoneMaskDirective, 
 
     

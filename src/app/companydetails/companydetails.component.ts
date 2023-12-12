@@ -156,7 +156,8 @@ if(this.reg_form_data==undefined){
     this.typeExpress=['yes', 'No']
     let response;
     let data={
-      "useruno":"1"
+      "useruno":"1",
+      "languagecode":0
     }
     this.common.showLoading();
 

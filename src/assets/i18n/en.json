@@ -221,6 +221,8 @@
   "lcadetails": {
     "page.approvetitle": "LCA import",
     "page.pendinglcatitle": "LCA",
+    "page.Risk": "Risk",
+
     "page.completedlcatitle": "LCA",
     "submitbtn": "Submit",
     "lcadetailList": {

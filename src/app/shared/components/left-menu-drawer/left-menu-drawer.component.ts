@@ -190,6 +190,8 @@ if(usertype!='LCAAdmin'){
           { id: 1, menu: 'Import', icon: 'play_arrow', link: '/importslca' },
           { id: 2, menu: 'Pending', icon: 'play_arrow',link: '/pendinglca' },
           { id: 3, menu: 'Completed', icon: 'play_arrow',link: '/completedlca' },
+          { id: 4, menu: 'In Risk', icon: 'play_arrow',link: '/risklca' },
+
         ]
     });
 

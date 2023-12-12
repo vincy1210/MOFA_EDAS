@@ -70,4 +70,6 @@ export class ConstantsService {
   getPendingReqforlcauser = "lca/getPendingReqforlcauser";
   getCompletedReqforlcauser = "lca/getCompletedReqforlcauser";
   getCompanyListForLcaUser = "lca/getCompanyListForLcaUser";
+  getInRiskReqforlcauser = "lca/getInRiskReqforlcauser";
+
 }

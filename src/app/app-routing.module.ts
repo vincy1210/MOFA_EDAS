@@ -28,6 +28,7 @@ import { AttestationsComponent } from './LCA_USERS/LCA_ADMIN/attestations/attest
 import { ImportAttestationsComponent } from './LCA_USERS/LCA_ADMIN/import-attestations/import-attestations.component';
 import { PendingAttestationsComponent } from './LCA_USERS/LCA_ADMIN/pending-attestations/pending-attestations.component';
 import { CompletedAttestationsComponent } from './LCA_USERS/LCA_ADMIN/completed-attestations/completed-attestations.component';
+import { RisklcaComponent } from './LCA_USERS/LCA_ADMIN/risklca/risklca.component';
 
 
 const routes: Routes = [
@@ -65,6 +66,10 @@ const routes: Routes = [
   {path:'importslca', component:ImportAttestationsComponent},
   {path:'pendinglca', component:PendingAttestationsComponent},
   {path:'completedlca', component:CompletedAttestationsComponent},
+  {path:'risklca', component:RisklcaComponent},
+
+
+  
 
   
 

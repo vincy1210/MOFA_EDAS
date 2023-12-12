@@ -1,0 +1,368 @@
+<!-- <app-loader></app-loader> -->
+<div>
+    <div class="grid grid-cols-1" color="primary" class="page-header">
+      <h3>
+        <ng-container *ngIf="routesname === 'approve'">{{
+          "lcadetails.page.Risk" | translate
+        }}</ng-container>
+      </h3>
+    </div>
+    <div class="risk-bg lcadetails-page">
+      <div class="mx-auto lcadetails-window">
+        <!-- <div class="chart-table-view">
+                <button type="button" pButton (click)="orgChartClick()">
+                  <ng-container *ngIf="!orgCharts">
+                    Chart view
+                  </ng-container>
+                  <ng-container *ngIf="orgCharts">
+                    Table view
+                  </ng-container>
+                </button>
+              </div> -->
+        <!-- Content here -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-1" *ngIf="!orgCharts">
+          <div
+            class="lcadetails-window bg-white rounded-lg col-span-3"
+            [ngClass]="{
+              'col-span-2 hidden sm:hidden lg:block': shouldShow,
+              'col-span-3': !shouldShow
+            }"
+          >
+            <p-table
+              [responsiveLayout]="responsiveLayout"
+              [scrollable]="responsiveLayout === 'scroll' ? true : false"
+              [(selection)]="selectedRows"
+              selectionMode="single"
+              [lazy]="true"
+              (onLazyLoad)="loadDatas($event)"
+              dataKey="riskuno"
+              #tableref
+              [rowHover]="true"
+              [paginator]="true"
+              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+              [filterDelay]="0"
+              [totalRecords]="totalrecords"
+              [value]="excelLists"
+              [rows]="50"
+              [columns]="cols"
+              [showCurrentPageReport]="true"
+              [rowsPerPageOptions]="[10, 25, 50]"
+              [loading]="loading"
+              styleClass="p-datatable-customers p-datatable-gridlines"
+              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+              [globalFilterFields]="[
+                'LCACode',
+                'RequestNo',
+                'RequestDate',
+                'DeclarationNo',
+                'DeclarationDate',
+                'TradelicenceNo',
+                'DocType',
+                'ExpPortCode',
+                'ExpPortName',
+                'AttestationNo',
+                'InvoiceDate',
+                'InvoiceAmount',
+                'InvoiceNo',
+                'InvoiceCurrency',
+                'InvoiceId',
+                'CompanyName',
+                'Mode',
+                'ConsigneeName',
+                'EmailAddress',
+                'ContactNo',
+                'Remarks',
+                ''
+              ]"
+            >
+              <ng-template pTemplate="caption">
+                <div class="p-d-flex grid-header">
+                  <div class="grid-header-left">
+                    <div style="padding: 5px" class="col-md-3 col-lg-3 col-sm-6">
+                      <mat-form-field class="searchboxinput">
+                        <mat-label
+                          ><mat-icon style="font-size: larger">{{
+                            "search" | translate
+                          }}</mat-icon>
+                          {{ "Search keyword" | translate }}</mat-label
+                        >
+                        <input
+                          matInput
+                          type="text"
+                          (input)="
+                            tableref.filterGlobal(
+                              $any($event.target).value,
+                              'contains'
+                            )
+                          "
+                          placeholder="Search keyword"
+                        />
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="grid-header-right">
+                      <div *ngIf="enableFilters" style="padding: 5px;" class="col-md-3 col-lg-3  col-md-6">
+                          <mat-form-field style="height: 20px; margin: 0; padding-top: 0; margin-top: -2.89em !important;width: 170px; ">
+                              <mat-label>{{'Company' | translate}}</mat-label>
+                              <mat-select
+                              (selectionChange)="
+                                onClickFilterOption($event.value)
+                              "
+                            >
+                              <mat-option
+                                *ngFor="let option of filterOptions"
+                                [value]="option"
+                                >{{ option.value }}</mat-option
+                              >
+                            </mat-select>
+                          </mat-form-field>
+                      </div>
+                      <div *ngIf="enableFilters" style="padding: 5px;" class="col-md-3 col-lg-3  col-md-6">
+                          <mat-form-field style="height: 20px; margin: 0; padding-top: 0; margin-top: -2.89em !important;width: 170px; ">
+                              <mat-label>{{'Start Date' | translate}}</mat-label>
+                              <input matInput [matDatepicker]="decDatepicker1" placeholder="{{'From' | translate}}" name="Startdate" [(ngModel)]="selectedFilterOption.Startdate" />
+                              <mat-datepicker-toggle matSuffix [for]="decDatepicker1"></mat-datepicker-toggle>
+                              <mat-datepicker #decDatepicker1></mat-datepicker>
+                          </mat-form-field>
+                      </div>
+                      <div *ngIf="enableFilters" style="padding: 5px;" class="col-md-3 col-lg-3  col-sm-6">
+                          <mat-form-field style="height: 20px; margin: 0; padding-top: 0; margin-top: -2.89em !important; width: 170px;">
+                              <mat-label>{{'End Date' | translate}}</mat-label>
+                              <input matInput [matDatepicker]="decDatepicker2" placeholder="{{'To' | translate}}" name="Enddate" [(ngModel)]="selectedFilterOption.Enddate" />
+                              <mat-datepicker-toggle matSuffix [for]="decDatepicker2"></mat-datepicker-toggle>
+                              <mat-datepicker #decDatepicker2></mat-datepicker>
+                          </mat-form-field>
+                      </div>
+                      <div *ngIf="enableFilters" style="padding: 5px;" clasFrs="col-md-3 col-lg-3">
+                          <button pButton pRipple label="{{'Apply' | translate}}" class="p-button-text primary" (click)="onClickFilterOptionDate(true)"></button>
+                      </div>
+                    <button
+                      type="button"
+                      pButton
+                      pRipple
+                      icon="pi pi-file-excel"
+                      (click)="exportExcel()"
+                      class="mr-2 grid-header-right-icon"
+                      [pTooltip]="'excelExport' | translate"
+                      tooltipPosition="bottom"
+                    ></button>
+                    <button
+                      type="button"
+                      pButton
+                      pRipple
+                      icon="pi pi-filter"
+                      (click)="clickChips()"
+                      class="mr-2 grid-header-right-icon"
+                      [ngClass]="{ clicked: enableFilters }"
+                      [pTooltip]="'filter' | translate"
+                      tooltipPosition="bottom"
+                    ></button>
+                  </div>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="header" let-columns>
+                <tr>
+                  <th
+                    *ngFor="let col of columns"
+                    [pSortableColumn]="col.field"
+                    pFrozenColumn
+                    [frozen]="col.field === 'action'"
+                    alignFrozen="right"
+                    [ngClass]="{
+                      'action-width-header': col.field === 'action',
+                      'lg:noaction-width-header': col.field !== 'action',
+                      frozen1: col.field === 'action',
+                      frozen2: col.field === 'enteredon'
+                    }"
+                  >
+                    <span class="table-head-column">
+                      <span>{{ col.header | translate }}</span>
+                      <p-sortIcon
+                        field="code"
+                        *ngIf="col.field !== 'action'"
+                      ></p-sortIcon>
+                      <p-columnFilter
+                        type="text"
+                        [field]="col.field"
+                        display="menu"
+                        *ngIf="col.field !== 'action' && enableFilters"
+                      ></p-columnFilter>
+                    </span>
+                  </th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-data>
+                <tr
+                  [ngClass]="{
+                    active:
+                      selectedRows &&
+                      selectedRows.length > 0 &&
+                      selectedRows[0] === data
+                  }"
+                >
+                  <td class="lg:noaction-width-header">
+                    <span class="p-column-title">{{
+                      "lcadetails.lcadetailList.LCACode" | translate
+                    }}</span>
+                    <span class="image-text">{{ data.lcaname }}</span>
+                  </td>
+                  <td class="lg:noaction-width-header">
+                    <span class="p-column-title">{{
+                      "lcadetails.lcadetailList.RequestNo" | translate
+                    }}</span>
+                    <span class="image-text">{{ data.lcarequestno }}</span>
+                  </td>
+                  <td class="lg:noaction-width-header">
+                    <span class="p-column-title">{{
+                      "lcadetails.lcadetailList.RequestDate" | translate
+                    }}</span>
+                    <span class="image-text">{{
+                      splitdatetime(data.attestreqdate)?.date
+                    }}</span>
+                  </td>
+                  <td class="">
+                    <span class="p-column-title">{{
+                      "lcadetails.lcadetailList.DeclarationNo" | translate
+                    }}</span>
+                    <span class="image-text">{{ data.declarationumber }}</span>
+                  </td>
+                  <td class="">
+                    <span class="p-column-title">{{
+                      "lcadetails.lcadetailList.DeclarationDate" | translate
+                    }}</span>
+                    <span class="image-text">{{
+                      splitdatetime(data.declarationdate)?.date
+                    }}</span>
+                  </td>
+                  <td class="">
+                    <span class="p-column-title">{{
+                      "lcadetails.lcadetailList.TradelicenceNo" | translate
+                    }}</span>
+                    <span class="image-text">{{ data.tradelicensenumber }}</span>
+                  </td>
+                  <td class="">
+                    <span class="p-column-title">{{
+                      "lcadetails.lcadetailList.DocType" | translate
+                    }}</span>
+                    <span class="image-text">{{ data.documenttypecode }}</span>
+                  </td>
+                  <td class="">
+                    <span class="p-column-title">{{
+                      "lcadetails.lcadetailList.ExpPortCode" | translate
+                    }}</span>
+                    <span class="image-text">{{ data.ExpPortCode }}</span>
+                  </td>
+                  <td class="lg:noaction-width-header-max">
+                    <span class="p-column-title">{{
+                      "lcadetails.lcadetailList.ExpPortName" | translate
+                    }}</span>
+                    <span class="image-text">{{ data.exportportname }}</span>
+                  </td>
+                  <td class="lg:noaction-width-header-max">
+                    <span class="p-column-title">{{
+                      "lcadetails.lcadetailList.AttestationNo" | translate
+                    }}</span>
+                    <span class="image-text">{{ data.edasattestno }}</span>
+                  </td>
+                  <td class="">
+                    <span class="p-column-title">{{
+                      "lcadetails.lcadetailList.InvoiceDate" | translate
+                    }}</span>
+                    <span class="image-text">{{
+                      splitdatetime(data.invoicedate)?.date
+                    }}</span>
+                  </td>
+                  <td class="">
+                    <span class="p-column-title">{{
+                      "lcadetails.lcadetailList.InvoiceAmount" | translate
+                    }}</span>
+                    <span class="image-text">{{ data.invoiceamount }}</span>
+                  </td>
+                  <td class="">
+                    <span class="p-column-title">{{
+                      "lcadetails.lcadetailList.InvoiceNo" | translate
+                    }}</span>
+                    <span class="image-text">{{ data.invoicenumber }}</span>
+                  </td>
+                  <td class="">
+                    <span class="p-column-title">{{
+                      "lcadetails.lcadetailList.InvoiceCurrency" | translate
+                    }}</span>
+                    <span class="image-text">{{ data.currencycode }}</span>
+                  </td>
+                  <td class="">
+                    <span class="p-column-title">{{
+                      "lcadetails.lcadetailList.InvoiceId" | translate
+                    }}</span>
+                    <span class="image-text">{{ data.invoicenumber }}</span>
+                  </td>
+                  <td class="lg:noaction-width-header-max">
+                    <span class="p-column-title">{{
+                      "lcadetails.lcadetailList.CompanyName" | translate
+                    }}</span>
+                    <span class="image-text">{{ data.companyname }}</span>
+                  </td>
+                  <td class="">
+                    <span class="p-column-title">{{
+                      "lcadetails.lcadetailList.Mode" | translate
+                    }}</span>
+                    <span class="image-text">{{ data.Mode }}</span>
+                  </td>
+                  <td class="lg:noaction-width-header-max">
+                    <span class="p-column-title">{{
+                      "lcadetails.lcadetailList.ConsigneeName" | translate
+                    }}</span>
+                    <span class="image-text">{{ data.consigneename }}</span>
+                  </td>
+                  <td class="">
+                    <span class="p-column-title">{{
+                      "lcadetails.lcadetailList.EmailAddress" | translate
+                    }}</span>
+                    <span class="image-text">{{ data.EmailAddress }}</span>
+                  </td>
+                  <td class="">
+                    <span class="p-column-title">{{
+                      "lcadetails.lcadetailList.ContactNo" | translate
+                    }}</span>
+                    <span class="image-text">{{ data.ContactNo }}</span>
+                  </td>
+                  <td class="">
+                    <span class="p-column-title">{{
+                      "lcadetails.lcadetailList.Remarks" | translate
+                    }}</span>
+                    <span class="image-text">{{ data.comments }}</span>
+                  </td>
+                  <!-- <td
+                    class="action-width-header frozen1"
+                    pFrozenColumn
+                    [frozen]="true"
+                    alignFrozen="right"
+                  >
+                    <div class="flex action-width-body">
+                      <button
+                        type="button"
+                        (click)="DeleteRow(data)"
+                        [pTooltip]="'delete' | translate"
+                        tooltipPosition="bottom"
+                        class="p-element grid-header-right-icon p-button p-component p-button-icon-only"
+                        title="{{ 'tlpDelete' | translate }}"
+                      >
+                        <i class="fa fa-trash"></i>
+                      </button>
+                    </div>
+                  </td> -->
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="100">{{ "noDataFound" | translate }}</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
+  
