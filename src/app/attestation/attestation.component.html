@@ -266,22 +266,37 @@
   
     <!-- modal details popup -->
     <p-dialog [(visible)]="AddInvoiceDialog" style="top:20%" [draggable]="false" [style]="{ width: '750px' }" header="{{'Attestation Details' | translate}}" [modal]="true" styleClass="p-fluid">
-          <div class="viewmore">
-            <div class="more-content-section">
-              <div class="grid grid-cols-2">
-                <ng-container >
-                 
-                  <div class="more-content" *ngFor="let field of fields">
-                    <mat-label class="title-label">{{ field.label | translate }}</mat-label>
-                    <div class="more-content-body">
-                      <mat-label class="more-content-block">{{ field.value }}</mat-label>
-                    </div>
-                  </div>
-                  
-                </ng-container>
+         
+ <p-tabView>
+  <p-tabPanel header="Details">
+
+<div class="viewmore">
+        <div class="more-content-section">
+          <div class="grid grid-cols-2">
+            <ng-container >
+             
+              <div class="more-content" *ngFor="let field of fields">
+                <mat-label class="title-label">{{ field.label | translate }}</mat-label>
+                <div class="more-content-body">
+                  <mat-label class="more-content-block">{{ field.value }}</mat-label>
+                </div>
               </div>
-            </div>
+              
+            </ng-container>
           </div>
+        </div>
+      </div>
+  
+  </p-tabPanel>
+<p-tabPanel header="COO Details">
+
+
+
+</p-tabPanel>
+</p-tabView>
+
+
+
           <ng-template pTemplate="footer">
             <p-button icon="pi pi-times" (click)="AddInvoiceDialog = false" label="{{'Cancel' | translate}}" styleClass="p-confirm-dialog-reject"></p-button>
         </ng-template>

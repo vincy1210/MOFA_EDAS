@@ -96,6 +96,10 @@ if(usertype!='LCAAdmin'){
   console.log(this.usertype)
 
   const userRole = this.common.userRole;
+
+  if(userRole){
+    this.usertype=userRole;
+  }
   console.log(userRole);
 
   if(this.usertype!='LCAAdmin'){
