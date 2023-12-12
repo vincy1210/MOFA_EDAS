@@ -221,9 +221,7 @@ export class ImportAttestationsCreateComponent implements OnInit {
 
   onSubmit() {
     if (this.AddRiskForm.invalid) {
-      this.common.showErrorMessage(
-        this.translate.instant('label.enterValidData')
-      );
+      this.common.showErrorMessage(this.translate.instant('enterValidData'));
       return;
     }
     let action: string = this.data?.fielduno ? 'UPDATE' : 'ADD';
@@ -241,12 +239,20 @@ export class ImportAttestationsCreateComponent implements OnInit {
         JSON.stringify(this.excelColumns) !==
         JSON.stringify(this.importedData[0])
       ) {
-        this.common.showErrorMessage('Wrong template');
+        this.common.showErrorMessage(this.translate.instant('wrongtemplate'));
         return;
+      } else {
+        const secondRow =
+          this.importedData.length > 0 ? this.importedData[1] : [];
+        let isStringEmpty: boolean = this.common.areAllStringsEmpty(secondRow);
+        if (isStringEmpty) {
+          this.common.showErrorMessage(this.translate.instant('nodataexists'));
+          return;
+        }
       }
       this.close('success');
     } else {
-      this.common.showErrorMessage('No data exists');
+      this.common.showErrorMessage(this.translate.instant('nodataexists'));
     }
   }
 }

@@ -280,7 +280,7 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
   getDataFromExcels(dataList: any[]) {
     this.excelLists = [];
     if (dataList && dataList.length > 0) {
-      this.common.showSuccessMessage('Imported successfully');
+      this.common.showSuccessMessage(this.translate.instant('datareadsuccess'));
       dataList.map((row, index) => {
         const [
           LCACode,
@@ -510,9 +510,11 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
       return row.Status !== 'Valid';
     });
     if (NotValidDatas && NotValidDatas.length > 0) {
-      this.common.showErrorMessage(
-        'Could not import! Some of the rows are not valid'
-      );
+      this.common.showErrorMessage(this.translate.instant('couldnotsubmit'));
+      return;
+    }
+    if (dataList1.length === 0) {
+      this.common.showErrorMessage(this.translate.instant('nothingtosubmit'));
       return;
     }
     // all unique requests
@@ -528,7 +530,7 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
         requestNo: RequestNo,
         requestDate: row1.RequestDate,
         lcaCode: row1.LCACode,
-        requestDetails: [],
+        requestDetails: {}, //[]
       });
     });
     // all unique declarations
@@ -538,7 +540,8 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
       );
       allRequestByNo.forEach((rowReq1) => {
         const DeclarationNo = rowReq1.DeclarationNo;
-        const allDataDeclaration = rowReq.requestDetails.filter(
+        const requestDetailsList: any[] = [rowReq.requestDetails]; //rowReq.requestDetails;
+        const allDataDeclaration = requestDetailsList.filter(
           (m: any) => m.decNo === DeclarationNo
         );
         if (allDataDeclaration.length > 0) {
@@ -564,7 +567,8 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
           allDataInvoices && allDataInvoices.length > 0
             ? allDataInvoices[0]
             : {};
-        rowReq.requestDetails.push({
+        // rowReq.requestDetails.push
+        rowReq.requestDetails = {
           decNo: DeclarationNo,
           decDate: dataInvoices.DeclarationDate,
           tradeLicNo: dataInvoices.TradelicenceNo,
@@ -575,11 +579,43 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
           exportPortName: dataInvoices.ExpPortName,
           mode: dataInvoices.Mode,
           invoices: invoiceList,
-        });
+        };
       });
     });
-    console.log('allRequestData: ', allRequestData);
-    this.common.showSuccessMessage('Importing data Inprogress');
+    this.submitLcaDatas(allRequestData);
+  }
+
+  submitLcaDatas(allRequestData: any[]) {
+    // console.log('allRequestData: ', allRequestData);
+    // this.common.showSuccessMessage('Submit data Inprogress');
+    let resp;
+    const payload = {
+      uuid: '111',
+      requestjson: allRequestData,
+    };
+    this.loading = true;
+    this.common.showLoading();
+    this.apiservice
+      .post(this.consts.requestAttestationFromExcelImport, payload)
+      .subscribe({
+        next: (success: any) => {
+          this.common.hideLoading();
+          this.loading = false;
+          resp = success;
+          if (resp.responsecode == 1) {
+            this.common.showSuccessMessage(
+              this.translate.instant('Item_Created_Successfully')
+            );
+            this.excelLists = [];
+            this.loading = false;
+          } else {
+            this.common.showErrorMessage(
+              this.translate.instant('something went wrong')
+            );
+            this.loading = false;
+          }
+        },
+      });
   }
 
   deleteProfile(data: any) {

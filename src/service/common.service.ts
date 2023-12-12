@@ -712,6 +712,10 @@ this.lcauserloggedinSubject.next(true)
     });
   }
   
+  areAllStringsEmpty(arr: string[]): boolean {
+    return arr.every((str) => str === '');
+  }
+
   filterColumnsClientData(data: any[], filterList: any) {
     return data.filter((item) => {
       for (const key in item) {
