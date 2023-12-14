@@ -1,16 +1,128 @@
+<mat-divider></mat-divider>
+<div class="company-bg registration-page">
+  <div class="container mx-auto px-32 registration-window">
+    <div class="grid grid-cols-4 gap-6 px-5 py-3">
+      <div class="grid grid-cols-1 dashboard-card p-5">
+        <p>Requests</p>
+        <h1 class="font-bold dashboard-scores">
+          {{ totalTile.noofrequestsubmitted }}
+        </h1>
+      </div>
+      <div class="grid grid-cols-1 dashboard-card p-5">
+        <p>Pending</p>
+        <h1 class="font-bold dashboard-scores">
+          {{ totalTile.noofrequestpending }}
+        </h1>
+      </div>
+      <div class="grid grid-cols-1 dashboard-card p-5">
+        <p>Completed</p>
+        <h1 class="font-bold dashboard-scores">
+          {{ totalTile.noofrequestcompleted }}
+        </h1>
+      </div>
+      <div class="grid grid-cols-1 dashboard-card p-5">
+        <p>In Risk</p>
+        <h1 class="font-bold dashboard-scores">
+          {{ totalTile.noofrequestinrisk }}
+        </h1>
+      </div>
+    </div>
+    <!-- attestation request -->
+    <div class="grid grid-cols-1 px-5 py-3">
+      <div class="grid grid-cols-1 bg-white-r p-5">
+        <div class="grid grid-cols-3">
+          <div>
+            <h1 class="font-bold float-left mr-3">LCA Attestation Requests</h1>
+            <div style="width: 100px" class="float-left">
+              <!-- <mat-form-field appearance="outline">
+                <mat-label>Select</mat-label>
+                <mat-select
+                  (selectionChange)="onClickFilterOption('lca', $event.value)"
+                >
+                  <mat-option value="01">Day</mat-option>
+                  <mat-option value="02">Week</mat-option>
+                  <mat-option value="03">Month</mat-option>
+                </mat-select>
+              </mat-form-field> -->
+            </div>
+          </div>
 
-<div id="loading"  style="display: none;" ></div>
+          <div class="col-span-2">
+            <div class="flex justify-end">
+              <mat-list role="list" class="kd-guage-legends rkpi-guage-legends">
+                <mat-list-item role="listitem">
+                  <mat-icon class="mr-1 kd-dot kdl-chart-color-brown"
+                    >circle</mat-icon
+                  >Requests completed
+                </mat-list-item>
+                <mat-list-item role="listitem">
+                  <mat-icon class="mr-1 kd-dot kdl-chart-color-black"
+                    >circle</mat-icon
+                  >Number of requests
+                </mat-list-item>
+              </mat-list>
+            </div>
+          </div>
+        </div>
+        <div class="grid grid-cols-1">
+          <div class="ps-01">
+            <div
+              echarts
+              [options]="lcaChartOptionattestation"
+              class="demo-chart pb-3"
+              style="height: 300px; width: 100%"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="grid grid-cols-1 px-5 py-3">
+      <div class="grid grid-cols-1 bg-white-r p-5">
+        <div class="grid grid-cols-3">
+          <div>
+            <h1 class="font-bold float-left mr-3">COO Attestation Requests</h1>
+            <div style="width: 100px" class="float-left">
+              <mat-form-field appearance="outline">
+                <mat-label>Select</mat-label>
+                <mat-select
+                  (selectionChange)="onClickFilterOption('coo', $event.value)"
+                >
+                  <mat-option value="01">Day</mat-option>
+                  <mat-option value="02">Week</mat-option>
+                  <mat-option value="03">Month</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
 
-<div class="body-bg registration-page" style="height: 500px;">
-<form >
-<div class="container registration-window">
-  <div class="w-50 m-auto weclome_text">
-
-
-   Welcome {{this.usertype}}
+          <div class="col-span-2">
+            <div class="flex justify-end">
+              <mat-list role="list" class="kd-guage-legends rkpi-guage-legends">
+                <mat-list-item role="listitem">
+                  <mat-icon class="mr-1 kd-dot kdl-chart-color-brown"
+                    >circle</mat-icon
+                  >Requests completed
+                </mat-list-item>
+                <mat-list-item role="listitem">
+                  <mat-icon class="mr-1 kd-dot kdl-chart-color-black"
+                    >circle</mat-icon
+                  >Number of requests
+                </mat-list-item>
+              </mat-list>
+            </div>
+          </div>
+        </div>
+        <div class="grid grid-cols-1">
+          <div class="ps-01">
+            <div
+              echarts
+              [options]="cooChartOptionattestation"
+              class="demo-chart pb-3"
+              style="height: 300px; width: 100%"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </div> -->
   </div>
-      
-      </div></form></div>
-
-      
-      
+</div>

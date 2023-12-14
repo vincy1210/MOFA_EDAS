@@ -35,8 +35,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
-// import { NgxEchartsModule } from 'ngx-echarts';
-// import * as echarts from 'echarts';
+import { NgxEchartsModule } from 'ngx-echarts';
+import * as echarts from 'echarts';
+
 import {
   DateAdapter,
   MatNativeDateModule,
@@ -86,8 +87,6 @@ import {
   RecaptchaFormsModule,
   RECAPTCHA_V3_SITE_KEY,
   RecaptchaV3Module,
-  
-  
 } from 'ng-recaptcha';
 
 import { LandingPageComponent } from './landing-page/landing-page.component';
@@ -129,7 +128,7 @@ import { PaymentinfoComponent } from './paymentinfo/paymentinfo.component';
 import { CooinreviewComponent } from './coo-attestation/cooinreview/cooinreview.component';
 import { PhysicalinreviewComponent } from './physical-attestation/physicalinreview/physicalinreview.component';
 import { TagModule } from 'primeng/tag';
-import {NgIdleKeepaliveModule} from '@ng-idle/keepalive'
+import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 
 // import { EidFormatterPipe } from './eid-formatter.pipe';
 //import { PhoneMaskDirective } from './phone-mask.directive';
@@ -138,7 +137,6 @@ import {NgIdleKeepaliveModule} from '@ng-idle/keepalive'
 // // import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
 // import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 // import {MatButtonModule} from '@angular/material/button';
-
 
 // import { PrimeIcons } from 'primeng/api';
 
@@ -161,13 +159,8 @@ import { CompletedAttestationsComponent } from './LCA_USERS/LCA_ADMIN/completed-
 import { ImportAttestationsCreateComponent } from './LCA_USERS/LCA_ADMIN/import-attestations/import-attestations-create/import-attestations-create.component';
 import { RisklcaComponent } from './LCA_USERS/LCA_ADMIN/risklca/risklca.component';
 
-
-
-
-
 @NgModule({
   declarations: [
-    
     AppComponent,
     RegistrationComponent,
     CompanydetailsComponent,
@@ -178,16 +171,32 @@ import { RisklcaComponent } from './LCA_USERS/LCA_ADMIN/risklca/risklca.componen
     PhysicalAttestationCreateComponent,
     CooAttestationComponent,
     CooAttestationCreateComponent,
-    CompletedAttestationComponent,LeftMenuDrawerComponent, AttestationWorkflowComponent, CompletedCooRequestsComponent,
+    CompletedAttestationComponent,
+    LeftMenuDrawerComponent,
+    AttestationWorkflowComponent,
+    CompletedCooRequestsComponent,
     LcaCompletedAttestationsComponent,
-    ESealTestComponent, LoginComponent, PaymentinfoComponent, CooinreviewComponent, PhysicalinreviewComponent, ReportsComponent, LCAComponent, COOComponent, PhysicalComponent, FinesComponent, AttestationsComponent, ImportAttestationsComponent, PendingAttestationsComponent, CompletedAttestationsComponent, ImportAttestationsCreateComponent, RisklcaComponent, 
-    //PhoneMaskDirective, 
-
-    
-      ],
+    ESealTestComponent,
+    LoginComponent,
+    PaymentinfoComponent,
+    CooinreviewComponent,
+    PhysicalinreviewComponent,
+    ReportsComponent,
+    LCAComponent,
+    COOComponent,
+    PhysicalComponent,
+    FinesComponent,
+    AttestationsComponent,
+    ImportAttestationsComponent,
+    PendingAttestationsComponent,
+    CompletedAttestationsComponent,
+    ImportAttestationsCreateComponent,
+    RisklcaComponent,
+    //PhoneMaskDirective,
+  ],
 
   imports: [
-    NgIdleKeepaliveModule.forRoot() ,//vincy
+    NgIdleKeepaliveModule.forRoot(), //vincy
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -279,26 +288,36 @@ import { RisklcaComponent } from './LCA_USERS/LCA_ADMIN/risklca/risklca.componen
     ProgressBarModule,
     InputTextModule,
     ToastModule,
-    PdfViewerModule,   RecaptchaFormsModule,
-    RecaptchaV3Module, ToolbarModule, DialogModule, ConfirmDialogModule, TagModule, NgIdleKeepaliveModule, TabViewModule
+    PdfViewerModule,
+    RecaptchaFormsModule,
+    RecaptchaV3Module,
+    ToolbarModule,
+    DialogModule,
+    ConfirmDialogModule,
+    TagModule,
+    NgIdleKeepaliveModule,
+    TabViewModule,
+    NgxEchartsModule.forRoot({
+      echarts,
+    }),
   ],
   providers: [
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: { appearance: 'outline' },
     },
-    
-        {
-          provide: RECAPTCHA_SETTINGS,
-          useValue: {
-            siteKey: RECAPTCHA_V2_DUMMY_KEY
-          } as RecaptchaSettings
-        },
+
+    {
+      provide: RECAPTCHA_SETTINGS,
+      useValue: {
+        siteKey: RECAPTCHA_V2_DUMMY_KEY,
+      } as RecaptchaSettings,
+    },
     {
       provide: RECAPTCHA_V3_SITE_KEY,
       useValue: RECAPTCHA_V3_STACKBLITZ_KEY,
     },
-    
+
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     ModalPopupService,
     DatePipe,
