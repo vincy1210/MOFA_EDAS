@@ -61,6 +61,7 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
   };
   currentDate: Date = new Date();
   responsiveLayout: 'scroll' | 'stack' = 'scroll';
+  issubmitvalid: boolean = false;
 
   constructor(
     public override router: Router,
@@ -501,20 +502,30 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
     });
   }
 
+  postDataValid() {
+    const dataList1 = this.excelLists;
+    this.submitDataJson(dataList1);
+  }
+
   postData() {
-    const allRequestData = [] as any[];
     const dataList1 = this.excelLists;
     const NotValidDatas = dataList1.filter((row) => {
       return row.Status !== 'Valid';
     });
     if (NotValidDatas && NotValidDatas.length > 0) {
       this.common.showErrorMessage(this.translate.instant('couldnotsubmit'));
+      this.issubmitvalid = true;
       return;
     }
     if (dataList1.length === 0) {
       this.common.showErrorMessage(this.translate.instant('nothingtosubmit'));
       return;
     }
+    this.submitDataJson(dataList1);
+  }
+
+  submitDataJson(dataList1: any[]) {
+    const allRequestData = [] as any[];
     // all unique requests
     dataList1.forEach((row1) => {
       const RequestNo = row1.RequestNo;
