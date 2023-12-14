@@ -29,8 +29,12 @@ export class CooAttestationComponent implements OnInit {
 
   progress_val: number = 0;
   selectedAttestations: any;
+  selectedAttestations_LCA: any;
+
   totalrecords: number = 0;
+  totalrecords_LCA:number=0;
   cooAttestationLists: any;
+  cooAttestationLists_LCA:any;
   cols: any;
   loading: boolean = false;
   enableFilters: boolean = false;
@@ -689,6 +693,8 @@ openDialog(customer:any) {
 openNew(data:any) {
   console.log(data);
   this.currentrow=data;
+
+  this.getLCAInvoicesForMyCooDec(this.currentrow);
   
   this.AddInvoiceDialog=true
   const fieldMappings: { [key: string]: string } = {
@@ -847,6 +853,38 @@ settingbackgroundcolors(event:any){
     }
   }
   console.log(this.cooAttestationLists)
+}
+
+getLCAInvoicesForMyCooDec(currentrow:any){
+
+  let resp;
+  let data={
+    "uuid":this.uuid,
+    "lcaattestno":currentrow.declarationumber
+}
+      this.loading=true;
+      this.common.showLoading();
+          this.apiservice.post(this.consts.getlcalistforcoodeclaration,data).subscribe({next:(success:any)=>{
+            this.common.hideLoading();
+            this.loading=false;
+            resp=success;
+            if(resp.dictionary.responsecode==1){
+            this.cooAttestationLists_LCA=resp.dictionary.data
+            this.cooAttestationLists_LCA = this.cooAttestationLists_LCA.map((item:any) => ({ ...item, selected: false }));
+            console.log(this.cooAttestationLists_LCA)
+              // this.datasource=resp.dictionary.data;
+              this.totalrecords_LCA=resp.dictionary.recordcount;
+              this.loading = false;
+      
+      // console.log(this.datasource);
+            }
+            else{
+              this.common.showErrorMessage('Something went wrong')
+              this.loading=false;
+            }
+      
+          }
+        })
 }
 
 }
