@@ -73,12 +73,16 @@ export class AttestationComponent implements OnInit {
 datasource:any;
     cols: any;
     totalrecords:number=0;
+    totalrecords_coo:number=0;
+
     isLoading=false;
 
   activityValues: number[] = [0, 100];
   // selectedAttestations:any;
   // Initialize selectedAttestations as an empty array
 selectedAttestations: any[] = [];
+selectedAttestations_coo: any[] = [];
+
 
   highlightedrow:any;
   public shouldShow = false;
@@ -161,6 +165,8 @@ fields: { label: string, value: any }[] = [];
 isButtonDisabled = false;
 
 highlightColor: string = 'red'; 
+
+cooAttestationLists: any;
 
   constructor(private translate:TranslateService,private fb:FormBuilder,private confirmationService:ConfirmationService,private messageService:MessageService, public dialog: MatDialog, private router:Router, private apicall:ApiService, public common:CommonService, private consts:ConstantsService, public datepipe:DatePipe){
     this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
@@ -702,7 +708,7 @@ AttestationPay(){
     "action": 1,
     "correlationid": this.invoiceunoresponse.toString(),
     "langid": "EN",
-    "currencyCode": "",
+    "currencyCode": "784",
     "version": "1.0.1"
 }
 
@@ -889,9 +895,18 @@ closesidetab(){
 });
 }
 
+
+
 openNew(data:any) {
   console.log(data);
   this.currentrow=data;
+
+
+
+  //api call for getting the declaration number
+this.getCooForMyLCAInvoice(this.currentrow);
+
+
   this.AddInvoiceDialog=true
   const fieldMappings: { [key: string]: string } = {
     edasattestno: this.translate.instant('Attestation No'),
@@ -966,6 +981,39 @@ getSeverity(canpay: number) {
 
 }
 
+
+getCooForMyLCAInvoice(currentrow:any){
+
+  let resp;
+  let data={
+    "uuid":this.uuid,
+    "lcaattestno":currentrow.edasattestno
+}
+      this.loading=true;
+      this.common.showLoading();
+          this.apicall.post(this.consts.getcoolistforlcaattestno,data).subscribe({next:(success:any)=>{
+            this.common.hideLoading();
+            this.loading=false;
+            resp=success;
+            if(resp.dictionary.responsecode==1){
+            this.list=resp.dictionary.data
+            this.list = this.list.map((item:any) => ({ ...item, selected: false }));
+            console.log(this.list)
+              this.datasource=resp.dictionary.data;
+              this.totalrecords=resp.dictionary.recordcount;
+              this.loading = false;
+      
+      console.log(this.datasource);
+              this.Reduce();
+            }
+            else{
+              this.common.showErrorMessage('Something went wrong')
+              this.loading=false;
+            }
+      
+          }
+        })
+}
 
 }
 

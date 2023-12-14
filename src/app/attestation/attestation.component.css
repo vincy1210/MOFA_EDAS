@@ -192,7 +192,9 @@ p-table{
 
 /* row highlight */
 
-:host ::ng-deep .coonotpaidclass {
+/* :host ::ng-deep .coonotpaidclass {
   background-color: rgba(137, 136, 136, 0.15) !important;
   color: #737373 !important;
-}
+} */
+
+
