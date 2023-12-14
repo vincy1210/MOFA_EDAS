@@ -1,15 +1,29 @@
+.landingPage-window {
+  min-height: 100vh;
+  padding: 1rem;
+}
 
+.add-button {
+  display: flex;
+  justify-content: flex-end;
+}
 
+.grid-search {
+  margin-right: 1rem;
+}
 
-.weclome_text{
-    margin: auto;
-    height: 100px;
-    width: 50%;
-    background: azure;
-    border-radius: 20px;
-    padding: 20px;
-    text-align: center;
-    font-weight: 600;
-    font-size: 15px;
-    line-height: 4rem;
+.grid-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .grid-header-right {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+}
+
+.clicked {
+  background: var(--primary-color);
+  color: var(--white-color);
 }
