@@ -182,8 +182,15 @@ if(usertype!='11'){
     //
     console.log('menu for LCA Admin is loading')
 
-    this.menuList.push( {
-      id: 1,
+    this.menuList.push( 
+      {
+        id: 1,
+        menu: 'Dashboard',
+        icon: 'dashboard',
+        link: '/lcadashboard',
+        hasubMenu:false
+      },{
+      id: 2,
       menu: 'Attestations',
       hasubMenu:true,
         icon: 'feed',

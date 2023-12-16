@@ -47,33 +47,22 @@ export class AuthService {
 
   constructor(private router:Router) { 
 
-    // const userProfile = this.getUserProfile();
-    // const selectedCompany = this.getSelectedCompany();
-
-    // if(userProfile){
-    //   let abc=JSON.parse(userProfile)
-    //   this.userprofilesubject.next(abc.Data?.firstnameEN);
-  
-    //   this.lcauserloggedinSubject.next(!!this.getLCAUser());
-
-    //   if(selectedCompany){
-    //     this.userCompanysubject.next(selectedCompany.business_name)
-    //     if(selectedCompany.role=="Admin"){
-    //       this.isAdmin.next(true);
-    //       }
-    //       else{
-    //         this.isAdmin.next(false);
-    //       }
-
-    //   }
-    //   else{
-    //     this.userloggedinSubject.next(false);
-    //     this.userCompanysubject.next('');
-    //   }
-    // }
-    // else{
-    //   this.lcauserloggedinSubject.next(false)
-    // }
+    let data2=sessionStorage.getItem('userProfile');
+    if(data2!=undefined || data2 !=null){
+            let abc=JSON.parse(data2)
+            this.userprofilesubject.next(abc.Data?.firstnameEN);
+            let usertypedata=this.getLCAUser() || '';
+            if(usertypedata!=undefined || usertypedata !=null){
+       this.lcauserloggedinSubject.next(true)
+            }
+            else{
+             this.lcauserloggedinSubject.next(false)
+            }
+    }
+    else{
+      this.lcauserloggedinSubject.next(false)
+    
+    }
     
 
   }
