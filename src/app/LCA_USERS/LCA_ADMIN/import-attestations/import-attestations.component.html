@@ -106,6 +106,17 @@
                     type="button"
                     pButton
                     pRipple
+                    (click)="postDataValid()"
+                    *ngIf="issubmitvalid"
+                    class="mr-2 grid-header-right-btn"
+                    tooltipPosition="bottom"
+                  >
+                    Submit valid record
+                  </button>
+                  <button
+                    type="button"
+                    pButton
+                    pRipple
                     (click)="postData()"
                     class="mr-2 grid-header-right-btn"
                     tooltipPosition="bottom"

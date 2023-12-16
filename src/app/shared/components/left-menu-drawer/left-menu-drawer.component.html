@@ -37,6 +37,7 @@ font-weight: 600;">
       #myPanel
       [class.mat-elevation-z0]="true"
       *ngFor="let items of menuList"
+      [expanded]="usertype === 'LCAAdmin'"
     >
       <mat-expansion-panel-header *ngIf="!items.hasubMenu" (click)="onSubMenuClick(items)" >
         <span class="mat-items">

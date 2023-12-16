@@ -54,7 +54,12 @@
               (click)="fileInput.click()"
               class="float-right"
             >
-              Re-upload
+              <span *ngIf="fileList.length > 0">{{
+                "Re-upload" | translate
+              }}</span>
+              <span *ngIf="fileList.length === 0">{{
+                "upload" | translate
+              }}</span>
             </button>
             <input
               type="text"
@@ -67,6 +72,7 @@
               style="display: none"
               #attachments
               type="file"
+              accept=".xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
               (change)="onFileChanged($event)"
               #fileInput
               multiple="true"
