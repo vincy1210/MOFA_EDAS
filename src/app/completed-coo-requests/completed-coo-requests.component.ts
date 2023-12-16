@@ -89,6 +89,11 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
         header: 'edasattestno',
         width:'20%'
       },
+      {
+        fiels:'statusname',
+        header:'status',
+        width:'10%'
+      },
       // { field: 'entityshareamount', header: 'entityshareamount' },
       {
         field: 'totalamount',
@@ -104,11 +109,6 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
         field: 'attestreqdate',
         header: 'attestreqdate',
         width:'13%'
-      },
-      {
-        fiels:'statusname',
-        header:'statusname',
-        width:'10%'
       }
     ];
     this.InitTable();

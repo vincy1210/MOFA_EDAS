@@ -84,11 +84,12 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
       // { field: 'attestationrequno', header: 'Attestation No.' },
       { field: 'edasreqno', header: 'edasreqno', width:'20%' },
       { field: 'entitycode', header: 'entitycode' , width:'10%'},
+      { field: 'wfstatus', header: 'Status', width:'15%' },
+
       { field: 'invoiceno', header: 'invoiceno', width:'20%' },
       { field: 'invoiceamount', header: 'invoiceamount', width:'15%' },
       { field: 'invoicecurrency', header: 'invoicecurrency', width:'10%' },
       { field: 'invoicedate', header: 'invoicedate', width:'15%' },
-      { field: 'wfstatus', header: 'Status', width:'15%' },
 
 
       //statusname

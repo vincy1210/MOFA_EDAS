@@ -117,6 +117,9 @@
                   <td>
                     <span class="image-text">{{ data.edasattestno }}</span>
                   </td>
+                  <td>
+                    <p-tag [value]="data.feespaid" [severity]="getSeverity(data.feespaid)"></p-tag>
+                  </td>
                   <td style="text-align: right;">
                     <span class="image-text">{{ common.formatAmount(data.totalamount) }}</span>
                   </td>
@@ -130,9 +133,7 @@
                       common.splitdatetime(data.attestreqdate)?.date
                     }}</span>
                   </td>
-                  <td>
-                    <p-tag [value]="data.feespaid" [severity]="getSeverity(data.feespaid)"></p-tag>
-                  </td>
+                  
                   <td pFrozenColumn alignFrozen="right"  >
                     <span (click)="openNew(data)" style="padding:15px; cursor: pointer;" pTooltip="{{'Details' | translate}}"  class="image-text viewaction">
                       <mat-icon class="action_eye_icon" >visibility</mat-icon>

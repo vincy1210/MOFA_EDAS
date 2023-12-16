@@ -159,6 +159,11 @@ this.form = this.fb.group({
         header: 'edasattestno',
         width:'20%'
       },
+      {
+        field: 'feespaid',
+        header: 'status',
+        width:'10%'
+      },
       // { field: 'entityshareamount', header: 'entityshareamount' },
       {
         field: 'totalamount',
@@ -174,11 +179,6 @@ this.form = this.fb.group({
         field: 'attestreqdate',
         header: 'attestreqdate',
         width:'15%'
-      },
-      {
-        field: 'feespaid',
-        header: 'status',
-        width:'10%'
       }
     ];
   //  this.InitTable();

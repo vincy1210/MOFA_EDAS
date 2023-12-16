@@ -73,6 +73,10 @@ export class CommonService {
     private datePipe: DatePipe,private Router:Router, private apicall:ApiService, private consts:ConstantsService, private auth:AuthService
   ) {
 
+    const emailToMask = 'vincyv@ducont.com';
+    const maskedEmail =this.maskEmail(emailToMask);
+    console.log(maskedEmail);
+
 
     
 
@@ -601,14 +605,7 @@ export class CommonService {
   
  
 
-//   setUserRole(role: string): void {
-//     this.userRole = role;
-//     // this.userRoleSubject.next(role);
-// this.lcauserloggedinSubject.next(true)
 
-//     localStorage.setItem('userrole', role);
-//     this.userRoleSubject.next(role);
-//   }
 
 
   filterColumnsClientDataTrim(filters: any) {
@@ -703,5 +700,23 @@ export class CommonService {
       return false;
     });
   }
+
+ maskEmail(email: string): string {
+    const parts = email.split('@');
+    const username = parts[0];
+    const domain = parts[1];
+  
+    // Mask characters in the username, keeping the first three characters
+    const maskedUsername =
+      username.length > 3 ? username.substring(0, 3) + '*'.repeat(username.length - 3) : username;
+  
+    // Combine masked username and domain to form the masked email
+    const maskedEmail = `${maskedUsername}@${domain}`;
+  
+    return maskedEmail;
+  }
+  // Example usage
+
+  
 
 }

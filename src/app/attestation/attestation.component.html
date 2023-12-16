@@ -109,6 +109,9 @@
             </td>
 
             <td><span class="image-text">{{customer.companyname}}</span></td>
+            <td>
+              <p-tag [value]="customer.canpay === 1 ? 'COO paid' : 'COO unpaid'" [severity]="getSeverity(customer.canpay)"></p-tag>
+            </td>
             <td style="text-align: right;"><span class="image-text">{{common.formatAmount(customer.invoiceamount)}}</span></td>
             <td style="text-align: right;"><span class="image-text">{{common.formatAmount(customer.feesamount)}}</span></td>
 
@@ -120,9 +123,7 @@
               <span class="image-text">{{customer.lcaname}}</span>
             </td>
 
-            <td>
-              <p-tag [value]="customer.canpay === 1 ? 'COO paid' : 'COO unpaid'" [severity]="getSeverity(customer.canpay)"></p-tag>
-            </td>
+           
 
             <td><span class="image-text">{{customer.noofdaysoverdue}}</span></td>
             <td pFrozenColumn alignFrozen="right">
@@ -360,6 +361,9 @@
                <span class="image-text">{{ data.declarationumber }}</span>
              </td>
              <td>
+              <p-tag [value]="data.feespaid" [severity]="getSeverity(data.feespaid)"></p-tag>
+            </td>
+             <td>
                <span class="image-text">{{ data.edasattestno }}</span>
              </td>
              <td style="text-align: right;">
@@ -375,9 +379,7 @@
                  common.splitdatetime(data.attestreqdate)?.date
                }}</span>
              </td>
-             <td>
-               <p-tag [value]="data.feespaid" [severity]="getSeverity(data.feespaid)"></p-tag>
-             </td>
+            
      
      
            </tr>

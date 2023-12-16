@@ -235,16 +235,18 @@ console.log("calling getselected company")
     this.cols = [
       { field: 'edasattestno', header: 'Attestation No', width:'20%' },
       { field: 'companyname', header: 'Company Name', width:'20%' },
+      { field: 'canpay', header: 'Status', width:'20%' },
+
       { field: 'invoiceamount', header: 'Invoice Amount', width:'20%' },
       { field: 'feesamount', header: 'Fees Amount', width:'20%' },
 
       { field: 'invoicenumber', header: 'Invoice ID', width:'20%' },
       { field: 'declarationumber', header: 'Declaration No' , width:'20%' },
+
       { field: 'declarationdate', header: 'Declaration Date' , width:'200px' },
       { field: 'attestreqdate', header: 'Created' , width:'200px' },
       { field: 'lcaname', header: 'LCA', width:'15%' },
 
-      { field: 'canpay', header: 'Status', width:'20%' },
       { field: 'Noofdaysleft', header: 'Age',  width:'5%' }
 
   ];

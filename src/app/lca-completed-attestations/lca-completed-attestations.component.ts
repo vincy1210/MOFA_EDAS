@@ -134,6 +134,8 @@ isButtonDisabled = false;
     this.cols = [
       { field: 'edasattestno', header: 'Attestation No', width:'25%' },
       { field: 'companyname', header: 'Company Name', width:'20%' },
+      { field: 'statusname', header: 'Status', width:'20%' },
+
       { field: 'invoiceamount', header: 'Invoice Amount', width:'20%' },
       { field: 'feesamount', header: 'Fees Amount', width:'20%' },
 
@@ -142,7 +144,6 @@ isButtonDisabled = false;
       { field: 'declarationdate', header: 'Declaration Date', width:'15%' },
       { field: 'attestreqdate', header: 'Created' , width:'15%'},
       { field: 'lcaname', header: 'LCA', width:'15%' },
-      { field: 'statusname', header: 'Status', width:'20%' },
       // { field: 'Noofdaysleft', header: 'Days Left' },
   
   ];

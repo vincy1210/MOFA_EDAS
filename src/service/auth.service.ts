@@ -185,7 +185,11 @@ this.lcauserloggedinSubject.next(true)
       // Add more conditions as needed based on your specific requirements
       // If no specific conditions are met, return false
       return false;
-    } else {
+    } 
+    else if(userProfile){
+      return true;   // needd to correct this
+    }
+    else {
       // If either user profile or selected company is missing, return false
       return false;
     }

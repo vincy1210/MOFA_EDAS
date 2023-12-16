@@ -133,6 +133,11 @@ paymentcount=environment.appdetails.payment_count;
         width:'13%'
       },
       {
+        field: 'status',
+        header: 'status',
+        width:'10%'
+      },
+      {
         field: 'invoiceno',
         header: 'invoiceno',
         width:'13%'
@@ -156,11 +161,6 @@ paymentcount=environment.appdetails.payment_count;
       {
         field: 'invoicedate',
         header: 'invoicedate',
-        width:'10%'
-      },
-      {
-        field: 'status',
-        header: 'status',
         width:'10%'
       },
    

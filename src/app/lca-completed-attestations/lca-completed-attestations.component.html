@@ -112,6 +112,10 @@
                   
               </td>
               <td><span class="image-text">{{customer.companyname}}</span></td>
+              <td>
+                <p-tag [value]="customer.statusname" severity="success"></p-tag>
+                <!-- <span class="image-text">{{customer.statusname}}</span> -->
+              </td>
               <td style="text-align: right;"><span class="image-text">{{common.formatAmount(customer.invoiceamount)}}</span></td>
             <td style="text-align: right;"><span class="image-text">{{common.formatAmount(customer.feesamount)}}</span></td>
 
@@ -129,10 +133,7 @@
                   <span class="image-text">{{splitdatetime(customer.attestreqdate)?.date}}</span>
               </td>
               <td><span class="image-text">{{customer.lcaname}}</span></td>
-              <td>
-                <p-tag [value]="customer.statusname" severity="success"></p-tag>
-                <!-- <span class="image-text">{{customer.statusname}}</span> -->
-              </td>
+             
               <td pFrozenColumn alignFrozen="right">
                 <span (click)="openNew(customer)" style="padding:15px; cursor: pointer;" pTooltip="Details" tooltipPosition="bottom"  class="image-text viewaction">
                   <mat-icon class="action_eye_icon" >visibility</mat-icon>

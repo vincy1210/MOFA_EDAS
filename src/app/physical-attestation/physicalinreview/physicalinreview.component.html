@@ -107,6 +107,10 @@
                   <span class="image-text">{{ data.entitycode }}</span>
                 </td>
                 <td>
+                  <!-- <span class="image-text">{{ data.wfstatus }}</span> -->
+                  <p-tag [value]="data.wfstatus  === 'REVIEW' ? 'IN REVIEW' : data.wfstatu" [severity]="'warning'"></p-tag>
+                </td>
+                <td>
                   <span class="image-text">{{ data.invoiceno }}</span>
                 </td>
                 <td style="text-align: right;">
@@ -120,10 +124,7 @@
                     splitdatetime1(data.invoicedate)?.date
                   }}</span>
                 </td>
-                <td>
-                  <!-- <span class="image-text">{{ data.wfstatus }}</span> -->
-                  <p-tag [value]="data.wfstatus  === 'REVIEW' ? 'IN REVIEW' : data.wfstatu" [severity]="'warning'"></p-tag>
-                </td>
+               
                 <td pFrozenColumn alignFrozen="right">
                   <span (click)="openNew(data)" style="padding:15px; cursor: pointer;" pTooltip="Details"  class="image-text viewaction">
                     <mat-icon class="action_eye_icon" >visibility</mat-icon>

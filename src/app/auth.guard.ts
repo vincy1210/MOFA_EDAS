@@ -17,6 +17,8 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
+      const userProfile = this.authService.getUserProfile();
+
       
     const selectedCompany = this.authService.getSelectedCompany();
     const isLCAUser = this.authService.getLCAUser();
@@ -27,8 +29,8 @@ export class AuthGuard implements CanActivate {
 
         if (!requiredRole || !Array.isArray(requiredRole)) {
           // If roles are not specified or not an array, return false
-          this.router.navigate(['/registration']);
-          return false;
+          //this.router.navigate(['/registration']);
+          return true;
         }
 
         const userRole = isLCAUser ? this.authService.getLCAUser() : this.authService.getSelectedCompany().role;
@@ -44,7 +46,7 @@ export class AuthGuard implements CanActivate {
   
       } else {
         // Redirect to the login page or another route
-        this.router.navigate(['/registartion']);
+        this.router.navigate(['/registration']);
         return false;
       }
     }
