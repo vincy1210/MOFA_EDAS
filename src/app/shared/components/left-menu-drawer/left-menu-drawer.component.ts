@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { CommonService } from 'src/service/common.service';
 import { EventEmitter, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { AuthService } from 'src/service/auth.service';
 
 interface MenuModel {
   id: number;
@@ -36,7 +37,7 @@ usertype:string='';
   
   private userRoleSubscription!: Subscription;
 
-  constructor(private router: Router, public common:CommonService) {}
+  constructor(private router: Router, public common:CommonService, private auth:AuthService) {}
 
 
   setusername(){
@@ -51,12 +52,12 @@ usertype:string='';
 
   ngOnInit(): void {
  //start of LCA user user flow
-    this.userRoleSubscription = this.common.userRole$.subscribe(() => {
+    this.userRoleSubscription = this.auth.userRole$.subscribe(() => {
       this.setusername();
       this.getMenuItemLists();
     });
    this.setusername();
-    let usertype=this.common.getuserRole() || '';
+    let usertype=this.auth.getLCAUser() || '';
     if(usertype=='' || usertype==null){
       this.common.userType$.subscribe((usertype_) => {
         this.usertype = usertype_;
@@ -69,7 +70,7 @@ usertype:string='';
       this.getMenuItemLists();
     }
   //end of LCA user user flow
-if(usertype!='LCAAdmin'){
+if(usertype!='11'){
     this.common.userCompany$.subscribe((loggedIn) => {
       this.companyname = loggedIn;
      this.setusername();
@@ -80,7 +81,7 @@ if(usertype!='LCAAdmin'){
 
     this.common.isAdmin$.subscribe((isAdmin_) => {
       this.isAdmin = isAdmin_;
-      if(this.usertype!='LCAAdmin'){
+      if(this.usertype!='11'){
         this.getMenuItemLists();
 
       }
@@ -95,14 +96,14 @@ if(usertype!='LCAAdmin'){
 
   console.log(this.usertype)
 
-  const userRole = this.common.userRole;
+  const userRole = this.auth.userRole;
 
   if(userRole){
     this.usertype=userRole;
   }
   console.log(userRole);
 
-  if(this.usertype!='LCAAdmin'){
+  if(this.usertype!='11'){
     
     this.menuList.push(
       {

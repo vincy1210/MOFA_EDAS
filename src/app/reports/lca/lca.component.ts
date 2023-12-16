@@ -333,9 +333,11 @@ exportExcel() {
     this.cols.forEach((col:any) => {
       if (col.header === 'Declaration Date' || col.header === 'Created') {
         dataItem[col.header] = this.common.splitdatetime(item[col.field])?.date;
-      } else if (col.header === 'Age') {
-        dataItem[col.header] = this.common.calculateDifference(item.attestreqdate);
-      } else {
+      } 
+      // else if (col.header === 'Age') {
+      //   dataItem[col.header] = this.common.calculateDifference(item.attestreqdate);
+      // }
+       else {
         dataItem[col.header] = item[col.field];
       }
     });

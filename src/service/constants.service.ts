@@ -73,7 +73,7 @@ export class ConstantsService {
   getCompanyListForLcaUser = "lca/getCompanyListForLcaUser";
   getInRiskReqforlcauser = "lca/getInRiskReqforlcauser";
 
-  getcoolistforlcaattestno="user/getlcalistforcoodeclaration";
+  getcoolistforlcaattestno="user/getcoolistforlcaattestno";
   getlcalistforcoodeclaration="user/getlcalistforcoodeclaration"
 
 }

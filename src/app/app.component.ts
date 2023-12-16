@@ -119,15 +119,15 @@ role2:string='';
   ) {
 
 
-    let role2=this.common.getuserRole();
+    let role2=this.auth.getLCAUser();
     this.role2=role2;
     console.log(role2)
 
-    let role=this.common.userRole;
+    let role=this.auth.userRole;
     if(!role){
-      this.userRoleSubscription = this.common.userRole$.subscribe(() => {
+      this.userRoleSubscription = this.auth.userRole$.subscribe(() => {
         // this.getMenuItemLists();
-        const userRole = this.common.userRole;
+        const userRole = this.auth.userRole;
         this.userrole=userRole;
         this.role2=this.userrole;
         console.log(userRole);
@@ -259,7 +259,7 @@ else{
       this.userloggedin = loggedIn;
     });
 
-    this.common.lcauserloggedin$.subscribe((lcaloggedIn) => {
+    this.auth.lcauserloggedin$.subscribe((lcaloggedIn) => {
       this.lcauserloggedin = lcaloggedIn;
     });
 

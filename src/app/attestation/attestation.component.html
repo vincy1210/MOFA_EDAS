@@ -99,7 +99,15 @@
             <!-- ,
             'coonotpaidclass': isCOONotPaid(customer) -->
               <td><p-tableCheckbox  pTooltip="{{ isCOONotPaid(customer) ? 'COO payment is not done' : '' | translate }}" (click)="loadsidepanel(customer)" [disabled]="isCOONotPaid(customer)" [value]="customer"></p-tableCheckbox> </td>
-            <td><span class="image-text">{{customer.edasattestno}} </span></td>
+            <!-- <td><span class="image-text">{{customer.edasattestno}} </span></td> -->
+            <td class="hyperlink">
+   
+
+    <button pButton type="button" (click)="openNew_(customer)">{{customer.edasattestno}}</button>
+ 
+
+            </td>
+
             <td><span class="image-text">{{customer.companyname}}</span></td>
             <td style="text-align: right;"><span class="image-text">{{common.formatAmount(customer.invoiceamount)}}</span></td>
             <td style="text-align: right;"><span class="image-text">{{common.formatAmount(customer.feesamount)}}</span></td>
@@ -265,10 +273,8 @@
   
   
     <!-- modal details popup -->
-    <p-dialog [(visible)]="AddInvoiceDialog" style="top:20%" [draggable]="false" [style]="{ width: '750px' }" header="{{'Attestation Details' | translate}}" [modal]="true" styleClass="p-fluid">
+    <p-dialog [(visible)]="AddInvoiceDialog" style="top:20%; height: 80%;"  [draggable]="false" [dismissableMask]="false" [style]="{ width: '750px' }" header="{{'Attestation Details' | translate}}" [modal]="true" styleClass="p-fluid">
          
- <p-tabView>
-  <p-tabPanel header="Details">
 
 <div class="viewmore">
         <div class="more-content-section">
@@ -287,95 +293,6 @@
         </div>
       </div>
   
-  </p-tabPanel>
-<p-tabPanel header="COO Details">
-
-  <p-table
-  [(selection)]="selectedAttestations" 
-  [resizableColumns]="true"  dataKey="coorequestno" [rowSelectable]="isRowSelectable"
-               [scrollable]="false"  selectionMode="multiple"
-             #tableref [rowHover]="true" [paginator]="true"
-             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-           
-             [totalRecords]="totalrecords_coo"
-             [value]="cooAttestationLists"
-             [rows]="10"
-             [columns]="cols"
-             [showCurrentPageReport]="true"
-             [rowsPerPageOptions]="[10,20,50]"
-             [loading]="loading"
-             styleClass="p-datatable-customers p-datatable-gridlines"
-             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-             [globalFilterFields]="[
-               'declarationumber',
-               'edasattestno',
-               'totalamount',
-               'declarationdate',
-               'attestreqdate',
-               'status'
-             ]"
-             [lazy]="true" (onLazyLoad)="InitTable($event)" [loading]="loading" >
- 
-
-    <ng-template pTemplate="header" let-columns>
-      <tr>
-      
-        <th *ngFor="let col of columns" pResizableColumn [pSortableColumn]="col.field" [style.width]="col.width">
-          {{ col.header | translate }}
-          <p-sortIcon
-            field="code"
-          ></p-sortIcon>
-          <p-columnFilter
-            *ngIf="enableFilters"
-            type="text"
-            [field]="col.field"
-            display="menu"
-          ></p-columnFilter>
-        </th>
-        <th pFrozenColumn alignFrozen="right" >{{'Action'}}</th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-data>
-      <tr [ngClass]="{
-        'highlighted-row': data.isSelected,
-        'custom-text-color': data.isSelected,
-        'bold-text': data.isSelected
-      }">
-       <td>
-          <span class="image-text">{{ data.declarationumber }}</span>
-        </td>
-        <td>
-          <span class="image-text">{{ data.edasattestno }}</span>
-        </td>
-        <td style="text-align: right;">
-          <span class="image-text">{{ common.formatAmount(data.totalamount) }}</span>
-        </td>
-        <td>
-          <span class="image-text">{{
-            common.splitdatetime(data.declarationdate)?.date
-          }}</span>
-        </td>
-        <td>
-          <span class="image-text">{{
-            common.splitdatetime(data.attestreqdate)?.date
-          }}</span>
-        </td>
-        <td>
-          <p-tag [value]="data.feespaid" [severity]="getSeverity(data.feespaid)"></p-tag>
-        </td>
-
-
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="emptymessage">
-      <tr>
-        <td colspan="8">{{ "noDataFound" | translate }}</td>
-      </tr>
-    </ng-template>
-  </p-table>
-
-</p-tabPanel>
-</p-tabView>
 
 
 
@@ -385,6 +302,98 @@
      
     </p-dialog>
     <!-- modal 2 end -->
+
+    <p-dialog [(visible)]="AddInvoiceDialog_"  [draggable]="false" [style]="{ width: '750px' }" header="{{'COO Details' | translate}}" [modal]="true" styleClass="p-fluid ui-dialog">
+         <br>
+       <p-table
+       [(selection)]="selectedAttestations" 
+       [resizableColumns]="true"  dataKey="coorequestno" [rowSelectable]="isRowSelectable"
+                    [scrollable]="false"  selectionMode="multiple"
+                  #tableref [rowHover]="true" [paginator]="true"
+                  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                
+                  [totalRecords]="totalrecords_coo"
+                  [value]="cooAttestationLists"
+                  [rows]="10"
+                  [columns]="cols_"
+                  [showCurrentPageReport]="true"
+                  [rowsPerPageOptions]="[10,20,50]"
+                  [loading]="loading"
+                  styleClass="p-datatable-customers p-datatable-gridlines"
+                  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                  [globalFilterFields]="[
+                    'declarationumber',
+                    'edasattestno',
+                    'totalamount',
+                    'declarationdate',
+                    'attestreqdate',
+                    'status'
+                  ]"
+                  [lazy]="true" (onLazyLoad)="InitTable($event)" [loading]="loading" >
+      
+     
+         <ng-template pTemplate="header" let-columns>
+           <tr>
+           
+             <th *ngFor="let col of columns" pResizableColumn [pSortableColumn]="col.field" [style.width]="col.width">
+               {{ col.header | translate }}
+               <p-sortIcon
+                 field="code"
+               ></p-sortIcon>
+               <p-columnFilter
+                 *ngIf="enableFilters"
+                 type="text"
+                 [field]="col.field"
+                 display="menu"
+               ></p-columnFilter>
+             </th>
+             <!-- <th pFrozenColumn alignFrozen="right" >{{'Action'}}</th> -->
+           </tr>
+         </ng-template>
+         <ng-template pTemplate="body" let-data>
+           <tr [ngClass]="{
+             'highlighted-row': data.isSelected,
+             'custom-text-color': data.isSelected,
+             'bold-text': data.isSelected
+           }">
+            <td>
+               <span class="image-text">{{ data.declarationumber }}</span>
+             </td>
+             <td>
+               <span class="image-text">{{ data.edasattestno }}</span>
+             </td>
+             <td style="text-align: right;">
+               <span class="image-text">{{ common.formatAmount(data.totalamount) }}</span>
+             </td>
+             <td>
+               <span class="image-text">{{
+                 common.splitdatetime(data.declarationdate)?.date
+               }}</span>
+             </td>
+             <td>
+               <span class="image-text">{{
+                 common.splitdatetime(data.attestreqdate)?.date
+               }}</span>
+             </td>
+             <td>
+               <p-tag [value]="data.feespaid" [severity]="getSeverity(data.feespaid)"></p-tag>
+             </td>
+     
+     
+           </tr>
+         </ng-template>
+         <ng-template pTemplate="emptymessage">
+           <tr>
+             <td colspan="8">{{ "noDataFound" | translate }}</td>
+           </tr>
+         </ng-template>
+       </p-table>
+     
+               <ng-template pTemplate="footer">
+                 <p-button icon="pi pi-times" (click)="AddInvoiceDialog_ = false" label="{{'Cancel' | translate}}" styleClass="p-confirm-dialog-reject"></p-button>
+             </ng-template>
+          
+         </p-dialog>
 
   <!-- modal 2 end -->
 

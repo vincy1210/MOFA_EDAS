@@ -71,7 +71,8 @@ export class AttestationComponent implements OnInit {
   statuses:any;
   products: any;
 datasource:any;
-    cols: any;
+cols: any;
+cols_: any;
     totalrecords:number=0;
     totalrecords_coo:number=0;
 
@@ -157,6 +158,8 @@ statusess = [
 form:FormGroup;
 
 AddInvoiceDialog:boolean=false;
+AddInvoiceDialog_:boolean=false;
+
 
 currentrow:any;
 isfilenotfouund:boolean=false;
@@ -244,9 +247,43 @@ console.log("calling getselected company")
       { field: 'canpay', header: 'Status', width:'20%' },
       { field: 'Noofdaysleft', header: 'Age',  width:'5%' }
 
-      // src/app/attestation/attestation.component.html
-
   ];
+
+  this.cols_ = [
+    // { field: 'coorequestno', header: 'Request No.' },
+    {
+      field: 'declarationumber',
+      header: 'declarationumber',
+      width:'20%'
+    },
+    {
+      field: 'edasattestno',
+      header: 'edasattestno',
+      width:'20%'
+    },
+    // { field: 'entityshareamount', header: 'entityshareamount' },
+    {
+      field: 'totalamount',
+      header: 'totalamount',
+      width:'15%'
+    },
+    {
+      field: 'declarationdate',
+      header: 'declarationdate',
+      width:'15%'
+    },
+    {
+      field: 'attestreqdate',
+      header: 'attestreqdate',
+      width:'15%'
+    },
+    {
+      field: 'feespaid',
+      header: 'status',
+      width:'10%'
+    }
+  ];
+
 
   //this.InitTable();
 
@@ -534,11 +571,10 @@ settingbackgroundcolors(event:any){
       }
     });
   } else {
-    // If a single row is selected
-    const selectedRow = this.list.find((row: any) => row.edasattestno === this.selectedAttestations[0].edasattestno);
-    if (selectedRow) {
-      selectedRow.isSelected = true;
-    }
+    // const selectedRow = this.list.find((row: any) => row.edasattestno === this.selectedAttestations[0].edasattestno);
+    // if (selectedRow) {
+    //   selectedRow.isSelected = true;
+    // }
   }
   console.log(this.list)
 }
@@ -763,9 +799,11 @@ const dataList: any[] = this.list.map((item: any) => {
   this.cols.forEach((col:any) => {
     if (col.header === 'Declaration Date' || col.header === 'Created') {
       dataItem[col.header] = this.common.splitdatetime(item[col.field])?.date;
-    } else if (col.header === 'Age') {
-      dataItem[col.header] = this.common.calculateDifference(item.attestreqdate);
-    } else {
+    } 
+    // else if (col.header === 'Age') {
+    //   dataItem[col.header] = this.common.calculateDifference(item.attestreqdate);
+    // } 
+    else {
       dataItem[col.header] = item[col.field];
     }
   });
@@ -887,24 +925,32 @@ closesidetab(){
     header: 'Confirm',
     icon: 'pi pi-exclamation-triangle',
     accept: () => {
+      // this.settingbackgroundcolors(this.selectedAttestations)
+      this.list.forEach((row: any) => {
+        row.isSelected = false;
+      });
+
         this.shouldShow=false;
   this.selectedAttestations=[]
+
       //  this.deleteuser(list)
+      // this.list = this.list.map((item:any) => ({ ...item, selected: false }));
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Removed Successfully', life: 3000 });
     }
 });
 }
-
+openNew_(data:any) {
+  this.AddInvoiceDialog_=true
+  this.getCooForMyLCAInvoice(data);
+}
 
 
 openNew(data:any) {
   console.log(data);
   this.currentrow=data;
 
-
-
   //api call for getting the declaration number
-this.getCooForMyLCAInvoice(this.currentrow);
+
 
 
   this.AddInvoiceDialog=true

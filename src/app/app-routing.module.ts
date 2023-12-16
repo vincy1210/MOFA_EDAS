@@ -29,6 +29,9 @@ import { ImportAttestationsComponent } from './LCA_USERS/LCA_ADMIN/import-attest
 import { PendingAttestationsComponent } from './LCA_USERS/LCA_ADMIN/pending-attestations/pending-attestations.component';
 import { CompletedAttestationsComponent } from './LCA_USERS/LCA_ADMIN/completed-attestations/completed-attestations.component';
 import { RisklcaComponent } from './LCA_USERS/LCA_ADMIN/risklca/risklca.component';
+import { AuthGuard } from './auth.guard';
+import { RoleGuard } from './role.guard';
+import { UnauthorizedComponent } from './error/unauthorized/unauthorized.component';
 
 
 const routes: Routes = [
@@ -40,33 +43,36 @@ const routes: Routes = [
 
   { path: 'registration', component: RegistrationComponent },
   { path: 'companydetails', component: CompanydetailsComponent },
-  { path: 'physicalattestation', component: PhysicalAttestationComponent },
-  { path: 'cooattestation', component: CooAttestationComponent },
-    { path: 'completedattestation', component: CompletedAttestationComponent },
-  {path:'landingpage',component:LandingPageComponent},
-  {path:'attestationworkflow',component:AttestationWorkflowComponent},
-  {path:'CompletedCooRequest',component:CompletedCooRequestsComponent},
-  {path:'attestation',component:AttestationComponent},
-  {path:'lcacompletedattestation',component:LcaCompletedAttestationsComponent},
-  {path:'dashboard',component:DashboardComponent},
+  { path: 'physicalattestation', component: PhysicalAttestationComponent, canActivate: [AuthGuard] , data: { role: [['Admin', 'User']] }},
+  { path: 'cooattestation', component: CooAttestationComponent, canActivate: [AuthGuard], data: { role: ['Admin', 'User'] } },
+    { path: 'completedattestation', component: CompletedAttestationComponent , data: { role: ['Admin', 'User'] }},
+  {path:'landingpage',component:LandingPageComponent,  canActivate: [AuthGuard], data: { role: ['Admin', 'User'] }},
+  {path:'attestationworkflow',component:AttestationWorkflowComponent, data: { role: ['Admin', 'User'] }},
+  {path:'CompletedCooRequest',component:CompletedCooRequestsComponent, canActivate: [AuthGuard], data: { role: ['Admin', 'User'] }},
+  {path:'attestation',component:AttestationComponent, canActivate: [AuthGuard], data: { role: ['Admin', 'User'] }},
+  {path:'lcacompletedattestation',component:LcaCompletedAttestationsComponent, canActivate: [AuthGuard], data: { role: ['Admin', 'User'] }},
+  {path:'dashboard',component:DashboardComponent, canActivate: [AuthGuard], data: { role: ['Admin', 'User'] }},
   {path:'ESealTest', component:ESealTestComponent},
   {path:'login', component:LoginComponent},
-  {path:'paymentdetails', component:PaymentinfoComponent},
-  {path:'userslist', component:UserslistComponent},
-  {path:'cooinreview', component:CooinreviewComponent},
-  {path:'physicalinreview', component:PhysicalinreviewComponent},
+  {path:'paymentdetails', component:PaymentinfoComponent, canActivate: [AuthGuard]},
+  {path:'userslist', component:UserslistComponent, canActivate: [AuthGuard], data: { role: ['Admin', 'User'] }},
+  {path:'cooinreview', component:CooinreviewComponent, canActivate: [AuthGuard], data: { role: ['Admin', 'User'] }},
+  {path:'physicalinreview', component:PhysicalinreviewComponent, canActivate: [AuthGuard], data: { role: ['Admin', 'User'] }},
   {path:'logout', component:ErrorComponent},
 
-  {path:'lca', component:LCAComponent},
-  {path:'coo', component:COOComponent},
-  {path:'physical', component:PhysicalComponent},
-  {path:'fines', component:FinesComponent},
+  {path:'lca', component:LCAComponent, canActivate: [AuthGuard], data: { role: ['Admin', 'User'] }},
+  {path:'coo', component:COOComponent, canActivate: [AuthGuard], data: { role: ['Admin', 'User'] }},
+  {path:'physical', component:PhysicalComponent, canActivate: [AuthGuard], data: { role: ['Admin', 'User'] }},
+  {path:'fines', component:FinesComponent, canActivate: [AuthGuard], data: { role: ['Admin', 'User'] }},
 
-  {path:'lcadashboard', component:AttestationsComponent},
-  {path:'importslca', component:ImportAttestationsComponent},
-  {path:'pendinglca', component:PendingAttestationsComponent},
-  {path:'completedlca', component:CompletedAttestationsComponent},
-  {path:'risklca', component:RisklcaComponent},
+  {path:'lcadashboard', component:AttestationsComponent, data: { role: [11,12] }},
+  {path:'importslca', component:ImportAttestationsComponent, data: { role: [11,12] }},
+  {path:'pendinglca', component:PendingAttestationsComponent, data: { role: [11,12] }},
+  {path:'completedlca', component:CompletedAttestationsComponent, data: { role: [11,12] }},
+  {path:'risklca', component:RisklcaComponent, data: { role: [11,12] }},
+  {path:'unauthorized', component:UnauthorizedComponent},
+
+  
 
 
   

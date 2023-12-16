@@ -13,6 +13,7 @@ import { ApiService } from './api.service';
 import { ConstantsService } from './constants.service';
 
 import { Subject, Observable } from 'rxjs';
+import { AuthService } from './auth.service';
 
 
 @Injectable({
@@ -27,8 +28,8 @@ export class CommonService {
   public userloggedinSubject = new BehaviorSubject<boolean>(false);
   userloggedin$ = this.userloggedinSubject.asObservable();
 
-  public lcauserloggedinSubject = new BehaviorSubject<boolean>(false);
-  lcauserloggedin$ = this.lcauserloggedinSubject.asObservable();
+  // public lcauserloggedinSubject = new BehaviorSubject<boolean>(false);
+  // lcauserloggedin$ = this.lcauserloggedinSubject.asObservable();
 
   private userCompanysubject = new BehaviorSubject<string>('');
   userCompany$ = this.userCompanysubject.asObservable();
@@ -49,9 +50,9 @@ export class CommonService {
   private freeZone = new BehaviorSubject<string>('');
 
 
-  private userRoleSubject = new Subject<string>();
-  userRole$ = this.userRoleSubject.asObservable();
-  userRole: string=''; // You might want to initialize this with a default value if needed
+  // private userRoleSubject = new Subject<string>();
+  // userRole$ = this.userRoleSubject.asObservable();
+  // userRole: string=''; // You might want to initialize this with a default value if needed
 
 
   private inactivityTimer: any;
@@ -69,38 +70,17 @@ export class CommonService {
   constructor(
     private translate: TranslateService,
     private Toastr: ToastrService,
-    private datePipe: DatePipe,private Router:Router, private apicall:ApiService, private consts:ConstantsService
+    private datePipe: DatePipe,private Router:Router, private apicall:ApiService, private consts:ConstantsService, private auth:AuthService
   ) {
 
 
     
 
-//start for lca user
-
-let data2=sessionStorage.getItem('userProfile');
-if(data2!=undefined || data2 !=null){
-        let abc=JSON.parse(data2)
-        this.userprofilesubject.next(abc.Data?.firstnameEN);
-        this.usertypedata=this.getuserRole() || '';
-        if(this.usertypedata!=undefined || this.usertypedata !=null){
-   this.lcauserloggedinSubject.next(true)
-        }
-        else{
-         this.lcauserloggedinSubject.next(false)
-   
-        }
-
-}
-else{
-  this.lcauserloggedinSubject.next(false)
-
-}
+//start //for lca user
 
 
 
 //end for lca user
-
-
 
 //Start for company user
       let data:any;
@@ -129,8 +109,6 @@ else{
       this.userCompanysubject.next('');
       }
 // end for company user
-      
-   
 
   }
 
@@ -234,33 +212,12 @@ else{
     $('#loading').hide();
   }
 
-  // setSelectedCompany(data: string) {
-  //   this.selectedcompany.next(data);
-  // }
-
-  // getSelectedCompany() {
-  //   return this.selectedcompany.asObservable();
-  // }
-
-  // getUserType(){
-  //   let usertype=sessionStorage.getItem('ussertype');
-  //   return usertype;
-  // }
-
-
-  // setUserType(usertype:string){
-  //   sessionStorage.setItem('ussertype', usertype);
-  //   this.userType.next(usertype);
-  // }
 
   setSelectedCompany(data: any) {
-    // this.RegisteredCompanyDetails.next(data);
      sessionStorage.setItem('currentcompany', JSON.stringify(data));
      if(data!=undefined || data !=null){
       this.userloggedinSubject.next(true);
       this.userCompanysubject.next(data.business_name)
-     // this.userloggedin=true;
-          //  let abc=JSON.parse(data)
           let  abc=data.role;
             if(abc=="Admin"){
             this.isAdmin.next(true);
@@ -403,11 +360,7 @@ else{
     if(userdata!=undefined || userdata !=null){
             // let abc=JSON.parse(userdata)
             this.userprofilesubject.next(userdata.Data?.firstnameEN);
-
     }
-
-
-    
   }
 
   getUserProfile() {
@@ -420,15 +373,8 @@ else{
       return JSON.parse(userProfileString);
     }
     else{
-
-      //dont put logout here as getuserprofile is getting called before set
-    //  this.Router.navigateByUrl('/logout')
-
-    //  this.Router.navigateByUrl('https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2')
     return null
-
     }
-   // return null;
   }
 
   setCompanyList(companylist: any) {
@@ -517,12 +463,12 @@ else{
     return `${day}-${month}-${year}`;
   }
 
-  calculateDifference(attestreqdate: string) {
-    const today = new Date();
-    const reqDate = new Date(attestreqdate); // Convert to date if not already
-    const differenceInDays = Math.floor((today.getTime() - reqDate.getTime()) / (1000 * 3600 * 24));
-    return 15 - differenceInDays;
-  }
+  // calculateDifference(attestreqdate: string) {
+  //   const today = new Date();
+  //   const reqDate = new Date(attestreqdate); // Convert to date if not already
+  //   const differenceInDays = Math.floor((today.getTime() - reqDate.getTime()) / (1000 * 3600 * 24));
+  //   return 15 - differenceInDays;
+  // }
   // calculateDifference(attestreqdate: string) {
   //   // Assuming attestreqdate is in 'yyyyMMdd' format
   //   const year = +attestreqdate.substring(0, 4); // Extract year
@@ -653,20 +599,16 @@ else{
   
   }
   
-  getuserRole(): string {
-    // Retrieve user role from localStorage
-    return localStorage.getItem('userrole') || '';
-    
-  }
+ 
 
-  setUserRole(role: string): void {
-    this.userRole = role;
-    // this.userRoleSubject.next(role);
-this.lcauserloggedinSubject.next(true)
+//   setUserRole(role: string): void {
+//     this.userRole = role;
+//     // this.userRoleSubject.next(role);
+// this.lcauserloggedinSubject.next(true)
 
-    localStorage.setItem('userrole', role);
-    this.userRoleSubject.next(role);
-  }
+//     localStorage.setItem('userrole', role);
+//     this.userRoleSubject.next(role);
+//   }
 
 
   filterColumnsClientDataTrim(filters: any) {

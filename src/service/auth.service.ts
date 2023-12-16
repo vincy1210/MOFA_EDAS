@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Subject, Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 
 @Injectable({
@@ -8,15 +9,8 @@ import { Subject, Observable } from 'rxjs';
 })
 export class AuthService {
 
- usertypedata:string='';
-
- private userRoleSubject = new Subject<string>();
- userRole$ = this.userRoleSubject.asObservable();
- userRole: string=''; // You might want to initialize this with a default value if needed
-
-
-
-
+  favink1: string = '';
+  favink2: string = '';
   public userloggedinSubject = new BehaviorSubject<boolean>(false);
   userloggedin$ = this.userloggedinSubject.asObservable();
 
@@ -35,81 +29,130 @@ export class AuthService {
   private userprofilesubject = new BehaviorSubject<string>('');
   userprofile$ = this.userprofilesubject.asObservable();
 
-  private isAuthenticated= false;
+  private dataSubject = new BehaviorSubject<string>('');
+  private userinfo = new BehaviorSubject<string>('');
+  private RegisteredCompanyDetails = new BehaviorSubject<string>('');
+  private selectedcompany = new BehaviorSubject<string>('');
+  private freeZone = new BehaviorSubject<string>('');
 
-  constructor() { }
 
-  loginAsCompanyUser(): void {
-    // this.userTypeSubject.next('company'); // Set the user type
-    // this.userLoggedInSubject.next(true);
-    //Start for company user
-    let data:any;
-    data=sessionStorage.getItem('currentcompany');
-    console.log(data);
+  private userRoleSubject = new Subject<string>();
+  userRole$ = this.userRoleSubject.asObservable();
+  userRole: string=''; // You might want to initialize this with a default value if needed
 
-    if(data!=undefined || data !=null){
-      this.userloggedinSubject.next(true);
-            let abc=JSON.parse(data)
-            abc=abc.role;
-            console.log(data)
-            this.userCompanysubject.next(data.business_name)
 
-            if(abc=="Admin"){
-            this.isAdmin.next(true);
-            }
-            else if(abc=="User"){
-            this.isAdmin.next(false);
-            }
-            else{
-              this.isAdmin.next(false);
-            }
-      }
-      else{
-      this.userloggedinSubject.next(false);
-      this.userCompanysubject.next('');
-      }
-// end for company user
-  }
+  private inactivityTimer: any;
+  private readonly INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minutes in milliseconds
+  isSidebar:boolean=false
 
-  loginAsLcaUser(): void {
-    // this.userTypeSubject.next('lca'); // Set the user type
-    // this.userLoggedInSubject.next(true);
+  constructor(private router:Router) { 
 
+    // const userProfile = this.getUserProfile();
+    // const selectedCompany = this.getSelectedCompany();
+
+    // if(userProfile){
+    //   let abc=JSON.parse(userProfile)
+    //   this.userprofilesubject.next(abc.Data?.firstnameEN);
+  
+    //   this.lcauserloggedinSubject.next(!!this.getLCAUser());
+
+    //   if(selectedCompany){
+    //     this.userCompanysubject.next(selectedCompany.business_name)
+    //     if(selectedCompany.role=="Admin"){
+    //       this.isAdmin.next(true);
+    //       }
+    //       else{
+    //         this.isAdmin.next(false);
+    //       }
+
+    //   }
+    //   else{
+    //     this.userloggedinSubject.next(false);
+    //     this.userCompanysubject.next('');
+    //   }
+    // }
+    // else{
+    //   this.lcauserloggedinSubject.next(false)
+    // }
     
-//start for lca user
 
-let data2=sessionStorage.getItem('userProfile');
-if(data2!=undefined || data2 !=null){
-        let abc=JSON.parse(data2)
-        this.userprofilesubject.next(abc.Data?.firstnameEN);
-        this.usertypedata=this.getuserRole() || '';
-        if(this.usertypedata!=undefined || this.usertypedata !=null){
-   this.lcauserloggedinSubject.next(true)
-        }
-        else{
-         this.lcauserloggedinSubject.next(false)
-   
-        }
-
-}
-else{
-  this.lcauserloggedinSubject.next(false)
-
-}
-
-
-
-//end for lca user
   }
 
-  setSelectedCompany(data: any) {
-    // this.RegisteredCompanyDetails.next(data);
+
+  logout(){
+
+    sessionStorage.clear();
+   //this.commonService.logoutUser();
+    //this.router.navigateByUrl('/logout')
+    window.location.href = "https://stg-id.uaepass.ae/idshub/logout?redirect_uri=https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2"
+
+  }
+
+  getLCAUser(): string {
+    // Retrieve user role from localStorage
+    return localStorage.getItem('userrole') || '';
+    
+  }
+
+  
+
+  setLCAUser(role: string): void {
+    this.userRole = role;
+    // this.userRoleSubject.next(role);
+this.lcauserloggedinSubject.next(true)
+
+    localStorage.setItem('userrole', role);
+    this.userRoleSubject.next(role);
+  }
+  
+   getUserProfile() {
+    const userProfileString = sessionStorage.getItem('userProfile');
+    if (userProfileString) {
+      let abc=JSON.parse(userProfileString);
+      let abc1=JSON.parse(abc);
+
+      console.log(abc1);
+      return JSON.parse(userProfileString);
+    }
+    else{
+    return null
+    }
+  }
+   setUserProfile(userProfile: any) {
+    console.log(userProfile);
+    sessionStorage.setItem('userProfile', JSON.stringify(userProfile));
+    let userdata=JSON.parse(userProfile)
+
+    //this.userprofilesubject.next(userdata);
+
+    if(userdata!=undefined || userdata !=null){
+            // let abc=JSON.parse(userdata)
+            this.userprofilesubject.next(userdata.Data?.firstnameEN);
+    }
+  }
+  
+  getSelectedCompany() {
+     const myselectedcompany = sessionStorage.getItem('currentcompany');
+      if (myselectedcompany) {
+       return JSON.parse(myselectedcompany);
+     }
+     else{
+      let dat=sessionStorage.getItem('userProfile');
+
+      if(dat!=undefined ||dat!=null )
+      {
+        console.log("to landing page from common service line 284")
+        this.router.navigateByUrl('/landingpage');
+      }
+     }
+     //return null;
+   }
+   
+ setSelectedCompany(data: any) {
      sessionStorage.setItem('currentcompany', JSON.stringify(data));
      if(data!=undefined || data !=null){
       this.userloggedinSubject.next(true);
       this.userCompanysubject.next(data.business_name)
-     // this.userloggedin=true;
-          //  let abc=JSON.parse(data)
           let  abc=data.role;
             if(abc=="Admin"){
             this.isAdmin.next(true);
@@ -128,36 +171,35 @@ else{
       }
    }
 
-   getuserRole(): string {
-    // Retrieve user role from localStorage
-    return localStorage.getItem('userrole') || '';
-    
-  }
 
-  setUserRole(role: string): void {
-    this.userRole = role;
-    // this.userRoleSubject.next(role);
-this.lcauserloggedinSubject.next(true)
 
-    localStorage.setItem('userrole', role);
-    this.userRoleSubject.next(role);
-  }
+   isAuthenticated(): boolean {
+    const userProfile = this.getUserProfile();
+    const selectedCompany = this.getSelectedCompany();
+    const isLCUser=this.getLCAUser();
 
-  isAuthenticatedlca(): boolean {
-    return this.isAuthenticated;
-  }
+    // Check if both user profile and selected company are available
+    if (userProfile && selectedCompany) {
+      // Assuming a user is authenticated if the user type is 'company'
+      if (selectedCompany.role === 'Admin') {
+        return true;
+      }
 
-  isAuthenticatedcompany(): boolean {
-    return this.isAuthenticated;
-  }
+      // Assuming a user is authenticated if the user type is 'LCA'
+      if (selectedCompany.role === 'User') {
+        return true;
+      }
 
-  logout(){
-
-    sessionStorage.clear();
-   //this.commonService.logoutUser();
-    //this.router.navigateByUrl('/logout')
-    window.location.href = "https://stg-id.uaepass.ae/idshub/logout?redirect_uri=https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2"
-
+      if (isLCUser) {
+        return true;
+      }
+      // Add more conditions as needed based on your specific requirements
+      // If no specific conditions are met, return false
+      return false;
+    } else {
+      // If either user profile or selected company is missing, return false
+      return false;
+    }
   }
 
 }

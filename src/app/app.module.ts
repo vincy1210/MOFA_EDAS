@@ -158,6 +158,8 @@ import { PendingAttestationsComponent } from './LCA_USERS/LCA_ADMIN/pending-atte
 import { CompletedAttestationsComponent } from './LCA_USERS/LCA_ADMIN/completed-attestations/completed-attestations.component';
 import { ImportAttestationsCreateComponent } from './LCA_USERS/LCA_ADMIN/import-attestations/import-attestations-create/import-attestations-create.component';
 import { RisklcaComponent } from './LCA_USERS/LCA_ADMIN/risklca/risklca.component';
+import { AuthGuard } from './auth.guard';
+import { UnauthorizedComponent } from './error/unauthorized/unauthorized.component';
 
 @NgModule({
   declarations: [
@@ -192,6 +194,7 @@ import { RisklcaComponent } from './LCA_USERS/LCA_ADMIN/risklca/risklca.componen
     CompletedAttestationsComponent,
     ImportAttestationsCreateComponent,
     RisklcaComponent,
+    UnauthorizedComponent,
     //PhoneMaskDirective,
   ],
 
@@ -317,10 +320,12 @@ import { RisklcaComponent } from './LCA_USERS/LCA_ADMIN/risklca/risklca.componen
       provide: RECAPTCHA_V3_SITE_KEY,
       useValue: RECAPTCHA_V3_STACKBLITZ_KEY,
     },
+    
 
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     ModalPopupService,
     DatePipe,
+    AuthGuard
   ],
   bootstrap: [AppComponent],
   // exports: [

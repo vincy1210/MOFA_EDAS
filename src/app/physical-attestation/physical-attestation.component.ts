@@ -722,6 +722,11 @@ closesidetab(){
     header: 'Confirm',
     icon: 'pi pi-exclamation-triangle',
     accept: () => {
+
+      this.invoiceRequestLists.forEach((row: any) => {
+        row.isSelected = false;
+      });
+
         this.shouldShow=false;
   this.selectedAttestations=[]
       //  this.deleteuser(list)
@@ -821,11 +826,11 @@ settingbackgroundcolors(event:any){
       }
     });
   } else {
-    // If a single row is selected
-    const selectedRow = this.invoiceRequestLists.find((row: any) => row.edasreqno === this.selectedAttestations[0].edasreqno);
-    if (selectedRow) {
-      selectedRow.isSelected = true;
-    }
+    // If a no row is selected
+    // const selectedRow = this.invoiceRequestLists.find((row: any) => row.edasreqno === this.selectedAttestations[0].edasreqno);
+    // if (selectedRow) {
+    //   selectedRow.isSelected = true;
+    // }
   }
   console.log(this.invoiceRequestLists)
 }

@@ -36,6 +36,8 @@ export class CooAttestationComponent implements OnInit {
   cooAttestationLists: any;
   cooAttestationLists_LCA:any;
   cols: any;
+  cols_: any;
+
   loading: boolean = false;
   enableFilters: boolean = false;
   // for workflow
@@ -76,6 +78,8 @@ base64PdfString: any;
 src:any;
 isLoading=false;
 AddInvoiceDialog:boolean=false;
+AddInvoiceDialog_:boolean=false;
+
 form:FormGroup;
 datasource:any;
 
@@ -185,7 +189,23 @@ this.form = this.fb.group({
         width:'10%'
       }
     ];
-  //  this.InitTable();
+
+    this.cols_ = [
+      { field: 'edasattestno', header: 'Attestation No', width:'20%' },
+      { field: 'companyname', header: 'Company Name', width:'20%' },
+      { field: 'invoiceamount', header: 'Invoice Amount', width:'20%' },
+      { field: 'feesamount', header: 'Fees Amount', width:'20%' },
+
+      { field: 'invoicenumber', header: 'Invoice ID', width:'20%' },
+      { field: 'declarationumber', header: 'Declaration No' , width:'20%' },
+      { field: 'declarationdate', header: 'Declaration Date' , width:'200px' },
+      { field: 'attestreqdate', header: 'Created' , width:'200px' },
+      { field: 'lcaname', header: 'LCA', width:'15%' },
+
+      { field: 'canpay', header: 'Status', width:'20%' },
+      { field: 'Noofdaysleft', header: 'Age',  width:'5%' }
+
+  ];
   }
 
   InitTable($event:LazyLoadEvent) {
@@ -689,12 +709,29 @@ openDialog(customer:any) {
 //   });
 // }
 
+isCOONotPaid(data:any) {
+  return data.canpay === 0;
+}
+getSeverity_(canpay: number) {
+  switch (canpay) {
+      case 1:
+          return 'success';
+      default :
+          return 'danger';
+  }
+
+}
+
+openNew_(data:any){
+  this.getLCAInvoicesForMyCooDec(data);
+  this.AddInvoiceDialog_=true
+
+}
 
 openNew(data:any) {
   console.log(data);
   this.currentrow=data;
 
-  this.getLCAInvoicesForMyCooDec(this.currentrow);
   
   this.AddInvoiceDialog=true
   const fieldMappings: { [key: string]: string } = {
@@ -784,6 +821,9 @@ closesidetab(){
     accept: () => {
         this.shouldShow=false;
   this.selectedAttestations=[]
+  this.cooAttestationLists.forEach((row: any) => {
+    row.isSelected = false;
+  });
       //  this.deleteuser(list)
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Removed Successfully', life: 3000 });
     }
@@ -847,10 +887,10 @@ settingbackgroundcolors(event:any){
     });
   } else {
     // If a single row is selected
-    const selectedRow = this.cooAttestationLists.find((row: any) => row.edasattestno === this.selectedAttestations[0].edasattestno);
-    if (selectedRow) {
-      selectedRow.isSelected = true;
-    }
+    // const selectedRow = this.cooAttestationLists.find((row: any) => row.edasattestno === this.selectedAttestations[0].edasattestno);
+    // if (selectedRow) {
+    //   selectedRow.isSelected = true;
+    // }
   }
   console.log(this.cooAttestationLists)
 }
@@ -860,7 +900,7 @@ getLCAInvoicesForMyCooDec(currentrow:any){
   let resp;
   let data={
     "uuid":this.uuid,
-    "lcaattestno":currentrow.declarationumber
+    "decNo":currentrow.declarationumber
 }
       this.loading=true;
       this.common.showLoading();
