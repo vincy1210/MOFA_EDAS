@@ -104,6 +104,7 @@
                 <div class="grid-header-right">
                   <button
                     type="button"
+                    [disabled]="excelLists.length === 0"
                     pButton
                     pRipple
                     (click)="postDataValid()"
@@ -115,6 +116,7 @@
                   </button>
                   <button
                     type="button"
+                    [disabled]="excelLists.length === 0"
                     pButton
                     pRipple
                     (click)="postData()"
