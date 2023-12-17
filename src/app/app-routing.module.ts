@@ -60,10 +60,10 @@ const routes: Routes = [
   {path:'physicalinreview', component:PhysicalinreviewComponent,  data: { role: ['Admin', 'User'] }},
   {path:'logout', component:ErrorComponent},
 
-  {path:'lca', component:LCAComponent,  data: { role: ['Admin', 'User'] }},
-  {path:'coo', component:COOComponent,  data: { role: ['Admin', 'User'] }},
-  {path:'physical', component:PhysicalComponent,  data: { role: ['Admin', 'User'] }},
-  {path:'fines', component:FinesComponent,  data: { role: ['Admin', 'User'] }},
+  {path:'rptlca', component:LCAComponent,  data: { role: ['Admin', 'User'] }},
+  {path:'rptcoo', component:COOComponent,  data: { role: ['Admin', 'User'] }},
+  {path:'rptphysical', component:PhysicalComponent,  data: { role: ['Admin', 'User'] }},
+  {path:'rptfines', component:FinesComponent,  data: { role: ['Admin', 'User'] }},
 
   {path:'lcadashboard', component:AttestationsComponent, data: { role: [11,12] }},
   {path:'importslca', component:ImportAttestationsComponent, data: { role: [11,12] }},

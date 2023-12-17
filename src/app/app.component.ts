@@ -142,8 +142,8 @@ role2:string='';
 
    
 
-    idle.setIdle(60); // how long can they be inactive before considered idle, in seconds
-    idle.setTimeout(30); // how long can they be idle before considered timed out, in seconds
+    idle.setIdle(1200); // how long can they be inactive before considered idle, in seconds
+    idle.setTimeout(600); // how long can they be idle before considered timed out, in seconds
     idle.setInterrupts(DEFAULT_INTERRUPTSOURCES); 
 
     idle.onIdleStart.subscribe(() => {

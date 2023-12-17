@@ -26,9 +26,7 @@ font-weight: 600;">
    <!-- {{companyname}}   width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;-->
 
 </div>
-<div  style="text-align: center; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 5px;">{{companyname}}</div>
-    <br>
-    <br>
+<div  class="companyname">{{companyname}}</div>
   
   </div>
   <mat-divider></mat-divider>
@@ -41,8 +39,8 @@ font-weight: 600;">
     >
       <mat-expansion-panel-header *ngIf="!items.hasubMenu" (click)="onSubMenuClick(items)" >
         <span class="mat-items">
-          <mat-icon>{{ items.icon }}</mat-icon
-          ><span>{{ items.menu | translate }}</span>
+          <mat-icon>{{ items.icon }}</mat-icon>
+          <span class="menutitle">{{ items.menu | translate }}</span>
         </span>
       </mat-expansion-panel-header>
       <mat-nav-list style="padding: 0%;" *ngFor="let item of items.subMenus">
@@ -62,8 +60,8 @@ font-weight: 600;">
     >
       <mat-expansion-panel-header *ngIf="items.hasubMenu" (click)="onMainPanelClick(i)" >
         <span class="mat-items">
-          <mat-icon>{{ items.icon }}</mat-icon
-          ><span>{{ items.menu | translate }}</span>
+          <mat-icon>{{ items.icon }}</mat-icon>
+          <span class="menutitle">{{ items.menu | translate }}</span>
         </span>
       </mat-expansion-panel-header>
       <!-- <div class="indicator-line" [style.top]="calculateLinePosition()"> -->

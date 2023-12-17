@@ -185,10 +185,10 @@ usertype:string='';
         hasubMenu:true,
         icon: 'feed',
         subMenus: [
-          { id: 1, menu: 'LCA', icon: 'play_arrow', link: '/lca' },
-          { id: 2, menu: 'COO', icon: 'play_arrow',link: '/coo' },
-          { id: 3, menu: 'Physical', icon: 'play_arrow',link: '/physical' },
-          { id: 4, menu: 'Fines', icon: 'play_arrow',link: '/fines' },
+          { id: 1, menu: 'LCA', icon: 'play_arrow', link: '/rptlca' },
+          { id: 2, menu: 'COO', icon: 'play_arrow',link: '/rptcoo' },
+          { id: 3, menu: 'Physical', icon: 'play_arrow',link: '/rptphysical' },
+          { id: 4, menu: 'Fines', icon: 'play_arrow',link: '/rptfines' },
         ],
       },
     );

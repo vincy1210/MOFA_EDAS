@@ -2064,6 +2064,7 @@ h1.db-sub-title {
   direction: ltr;
 }
 
+
 .p-tooltip .p-tooltip-text {
   background: #495057;
   color: #ffffff;
@@ -2264,3 +2265,8 @@ h1.db-sub-title {
 
 }
 
+
+
+[dir="rtl"] span.menutitle {
+  padding-right: 8px;
+}

@@ -29,17 +29,31 @@
      <!-- {{userloggedin}} hello {{lcauserloggedin}}   -->
 <!-- start -->
 <span *ngIf="userloggedin || lcauserloggedin">
+  <span *ngIf="userloggedin" >
       <button mat-icon-button class="white-icon-button" color="primary" pTooltip="Switch Company" tooltipPosition="bottom">
-        <!-- <mat-icon  routerLink="/landingpage" *ngIf="userloggedin"  svgIcon="company_switch" style="padding: 2px"></mat-icon> -->
-        <mat-icon  routerLink="/landingpage" *ngIf="userloggedin"  color="primary">apps</mat-icon>
-        
+        <mat-icon  routerLink="/landingpage"  color="primary">apps</mat-icon>
       </button>
+    </span>
+
+
+      <!-- <button mat-menu-item [matMenuTriggerFor]="fontsizemenu">
+        <mat-icon svgIcon="text-size-icon" style="padding: 2px"></mat-icon>
+      </button> -->
+      <button
+      mat-icon-button pTooltip="Change Font Size" tooltipPosition="bottom"
+      class="white-icon-button"
+      color="primary"
+      [matMenuTriggerFor]="fontsizemenu">
+      <!-- <i class="fa fa-palette" color="primary"></i> -->
+      <mat-icon svgIcon="text-size-icon" style="padding: 5px"></mat-icon>
+    </button>
+
       <mat-menu 
         #fontsizemenu="matMenu" 
         yPosition="below"
-        class="mt-2 main-mat-menu font-size-mat-menu"
-      >
+        class="mt-2 main-mat-menu font-size-mat-menu" >
         <button mat-menu-item (click)="toggle('sm')">
+
           <mat-icon svgIcon="text-size-icon" style="padding: 5px"></mat-icon>
         </button>
         <mat-divider></mat-divider>
