@@ -4,6 +4,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { ApiService } from 'src/service/api.service';
 import { ConstantsService } from 'src/service/constants.service';
 import { HttpHeaders } from '@angular/common/http';
+import { AuthService } from 'src/service/auth.service';
 
 // imports {ConstantsService}
 
@@ -35,7 +36,8 @@ fail_msg="Transaction Failed"
 check_circle_outline="check_circle_outline"
 paymenttype:any;
 isButtonDisabled = false;
-  constructor(private router:Router,private common:CommonService, private _activatedRoute:ActivatedRoute, private apicall:ApiService, private consts:ConstantsService) { }
+  constructor(private router:Router,private common:CommonService, private _activatedRoute:ActivatedRoute, private apicall:ApiService, 
+    private consts:ConstantsService, private auth:AuthService) { }
 
   ngOnInit() {
 
@@ -52,9 +54,9 @@ isButtonDisabled = false;
 
     }
     else{
-      console.log("Invalid Session")
+       this.common.setlogoutreason("session");
+      this.auth.logout();
 
-      //this.common.logoutUser()
     }
     this.common.showLoading();
 

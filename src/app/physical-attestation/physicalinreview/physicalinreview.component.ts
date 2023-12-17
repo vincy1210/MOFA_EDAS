@@ -8,6 +8,7 @@ import { AttestationStatusEnum } from 'src/app/shared/models/attestation-status.
 import { CommonService } from 'src/service/common.service';
 import { DatePipe } from '@angular/common';
 import { environment } from 'src/environments/environment';
+import { AuthService } from 'src/service/auth.service';
 
 
 @Component({
@@ -68,13 +69,13 @@ paymentcount=environment.appdetails.payment_count;
     public translate: TranslateService,
     public apiservice: ApiService,
     public consts: ConstantsService,
-    public common: CommonService,private datePipe: DatePipe, 
+    public common: CommonService,private datePipe: DatePipe, private auth:AuthService
   ) {
     this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
   }
 
   ngOnInit(): void {
-    this.currentcompany=this.common.getSelectedCompany().companyuno;
+    this.currentcompany=this.auth.getSelectedCompany().companyuno;
   
     let data11=this.common.getUserProfile();
     let uuid;
@@ -88,9 +89,9 @@ paymentcount=environment.appdetails.payment_count;
 
     }
     else{
-      console.log("Invalid Session")
+       this.common.setlogoutreason("session");
+      this.auth.logout();
 
-      //this.common.logoutUser()
     }
     this.cols = [
       {

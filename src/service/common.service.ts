@@ -25,14 +25,14 @@ import { AuthService } from './auth.service';
 export class CommonService {
   favink1: string = '';
   favink2: string = '';
-  public userloggedinSubject = new BehaviorSubject<boolean>(false);
-  userloggedin$ = this.userloggedinSubject.asObservable();
+  // public userloggedinSubject = new BehaviorSubject<boolean>(false);
+  // userloggedin$ = this.userloggedinSubject.asObservable();
 
   // public lcauserloggedinSubject = new BehaviorSubject<boolean>(false);
   // lcauserloggedin$ = this.lcauserloggedinSubject.asObservable();
 
-  private userCompanysubject = new BehaviorSubject<string>('');
-  userCompany$ = this.userCompanysubject.asObservable();
+  // private userCompanysubject = new BehaviorSubject<string>('');
+  // userCompany$ = this.userCompanysubject.asObservable();
 
   private isAdmin = new BehaviorSubject<boolean>(false);
   isAdmin$ = this.isAdmin.asObservable();
@@ -44,6 +44,12 @@ export class CommonService {
   userprofile$ = this.userprofilesubject.asObservable();
 
   private dataSubject = new BehaviorSubject<string>('');
+  private alrregcompany = new BehaviorSubject<string>('');
+  private logoutreason = new BehaviorSubject<string>('');
+
+
+  // logoutreason
+
   private userinfo = new BehaviorSubject<string>('');
   private RegisteredCompanyDetails = new BehaviorSubject<string>('');
   private selectedcompany = new BehaviorSubject<string>('');
@@ -73,45 +79,7 @@ export class CommonService {
     private datePipe: DatePipe,private Router:Router, private apicall:ApiService, private consts:ConstantsService, private auth:AuthService
   ) {
 
-    const emailToMask = 'vincyv@ducont.com';
-    const maskedEmail =this.maskEmail(emailToMask);
-    console.log(maskedEmail);
-
-
-    
-
-//start //for lca user
-
-
-
-//end for lca user
-
-//Start for company user
-      let data:any;
-    data=sessionStorage.getItem('currentcompany');
-    console.log(data);
-
-    if(data!=undefined || data !=null){
-      this.userloggedinSubject.next(true);
-            let abc=JSON.parse(data)
-            abc=abc.role;
-            console.log(data)
-            this.userCompanysubject.next(data.business_name)
-
-            if(abc=="Admin"){
-            this.isAdmin.next(true);
-            }
-            else if(abc=="User"){
-            this.isAdmin.next(false);
-            }
-            else{
-              this.isAdmin.next(false);
-            }
-      }
-      else{
-      this.userloggedinSubject.next(false);
-      this.userCompanysubject.next('');
-      }
+  
 // end for company user
 
   }
@@ -122,13 +90,20 @@ export class CommonService {
   showErrorMessage(data: any) {
     if (data != undefined) {
       var status = this.translate.instant(data);
-      this.Toastr.error(data);
+      this.Toastr.error(status);
     }
   }
   showSuccessMessage(data: any) {
     if (data != undefined) {
       var status = this.translate.instant(data);
-      this.Toastr.success(data);
+      this.Toastr.success(status);
+    }
+  }
+
+  showWarningMessage(data: any) {
+    if (data != undefined) {
+      var status = this.translate.instant(data);
+      this.Toastr.warning(status);
     }
   }
 
@@ -217,45 +192,45 @@ export class CommonService {
   }
 
 
-  setSelectedCompany(data: any) {
-     sessionStorage.setItem('currentcompany', JSON.stringify(data));
-     if(data!=undefined || data !=null){
-      this.userloggedinSubject.next(true);
-      this.userCompanysubject.next(data.business_name)
-          let  abc=data.role;
-            if(abc=="Admin"){
-            this.isAdmin.next(true);
-            }
-            else if(abc=="User"){
-            this.isAdmin.next(false);
-            }
-            else{
-            this.isAdmin.next(false);
-            }
-      }
-      else{
-     // this.userloggedin=false;
-      this.userloggedinSubject.next(false);
-      this.userCompanysubject.next('')
-      }
-   }
+  // setSelectedCompany(data: any) {
+  //    sessionStorage.setItem('currentcompany', JSON.stringify(data));
+  //    if(data!=undefined || data !=null){
+  //     this.userloggedinSubject.next(true);
+  //     this.userCompanysubject.next(data.business_name)
+  //         let  abc=data.role;
+  //           if(abc=="Admin"){
+  //           this.isAdmin.next(true);
+  //           }
+  //           else if(abc=="User"){
+  //           this.isAdmin.next(false);
+  //           }
+  //           else{
+  //           this.isAdmin.next(false);
+  //           }
+  //     }
+  //     else{
+  //    // this.userloggedin=false;
+  //     this.userloggedinSubject.next(false);
+  //     this.userCompanysubject.next('')
+  //     }
+  //  }
  
-   getSelectedCompany() {
-     const myselectedcompany = sessionStorage.getItem('currentcompany');
-      if (myselectedcompany) {
-       return JSON.parse(myselectedcompany);
-     }
-     else{
-      let dat=sessionStorage.getItem('userProfile');
+  //  getSelectedCompany() {
+  //    const myselectedcompany = sessionStorage.getItem('currentcompany');
+  //     if (myselectedcompany) {
+  //      return JSON.parse(myselectedcompany);
+  //    }
+  //    else{
+  //     let dat=sessionStorage.getItem('userProfile');
 
-      if(dat!=undefined ||dat!=null )
-      {
-        console.log("to landing page from common service line 284")
-        this.Router.navigateByUrl('/landingpage');
-      }
-     }
-     //return null;
-   }
+  //     if(dat!=undefined ||dat!=null )
+  //     {
+  //       console.log("to landing page from common service line 284")
+  //       this.Router.navigateByUrl('/landingpage');
+  //     }
+  //    }
+  //    //return null;
+  //  }
  
 
   setfreezone(data: string) {
@@ -416,7 +391,7 @@ export class CommonService {
     // Start a new timer for inactivity
     this.inactivityTimer = setTimeout(() => {
       // Session timeout action - you can logout the user or perform any other action
-      this.logoutUser();
+      this.auth.logout();
     }, this.INACTIVITY_TIMEOUT);
   }
 
@@ -428,17 +403,7 @@ export class CommonService {
     }
   }
   
-  logoutUser() {
-    // Perform logout actions here, e.g., remove user data from SessionStorage
-    // sessionStorage.clear();   //keep it back
-    // this.userloggedinSubject.next(false);
-    // sessionStorage.removeItem('userProfile');
-   // this.Router.navigateByUrl("/logout")
-//this.Router.navigateByUrl('https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2')
-  //window.location.href = "https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2"
-    
-    // Redirect to the login page or perform other logout-related tasks
-  }
+ 
 
   convertBase64ToPdf(base64Data: string): void {
     const binaryData = atob(base64Data);
@@ -717,6 +682,26 @@ export class CommonService {
   }
   // Example usage
 
+  SetAlreadyregisteredcompanydetails(data:any){
+    // sessionStorage.setItem('alreadyRegCompanyDetails',data);
+    this.alrregcompany.next(data)
+  }
+
+  GetAlreadyregisteredcompanydetails(){
+    // let data= sessionStorage.getItem('alreadyRegCompanyDetails');
+    // return  data;
+
+    return this.alrregcompany.asObservable();
+    
+  }
+
+  setlogoutreason(data:any){
+    this.logoutreason.next(data)
+  }
+
+  getlogoutreason(){
+    return this.logoutreason.asObservable();
+  }
   
 
 }

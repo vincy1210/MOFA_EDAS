@@ -6,6 +6,7 @@ import { DatePipe } from '@angular/common';
 import * as XLSX from 'xlsx';
 import { ModalPopupService } from 'src/service/modal-popup.service';
 import { CommonService } from 'src/service/common.service';
+import { AuthService } from 'src/service/auth.service';
 
 @Component({
   selector: 'app-completed-coo-requests',
@@ -42,7 +43,7 @@ isButtonDisabled = false;
     public translate: TranslateService,
     public apiservice: ApiService,
     public consts: ConstantsService,
-    private datePipe: DatePipe, public common:CommonService
+    private datePipe: DatePipe, public common:CommonService, private auth:AuthService
   ) {
 this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
 
@@ -60,7 +61,7 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
   }
 
   ngOnInit(): void {
-    this.currentcompany=this.common.getSelectedCompany().companyuno;
+    this.currentcompany=this.auth.getSelectedCompany().companyuno;
    
     let data11=this.common.getUserProfile();
     let uuid;
@@ -73,8 +74,8 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
     }
     else{
      
-      // this.common.logoutUser()
-      console.log("Invalid Session")
+       this.common.setlogoutreason("session");
+      this.auth.logout();
 
     }
    

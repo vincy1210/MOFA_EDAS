@@ -7,6 +7,7 @@ import * as XLSX from 'xlsx';
 import { ModalPopupService } from 'src/service/modal-popup.service';
 import { CommonService } from 'src/service/common.service';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/service/auth.service';
 
 @Component({
   selector: 'app-physical',
@@ -45,7 +46,7 @@ total_invoiceamount:any;
     public translate: TranslateService,
     public apiservice: ApiService,
     public consts: ConstantsService,
-    private datePipe: DatePipe, public common:CommonService, private router:Router
+    private datePipe: DatePipe, public common:CommonService, private router:Router, private auth:AuthService
   ) {
 this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
 
@@ -64,7 +65,7 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
 
   ngOnInit(): void {
 
-    this.currentcompany=this.common.getSelectedCompany().companyuno;
+    this.currentcompany=this.auth.getSelectedCompany().companyuno;
    
     
     
@@ -78,8 +79,8 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
 
     }
     else{
-      console.log("Invalid Session")
-      // this.common.logoutUser()
+       this.common.setlogoutreason("session");
+      this.auth.logout();
     }
     
     this.cols = [

@@ -12,6 +12,7 @@ import { HttpClient } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 import { MatToolbar } from '@angular/material/toolbar';
 import { saveAs } from 'file-saver';
+import { AuthService } from 'src/service/auth.service';
 interface Column {
   field: string;
   header: string;
@@ -94,7 +95,8 @@ isfilenotfouund:boolean=false;
 
 fields: { label: string, value: any }[] = [];
 isButtonDisabled = false;
-  constructor(private datePipe: DatePipe, private http:HttpClient,private _liveAnnouncer: LiveAnnouncer, private api:ApiService, public common:CommonService, private consts:ConstantsService) {
+  constructor(private datePipe: DatePipe, private http:HttpClient,private _liveAnnouncer: LiveAnnouncer, private api:ApiService, public common:CommonService, 
+    private consts:ConstantsService, private auth:AuthService) {
     this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
    }
 
@@ -114,7 +116,7 @@ isButtonDisabled = false;
 
    
 
-    this.currentcompany=this.common.getSelectedCompany().companyuno;
+    this.currentcompany=this.auth.getSelectedCompany().companyuno;
 
     
     this.loading = true;
@@ -130,9 +132,9 @@ isButtonDisabled = false;
 
     }
     else{
-      console.log("Invalid Session")
+       this.common.setlogoutreason("session");
+      this.auth.logout();
 
-     // this.common.logoutUser()
     }
     this.cols = [
       { field: 'edasattestno', header: 'Attestation No', width:'25%' },

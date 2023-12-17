@@ -9,6 +9,8 @@ export const environment = {
   appdetails:{
     version:'2.0',
     year:'2023',
-    payment_count:500
+    payment_count:500,
+    idletime_out:1500,
+    session_timeout:300
   }
 };

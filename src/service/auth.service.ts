@@ -63,23 +63,50 @@ export class AuthService {
       this.lcauserloggedinSubject.next(false)
     
     }
+
+    
+    let data:any;
+    data=sessionStorage.getItem('currentcompany');
+    console.log(data);
+
+    if(data!=undefined || data !=null){
+      this.userloggedinSubject.next(true);
+            let abc=JSON.parse(data)
+            abc=abc.role;
+            console.log(data)
+            this.userCompanysubject.next(data.business_name)
+
+            if(abc=="Admin"){
+            this.isAdmin.next(true);
+            }
+            else if(abc=="User"){
+            this.isAdmin.next(false);
+            }
+            else{
+              this.isAdmin.next(false);
+            }
+      }
+      else{
+      this.userloggedinSubject.next(false);
+      this.userCompanysubject.next('');
+      }
     
 
   }
 
 
   logout(){
-
+this.userloggedinSubject.next(false);
+    this.lcauserloggedinSubject.next(false)
     sessionStorage.clear();
-   //this.commonService.logoutUser();
-    //this.router.navigateByUrl('/logout')
-    window.location.href = "https://stg-id.uaepass.ae/idshub/logout?redirect_uri=https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2"
+    localStorage.clear();
+    this.router.navigateByUrl('/logout')
 
   }
 
   getLCAUser(): string {
     // Retrieve user role from localStorage
-    return localStorage.getItem('userrole') || '';
+    return sessionStorage.getItem('userrole') || '';
     
   }
 
@@ -90,7 +117,7 @@ export class AuthService {
     // this.userRoleSubject.next(role);
 this.lcauserloggedinSubject.next(true)
 
-    localStorage.setItem('userrole', role);
+sessionStorage.setItem('userrole', role);
     this.userRoleSubject.next(role);
   }
   

@@ -21,10 +21,24 @@
       
         <div class=" mt-3 grid grid-cols-1 rtl-form">
           <div class="grid grid-cols-1">
+
+            <mat-form-field appearance="outline">
+              <mat-label>{{'nameofthebusinessaspertradelicense' | translate }}</mat-label>
+              <input class="amount-input" autocomplete="off" formControlName="name_of_Business" name="name_of_Business" maxlength="100"  matInput placeholder="{{'Example Technologies L.L.C' | translate}}">
+          <mat-hint>{{'Your Consignee Name will be verified with our existing registrations.' | translate}}</mat-hint>
+              
+              <mat-error *ngIf="registrationForm.get('name_of_Business')?.hasError('required')">{{'Name of the Business is required' | translate }} </mat-error>
+              <mat-error *ngIf="registrationForm.get('name_of_Business')?.hasError('pattern')">{{'Name of the Business is required' | translate }} </mat-error>
+              
+            </mat-form-field>
+    
+          </div>
+          <div class="grid grid-cols-1">
            
         <mat-form-field [ngClass]="{'error-border': registrationForm.get('tradeLicenseNumber')?.hasError('required')}" appearance="outline">
           <mat-label>{{'tradelicensenumberlabel' | translate }}</mat-label>
           <input matInput maxlength="20" minlength="4" placeholder="Enter Trade License Number" name="tradeLicenseNumber" formControlName="tradeLicenseNumber">
+          <mat-hint>{{'Your Trade License number will be verified with our existing registrations.' | translate}}</mat-hint>
           <mat-error class="error" *ngIf="!registrationForm.get('tradeLicenseNumber')?.hasError('required') && registrationForm.get('tradeLicenseNumber')?.hasError('minlength')">
             {{'Trade license Number length cannot be less than 4 digits'|translate}}</mat-error>
           
@@ -53,13 +67,13 @@
         <mat-form-field appearance="outline">
           <mat-label>{{'licenseIssuingauthorityemiratelabel' | translate }}</mat-label>
           <mat-select name="issuingAuthority"  formControlName="issuingAuthority" (selectionChange)="onDropdownChange($event)">
-            <mat-option value="01">{{'Abu Dhabi' | translate}}</mat-option>
-            <mat-option value="02">{{'Ajman'| translate}}</mat-option>
-            <mat-option value="03">{{'Dubai' | translate}}</mat-option>
-            <mat-option value="04">{{'Fujairah' | translate}}</mat-option>
-            <mat-option value="05">{{'Sharjah'| translate}}</mat-option>
-            <mat-option value="06">{{'Ras Al Khaimah' | translate}}</mat-option>
-            <mat-option value="07">{{'Umm Al Quwain' | translate}}</mat-option>
+            <mat-option value="AUH">{{'Abu Dhabi' | translate}}</mat-option>
+            <mat-option value="AJM">{{'Ajman'| translate}}</mat-option>
+            <mat-option value="DXB">{{'Dubai' | translate}}</mat-option>
+            <mat-option value="FUJ">{{'Fujairah' | translate}}</mat-option>
+            <mat-option value="SHJ">{{'Sharjah'| translate}}</mat-option>
+            <mat-option value="RAK">{{'Ras Al Khaimah' | translate}}</mat-option>
+            <mat-option value="UAQ">{{'Umm Al Quwain' | translate}}</mat-option>
 
           </mat-select>
           <mat-error class="error" *ngIf="registrationForm.get('issuingAuthority')?.hasError('required')">{{'Please select an option.'|translate}}</mat-error>

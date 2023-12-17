@@ -13,6 +13,7 @@ import {
   ActionConstants,
 } from 'src/service/constants.service';
 import { ModalPopupService } from 'src/service/modal-popup.service';
+import { AuthService } from 'src/service/auth.service';
 
 @Component({
   selector: 'app-attestations',
@@ -52,7 +53,7 @@ export class AttestationsComponent extends LayoutModel implements OnInit {
     public override apiservice: ApiService,
     public override common: CommonService,
     public override translate: TranslateService,
-    private modalPopupService: ModalPopupService
+    private modalPopupService: ModalPopupService, private auth:AuthService
   ) {
     super(router, consts, apiservice, common, translate);
     this.progress_val = 0;
@@ -63,6 +64,19 @@ export class AttestationsComponent extends LayoutModel implements OnInit {
   }
 
   ngOnInit(): void {
+
+    let data11=this.common.getUserProfile();
+    let uuid;
+    if(data11!=null || data11!=undefined){
+      data11=JSON.parse(data11)
+      console.log(data11.Data)
+      uuid=data11.Data.uuid;
+    }
+    else{
+       this.common.setlogoutreason("session");
+      this.auth.logout();
+    }
+
     if (this.routesname === 'pending') {
       this.selectedFilterOption = {
         id: 1,

@@ -70,24 +70,30 @@ usertype:string='';
       this.getMenuItemLists();
     }
   //end of LCA user user flow
-if(usertype!='11'){
-    this.common.userCompany$.subscribe((loggedIn) => {
+
+  if(usertype=='11' || usertype=='12'){
+
+  }
+  else{
+    this.auth.userCompany$.subscribe((loggedIn) => {
       this.companyname = loggedIn;
      this.setusername();
     });
-    let companyname1=this.common.getSelectedCompany()
+    let companyname1=this.auth.getSelectedCompany()
     console.log(companyname1)
     this.companyname=companyname1?.business_name || '';
 
     this.common.isAdmin$.subscribe((isAdmin_) => {
       this.isAdmin = isAdmin_;
-      if(this.usertype!='11'){
+      if(this.usertype=='11' || this.usertype=='12'){
+      }
+      else{
         this.getMenuItemLists();
-
       }
       console.log(this.isAdmin);
     });
-}
+
+  }
     
   }
 
@@ -103,8 +109,35 @@ if(usertype!='11'){
   }
   console.log(userRole);
 
-  if(this.usertype!='11'){
+  if(this.usertype=='11' || this.usertype=='12'){
+
+    console.log('menu for LCA Admin is loading')
+
+    this.menuList.push( 
+      {
+        id: 1,
+        menu: 'Dashboard',
+        icon: 'dashboard',
+        link: '/lcadashboard',
+        hasubMenu:false
+      },{
+      id: 2,
+      menu: 'Attestations',
+      hasubMenu:true,
+        icon: 'feed',
+        subMenus: [
+          { id: 1, menu: 'Import', icon: 'play_arrow', link: '/importslca' },
+          { id: 2, menu: 'Pending', icon: 'play_arrow',link: '/pendinglca' },
+          { id: 3, menu: 'Completed', icon: 'play_arrow',link: '/completedlca' },
+          { id: 4, menu: 'In Risk', icon: 'play_arrow',link: '/risklca' },
+
+        ]
+    });
     
+  }
+  else{
+    //
+   
     this.menuList.push(
       {
         id: 1,
@@ -177,31 +210,6 @@ if(usertype!='11'){
       }
 
     }
-  }
-  else{
-    //
-    console.log('menu for LCA Admin is loading')
-
-    this.menuList.push( 
-      {
-        id: 1,
-        menu: 'Dashboard',
-        icon: 'dashboard',
-        link: '/lcadashboard',
-        hasubMenu:false
-      },{
-      id: 2,
-      menu: 'Attestations',
-      hasubMenu:true,
-        icon: 'feed',
-        subMenus: [
-          { id: 1, menu: 'Import', icon: 'play_arrow', link: '/importslca' },
-          { id: 2, menu: 'Pending', icon: 'play_arrow',link: '/pendinglca' },
-          { id: 3, menu: 'Completed', icon: 'play_arrow',link: '/completedlca' },
-          { id: 4, menu: 'In Risk', icon: 'play_arrow',link: '/risklca' },
-
-        ]
-    });
 
    
   }

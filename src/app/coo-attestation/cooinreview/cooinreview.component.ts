@@ -15,6 +15,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 
 import {MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
 import { environment } from 'src/environments/environment';
+import { AuthService } from 'src/service/auth.service';
 
 
 @Component({
@@ -91,7 +92,7 @@ paymentcount=environment.appdetails.payment_count;
     public translate: TranslateService,
     public apiservice: ApiService,
     public consts: ConstantsService,
-    private datePipe: DatePipe, public common:CommonService, private fb:FormBuilder
+    private datePipe: DatePipe, public common:CommonService, private fb:FormBuilder, private auth:AuthService
   ) {
 
     this.isRowSelectable = this.isRowSelectable.bind(this);
@@ -128,7 +129,7 @@ this.form = this.fb.group({
   }
 
   ngOnInit(): void {
-    this.currentcompany=this.common.getSelectedCompany().companyuno;
+    this.currentcompany=this.auth.getSelectedCompany().companyuno;
    
     let data11=this.common.getUserProfile();
     let uuid;
@@ -142,9 +143,9 @@ this.form = this.fb.group({
 
     }
     else{
-      console.log("Invalid Session")
+       this.common.setlogoutreason("session");
+      this.auth.logout();
      
-    //  this.common.logoutUser()
     }
    
     this.cols = [

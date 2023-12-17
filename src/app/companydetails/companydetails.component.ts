@@ -60,12 +60,33 @@ export class CompanydetailsComponent implements OnInit {
   note1:string='';
   note2:string='';
   note3:string='';
+  note4:string='';
   freezonelist:any;
   showResendLink:boolean=false;
-  
+  already_reg_companyemail:string='';
   isButtonDisabled = false;
+  alreadyregisteredcompanydetails:any;
   constructor(private recaptchaV3Service:ReCaptchaV3Service,private common:CommonService ,private _activatedRoute: ActivatedRoute,private formBuilder:FormBuilder, public dialog: MatDialog, private Common:CommonService, public apiservice:ApiService, public consts:ConstantsService, public router:Router) {
 
+
+    //this.common.SetAlreadyregisteredcompanydetails
+
+    this.Common.GetAlreadyregisteredcompanydetails().subscribe(data => {
+      this.alreadyregisteredcompanydetails = data;
+      console.log(this.alreadyregisteredcompanydetails)
+      if(this.alreadyregisteredcompanydetails){
+        this.form1_Vis=false;
+        this.response_code_after_submit=this.alreadyregisteredcompanydetails.refno;   ///vincy 
+        this.already_reg_companyemail=this.alreadyregisteredcompanydetails.repemailaddress;
+        if(this.alreadyregisteredcompanydetails.isapproved){  //already approved
+
+          this.setnote('B')  //vincy
+        }
+        else{         //registered but not approved yet
+this.setnote('B');   //vincy
+        }
+      }
+    });
 
     // uncomment
 if(this.reg_form_data==undefined){
@@ -77,12 +98,7 @@ if(this.reg_form_data==undefined){
 
 }
 
-    // if(this.reg_form_data===""){
-    //   this.router.navigateByUrl("/registration");
-    //   this.common.showErrorMessage("Issue in Fetching form")
-    // }
 
-    //this.reg_form_data= this.common.getUserProfile();
 
     if(this.reg_form_data==="" || this.reg_form_data==undefined){
       this.router.navigateByUrl("/registration");
@@ -111,7 +127,7 @@ if(this.reg_form_data==undefined){
     }
 
     this.companyDetailsForm=this.formBuilder.group({
-      name_of_Business:['', [Validators.required,Validators.pattern('^(?=.*\\S).+$')]],
+      name_of_Business:[this.reg_form_data?.name_of_Business, [Validators.required,Validators.pattern('^(?=.*\\S).+$')]],
       trade_Licence:[this.reg_form_data?.tradeLicenseNumber, [Validators.required,Validators.pattern('^(?=.*\\S).+$')]],
       trade_Licence_Issue_Date:[this.reg_form_data?.chosenDate, Validators.required],
       trade_Licence_Expiry_Date:['', Validators.required],
@@ -141,6 +157,7 @@ if(this.reg_form_data==undefined){
    
 
   ngOnInit(): void {
+
     this.common.showLoading();
     this.sitekey=environment.recaptcha.siteKey
     this.user_info_taken_using_authtoken=this.common.getUserProfile();
@@ -318,9 +335,7 @@ if(this.reg_form_data==undefined){
                   if(response.responseCode==200){
                     this.response_code_after_submit=response.data.dictionary.requestno
                     this.form1_Vis=false;
-                    this.note1="You have successfully submitted your request for company registration."
-                    this.note2="Our dedicated agents will now review your application, and upon approval, you will receive a confirmation email at your registered email address."
-                    this.note3="To proceed back to the main website, please click the button below."
+                  this.setnote('A');
                     this.progress_val=100
                   }
                   else if(response.responseCode==500 && response.data.dictionary.request!=''){
@@ -333,26 +348,14 @@ if(this.reg_form_data==undefined){
                     else{
                       this.response_code_after_submit=response.data.dictionary.requestno
                       this.form1_Vis=false;
-                      this.note1="Thank you for submitting your request."
-                      this.note2="We would like to inform you that your request has already been successfully submitted and is currently under process."
-                      this.note2=this.note2+ "Rest assured, our team is diligently working on it, and we will get back to you at the earliest possible time."
-                      this.note3="Should you have any questions or need to communicate with us, please feel free to reach out at info@mofa.gov.ae, while kindly referring to your unique reference ID."
-                      this.progress_val=100
+                      this.setnote('B');
+                     this.progress_val=100
 
                     }
 
                   
                   }
-                  // else if(response.responseCode==500 && response.data.dictionary.request==''){
-                  //   if(response.data.dictionary.message==="ORA-00001: unique constraint (MOFA_ADMIN.UK_COMPANY_REG) violated"){
-                  //     this.Common.showErrorMessage("License Already Registered")
-                  //     return;
-                  //   }
-                  //   else{
-                  //     this.Common.showErrorMessage("something went wrong"+ response.data.dictionary.message)
-                  //     return;
-                  //   }
-                  // }
+                 
                   else{
                     this.form1_Vis=true;
                     this.Common.showErrorMessage("something went wrong"+ response.data.dictionary.message)
@@ -371,6 +374,31 @@ if(this.reg_form_data==undefined){
     } else {
       this.Common.showErrorMessage("Please fill the mandatory Fields");
     }
+  }
+
+
+  setnote(type:string){
+    if(type=='A'){   //new request
+      this.note1="You have successfully submitted your request for company registration."
+      this.note2="Our dedicated agents will now review your application, and upon approval, you will receive a confirmation email at your registered email address."
+      this.note3="To proceed back to the main website, please click the button below."
+    }
+    else if(type=='B'){   //not approved yet
+
+      this.note1="Thank you for submitting your request."
+      this.note2="We would like to inform you that your company registration request has already been successfully submitted by " + this.common.maskEmail(this.already_reg_companyemail) + "  and is currently under process.";
+      this.note3= "Rest assured, our team is diligently working on it, and we will get back to you at the earliest possible time."
+      this.note4="Should you have any questions or need to communicate with us, please feel free to reach out at info@mofa.gov.ae, while kindly referring to your unique reference ID."
+
+    }
+    else if(type=='C'){   //approved already
+      this.note1="Thank you for submitting your request."
+      this.note2="We would like to inform you that your company registration request has already been successfully approved."
+      this.note3="For more information; Kindly reach your company representative " + this.common.maskEmail(this.already_reg_companyemail)
+      this.note4="Should you have any questions or need to communicate with us, please feel free to reach out at info@mofa.gov.ae, while kindly referring to your unique reference ID.";
+
+    }
+
   }
   
   executeRecaptchaV3(callback: () => void) {

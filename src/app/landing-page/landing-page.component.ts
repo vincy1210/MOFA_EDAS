@@ -3,6 +3,7 @@ import { CommonService } from 'src/service/common.service';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/service/api.service';
 import { ConstantsService } from 'src/service/constants.service';
+import { AuthService } from 'src/service/auth.service';
 @Component({
   selector: 'app-landing-page',
   templateUrl: './landing-page.component.html',
@@ -21,7 +22,7 @@ uuiddetails:any;
 isanycompanyavailable:boolean=false;
 isButtonDisabled = false;
 initialCompanyList: any;
-  constructor(private common:CommonService, private router:Router, private apicall:ApiService, private consts:ConstantsService) { 
+  constructor(private common:CommonService, private router:Router, private apicall:ApiService, private consts:ConstantsService, private auth:AuthService) { 
     this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
   }
 
@@ -38,9 +39,9 @@ initialCompanyList: any;
 
     }
     else{
-      console.log("Invalid Session")
+       this.common.setlogoutreason("session");
+      this.auth.logout();
 
-     // this.common.logoutUser()
     }
    
 
@@ -133,8 +134,8 @@ initialCompanyList: any;
     "business_name":business_name,
     "role":role
     }
-    this.common.setSelectedCompany(this.setselcompany)
-    console.log(this.common.getSelectedCompany().companyuno)
+    this.auth.setSelectedCompany(this.setselcompany)
+    console.log(this.auth.getSelectedCompany().companyuno)
     this.router.navigateByUrl('/attestation')
     this.common.setSidebarVisibility(true);
   }

@@ -11,6 +11,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ApiService } from 'src/service/api.service';
 import { CommonService } from 'src/service/common.service';
 import { ConstantsService } from 'src/service/constants.service';
+import { AuthService } from 'src/service/auth.service';
 
 interface InvoiceAttestModel {
   attesttypeuno: number;
@@ -49,11 +50,11 @@ export class PhysicalAttestationCreateComponent implements OnInit {
     public apiservice: ApiService,
     public consts: ConstantsService,
     private common: CommonService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe, private auth:AuthService
   ) {}
 
   ngOnInit(): void {
-    this.currentcompany=this.common.getSelectedCompany().companyuno;
+    this.currentcompany=this.auth.getSelectedCompany().companyuno;
 
     let data11=this.common.getUserProfile();
     let uuid;
@@ -65,9 +66,9 @@ export class PhysicalAttestationCreateComponent implements OnInit {
 
     }
     else{
-      console.log("Invalid Session")
+       this.common.setlogoutreason("session");
+      this.auth.logout();
 
-    //  this.common.logoutUser()
     }
 
 

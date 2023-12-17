@@ -4,6 +4,7 @@ import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import jspdf from 'jspdf';
 import * as FileSaver from 'file-saver';
+import { AuthService } from 'src/service/auth.service';
 
 @Component({
   selector: 'app-error',
@@ -14,19 +15,40 @@ export class ErrorComponent implements OnInit {
   showSignOutMessage: boolean = false;
   timenow:Date=new Date();
   timestr:any;
+  sessionnote:string='';
 
   data={
     name: "vincy",
     company:"Ducont"
   }
 
-  constructor(public common:CommonService,private datePipe: DatePipe, private Router:Router) { }
+  constructor(public common:CommonService,private datePipe: DatePipe, private Router:Router, private auth:AuthService) { 
+
+    this.common.getlogoutreason().subscribe(data => {
+   
+
+      if(data){
+if(data=="session"){
+  this.sessionnote='Your session got logged out due to inactivity, we look forward to serve you again';
+}
+else{
+  this.sessionnote='You have been successfully logged out, we look forward to serve you again';
+}
+      }
+      });
+  
+	
+  }
 
   ngOnInit(): void {
 
     this.timestr = this.datePipe.transform(this.timenow, 'MMM d yyyy h:mm:ss a');
+    if(this.sessionnote==''){
+      this.sessionnote='You have been successfully logged out, we look forward to serve you again';
 
-    this.common.logoutUser();
+    }
+
+    this.auth.logout();
     window.history.replaceState({}, document.title, window.location.href);
 
     if (this.isUserSignedOut()){
@@ -47,9 +69,10 @@ export class ErrorComponent implements OnInit {
   
   }
   redirecttologin(){
-    // this.common.logoutUser();
 
-     window.location.href = "https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2"
+    // window.location.href = "https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2"
+    window.location.href = "https://stg-id.uaepass.ae/idshub/logout?redirect_uri=https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2"
+
 
     // this.Router.navigateByUrl('https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2')
 

@@ -16,6 +16,7 @@ import { CompanyStatusEnums } from "src/app/shared/constants/status-enum";
 import { FilterTypeCompany } from "src/app/shared/models/filetype-model";
 import { MatSelect } from "@angular/material/select";
 import { DatePipe } from "@angular/common";
+import { AuthService } from "src/service/auth.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -60,7 +61,7 @@ export class DashboardComponent extends LayoutModel implements OnInit {
     public override consts: ConstantsService,
     public override apiservice: ApiService,
     public override common: CommonService,
-    public override translate: TranslateService, public datePipe:DatePipe
+    public override translate: TranslateService, public datePipe:DatePipe, private auth:AuthService
     
   ) {
     super(router, consts, apiservice, common, translate);
@@ -94,8 +95,8 @@ export class DashboardComponent extends LayoutModel implements OnInit {
 
     }
     else{
-      console.log("Invalid Session")
-      // this.common.logoutUser()
+       this.common.setlogoutreason("session");
+      this.auth.logout();
     }
 
     if (this.routesname === "pending") {
@@ -247,6 +248,7 @@ export class DashboardComponent extends LayoutModel implements OnInit {
     this.refreshAttestChartAll(type);
     let xAxis: string[] = [];
     let seriesDataRequest: number[] = [];
+    let seriesDataApproved:number[]=[];
     let seriesDataCompleted: number[] = [];
     let statisticsListsFilter: any[] = [];
     if (dayweekmonth) {
@@ -255,6 +257,7 @@ export class DashboardComponent extends LayoutModel implements OnInit {
         statisticsListsFilter.forEach((row) => {
           xAxis.push(row?.statdate);
         });
+        
       } else if (dayweekmonth === "02") {
         statisticsListsFilter = this.statisticsWeeklyListsFilter;
         statisticsListsFilter.forEach((row) => {
@@ -267,25 +270,60 @@ export class DashboardComponent extends LayoutModel implements OnInit {
         });
       }
     }
+
+    if (dayweekmonth === "01") {
+      statisticsListsFilter = this.statisticsDailyListsFilter;
+      xAxis = statisticsListsFilter.map((row) => row?.statdate);
+      // Convert date-like strings to comparable format (e.g., Date objects)
+      const convertedXAxis = xAxis.map((item) => new Date(item));
+      // Sort the array in ascending order
+      convertedXAxis.sort((a:any, b:any) => a - b);
+      // Convert back to the original format
+      xAxis = convertedXAxis.map((item) => item.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }));
+    }
+    else if (dayweekmonth === "02") {
+      statisticsListsFilter = this.statisticsWeeklyListsFilter;
+      xAxis = statisticsListsFilter.map((row) => `${row?.weekno}/${row?.yearuno}`);
+    
+      // Convert week and year strings to comparable format (e.g., Date objects)
+      const convertedXAxis = xAxis.map((item) => {
+        const [weekNo, year] = item.split('/').map(Number);
+    
+        // Ensure proper parsing and use numbers in the Date constructor
+        return new Date(Number(year), 0, 1 + (Number(weekNo) - 1) * 7);
+      });
+    
+      // Sort the array in ascending order
+      convertedXAxis.sort((a, b) => a.getTime() - b.getTime());
+    
+      // Convert back to the original format
+      xAxis = convertedXAxis.map((item) => `${item.getUTCFullYear()}/${Math.ceil((item.getTime() - new Date(item.getUTCFullYear(), 0, 1).getTime()) / (7 * 24 * 60 * 60 * 1000))}`);
+    }
+    
+    
+    
+
+    
+
     if (type) {
       if (type === "lca") {
         statisticsListsFilter.forEach((row) => {
           seriesDataRequest.push(row?.nooflcarequestpending);
-          seriesDataCompleted.push(row?.nooflcarequestapproved);
+          seriesDataApproved.push(row?.nooflcarequestapproved);
           seriesDataCompleted.push(row?.nooflcarequestcompleted);
 
         });
       } else if (type === "coo") {
         statisticsListsFilter.forEach((row) => {
           seriesDataRequest.push(row?.noofcoorequest);
-          seriesDataCompleted.push(row?.noofcoorequestapproved);
+          seriesDataApproved.push(row?.noofcoorequestapproved);
           seriesDataCompleted.push(row?.noofcoorequestapproved);
 
         });
       } else if (type === "physical") {
         statisticsListsFilter.forEach((row) => {
           seriesDataRequest.push(row?.noofphysicalrequest);
-          seriesDataCompleted.push(row?.noofphysicalrequestapproved);
+          seriesDataApproved.push(row?.noofphysicalrequestapproved);
           seriesDataCompleted.push(row?.noofphysicalrequestcompleted);
 
         });
@@ -297,7 +335,7 @@ export class DashboardComponent extends LayoutModel implements OnInit {
     this.refreshAttestationChart(
       type,
       xAxis,
-      seriesDataRequest,
+      seriesDataRequest,seriesDataApproved,
       seriesDataCompleted
     );
   }
@@ -376,7 +414,9 @@ export class DashboardComponent extends LayoutModel implements OnInit {
     type: "lca" | "coo" | "physical",
     xAxis: string[],
     seriesDataRequest: number[],
-    seriesDataCompleted: number[]
+    seriesDataApproved: number[],
+
+    seriesDataCompleted: number[],
   ) {
     if (type === "lca") {
       this.lcaChartOptionattestation.xAxis = {
@@ -390,21 +430,21 @@ export class DashboardComponent extends LayoutModel implements OnInit {
           type: "line",
           smooth: true,
           stack: "Total",
-          data: seriesDataCompleted,
+          data: seriesDataRequest,
         },
         {
           name: "Approved requests",
           type: "line",
           smooth: true,
           stack: "Total",
-          data: seriesDataRequest,
+          data: seriesDataApproved,
         },
         {
-          name: "Pending Requests",
+          name: "Completed Requests",
           type: "line",
           smooth: true,
           stack: "Total",
-          data: seriesDataRequest,
+          data: seriesDataCompleted,
         },
       ];
     } else if (type === "coo") {

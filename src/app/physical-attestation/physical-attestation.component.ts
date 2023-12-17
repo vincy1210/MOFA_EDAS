@@ -12,6 +12,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { LazyLoadEvent } from 'primeng/api';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { environment } from 'src/environments/environment';
+import { AuthService } from 'src/service/auth.service';
 
 
 
@@ -85,7 +86,7 @@ paymentcount=environment.appdetails.payment_count;
     public translate: TranslateService,
     public apiservice: ApiService,
     public consts: ConstantsService,
-    public common: CommonService,private datePipe: DatePipe, private fb:FormBuilder
+    public common: CommonService,private datePipe: DatePipe, private fb:FormBuilder, private auth:AuthService
  
   ) {
     this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
@@ -103,7 +104,7 @@ paymentcount=environment.appdetails.payment_count;
   }
 
   ngOnInit(): void {
-    this.currentcompany=this.common.getSelectedCompany().companyuno;
+    this.currentcompany=this.auth.getSelectedCompany().companyuno;
   
     let data11=this.common.getUserProfile();
     let uuid;
@@ -117,9 +118,9 @@ paymentcount=environment.appdetails.payment_count;
 
     }
     else{
-      console.log("Invalid Session")
+       this.common.setlogoutreason("session");
+      this.auth.logout();
 
-     // this.common.logoutUser()
     }
     this.cols = [
       {

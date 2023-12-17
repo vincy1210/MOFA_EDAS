@@ -26,6 +26,7 @@ import {
   ActionConstants,
 } from 'src/service/constants.service';
 import { ModalPopupService } from 'src/service/modal-popup.service';
+import { AuthService } from 'src/service/auth.service';
 
 @Component({
   selector: 'app-completed-attestations',
@@ -74,7 +75,7 @@ export class CompletedAttestationsComponent
     private route: ActivatedRoute,
     private modalPopupService: ModalPopupService,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService, private auth:AuthService
   ) {
     super(router, consts, apiservice, common, translate);
     const url = this.router.url;
@@ -87,6 +88,19 @@ export class CompletedAttestationsComponent
   }
 
   ngOnInit(): void {
+
+    let data11=this.common.getUserProfile();
+    let uuid;
+    if(data11!=null || data11!=undefined){
+      data11=JSON.parse(data11)
+      console.log(data11.Data)
+      uuid=data11.Data.uuid;
+    }
+    else{
+       this.common.setlogoutreason("session");
+      this.auth.logout();
+    }
+
     if (this.routesname === 'pending') {
       this.selectedFilterOption = {
         id: 1,

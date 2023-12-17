@@ -27,6 +27,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
 import { CommonModule } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
+import { AuthService } from 'src/service/auth.service';
 
 
 import {FormControl, Validators, FormsModule} from '@angular/forms';
@@ -171,7 +172,9 @@ highlightColor: string = 'red';
 
 cooAttestationLists: any;
 
-  constructor(private translate:TranslateService,private fb:FormBuilder,private confirmationService:ConfirmationService,private messageService:MessageService, public dialog: MatDialog, private router:Router, private apicall:ApiService, public common:CommonService, private consts:ConstantsService, public datepipe:DatePipe){
+  constructor(private translate:TranslateService,private fb:FormBuilder,private confirmationService:ConfirmationService,
+    private messageService:MessageService, public dialog: MatDialog, private router:Router, private apicall:ApiService,
+     public common:CommonService, private consts:ConstantsService, public datepipe:DatePipe , private auth:AuthService){
     this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
 
     this.form = this.fb.group({
@@ -200,7 +203,7 @@ cooAttestationLists: any;
   ngOnInit() {
 console.log("calling getselected company")
     
-    this.currentcompany=this.common.getSelectedCompany().companyuno;
+    this.currentcompany=this.auth.getSelectedCompany().companyuno;
     if(this.currentcompany==null){
       console.log("to landing page from attestation page line 195")
 
@@ -227,9 +230,10 @@ console.log("calling getselected company")
 
     }
     else{
-      console.log("Invalid Session")
+      
+       this.common.setlogoutreason("session");
+      this.auth.logout();
 
-     // this.common.logoutUser()
     }
     // width:'17%'
     this.cols = [

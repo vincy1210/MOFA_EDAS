@@ -11,6 +11,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ApiService } from 'src/service/api.service';
 import { CommonService } from 'src/service/common.service';
 import { ConstantsService } from 'src/service/constants.service';
+import { AuthService } from 'src/service/auth.service';
 
 interface DeclarationAttestModel {
   data: { uuid: string; coorequestno: number, invoiceuno:number };
@@ -38,11 +39,11 @@ export class CooAttestationCreateComponent implements OnInit {
     public translate: TranslateService,
     public apiservice: ApiService,
     public consts: ConstantsService,
-    private commonService: CommonService,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    private common: CommonService,
+    @Inject(MAT_DIALOG_DATA) public data: any, private auth:AuthService
   ) {
 
-    let data11=this.commonService.getUserProfile();
+    let data11=this.common.getUserProfile();
     let uuid;
     if(data11!=null || data11!=undefined){
       data11=JSON.parse(data11)
@@ -53,9 +54,9 @@ export class CooAttestationCreateComponent implements OnInit {
 
     }
     else{
-      console.log("Invalid Session")
+       this.common.setlogoutreason("session");
+      this.auth.logout();
 
-    //  this.commonService.logoutUser()
     }
 
   }
@@ -75,7 +76,7 @@ export class CooAttestationCreateComponent implements OnInit {
     console.log(event);
     this.isLoading = true;
     this.listOfFiles = [];
-    var companylicense=this.commonService.getSelectedCompany();
+    var companylicense=this.auth.getSelectedCompany();
     console.log(companylicense);
     for (var i = 0; i <= event.target.files.length - 1; i++) {
       var selectedFile = event.target.files[i];
@@ -91,7 +92,7 @@ export class CooAttestationCreateComponent implements OnInit {
         } else {
           this.registrationForm.get('uploadDeclarationFile')?.setValue(null);
           //alert
-          this.commonService.showErrorMessage(
+          this.common.showErrorMessage(
             'File size should be less than or equal to 2 MB'
           );
         }
@@ -127,27 +128,27 @@ export class CooAttestationCreateComponent implements OnInit {
       this.submitDeclarationAttestations(formData);
     } else {
       // alert
-      this.commonService.showErrorMessage('Fill mandatory fields');
+      this.common.showErrorMessage('Fill mandatory fields');
     }
   }
 
   submitDeclarationAttestations(data: FormData) {
-    this.commonService.showLoading();
+    this.common.showLoading();
 
     this.apiservice
       .post(this.consts.updateCOORequests, data)
       .subscribe((response: any) => {
-        this.commonService.hideLoading();
+        this.common.hideLoading();
 
         const dataArray = response;
         if (`${response.responsecode}` === '1') {
           //alert
-          this.commonService.showSuccessMessage(`COO Request Send for Approval`);
+          this.common.showSuccessMessage(`COO Request Send for Approval`);
           this.clearDatas();
           this.onClose(true);
         } else {
           //alert
-          this.commonService.showErrorMessage(`${dataArray.message}`);
+          this.common.showErrorMessage(`${dataArray.message}`);
         }
       });
   }

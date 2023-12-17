@@ -8,6 +8,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { AbstractControl, ValidatorFn, ValidationErrors } from '@angular/forms';
 import { Tooltip } from 'primeng/tooltip';
 import { TranslateService } from '@ngx-translate/core';
+import { AuthService } from 'src/service/auth.service';
 
 // import { ReactiveFormsModule } from '@angular/forms';
 @Component({
@@ -43,11 +44,11 @@ todayModel:Date=new Date();
   radiochosenornot:boolean=false;
   isButtonDisabled = false;
   constructor(public common:CommonService, private fb:FormBuilder, private router:Router, private consts:ConstantsService, private apicall:ApiService,
-    private messageService: MessageService, private confirmationService: ConfirmationService, private translate:TranslateService) {
+    private messageService: MessageService, private confirmationService: ConfirmationService, private translate:TranslateService, private auth:AuthService) {
       this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
 
-    this.currentcompany=this.common.getSelectedCompany()?.companyuno;
-    this.currentcompany_name=this.common.getSelectedCompany()?.business_name;
+    this.currentcompany=this.auth.getSelectedCompany()?.companyuno;
+    this.currentcompany_name=this.auth.getSelectedCompany()?.business_name;
     console.log(this.currentcompany)
     if(this.currentcompany==null){
       console.log("to landing page from userlist page line 53")

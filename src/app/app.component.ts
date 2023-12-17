@@ -33,6 +33,8 @@ export class AppComponent {
   companyname:string='';
   copyrightyear=environment.appdetails.year;
   version=environment.appdetails.version;
+  idle_timeout=environment.appdetails.idletime_out;
+  session_timeout=environment.appdetails.session_timeout;
   selectedlanguage:string='';
   selectedpalette:string='';
 
@@ -140,16 +142,19 @@ role2:string='';
 
    
 
-    idle.setIdle(1500); // how long can they be inactive before considered idle, in seconds
-    idle.setTimeout(300); // how long can they be idle before considered timed out, in seconds
+    idle.setIdle(60); // how long can they be inactive before considered idle, in seconds
+    idle.setTimeout(30); // how long can they be idle before considered timed out, in seconds
     idle.setInterrupts(DEFAULT_INTERRUPTSOURCES); 
 
     idle.onIdleStart.subscribe(() => {
-      this.idleState = "IDLE";
-
+      let data=this.common.getUserProfile();
+      if(data!=undefined  || data!=null){
+        this.idleState = "IDLE";
       console.log("popup has to appear now")
-this.userwasIdle=true;
+      this.userwasIdle=true;
       //this.common.showSuccessMessage("popup has to appear now");
+      
+    }
     });
     // do something when the user is no longer idle
     idle.onIdleEnd.subscribe(() => {
@@ -164,9 +169,12 @@ this.userwasIdle=true;
       this.userwasIdle = false;
       this.idleState = "TIMED_OUT"
       console.log("session timeout");
-      this.common.showSuccessMessage("session timeout");
-      // this.logout();   // to do
-    this.auth.logout();
+      this.common.showWarningMessage("session timeout");
+      sessionStorage.clear();
+      this.userloggedin=false;
+      this.lcauserloggedin=false;
+      this.common.setlogoutreason("session");
+     this.auth.logout();
 
     } );
     // do something as the timeout countdown does its thing
@@ -255,7 +263,7 @@ else{
 
    
 //added Nov 08
-    this.common.userloggedin$.subscribe((loggedIn) => {
+    this.auth.userloggedin$.subscribe((loggedIn) => {
       this.userloggedin = loggedIn;
     });
 
@@ -265,7 +273,7 @@ else{
 
 if(this.userrole){
   console.log('usertype empty')
-    this.common.userCompany$.subscribe((loggedIn) => {
+    this.auth.userCompany$.subscribe((loggedIn) => {
       this.companyname = loggedIn;
     });
 
@@ -275,18 +283,16 @@ if(this.userrole){
     });
     let data=this.common.getUserProfile();
     if(data!=undefined  || data!=null){
-      
     let abc=JSON.parse(data);
     console.log(JSON.parse(data))
     this.username=abc.Data.firstnameEN;
     console.log("calling getselected company")
-    let companyname1=this.common.getSelectedCompany()
+    let companyname1=this.auth.getSelectedCompany()
     console.log(companyname1)
     this.companyname=companyname1?.business_name || '';
     
   }
   else{
-    // this.common.logoutUser();
     this.auth.logout();
   }
 }
@@ -322,11 +328,17 @@ else{
   reset() {
     // we'll call this method when we want to start/reset the idle process
     // reset any component state and be sure to call idle.watch()
+    console.log("reset")
     this.userwasIdle = false;
     this.idle.watch();
     this.idleState = "NOT_IDLE";
     this.countdown = 0;
     this.lastPing;
+  }
+
+  logout(){
+    this.common.setlogoutreason("user");
+    this.auth.logout()
   }
   
   

@@ -60,7 +60,8 @@ export class RegistrationComponent {
       chosenDate: [this.reg_form_data.chosenDate, Validators.required],
       issuingAuthority: [this.reg_form_data.issuingAuthority, Validators.required],
       expressType: [this.reg_form_data.expressType, Validators.required],
-      dmccOption:[this.reg_form_data.dmccOption]
+      dmccOption:[this.reg_form_data.dmccOption],
+      name_of_Business:[this.reg_form_data.name_of_Business, Validators.required]
     });
 
   //  if(this.reg_form_data==="Freezone"){
@@ -109,7 +110,10 @@ export class RegistrationComponent {
       let data=
       {
         "tradelicensenumber": this.reg_form_data.tradeLicenseNumber,
+        "nameofbusiness":this.reg_form_data.name_of_Business,
+        "emirate":"AUH",
          "uuid":this.userinfo.Data.uuid,
+         //need to pass consignee name, issuing auth emirate
      }
      let data2=
      {
@@ -120,6 +124,8 @@ export class RegistrationComponent {
         "status":1
     }
      let response;
+     let response1;
+
     this.common.showLoading();
 
      try{
@@ -129,37 +135,33 @@ export class RegistrationComponent {
         this.common.hideLoading();
 
         if(response.responseCode==200){
-         if(response.data.dictionary.data.length>0 && response.data.dictionary.data.status!="Pending"){
-          // this.common.setCompanyList(response.data.dictionary.data);
-          //  this.router.navigateByUrl('/landingpage')
 
-          this.apiservice.post(this.consts.getCompanyList,data2).subscribe({next:(success:any)=>{
-            response=success;
-            if(response.dictionary.responsecode===1){
-             if(response.dictionary.data.length>0){
-              this.common.setCompanyList(response.dictionary.data);
-        console.log("to landing page from reg page line 140")
 
-               this.router.navigateByUrl('/landingpage')
-             }
-             else{
-               this.router.navigateByUrl('/companydetails')
-             }
-            }
-            else{
-              this.common.showErrorMessage("Something went wrong.")
-              console.log("error in getCompanyList") 
-              return;
-            }
-         }})
-         
+         if(response.data.dictionary.data.length==0){
+          this.router.navigateByUrl('/companydetails')
+         }
+         else if(response.data.dictionary.data.length>0  ){
+            // if(response.data.dictionary.data[0].isapproved==0){
+                          //company pending note
+                          this.common.SetAlreadyregisteredcompanydetails(response.data.dictionary.data[0]);
+                          this.router.navigateByUrl('/companydetails')
+            // }
+            // else{
+                          //company approved note
+                      //    this.common.SetAlreadyregisteredcompanydetails();
+
+            // }
+ 
          }
          else{
            this.router.navigateByUrl('/companydetails')
          }
         }
+
         else if(response.responseCode==500){
-          this.proceed();
+          //this.proceed();
+          this.common.showErrorMessage("Something went wrong");
+          return;
         }
         else{
           console.log() 
@@ -248,7 +250,7 @@ export class RegistrationComponent {
 
         this.common.showErrorMessage("Something went wrong! Please try again")
 
-         // Delay the execution of this.common.logoutUser() by 2 seconds
+         // Delay the execution  by 2 seconds
   setTimeout(() => {
     this.auth.logout();
   }, 2000); // 2000 milliseconds = 2 seconds

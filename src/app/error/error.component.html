@@ -7,14 +7,16 @@
   <div class="w-50 m-auto">
     <mat-card>
       <div class="p-4" style="text-align: center;">
-        <p style="font-size: large;" class="pageTitle"> {{'You have been successfully logged out, we look forward to serve you again' | translate}}</p>
+        <!-- You have been successfully logged out, we look forward to serve you again -->
+        <!-- Your session got logged out due to session inactivity, we look forward to serve you again -->
+        <p style="font-size: large;" class="pageTitle"> {{sessionnote | translate}}</p>
 <br>
-        <p  style="font-size: small;" class="pageTitle"> {{'YOUR SESSION SUMMARY' | translate}} {{timenow}} </p>
+        <p  style="font-size: small;" class="pageTitle"> {{'YOUR LAST SESSION ENDED AT' | translate}} {{timenow}} </p>
 
         <br>
 
-        <p class="greytitle">{{"It's a good idea to close all browser windows." | translate}}
-        </p>
+        <!-- <p class="greytitle">{{"It's a good idea to close all browser windows." | translate}}
+        </p> -->
         <br>
 
         <div style="border: 1px solid grey; padding: 10px; border-radius: 7px;">
