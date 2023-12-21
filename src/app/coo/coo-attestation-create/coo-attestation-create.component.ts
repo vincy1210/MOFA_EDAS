@@ -74,7 +74,6 @@ export class CooAttestationCreateComponent implements OnInit {
 
   onFileChanged(event: any) {
     console.log(event);
-    this.isLoading = true;
     this.listOfFiles = [];
     var companylicense=this.auth.getSelectedCompany();
     console.log(companylicense);
@@ -82,26 +81,39 @@ export class CooAttestationCreateComponent implements OnInit {
       var selectedFile = event.target.files[i];
       this.sel_file_test=selectedFile;
       if (selectedFile) {
-        if (selectedFile.size <= 2 * 1024 * 1024) {
-          this.listOfFiles.push(selectedFile);
-          const timestamp = new Date().getTime();
-          const newFileName = 'COO_'+companylicense.companyuno +'_'+timestamp+ '.pdf'; 
-          const renamedFile = new File([selectedFile], newFileName, { type: selectedFile.type });
-          this.sel_file_test=renamedFile;
 
-        } else {
-          this.registrationForm.get('uploadDeclarationFile')?.setValue(null);
-          //alert
-          this.common.showErrorMessage(
-            'File size should be less than or equal to 2 MB'
-          );
-        }
+        if(selectedFile.type === 'application/pdf')
+              {
+                
+              if (selectedFile.size <= 2 * 1024 * 1024) {
+                this.listOfFiles.push(selectedFile);
+                const timestamp = new Date().getTime();
+                const newFileName = 'COO_'+companylicense.companyuno +'_'+timestamp+ '.pdf'; 
+                const renamedFile = new File([selectedFile], newFileName, { type: selectedFile.type });
+                this.sel_file_test=renamedFile;
+                this.isLoading = true;
+                setTimeout(() => {
+                  this.isLoading = false;
+                }, 2000);
+              } else 
+              {
+              this.listOfFiles=[];
+                this.registrationForm.get('uploadDeclarationFile')?.setValue(null);
+                this.common.showErrorMessage( 'File size should be less than or equal to 2 MB');
+                // return;
+              }
+            }
+	          else {
+              this.listOfFiles=[];
+              this.registrationForm.get('uploadDeclarationFile')?.setValue('');
+              this.common.showErrorMessage('Only PDF files are allowed');
+              // return;
+            }
+
+
       }
     }
-    setTimeout(() => {
-      // After the upload is complete
-      this.isLoading = false;
-    }, 3000);
+   
   }
 
   removeSelectedFile(index: number) {

@@ -105,26 +105,39 @@ export class PhysicalAttestationCreateComponent implements OnInit {
   }
 
   onFileChanged(event: any) {
-    this.isLoading = true;
     this.listOfFiles = [];
     for (var i = 0; i <= event.target.files.length - 1; i++) {
       var selectedFile = event.target.files[i];
       if (selectedFile) {
-        if (selectedFile.size <= 2 * 1024 * 1024) {
-          this.listOfFiles.push(selectedFile);
-        } else {
-          this.registrationForm.get('uploadInvoiceFile')?.setValue(null);
-          //alert
-          this.common.showErrorMessage(
-            'File size should be less than or equal to 2 MB'
-          );
-        }
+        if(selectedFile.type === 'application/pdf')
+        {
+
+              if (selectedFile.size <= 2 * 1024 * 1024) {
+                this.listOfFiles.push(selectedFile);
+                this.isLoading = true;
+
+                setTimeout(() => {
+                  // After the upload is complete
+                  this.isLoading = false;
+                }, 3000);
+
+              } else {
+                this.registrationForm.get('uploadInvoiceFile')?.setValue(null);
+                //alert
+                this.common.showErrorMessage(
+                  'File size should be less than or equal to 2 MB'
+                );
+              }
+            }
+            else{
+              this.listOfFiles=[];
+              this.registrationForm.get('uploadInvoiceFile')?.setValue(null);
+              this.common.showErrorMessage('Only PDF files are allowed');
+            }
+
       }
     }
-    setTimeout(() => {
-      // After the upload is complete
-      this.isLoading = false;
-    }, 3000);
+  
   
   }
 

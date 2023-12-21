@@ -29,6 +29,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 
 const routes=[  {path:'CompletedCooRequest',component:CompletedCooRequestsComponent,  data: { role: ['Admin', 'User'] }},
@@ -56,7 +58,7 @@ const routes=[  {path:'CompletedCooRequest',component:CompletedCooRequestsCompon
     TagModule,ToolbarModule,
     PdfViewerModule, TabViewModule,
     MultiSelectModule, MatTabsModule, MatChipsModule, ConfirmDialogModule,
-    MatProgressSpinnerModule, ReactiveFormsModule, MatDialogModule
+    MatProgressSpinnerModule, ReactiveFormsModule, MatDialogModule, MatButtonModule, MatButtonToggleModule
   ]
 })
 export class CooModule { }
