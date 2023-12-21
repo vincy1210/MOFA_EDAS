@@ -34,7 +34,7 @@
                 <mat-option value="UAQ">{{'Umm Al Quwain' | translate}}</mat-option>
     
               </mat-select>
-              <mat-error class="error" *ngIf="registrationForm.get('issuingAuthority')?.hasError('required')">{{'Please select an option.'|translate}}</mat-error>
+              <mat-error class="error" *ngIf="registrationForm.get('issuingAuthority')?.hasError('required')">{{'Please select an option'|translate}}</mat-error>
             </mat-form-field>
           </div>
 
@@ -60,7 +60,7 @@
             {{'Trade license Number length cannot be less than 4 digits'|translate}}</mat-error>
           <mat-error class="error" *ngIf="!registrationForm.get('tradeLicenseNumber')?.hasError('minlength') && registrationForm.get('tradeLicenseNumber')?.hasError('pattern')">{{'Trade license number is required.'|translate}}</mat-error>
           
-          <mat-error class="error" *ngIf="registrationForm.get('tradeLicenseNumber')?.hasError('required')">{{'Trade license number is required.'|translate}}</mat-error>
+          <mat-error class="error" *ngIf="registrationForm.get('tradeLicenseNumber')?.hasError('required')">{{'Trade license number is required'|translate}}</mat-error>
         </mat-form-field>
 
       
@@ -77,7 +77,7 @@
             <button mat-raised-button color="primary" matDatepickerApply>{{'applybtn' | translate }}</button>
             </mat-datepicker-actions>
           </mat-datepicker>
-          <mat-error class="error" *ngIf="registrationForm.get('chosenDate')?.hasError('required')">{{'Please choose a date.'|translate}}</mat-error>
+          <mat-error class="error" *ngIf="registrationForm.get('chosenDate')?.hasError('required')">{{'Please choose a date'|translate}}</mat-error>
         </mat-form-field>
       
       </div>
@@ -93,7 +93,7 @@
           <mat-radio-button color="primary" (change)="radio($event)" class="example-radio-button mb-5" *ngFor="let te of typeExpress" [value]="te">
             {{ te.trim() | translate  }}
           </mat-radio-button>
-        <mat-error class="error" *ngIf="registrationForm.get('expressType')?.hasError('required') && this.issuing_auth">{{'Please select the type of Issuing Authority.'| translate }}</mat-error>
+        <mat-error class="error" *ngIf="registrationForm.get('expressType')?.hasError('required') && this.issuing_auth">{{'Please select the type of Issuing Authority'| translate }}</mat-error>
         </div>
       </mat-radio-group>
     </div>
@@ -111,7 +111,7 @@
               {{ option.typename | translate }}
             </mat-option>
           </mat-select>
-          <mat-error class="error" *ngIf="registrationForm.get('dmccOption')?.hasError('required')">{{'Please select an option.'|translate}}</mat-error>
+          <mat-error class="error" *ngIf="registrationForm.get('dmccOption')?.hasError('required')">{{'Please select an option'|translate}}</mat-error>
         </mat-form-field>
       </div>
       </ng-container>

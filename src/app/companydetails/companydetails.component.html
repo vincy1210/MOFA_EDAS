@@ -320,7 +320,7 @@
       <ngx-otp-input [config]="otpInputConfig" #ngxotp (fill)="handleFillEvent($event)">
       </ngx-otp-input>
       <br>
-      <p class="mat-error"  *ngIf="incorrectOTP">{{ 'Incorrect OTP. Please try again.' | translate }}</p>
+      <p class="mat-error"  *ngIf="incorrectOTP">{{ 'Incorrect OTP. Please try again' | translate }}</p>
     </div>
     <!-- {{showResendLink}} -->
     <div class="grid grid-cols-1 otp-receive-msg" *ngIf="showResendLink">
