@@ -31,6 +31,8 @@ export class LeftMenuDrawerComponent implements OnInit {
 
   @Output() submenuClicked: EventEmitter<void> = new EventEmitter<void>();
   selectedMenuIndex: number = -1; // Initialize with an invalid index
+  selectedMenu: MenuModel = {} as MenuModel;
+  recentlyusedList: MenuModel[] = [];
 
   username: any;
   companyname: any;
@@ -46,6 +48,17 @@ export class LeftMenuDrawerComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.common.getData().subscribe((data) => {
+      if (data && data != '') {
+        const dataObj: { key: string; value: object } = JSON.parse(data);
+        if (dataObj.key === 'drawer_scrolltoactive') {
+          setTimeout(() => {
+            // this.scrollToTarget();
+            this.stylingMenus();
+          }, 1000);
+        }
+      }
+    });
     //start of LCA user user flow
     this.userRoleSubscription = this.auth.userRole$.subscribe(() => {
       this.setusername();
@@ -276,7 +289,73 @@ export class LeftMenuDrawerComponent implements OnInit {
       this.router.navigate([items.link]);
       this.myPanel.close();
     }
+    // mat-list-item
+    this.selectedMenu = items;
+    this.stylingMenus();
   }
+
+  handleRouteChange(): void {
+    const url = this.router.url;
+    const foundMenu: { parent: MenuModel; child: MenuModel } =
+      this.findMenuByUrl(url);
+
+    if (foundMenu) {
+      this.currentlyExpandedIndex = this.menuList.indexOf(foundMenu.parent);
+      // mat-list-item
+      this.selectedMenu = foundMenu.child;
+      this.stylingMenus();
+    }
+  }
+
+  findMenuByUrl(url: string): any {
+    for (const item of this.menuList) {
+      if (
+        item.link === url ||
+        (item.subMenus && item.subMenus.some((subMenu) => subMenu.link === url))
+      ) {
+        let childmenu = item.subMenus?.find((itm) => itm.link === url);
+        return { parent: item, child: childmenu };
+      }
+    }
+
+    return null;
+  }
+
+  stylingMenus() {
+    this.recentlyUsedMenus(this.selectedMenu);
+    const elements = document.getElementsByClassName('mat-items');
+    const elementsActive = document.getElementsByClassName(
+      this.selectedMenu.menu
+    );
+    let elementsArray = Array.from(elements);
+    for (const element of elementsArray) {
+      const childDiv = element.querySelector('span');
+      if (childDiv) {
+        childDiv.className = 'mat-list-item-content';
+      }
+    }
+    elementsArray = Array.from(elementsActive);
+    if (!this.selectedMenu?.subMenus) {
+      for (const element of elementsArray) {
+        const childDiv = element.querySelector('span');
+        if (childDiv) {
+          childDiv.className = 'mat-list-item-content active';
+          // lement.firstChild.className = element.firstChild.className + ' active';
+        }
+      }
+    }
+  }
+
+  recentlyUsedMenus(selectedMenu: MenuModel) {
+    let results = this.recentlyusedList;
+    const menu = results.find((m) => m.link === selectedMenu.link);
+    if (!menu?.link && !selectedMenu?.subMenus) {
+      results.push(selectedMenu);
+    }
+    results = results.slice(-5);
+    this.recentlyusedList = results;
+  }
+
   onSubMenuClick(items: any, i?: any) {
     this.selectedMenuIndex = i;
     console.log('in parent component after drawer change');

@@ -1,4 +1,9 @@
-import { ChangeDetectorRef, Component, HostBinding } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  HostBinding,
+  ViewChild,
+} from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NavigationStart, Router } from '@angular/router';
@@ -22,7 +27,7 @@ export class AppComponent {
   countdown?: number;
   lastPing?: Date;
   userwasIdle: boolean = false;
-
+  @ViewChild('drawer') drawer!: MatDrawer;
   userprofile: any;
   @HostBinding('class') classRoot = 'theme-default';
   userloggedin: boolean = false;
@@ -97,6 +102,25 @@ export class AppComponent {
 
   onToggle() {
     this.showToggle = !this.showToggle;
+    this.toggleDrawer();
+  }
+
+  toggleDrawer(): void {
+    if (this.drawer) {
+      this.drawer.toggle();
+      const dataObj: { key: string; value: object } = {
+        key: 'drawer_scrolltoactive',
+        value: {},
+      };
+      const dataObjStr = JSON.stringify(dataObj);
+      this.common.setData(dataObjStr);
+    }
+  }
+
+  toggleCloseDrawer(): void {
+    if (this.drawer) {
+      this.drawer.close();
+    }
   }
 
   // toggleDrawer(): void {
