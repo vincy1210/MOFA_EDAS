@@ -1,4 +1,9 @@
-import {ChangeDetectorRef, Component, HostBinding } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  HostBinding,
+  ViewChild,
+} from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NavigationStart, Router } from '@angular/router';
@@ -7,11 +12,10 @@ import { Direction } from '@angular/cdk/bidi';
 import { CommonService } from 'src/service/common.service';
 import { MatDrawer } from '@angular/material/sidenav';
 import { environment } from 'src/environments/environment';
-import { Idle, DEFAULT_INTERRUPTSOURCES } from '@ng-idle/core';//vincy
+import { Idle, DEFAULT_INTERRUPTSOURCES } from '@ng-idle/core'; //vincy
 import { Keepalive } from '@ng-idle/keepalive';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/service/auth.service';
-
 
 @Component({
   selector: 'app-root',
@@ -19,24 +23,24 @@ import { AuthService } from 'src/service/auth.service';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-
-  idleState = "NOT_STARTED";  //vincy
+  idleState = 'NOT_STARTED'; //vincy
   countdown?: number;
   lastPing?: Date;
-  userwasIdle:boolean=false;
+  userwasIdle: boolean = false;
 
-  userprofile:any;
+  userprofile: any;
+  @ViewChild('drawer') drawer!: MatDrawer;
   @HostBinding('class') classRoot = 'theme-default';
   userloggedin: boolean = false;
-  lcauserloggedin:boolean=false
-  username:string='';
-  companyname:string='';
-  copyrightyear=environment.appdetails.year;
-  version=environment.appdetails.version;
-  idle_timeout=environment.appdetails.idletime_out;
-  session_timeout=environment.appdetails.session_timeout;
-  selectedlanguage:string='';
-  selectedpalette:string='';
+  lcauserloggedin: boolean = false;
+  username: string = '';
+  companyname: string = '';
+  copyrightyear = environment.appdetails.year;
+  version = environment.appdetails.version;
+  idle_timeout = environment.appdetails.idletime_out;
+  session_timeout = environment.appdetails.session_timeout;
+  selectedlanguage: string = '';
+  selectedpalette: string = '';
 
   title = 'uaemofa';
   overlayContainer: any;
@@ -87,11 +91,9 @@ export class AppComponent {
   role: any;
 
   ngOnInit(): void {
-
     console.log(this.userloggedin);
     console.log(this.lcauserloggedin);
 
-    
     this.reset();
     this.bigScreen = window.innerWidth > 786;
     window.addEventListener('resize', (event) => {
@@ -103,90 +105,89 @@ export class AppComponent {
     this.showToggle = !this.showToggle;
   }
 
-  // toggleDrawer(): void {
-  //   this.drawer.toggle();
-  // }
-userrole:string='';
-role2:string='';
+  toggleDrawer(): void {
+    if (this.drawer) {
+      this.drawer.toggle();
+      const dataObj: { key: string; value: object } = {
+        key: 'drawer_scrolltoactive',
+        value: {},
+      };
+      const str = JSON.stringify(dataObj);
+      this.common.setData(str);
+    }
+  }
+
+  userrole: string = '';
+  role2: string = '';
   showHead: boolean = false;
   private userRoleSubscription!: Subscription;
   constructor(
-    public auth:AuthService,
+    public auth: AuthService,
     private router: Router,
     private translate: TranslateService,
     private iconRegistry: MatIconRegistry,
-    private sanitizer: DomSanitizer, public common:CommonService,
-    private idle: Idle, keepalive: Keepalive, cd: ChangeDetectorRef //vincy
-
+    private sanitizer: DomSanitizer,
+    public common: CommonService,
+    private idle: Idle,
+    keepalive: Keepalive,
+    cd: ChangeDetectorRef //vincy
   ) {
+    let role2 = this.auth.getLCAUser();
+    this.role2 = role2;
+    console.log(role2);
 
-
-    let role2=this.auth.getLCAUser();
-    this.role2=role2;
-    console.log(role2)
-
-    let role=this.auth.userRole;
-    if(!role){
+    let role = this.auth.userRole;
+    if (!role) {
       this.userRoleSubscription = this.auth.userRole$.subscribe(() => {
         // this.getMenuItemLists();
         const userRole = this.auth.userRole;
-        this.userrole=userRole;
-        this.role2=this.userrole;
+        this.userrole = userRole;
+        this.role2 = this.userrole;
         console.log(userRole);
       });
-  
+    } else {
+      this.userrole = role;
     }
-    else{
-      this.userrole=role;
-    }
-
-   
 
     idle.setIdle(1200); // how long can they be inactive before considered idle, in seconds
     idle.setTimeout(600); // how long can they be idle before considered timed out, in seconds
-    idle.setInterrupts(DEFAULT_INTERRUPTSOURCES); 
+    idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
 
     idle.onIdleStart.subscribe(() => {
-      let data=this.common.getUserProfile();
-      if(data!=undefined  || data!=null){
-        this.idleState = "IDLE";
-      console.log("popup has to appear now")
-      this.userwasIdle=true;
-      //this.common.showSuccessMessage("popup has to appear now");
-      
-    }
+      let data = this.common.getUserProfile();
+      if (data != undefined || data != null) {
+        this.idleState = 'IDLE';
+        console.log('popup has to appear now');
+        this.userwasIdle = true;
+        //this.common.showSuccessMessage("popup has to appear now");
+      }
     });
     // do something when the user is no longer idle
     idle.onIdleEnd.subscribe(() => {
       // this.userwasIdle = false;
-      this.idleState = "NOT_IDLE";
-      console.log(`${this.idleState} ${new Date()}`)
+      this.idleState = 'NOT_IDLE';
+      console.log(`${this.idleState} ${new Date()}`);
       this.countdown = 0;
       cd.detectChanges(); // how do i avoid this kludge?
     });
     // do something when the user has timed out
-    idle.onTimeout.subscribe(() =>{
+    idle.onTimeout.subscribe(() => {
       this.userwasIdle = false;
-      this.idleState = "TIMED_OUT"
-      console.log("session timeout");
-      this.common.showWarningMessage("session timeout");
+      this.idleState = 'TIMED_OUT';
+      console.log('session timeout');
+      this.common.showWarningMessage('session timeout');
       sessionStorage.clear();
-      this.userloggedin=false;
-      this.lcauserloggedin=false;
-      this.common.setlogoutreason("session");
-     this.auth.logout();
-
-    } );
+      this.userloggedin = false;
+      this.lcauserloggedin = false;
+      this.common.setlogoutreason('session');
+      this.auth.logout();
+    });
     // do something as the timeout countdown does its thing
-    idle.onTimeoutWarning.subscribe(seconds => this.countdown = seconds);
+    idle.onTimeoutWarning.subscribe((seconds) => (this.countdown = seconds));
 
     // set keepalive parameters, omit if not using keepalive
     keepalive.interval(15); // will ping at this interval while not idle, in seconds
-    keepalive.onPing.subscribe(() => this.lastPing = new Date()); // do something when it pings
-
-
-
-
+    keepalive.onPing.subscribe(() => (this.lastPing = new Date())); // do something when it pings
 
     iconRegistry.addSvgIcon(
       'profile-dropdownarrow-icon',
@@ -229,23 +230,20 @@ role2:string='';
         }
       }
     });
-   
-    this.selectedlanguage=sessionStorage.getItem('language') || '';
-    this.selectedpalette=sessionStorage.getItem('Palette') || '';
-if(this.selectedpalette===""){
-this.classRoot='theme-default';
-}
-else{
-  this.classRoot = this.selectedpalette;
-}
 
+    this.selectedlanguage = sessionStorage.getItem('language') || '';
+    this.selectedpalette = sessionStorage.getItem('Palette') || '';
+    if (this.selectedpalette === '') {
+      this.classRoot = 'theme-default';
+    } else {
+      this.classRoot = this.selectedpalette;
+    }
 
-    if(this.selectedlanguage===""){
+    if (this.selectedlanguage === '') {
       translate.addLangs(['en', 'ar']);
       translate.setDefaultLang('en');
-    }
-    else{
-      if (this.selectedlanguage === 'ar' ) {
+    } else {
+      if (this.selectedlanguage === 'ar') {
         translate.setDefaultLang('ar');
         this.currentLanguageDirection = 'rtl';
       } else {
@@ -253,16 +251,15 @@ else{
         this.currentLanguageDirection = 'ltr';
       }
     }
-     this.translate.onLangChange.subscribe((event) => {
-        if (event.lang === 'ar' || event.lang === 'he') {
-          this.currentLanguageDirection = 'rtl';
-        } else {
-          this.currentLanguageDirection = 'ltr';
-        }
-      });
+    this.translate.onLangChange.subscribe((event) => {
+      if (event.lang === 'ar' || event.lang === 'he') {
+        this.currentLanguageDirection = 'rtl';
+      } else {
+        this.currentLanguageDirection = 'ltr';
+      }
+    });
 
-   
-//added Nov 08
+    //added Nov 08
     this.auth.userloggedin$.subscribe((loggedIn) => {
       this.userloggedin = loggedIn;
     });
@@ -271,47 +268,42 @@ else{
       this.lcauserloggedin = lcaloggedIn;
     });
 
-if(this.userrole){
-  console.log('usertype empty')
-    this.auth.userCompany$.subscribe((loggedIn) => {
-      this.companyname = loggedIn;
-    });
+    if (this.userrole) {
+      console.log('usertype empty');
+      this.auth.userCompany$.subscribe((loggedIn) => {
+        this.companyname = loggedIn;
+      });
 
-    this.common.userprofile$.subscribe((username) => {
-      //  this.userprofile = username;
-      this.username=username;
-    });
-    let data=this.common.getUserProfile();
-    if(data!=undefined  || data!=null){
-    let abc=JSON.parse(data);
-    console.log(JSON.parse(data))
-    this.username=abc.Data.firstnameEN;
-    console.log("calling getselected company")
-    let companyname1=this.auth.getSelectedCompany()
-    console.log(companyname1)
-    this.companyname=companyname1?.business_name || '';
-    
-  }
-  else{
-    this.auth.logout();
-  }
-}
-else{
-
-}
-
+      this.common.userprofile$.subscribe((username) => {
+        //  this.userprofile = username;
+        this.username = username;
+      });
+      let data = this.common.getUserProfile();
+      if (data != undefined || data != null) {
+        let abc = JSON.parse(data);
+        console.log(JSON.parse(data));
+        this.username = abc.Data.firstnameEN;
+        console.log('calling getselected company');
+        let companyname1 = this.auth.getSelectedCompany();
+        console.log(companyname1);
+        this.companyname = companyname1?.business_name || '';
+      } else {
+        this.auth.logout();
+      }
+    } else {
+    }
   }
 
   useLanguage(language: string) {
-    sessionStorage.setItem('language',language)
-    this.selectedlanguage=language;
+    sessionStorage.setItem('language', language);
+    this.selectedlanguage = language;
     this.translate.use(language);
   }
 
   usePalette(palette: string) {
-    sessionStorage.setItem('Palette',palette)
-    this.selectedpalette=palette;
-    this.classRoot = palette
+    sessionStorage.setItem('Palette', palette);
+    this.selectedpalette = palette;
+    this.classRoot = palette;
     // this.translate.use(language);
   }
 
@@ -319,29 +311,25 @@ else{
     this.router.navigate(['/dashboard']); // Replace '/home' with the desired URL
   }
   closeDrawer(drawer: MatDrawer) {
-    console.log("in app component after drawer change")
+    console.log('in app component after drawer change');
     drawer.close();
   }
-
- 
 
   reset() {
     // we'll call this method when we want to start/reset the idle process
     // reset any component state and be sure to call idle.watch()
-    console.log("reset")
+    console.log('reset');
     this.userwasIdle = false;
     this.idle.watch();
-    this.idleState = "NOT_IDLE";
+    this.idleState = 'NOT_IDLE';
     this.countdown = 0;
     this.lastPing;
   }
 
-  logout(){
-    this.common.setlogoutreason("user");
-    this.auth.logout()
+  logout() {
+    this.common.setlogoutreason('user');
+    this.auth.logout();
   }
-  
-  
 }
 // function useLanguage(language: any, string: any) {
 //   throw new Error('Function not implemented.');
