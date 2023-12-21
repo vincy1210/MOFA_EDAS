@@ -1,9 +1,4 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  HostBinding,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, HostBinding } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NavigationStart, Router } from '@angular/router';
@@ -29,7 +24,6 @@ export class AppComponent {
   userwasIdle: boolean = false;
 
   userprofile: any;
-  @ViewChild('drawer') drawer!: MatDrawer;
   @HostBinding('class') classRoot = 'theme-default';
   userloggedin: boolean = false;
   lcauserloggedin: boolean = false;
@@ -105,18 +99,9 @@ export class AppComponent {
     this.showToggle = !this.showToggle;
   }
 
-  toggleDrawer(): void {
-    if (this.drawer) {
-      this.drawer.toggle();
-      const dataObj: { key: string; value: object } = {
-        key: 'drawer_scrolltoactive',
-        value: {},
-      };
-      const str = JSON.stringify(dataObj);
-      this.common.setData(str);
-    }
-  }
-
+  // toggleDrawer(): void {
+  //   this.drawer.toggle();
+  // }
   userrole: string = '';
   role2: string = '';
   showHead: boolean = false;
@@ -154,8 +139,9 @@ export class AppComponent {
     idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
 
     idle.onIdleStart.subscribe(() => {
-      let data = this.common.getUserProfile();
-      if (data != undefined || data != null) {
+      // let data=this.common.getUserProfile();
+      //let data=this.auth.getSelectedCompany().companyuno;
+      if (this.userloggedin || this.lcauserloggedin) {
         this.idleState = 'IDLE';
         console.log('popup has to appear now');
         this.userwasIdle = true;
@@ -172,15 +158,18 @@ export class AppComponent {
     });
     // do something when the user has timed out
     idle.onTimeout.subscribe(() => {
-      this.userwasIdle = false;
-      this.idleState = 'TIMED_OUT';
-      console.log('session timeout');
-      this.common.showWarningMessage('session timeout');
-      sessionStorage.clear();
-      this.userloggedin = false;
-      this.lcauserloggedin = false;
-      this.common.setlogoutreason('session');
-      this.auth.logout();
+      if (this.userloggedin || this.lcauserloggedin) {
+        this.userwasIdle = false;
+        this.idleState = 'TIMED_OUT';
+        console.log('session timeout');
+        this.common.showWarningMessage('session timeout');
+        sessionStorage.clear();
+        this.userloggedin = false;
+        this.lcauserloggedin = false;
+        this.common.setlogoutreason('session');
+        this.auth.logout();
+        //  window.location.reload();
+      }
     });
     // do something as the timeout countdown does its thing
     idle.onTimeoutWarning.subscribe((seconds) => (this.countdown = seconds));
@@ -268,30 +257,34 @@ export class AppComponent {
       this.lcauserloggedin = lcaloggedIn;
     });
 
-    if (this.userrole) {
-      console.log('usertype empty');
-      this.auth.userCompany$.subscribe((loggedIn) => {
-        this.companyname = loggedIn;
-      });
+    // if(this.userrole){
+    //   console.log('usertype empty')
+    //     this.auth.userCompany$.subscribe((loggedIn) => {
+    //       this.companyname = loggedIn;
+    //     });
 
-      this.common.userprofile$.subscribe((username) => {
-        //  this.userprofile = username;
-        this.username = username;
-      });
-      let data = this.common.getUserProfile();
-      if (data != undefined || data != null) {
-        let abc = JSON.parse(data);
-        console.log(JSON.parse(data));
-        this.username = abc.Data.firstnameEN;
-        console.log('calling getselected company');
-        let companyname1 = this.auth.getSelectedCompany();
-        console.log(companyname1);
-        this.companyname = companyname1?.business_name || '';
-      } else {
-        this.auth.logout();
-      }
-    } else {
-    }
+    //     this.common.userprofile$.subscribe((username) => {
+    //       //  this.userprofile = username;
+    //       this.username=username;
+    //     });
+    //   //   let data=this.common.getUserProfile();
+    //   //   if(data!=undefined  || data!=null){
+    //   //   // let abc=JSON.parse(data);
+    //   //   // console.log(JSON.parse(data))
+    //   //   // this.username=abc.Data.firstnameEN;
+    //   //   // console.log("calling getselected company")
+    //   //   // let companyname1=this.auth.getSelectedCompany()
+    //   //   // console.log(companyname1)
+    //   //   // this.companyname=companyname1?.business_name || '';
+
+    //   // }
+    //   // else{
+    //   //   this.auth.logout();
+    //   // }
+    // }
+    // else{
+
+    // }
   }
 
   useLanguage(language: string) {

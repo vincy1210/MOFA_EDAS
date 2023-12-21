@@ -34,8 +34,8 @@ export class CommonService {
   // private userCompanysubject = new BehaviorSubject<string>('');
   // userCompany$ = this.userCompanysubject.asObservable();
 
-  private isAdmin = new BehaviorSubject<boolean>(false);
-  isAdmin$ = this.isAdmin.asObservable();
+  // private isAdmin = new BehaviorSubject<boolean>(false);
+  // isAdmin$ = this.isAdmin.asObservable();
 
   public userType = new BehaviorSubject<string>('');
   userType$ = this.userType.asObservable();

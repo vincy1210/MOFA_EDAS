@@ -65,7 +65,7 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
 
   ngOnInit(): void {
 
-    this.currentcompany=this.auth.getSelectedCompany().companyuno;
+    this.currentcompany=this.auth.getSelectedCompany().companyuno || '';
    
     
     
@@ -86,12 +86,13 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
     this.cols = [
       // { field: 'attestationrequno', header: 'Attestation No.' },
       { field: 'edasreqno', header: 'edasreqno', width:'20%' },
+      { field: 'wfstatus', header: 'Status', width:'15%' },
+
       { field: 'entitycode', header: 'entitycode' , width:'10%'},
-      { field: 'invoiceno', header: 'invoiceno', width:'20%' },
+      { field: 'invoiceno', header: 'Invoice ID', width:'20%' },
       { field: 'invoiceamount', header: 'invoiceamount', width:'15%' },
       { field: 'invoicecurrency', header: 'invoicecurrency', width:'10%' },
       { field: 'invoicedate', header: 'invoicedate', width:'15%' },
-      { field: 'wfstatus', header: 'Status', width:'15%' },
 
 
       //statusname

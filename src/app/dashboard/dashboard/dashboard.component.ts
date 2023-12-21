@@ -24,6 +24,7 @@ import { AuthService } from "src/service/auth.service";
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent extends LayoutModel implements OnInit {
+  isLoading:boolean=false;
   progress_val: number = 0;
   totalrecords: number = 0;
   statisticsLists: any = {};
@@ -82,6 +83,8 @@ export class DashboardComponent extends LayoutModel implements OnInit {
 
   ngOnInit(): void {
 
+   
+
     const today = new Date();
     this.weekNumber = this.getWeekNumber(today);
 
@@ -122,6 +125,9 @@ export class DashboardComponent extends LayoutModel implements OnInit {
     this.onClickFilterOptionDate("weekly");
     this.onClickFilterOptionDate("monthly");
     this.siteAnalyticsData({ action: ActionConstants.load });
+
+   
+
   }
 
   bindDataToDaily() {
@@ -137,6 +143,13 @@ export class DashboardComponent extends LayoutModel implements OnInit {
     this.selectedFilterOption.EnddateStr = this.splitdatetime(Enddate, "dd-MMM-yyyy")
       ?.date?.toString();  //, "dd-MMM-yyyy"
     this.onClickFilterOptionDailyMonthlyWeekly(type);
+this.common.showLoading();
+    setTimeout(() => {
+      // Set isLoading to false after 3 seconds
+this.common.hideLoading();
+
+      this.isLoading = false;
+    }, 3000);
   }
 
   onClickFilterOptionDailyMonthlyWeekly(
@@ -244,7 +257,14 @@ export class DashboardComponent extends LayoutModel implements OnInit {
   onClickFilterOption(
     type: "lca" | "coo" | "physical",
     dayweekmonth: "01" | "02" | "03"
-  ) {
+  ) 
+  {
+
+    setTimeout(() => {
+      // Set isLoading to false after 3 seconds
+      this.isLoading = false;
+    }, 3000);
+
     this.refreshAttestChartAll(type);
     let xAxis: string[] = [];
     let seriesDataRequest: number[] = [];
@@ -341,7 +361,9 @@ export class DashboardComponent extends LayoutModel implements OnInit {
   }
 
   refreshAttestChartAll(type: "lca" | "coo" | "physical" | "") {
+    this.isLoading=true;
     const commonObject: EChartsOption = {
+      tooltip: {},
       legend: {
         right: "5%",
         show: false,
@@ -352,10 +374,7 @@ export class DashboardComponent extends LayoutModel implements OnInit {
         right: "6%",
         bottom: "10%",
         top: "10%",
-        //containLabel: true,
-        //height: '90%'
       },
-      tooltip: {},
       color: ["#b68a35", "#1b1d21", "#ccc"],
       toolbox: {
         feature: {
@@ -375,21 +394,21 @@ export class DashboardComponent extends LayoutModel implements OnInit {
       },
       series: [
         {
-          name: "Pending Requests",
+          name: "Pending",
           type: "line",
           smooth: true,
           stack: "Total",
           data: [],
         },
         {
-          name: "Approved Requests",
+          name: "Approved",
           type: "line",
           smooth: true,
           stack: "Total",
           data: [],
         },
         {
-          name: "Completed Requests",
+          name: "Completed",
           type: "line",
           smooth: true,
           stack: "Total",
@@ -426,21 +445,21 @@ export class DashboardComponent extends LayoutModel implements OnInit {
       };
       this.lcaChartOptionattestation.series = [
         {
-          name: "Pending Requests",
+          name: "Pending",
           type: "line",
           smooth: true,
           stack: "Total",
           data: seriesDataRequest,
         },
         {
-          name: "Approved requests",
+          name: "Approved",
           type: "line",
           smooth: true,
           stack: "Total",
           data: seriesDataApproved,
         },
         {
-          name: "Completed Requests",
+          name: "Completed",
           type: "line",
           smooth: true,
           stack: "Total",
@@ -455,21 +474,21 @@ export class DashboardComponent extends LayoutModel implements OnInit {
       };
       this.cooChartOptionattestation.series = [
         {
-          name: "Pending Requests",
+          name: "Pending",
           type: "line",
           smooth: true,
           stack: "Total",
           data: seriesDataCompleted,
         },
         {
-          name: "Approved requests",
+          name: "Approved",
           type: "line",
           smooth: true,
           stack: "Total",
           data: seriesDataRequest,
         },
         {
-          name: "Pending Requests",
+          name: "Pending",
           type: "line",
           smooth: true,
           stack: "Total",
@@ -484,20 +503,20 @@ export class DashboardComponent extends LayoutModel implements OnInit {
       };
       this.physicalChartOptionattestation.series = [
         {
-          name: "Pending Requests",
+          name: "Pending",
           type: "line",
           smooth: true,
           stack: "Total",
           data: seriesDataCompleted,
         },
         {
-          name: "Approved requests",
+          name: "Approved",
           type: "line",
           smooth: true,
           stack: "Total",
           data: seriesDataRequest,
         }, {
-          name: "Pending Requests",
+          name: "Completed",
           type: "line",
           smooth: true,
           stack: "Total",

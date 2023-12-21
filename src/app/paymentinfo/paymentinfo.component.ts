@@ -145,13 +145,13 @@ redirect(){
   this.paymenttype=paymentidinfo.processname;
 
   if(paymentidinfo.processname==='LCA'){
-  this.router.navigateByUrl('/attestation')
+  this.router.navigateByUrl('/lca/attestation')
   }
   else if(paymentidinfo.processname==='COO'){
-    this.router.navigateByUrl('/cooattestation')
+    this.router.navigateByUrl('/coo/cooattestation')
     }
     if(paymentidinfo.processname==='PHYSICAL'){
-      this.router.navigateByUrl('/physicalattestation')
+      this.router.navigateByUrl('/physical/physicalattestation')
       }
 }
 

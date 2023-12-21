@@ -1,9 +1,9 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatExpansionPanel } from '@angular/material/expansion';
-import { NavigationEnd, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { CommonService } from 'src/service/common.service';
 import { EventEmitter, Output } from '@angular/core';
-import { Subscription, filter } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { AuthService } from 'src/service/auth.service';
 
 interface MenuModel {
@@ -38,46 +38,14 @@ export class LeftMenuDrawerComponent implements OnInit {
   isAdmin: boolean = false;
   menuList: MenuModel[] = [];
   @ViewChild('myPanel') myPanel!: MatExpansionPanel;
-  selectedMenu: MenuModel = {} as MenuModel;
-  recentlyusedList: MenuModel[] = [];
-
   private userRoleSubscription!: Subscription;
-
   constructor(
     private router: Router,
     public common: CommonService,
-    private auth: AuthService,
-    private el: ElementRef
-  ) {
-    this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
-      .subscribe(() => {
-        this.handleRouteChange();
-      });
-  }
-
-  setusername() {
-    console.log('calling set user name');
-    let data = this.common.getUserProfile();
-    if (data != undefined || data != null) {
-      let abc = JSON.parse(data);
-      console.log(JSON.parse(data));
-      this.username = abc.Data.firstnameEN;
-    }
-  }
+    private auth: AuthService
+  ) {}
 
   ngOnInit(): void {
-    this.common.getData().subscribe((data) => {
-      if (data && data != '') {
-        const dataObj: { key: string; value: object } = JSON.parse(data);
-        if (dataObj.key === 'drawer_scrolltoactive') {
-          setTimeout(() => {
-            this.scrollToTarget();
-            this.stylingMenus();
-          }, 1000);
-        }
-      }
-    });
     //start of LCA user user flow
     this.userRoleSubscription = this.auth.userRole$.subscribe(() => {
       this.setusername();
@@ -107,7 +75,7 @@ export class LeftMenuDrawerComponent implements OnInit {
       console.log(companyname1);
       this.companyname = companyname1?.business_name || '';
 
-      this.common.isAdmin$.subscribe((isAdmin_) => {
+      this.auth.isAdmin$.subscribe((isAdmin_) => {
         this.isAdmin = isAdmin_;
         if (this.usertype == '11' || this.usertype == '12') {
         } else {
@@ -116,80 +84,6 @@ export class LeftMenuDrawerComponent implements OnInit {
         console.log(this.isAdmin);
       });
     }
-  }
-
-  scrollToTarget() {
-    const { link } = this.selectedMenu;
-    if (link) {
-      const link1 = `${link}`.replace('/', '');
-      const targetElement = this.el.nativeElement.querySelector(`#${link1}`);
-
-      if (targetElement) {
-        targetElement.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-  }
-
-  stylingMenus() {
-    this.recentlyUsedMenus(this.selectedMenu);
-    const elements = document.getElementsByClassName('mat-items');
-    const elementsActive = document.getElementsByClassName(
-      this.selectedMenu.menu
-    );
-    let elementsArray = Array.from(elements);
-    for (const element of elementsArray) {
-      const childDiv = element.querySelector('span');
-      if (childDiv) {
-        childDiv.className = 'mat-list-item-content';
-      }
-    }
-    elementsArray = Array.from(elementsActive);
-    if (!this.selectedMenu?.subMenus) {
-      for (const element of elementsArray) {
-        const childDiv = element.querySelector('span');
-        if (childDiv) {
-          childDiv.className = 'mat-list-item-content active';
-          // lement.firstChild.className = element.firstChild.className + ' active';
-        }
-      }
-    }
-  }
-
-  recentlyUsedMenus(selectedMenu: MenuModel) {
-    let results = this.recentlyusedList;
-    const menu = results.find((m) => m.link === selectedMenu.link);
-    if (!menu?.link && !selectedMenu?.subMenus) {
-      results.push(selectedMenu);
-    }
-    results = results.slice(-5);
-    this.recentlyusedList = results;
-  }
-
-  handleRouteChange(): void {
-    const url = this.router.url;
-    const foundMenu: { parent: MenuModel; child: MenuModel } =
-      this.findMenuByUrl(url);
-
-    if (foundMenu) {
-      this.currentlyExpandedIndex = this.menuList.indexOf(foundMenu.parent);
-      // mat-list-item
-      this.selectedMenu = foundMenu.child;
-      this.stylingMenus();
-    }
-  }
-
-  findMenuByUrl(url: string): any {
-    for (const item of this.menuList) {
-      if (
-        item.link === url ||
-        (item.subMenus && item.subMenus.some((subMenu) => subMenu.link === url))
-      ) {
-        let childmenu = item.subMenus?.find((itm) => itm.link === url);
-        return { parent: item, child: childmenu };
-      }
-    }
-
-    return null;
   }
 
   getMenuItemLists() {
@@ -221,15 +115,30 @@ export class LeftMenuDrawerComponent implements OnInit {
           hasubMenu: true,
           icon: 'feed',
           subMenus: [
-            { id: 1, menu: 'Import', icon: 'play_arrow', link: '/importslca' },
-            { id: 2, menu: 'Pending', icon: 'play_arrow', link: '/pendinglca' },
+            {
+              id: 1,
+              menu: 'Import',
+              icon: 'play_arrow',
+              link: '/lca-login/importslca',
+            }, //vincy check here
+            {
+              id: 2,
+              menu: 'Pending',
+              icon: 'play_arrow',
+              link: '/lca-login/pendinglca',
+            },
             {
               id: 3,
               menu: 'Completed',
               icon: 'play_arrow',
-              link: '/completedlca',
+              link: '/lca-login/completedlca',
             },
-            { id: 4, menu: 'In Risk', icon: 'play_arrow', link: '/risklca' },
+            {
+              id: 4,
+              menu: 'In Risk',
+              icon: 'play_arrow',
+              link: '/lca-login/risklca',
+            },
           ],
         }
       );
@@ -254,13 +163,13 @@ export class LeftMenuDrawerComponent implements OnInit {
               id: 1,
               menu: 'Pending ',
               icon: 'play_arrow',
-              link: '/attestation',
+              link: '/lca/attestation',
             },
             {
               id: 2,
               menu: 'Completed',
               icon: 'play_arrow',
-              link: '/lcacompletedattestation',
+              link: '/lca/lcacompletedattestation',
               param: 'true',
             },
           ],
@@ -275,19 +184,19 @@ export class LeftMenuDrawerComponent implements OnInit {
               id: 1,
               menu: 'Pending',
               icon: 'play_arrow',
-              link: '/cooattestation',
+              link: '/coo/cooattestation',
             },
             {
               id: 2,
               menu: 'In Review',
               icon: 'play_arrow',
-              link: '/cooinreview',
+              link: '/coo/cooinreview',
             },
             {
               id: 3,
               menu: 'Completed',
               icon: 'play_arrow',
-              link: '/CompletedCooRequest',
+              link: '/coo/CompletedCooRequest',
             },
           ],
         },
@@ -301,19 +210,19 @@ export class LeftMenuDrawerComponent implements OnInit {
               id: 1,
               menu: 'Pending',
               icon: 'play_arrow',
-              link: '/physicalattestation',
+              link: '/physical/physicalattestation',
             },
             {
               id: 2,
               menu: 'In Review',
               icon: 'play_arrow',
-              link: '/physicalinreview',
+              link: '/physical/physicalinreview',
             },
             {
               id: 3,
               menu: 'Completed',
               icon: 'play_arrow',
-              link: '/completedattestation',
+              link: '/physical/completedattestation',
             },
           ],
         },
@@ -323,15 +232,20 @@ export class LeftMenuDrawerComponent implements OnInit {
           hasubMenu: true,
           icon: 'feed',
           subMenus: [
-            { id: 1, menu: 'LCA', icon: 'play_arrow', link: '/rptlca' },
-            { id: 2, menu: 'COO', icon: 'play_arrow', link: '/rptcoo' },
+            { id: 1, menu: 'LCA', icon: 'play_arrow', link: '/reports/rptlca' },
+            { id: 2, menu: 'COO', icon: 'play_arrow', link: '/reports/rptcoo' },
             {
               id: 3,
               menu: 'Physical',
               icon: 'play_arrow',
-              link: '/rptphysical',
+              link: '/reports/rptphysical',
             },
-            { id: 4, menu: 'Fines', icon: 'play_arrow', link: '/rptfines' },
+            {
+              id: 4,
+              menu: 'Fines',
+              icon: 'play_arrow',
+              link: '/reports/rptfines',
+            },
           ],
         }
       );
@@ -339,7 +253,7 @@ export class LeftMenuDrawerComponent implements OnInit {
       if (this.isAdmin) {
         this.menuList.push({
           id: 3,
-          menu: 'Authorized Users',
+          menu: 'My Team',
           icon: 'supervisor_account',
           link: '/userslist',
           hasubMenu: false,
@@ -391,5 +305,15 @@ export class LeftMenuDrawerComponent implements OnInit {
   onMainPanelClick(index: number): void {
     this.currentlyExpandedIndex =
       this.currentlyExpandedIndex === index ? -1 : index;
+  }
+
+  setusername() {
+    console.log('calling set user name');
+    let data = this.common.getUserProfile();
+    if (data != undefined || data != null) {
+      let abc = JSON.parse(data);
+      console.log(JSON.parse(data));
+      this.username = abc.Data.firstnameEN;
+    }
   }
 }

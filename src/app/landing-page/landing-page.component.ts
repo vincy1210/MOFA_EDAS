@@ -73,8 +73,19 @@ initialCompanyList: any;
           }
   
           this.CompanyListforAdmin = resp.dictionary.data;
+          if(this.CompanyListforAdmin.length==0){
+            this.router.navigateByUrl('/registration');
+          }
           this.common.favink1 = resp.dictionary.data.recentusedlink1;
           this.common.favink2 = resp.dictionary.data.recentusedlink2;
+
+          if(this.CompanyListforAdmin.length==1){
+            this.CompanyListforAdmin.forEach((company: any) => {
+              company.isSelected = true;   // need to check a better solution
+            });
+
+          }
+          
 
           this.CompanyListforAdmin.forEach((company: any) => {
             // Set isSelected to true for companies with favouritecompany equal to "1"
@@ -100,7 +111,8 @@ initialCompanyList: any;
     this.CompanyListforAdmin.forEach((company: any) => {
       company.isSelected = false;
     });
-    
+
+  
     // Toggle selection for the clicked company
     // if (selectedCompany.favouritecompany === "1") {
       selectedCompany.isSelected = true;
@@ -136,7 +148,7 @@ initialCompanyList: any;
     }
     this.auth.setSelectedCompany(this.setselcompany)
     console.log(this.auth.getSelectedCompany().companyuno)
-    this.router.navigateByUrl('/attestation')
+    this.router.navigateByUrl('/lca/attestation')
     this.common.setSidebarVisibility(true);
   }
 

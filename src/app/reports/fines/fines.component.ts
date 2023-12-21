@@ -119,7 +119,7 @@ isButtonDisabled = false;
 
    
 
-    this.currentcompany=this.auth.getSelectedCompany().companyuno;
+    this.currentcompany=this.auth.getSelectedCompany().companyuno || '';
 
     
     this.loading = true;
@@ -142,6 +142,7 @@ isButtonDisabled = false;
     this.cols = [
       { field: 'edasattestno', header: 'Edas Ref No', width:'25%' },
       { field: 'declarationumber', header: 'Declaration Number', width:'20%' },
+      { field: 'noofdaysoverdue', header: 'Age', width:'20%' },
       { field: 'invoicenumber', header: 'Invoice Number', width:'20%' },
       { field: 'invoicedate', header: 'Invoice Date' , width:'25%'},
       { field: 'invoiceamount', header: 'Invoice Amount', width:'25%' },
@@ -149,7 +150,6 @@ isButtonDisabled = false;
       { field: 'fineamount', header: 'Fine Amount' , width:'15%'},
       { field: 'lcaname', header: 'LCA', width:'20%' },
       
-      { field: 'noofdaysoverdue', header: 'Age', width:'20%' },
   
   ];
 

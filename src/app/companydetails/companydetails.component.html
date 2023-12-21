@@ -71,7 +71,7 @@
             <mat-label>{{'tradelicenseexpirydate' | translate }}</mat-label>
             <input matInput  autocomplete="off" [min]="today" formControlName="trade_Licence_Expiry_Date" name="trade_Licence_Expiry_Date" [matDatepicker]="tlexpirydate" placeholder="19/10/2025">
             <mat-datepicker-toggle matSuffix [for]="tlexpirydate"></mat-datepicker-toggle>
-            <span matSuffix >&nbsp;{{'EDIT' | translate }}</span>
+            <!-- <span matSuffix >&nbsp;{{'EDIT' | translate }}</span> -->
             <mat-datepicker #tlexpirydate>
               <mat-datepicker-actions>
                 <button mat-button matDatepickerCancel>{{'cancelbtn' | translate }}</button>
@@ -244,7 +244,7 @@
 
   <!-- form end    uncomment -->
   <!-- Thanks form starts   *ngIf="!form1_Vis" -->
-  <div    *ngIf="!form1_Vis" style="text-align: justify;" >
+  <div    *ngIf="!form1_Vis"  style="text-align: justify;" >
 
   <span class="Thanksnote">
     {{note1}}

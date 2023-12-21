@@ -49,6 +49,7 @@ export class RegistrationComponent {
   freezone:any;
   freezone1:any;
   isButtonDisabled = false;
+  UserHavingCompany:boolean=false;
   constructor(private auth:AuthService,private consts:ConstantsService,private recaptchaV3Service: ReCaptchaV3Service,private http:HttpClient ,private common:CommonService,private FormBuilder:FormBuilder, private router:Router, private _activatedRoute:ActivatedRoute, private apiservice:ApiService){
     this.common.getData().subscribe(data => {
       this.reg_form_data = data;
@@ -56,15 +57,26 @@ export class RegistrationComponent {
     });
     
     this.registrationForm = this.FormBuilder.group({
-      tradeLicenseNumber: [this.reg_form_data.tradeLicenseNumber, [Validators.required, Validators.minLength(4)]],
+      tradeLicenseNumber: [this.reg_form_data.tradeLicenseNumber,  [Validators.required,Validators.minLength(4),Validators.pattern('^(?=.*\\S).+$')]],
       chosenDate: [this.reg_form_data.chosenDate, Validators.required],
       issuingAuthority: [this.reg_form_data.issuingAuthority, Validators.required],
       expressType: [this.reg_form_data.expressType, Validators.required],
       dmccOption:[this.reg_form_data.dmccOption],
-      name_of_Business:[this.reg_form_data.name_of_Business, Validators.required]
+      name_of_Business:[this.reg_form_data.name_of_Business, [Validators.required ,Validators.pattern('^(?=.*\\S).+$')]]
     });
 
   //  if(this.reg_form_data==="Freezone"){
+
+  if(this.reg_form_data.issuingAuthority==="AUH"){
+      //this.registrationForm.removeValidators('dmccOption')
+      this.registrationForm.get('tradeLicenseNumber')?.clearValidators();
+      this.registrationForm.get('tradeLicenseNumber')?.updateValueAndValidity();
+  }
+  else{
+    this.registrationForm.get('tradeLicenseNumber')?.setValidators([Validators.required, Validators.minLength(4),Validators.pattern('^(?=.*\\S).+$')]);
+    this.registrationForm.get('tradeLicenseNumber')?.updateValueAndValidity();
+  }
+  
 
       if(this.reg_form_data.expressType==="Freezone"){
         this.registrationForm.get('dmccOption')?.setValidators(Validators.required);
@@ -111,18 +123,11 @@ export class RegistrationComponent {
       {
         "tradelicensenumber": this.reg_form_data.tradeLicenseNumber,
         "nameofbusiness":this.reg_form_data.name_of_Business,
-        "emirate":"AUH",
+        "emirate":this.reg_form_data.issuingAuthority,
          "uuid":this.userinfo.Data.uuid,
          //need to pass consignee name, issuing auth emirate
      }
-     let data2=
-     {
-      //  "tradelicensenumber": this.reg_form_data.tradeLicenseNumber,
-        "uuid":this.userinfo.Data.uuid,
-        "startnum":1,
-        "endnum":10,
-        "status":1
-    }
+    
      let response;
      let response1;
 
@@ -138,22 +143,17 @@ export class RegistrationComponent {
 
 
          if(response.data.dictionary.data.length==0){
+          this.common.SetAlreadyregisteredcompanydetails('');
           this.router.navigateByUrl('/companydetails')
          }
          else if(response.data.dictionary.data.length>0  ){
-            // if(response.data.dictionary.data[0].isapproved==0){
-                          //company pending note
                           this.common.SetAlreadyregisteredcompanydetails(response.data.dictionary.data[0]);
                           this.router.navigateByUrl('/companydetails')
-            // }
-            // else{
-                          //company approved note
-                      //    this.common.SetAlreadyregisteredcompanydetails();
-
-            // }
+           
  
          }
          else{
+          this.common.SetAlreadyregisteredcompanydetails([]);
            this.router.navigateByUrl('/companydetails')
          }
         }
@@ -196,7 +196,7 @@ export class RegistrationComponent {
   ngOnInit() {
      this.common.showLoading();
 
-    try{
+    // try{
       
     console.log('---------');
     this._activatedRoute.queryParams.subscribe((params: Params) => {
@@ -213,15 +213,19 @@ export class RegistrationComponent {
       
       // You can perform any actions or logic with these parameters
     });
-
+//for cancel button checking whether any company already there
     this.reg_form_data= this.common.getUserProfile();
+    const userProfilejson=JSON.parse(this.reg_form_data)
+    if(userProfilejson){
+this.checkcompanyuserforcancel(userProfilejson.Data);
+    }
 
     console.log(this.reg_form_data);
     let data={
       "useruno":"1",
       "languagecode":0
     }
-    this.common.showLoading();
+    // this.common.showLoading();
 
     this.apiservice.post(this.consts.getFreezonetypes, data).subscribe((response: any) => {
       this.common.hideLoading();
@@ -252,7 +256,10 @@ export class RegistrationComponent {
 
          // Delay the execution  by 2 seconds
   setTimeout(() => {
-    this.auth.logout();
+    // this.auth.logout();
+    window.location.href = "https://stg-id.uaepass.ae/idshub/logout?redirect_uri=https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2"
+
+
   }, 2000); // 2000 milliseconds = 2 seconds
         return;
       }
@@ -272,11 +279,35 @@ export class RegistrationComponent {
     }
     //this.common.hideLoading();
     
-  }
-  finally{
-    this.common.hideLoading()
+  // }
+  // finally{
+  //   this.common.hideLoading()
+  // }
+
   }
 
+  checkcompanyuserforcancel(userinfo:any){
+    let response, data;
+    data={
+      "uuid": userinfo.uuid,
+      "emiratesid": userinfo.idn,
+      "email": userinfo.email,
+      "mobile": userinfo.mobile,
+      "firstname": userinfo.firstnameEN
+  }
+  this.common.showLoading();
+    this.apiservice.post(this.consts.checkCompanyUser,data).subscribe({next:(success:any)=>{
+      this.common.hideLoading();
+      response=success;
+      if(response.data.length>0){
+        this.UserHavingCompany=true;
+      }
+      else{
+        this.UserHavingCompany=false;
+      }
+
+
+    }})
   }
   radio(event:any){
 
@@ -359,65 +390,6 @@ export class RegistrationComponent {
       .catch(console.log);
   }
   
-
- //NIU
-  // public getToken(objDepartment:any) {
-  //   console.log(objDepartment)
-
-  //   if(this.param1==undefined || this.param3==undefined){
-  //     this.common.showErrorMessage("Invalid Parameters")
-  //     return;
-  //   }
-  //   this.apiservice.GetAuthToken(this.param1, this.param3)
-  //     .toPromise()
-  //     .then((response:any) => {
-  //       console.log(response);
-  //       console.log(response.IsSucceeded);
-  //       console.log(response.Data.AccessToken);
-  //       console.log(response.Data.Email);
-  //       console.log(response);
-
-  //     // need to uncomment this
-
-  //       if(response.IsSucceeded==="True"){
-  //         this.getUserToken(response.Data.AccessToken);
-  //       }
-  //       else{
-  //         this.common.showErrorMessage("Auth1 Failed");
-  //         return;
-  //       }
-  //     })
-  //     .catch(console.log); 
-
-  //     //comment this 
-  //  // this.getUserToken("response.Data.AccessToken");
-     
-  // }
-//NIU
-//   public getUserToken(accessToken:any) {
-// //uncmnt this while deploying
-//     this.apiservice.getUserToken(accessToken,this.param3 )
-//       .toPromise()
-//       .then((response:any) => {
-//         console.log(response);
-//         this.userinfo=response;
-//         console.log(response.IsSucceeded);
-//         console.log(response.Data.AccessToken);//
-//         console.log(response.Data.Email);
-//         console.log(response);
-
-//         if(this.userinfo==undefined){
-//           this.common.showErrorMessage("Auth2 Failed");
-//           return;
-//         }
-        
-//         this.common.setUserIfoData(response.Data)
-
-//       })
-//       .catch(console.log); 
-
-//   }
-  //Redirection from MOFA end
   
   ngOnDestroy() {
     console.log("--Stop--");
@@ -464,20 +436,25 @@ export class RegistrationComponent {
 
   onDropdownChange(event:any) {
     console.log(event);
-
     const selectedValue = this.registrationForm.get('issuingAuthority')?.value;
     console.log(`Selected value: ${selectedValue}`);
     console.log(this.freezone1)
 
+    if (selectedValue === 'AUH') {
+      // Remove validators from tradeLicenseNumber
+      this.registrationForm.get('tradeLicenseNumber')?.clearValidators();
+      this.registrationForm.get('tradeLicenseNumber')?.updateValueAndValidity();
+  } else {
+      // Add validators back to tradeLicenseNumber
+      this.registrationForm.get('tradeLicenseNumber')?.setValidators([Validators.required, Validators.minLength(4)]);
+      this.registrationForm.get('tradeLicenseNumber')?.updateValueAndValidity();
+  }
     if(this.freezone1!=undefined){
       const filteredData = this.freezone1.filter((item:any) => item.emiratesuno === parseInt(selectedValue, 10));
       console.log(filteredData);
       this.freezone=filteredData;
     console.log(this.freezone);
     }
-
-   
-    
   }
 
   // public formatToken(token: string | null) {
@@ -507,16 +484,14 @@ export class RegistrationComponent {
 
     this.apiservice.post(this.consts.checkCompanyUser,data).subscribe({next:(success:any)=>{
       this.common.hideLoading();
-
       response=success;
       this.common.hideLoading();
-
       if(response.responsecode==1){
        if(response.data==="User not available"){
         return;
        }
        else{
-
+       
         let lcauser: boolean = false;
 
         // Iterate through the JSON data
@@ -552,4 +527,28 @@ export class RegistrationComponent {
 
   }
 
+  onInput(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    const value = inputElement.value;
+
+    if (value.includes('.')) {
+      inputElement.value = value.replace('.', ''); // Remove the dot if found
+    }
+
+    this.registrationForm.patchValue({ name_of_Business: inputElement.value });
+  }
+
+
+  onPaste(event: ClipboardEvent) {
+    event.preventDefault();
+    const clipboardData = event.clipboardData?.getData('text/plain');
+    const sanitizedData = clipboardData?.replace(/\./g, ''); // Remove dots from pasted data
+    document.execCommand('insertText', false, sanitizedData);
+  }
+
+  CancelForLoggedinUsers(){
+    this.router.navigateByUrl('/landingpage');
+    //vincy
+  }
+  
 }

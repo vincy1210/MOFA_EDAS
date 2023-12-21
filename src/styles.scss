@@ -203,7 +203,8 @@ img.footer-main-logo {
   margin-bottom: 0 !important;
 }
 .registration-progress {
-  padding-top: 30px;
+  padding-top: 10px;
+  // padding-bottom: 15px;
   width: 150px;
   margin: auto;
 }
@@ -426,9 +427,9 @@ p.page-title-para {
   background-color: lime !important;
 }
 .registration-window {
-  padding-top: 30px;
-  padding-bottom: 30px;
-  margin: auto;
+  padding-top: 10px;
+    padding-bottom: 30px;
+    margin: auto;
 }
 
 .palette-brown:hover {
@@ -593,6 +594,8 @@ button.white-icon-button.mat-menu-item {
   // top: -1px !important;
   color: var(--primary-color);
   font-weight: bold;
+  top:0.27rem !important;
+
 }
 .cd-upload .mat-form-field-appearance-outline .mat-form-field-infix {
   padding: 0 !important;
@@ -1925,11 +1928,11 @@ h1.db-sub-title {
 }
 
 .p-fluid .p-dropdown .p-dropdown-label {
-  width: 1%;
-  height: 2rem;
-  display: flex;
-  justify-content: center;
-  line-height: 0.5em;
+  // width: 1%;
+  // height: 2rem;
+  // display: flex;
+  // justify-content: center;
+  // line-height: 0.5em;
   font-size: inherit;
 }
 
@@ -2269,4 +2272,38 @@ h1.db-sub-title {
 
 [dir="rtl"] span.menutitle {
   padding-right: 8px;
+}
+
+
+.p-dialog .p-dialog-header .p-dialog-header-icon:last-child {
+  margin-right: 1rem;
+}
+
+.outofstock {
+  font-weight: 700;
+  color: #ff5252;
+  text-decoration: line-through;
+}
+
+.lowstock {
+  font-weight: 700;
+  color: #ffa726;
+}
+
+.instock {
+  font-weight: 700;
+  color: #66bb6a;
+}
+.mat-flat-button.mat-primary, .mat-raised-button.mat-primary, .mat-fab.mat-primary, .mat-mini-fab.mat-primary {
+  height: 2rem !important;
+  font-size: inherit !important;
+    line-height: 2rem !important;
+    // background-color: var(--primary-color);
+}
+.secondary_button{
+  border: 1px solid grey !important; 
+  color: black !important;
+   height: 2rem !important;
+   font-size: inherit !important;
+    line-height: 2rem !important;
 }

@@ -13,7 +13,7 @@
   >
     <!-- common.getSelectedCompany()  getUserProfile -->
     <a
-      (click)="toggleDrawer()"
+      (click)="drawer.toggle()"
       *ngIf="userloggedin || lcauserloggedin"
       class="mr-2 cursor-pointer"
     >
@@ -458,12 +458,6 @@
                     </h1>
 
                     <div class="mt-3 grid grid-cols-1 rtl-form">
-                      <!-- <div class="grid grid-cols-1 text-center">
-                  <h1 class="page-title-01 text-uaemofa">
-                    <strong>{{'Will get logout in 5 minutes' | translate}}</strong>
-                  </h1>
-                </div> -->
-
                       <div class="grid grid-cols-1 mb-3">
                         <div class="grid grid-cols-1">
                           <div class="border-2 bg-white rounded-xl p-5">

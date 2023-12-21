@@ -24,7 +24,7 @@
               [rows]="5"
               [columns]="cols"
               [showCurrentPageReport]="true"
-              [rowsPerPageOptions]="[5, 10]"
+              [rowsPerPageOptions]="[10, 20]"
               [loading]="loading"
               styleClass="p-datatable-customers p-datatable-gridlines"
               currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
@@ -90,7 +90,7 @@
                   <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
                     {{ col.header | translate }}
                     <p-sortIcon
-                      field="code"
+                    [field]="col.field"
                       *ngIf="col.field !== 'actions'"
                     ></p-sortIcon>
                     <p-columnFilter
@@ -114,9 +114,9 @@
                   <td>
                     <span class="image-text">{{ data.edasattestno }}</span>
                   </td>
-                  <!-- <td>
-                    <span class="image-text">{{ data.entityshareamount }}</span>
-                  </td> -->
+                  <td>
+                    <p-tag [value]="data.statusname" [severity]="'success'"></p-tag>
+                  </td>
                   <td style="text-align: right;">
                     <span class="image-text">{{ data.totalamount }}</span>
                   </td>
@@ -130,10 +130,7 @@
                       common.splitdatetime(data.attestreqdate)?.date
                     }}</span>
                   </td>
-                  <td>
-                    <!-- <span class="image-text">{{ data.statusname }}</span> -->
-                    <p-tag [value]="data.statusname" [severity]="'success'"></p-tag>
-                  </td>
+                 
                   <td pFrozenColumn alignFrozen="right">
                     <span (click)="openNew(data)" style="padding:15px; cursor: pointer;" pTooltip="{{'Details' | translate}}"  class="image-text viewaction">
                       <mat-icon class="action_eye_icon" >visibility</mat-icon>
@@ -147,12 +144,10 @@
                 </tr>
               </ng-template>
 
-              <ng-template
-              pTemplate="footer"  
-              
-            >
+              <ng-template pTemplate="footer" *ngIf="cooAttestationLists" >
+                <ng-container *ngIf="cooAttestationLists.length>0">
               <tr>
-                <td colspan="2">
+                <td colspan="3">
                   {{ "Total" | translate }}
                 </td>
                 <td style="text-align: right;"> AED
@@ -166,6 +161,7 @@
                 </td>
                 <td colspan="100" class="text-right"></td>
               </tr>
+            </ng-container>
             </ng-template>
 
               <ng-template pTemplate="emptymessage">

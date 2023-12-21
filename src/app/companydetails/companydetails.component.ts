@@ -76,11 +76,11 @@ export class CompanydetailsComponent implements OnInit {
       console.log(this.alreadyregisteredcompanydetails)
       if(this.alreadyregisteredcompanydetails){
         this.form1_Vis=false;
-        this.response_code_after_submit=this.alreadyregisteredcompanydetails.refno;   ///vincy 
+        this.response_code_after_submit=this.alreadyregisteredcompanydetails.regnno;   ///vincy 
         this.already_reg_companyemail=this.alreadyregisteredcompanydetails.repemailaddress;
         if(this.alreadyregisteredcompanydetails.isapproved){  //already approved
 
-          this.setnote('B')  //vincy
+          this.setnote('C')  //vincy
         }
         else{         //registered but not approved yet
 this.setnote('B');   //vincy
@@ -128,7 +128,7 @@ if(this.reg_form_data==undefined){
 
     this.companyDetailsForm=this.formBuilder.group({
       name_of_Business:[this.reg_form_data?.name_of_Business, [Validators.required,Validators.pattern('^(?=.*\\S).+$')]],
-      trade_Licence:[this.reg_form_data?.tradeLicenseNumber, [Validators.required,Validators.pattern('^(?=.*\\S).+$')]],
+      trade_Licence:[this.reg_form_data?.tradeLicenseNumber],
       trade_Licence_Issue_Date:[this.reg_form_data?.chosenDate, Validators.required],
       trade_Licence_Expiry_Date:['', Validators.required],
       Licence_issuing_auth:[license_issuing_auth, [Validators.required, Validators.pattern('^(?=.*\\S).+$')]],
@@ -141,9 +141,7 @@ if(this.reg_form_data==undefined){
       companyrep_EmailAddress:['',[Validators.required, Validators.email]],
       companyrep_MobileNumber:['',[Validators.required, Validators.maxLength(9), Validators.minLength(9), Validators.pattern(/^5\d+$/)]],
       isbroker: ['2', Validators.required],
-
     })
-    
    }
 
    dialogRef: any;
@@ -274,6 +272,29 @@ if(this.reg_form_data==undefined){
         const form = { ...this.companyDetailsForm.value };
         console.log('Form Values:', form);
         console.log(this.captcha_token)
+
+        let lcano='00';
+        let emirate=this.reg_form_data.issuingAuthority;
+        if(emirate=='AUH'){
+          lcano='01';
+        }
+        else if(emirate=='AJM'){
+          lcano='02';
+        } else if(emirate=='DXB'){
+          lcano='03';
+
+        } else if(emirate=='FUJ'){
+          lcano='04';
+
+        } else if(emirate=='SHJ'){
+          lcano='05';
+
+        } else if(emirate=='RAK'){
+          lcano='06';
+        }
+        else{
+          lcano='07';
+        }
   
        
 	  let data={
@@ -315,7 +336,7 @@ if(this.reg_form_data==undefined){
       "legaltypeuno": form.legal_Type,
       "repfullnameen":form.companyrep_fullname,
       "repfullnamear":form.companyrep_fullname,
-      "licenseissuingauthorityemirate":this.reg_form_data.issuingAuthority,  //dropdown
+      "licenseissuingauthorityemirate":lcano,  //dropdown
       "IssuingAuthorityType":this.reg_form_data.expressType,
       "captchakey":this.captcha_token,
       "isbroker":form.isbroker,
@@ -346,10 +367,17 @@ if(this.reg_form_data==undefined){
                        return;
                     }
                     else{
-                      this.response_code_after_submit=response.data.dictionary.requestno
-                      this.form1_Vis=false;
-                      this.setnote('B');
-                     this.progress_val=100
+                      if(response.data.dictionary.requestno){
+                        this.response_code_after_submit=response.data.dictionary.requestno
+                        this.form1_Vis=false;
+                        this.setnote('B');
+                       this.progress_val=100
+                      }
+                      else{
+                        this.Common.showErrorMessage("something went wrong");
+                        return;
+                      }
+                     
 
                     }
 
@@ -453,6 +481,7 @@ if(this.reg_form_data==undefined){
     let data, data1;
     //const OTP=this.generateOTP();
 
+
     let email;
       let email2=this.companyDetailsForm.get('companyrep_EmailAddress')?.value;
       console.log(email2);
@@ -463,15 +492,24 @@ if(this.reg_form_data==undefined){
         email=email2;
       }
 
+      if(this.reg_form_data.tradeLicenseNumber==null){
+        this.reg_form_data.tradeLicenseNumber=""; 
+      }
+      
+
     data={
       "uuid":this.user_info_taken_using_authtoken.uuid,
       "OTP":"",
       "tradelicenseno":this.reg_form_data.tradeLicenseNumber,
-      "emailID":email
+      "companyname":this.reg_form_data.name_of_Business,
+      "emirate":this.reg_form_data.issuingAuthority,
+      "emailID":email,
+
       }
       console.log(data);
       let otpresponse;
       this.common.showLoading();
+      this.set_countdown();
 
       this.apiservice.post(this.consts.SendOTPForCompanyRegn,data).subscribe({next:(success)=>{
         this.common.hideLoading();
@@ -494,8 +532,10 @@ if(this.reg_form_data==undefined){
 
       if(this.companyDetailsForm.valid){
         this.SendOTP();  // writing sendOTP as a diff function so that it can be used in Resend OTP too.
-        if(this.user_info_taken_using_authtoken.uuid==undefined||this.reg_form_data.tradeLicenseNumber==undefined){
-          this.common.showErrorMessage("UUID or tradelicence no is missing")
+        if(this.user_info_taken_using_authtoken.uuid==undefined){
+          console.log("UUID is missing")
+
+          this.common.showErrorMessage("Something went wrong")
           return;
         }
               this.dialog.open(templateRef, {
@@ -504,29 +544,12 @@ if(this.reg_form_data==undefined){
                 backdropClass: 'normalpopupBackdropClass',
                 hasBackdrop: false, // Prevents closing on clicking outside the dialog
               });
+
               
-              this.countdownMinutes = 2;
-              this.countdownSeconds = 40;
-              this.countdownTotalSeconds = this.countdownMinutes * 60 + this.countdownSeconds;
-
-              interval(1000) // Timer every second
-              .pipe(takeWhile(() => this.countdownTotalSeconds > 0))
-              .subscribe(() => {
-                this.countdownTotalSeconds--;
-                this.countdownMinutes = Math.floor(this.countdownTotalSeconds / 60);
-                this.countdownSeconds = this.countdownTotalSeconds % 60;
-
-                if (this.countdownTotalSeconds === 0) {
-                  // Countdown has expired, show the resend link
-                  this.showResendLink = true;
-                }
-                else{
-                  this.showResendLink = false;
-                }
-              });
+            
             }
             else{// invalid form
-              this.common.showErrorMessage("Provide valid details and Try Again")
+              this.common.showErrorMessage("Please provide valid details and try again")
               return;
             }
   }
@@ -548,16 +571,45 @@ if(this.reg_form_data==undefined){
   //   console.log(value);
   // }
 
+  set_countdown(){
+      
+    this.countdownMinutes = 5;
+    this.countdownSeconds = 0;
+    this.countdownTotalSeconds = this.countdownMinutes * 60 + this.countdownSeconds;
+
+    interval(1000) // Timer every second
+    .pipe(takeWhile(() => this.countdownTotalSeconds > 0))
+    .subscribe(() => {
+      this.countdownTotalSeconds--;
+      this.countdownMinutes = Math.floor(this.countdownTotalSeconds / 60);
+      this.countdownSeconds = this.countdownTotalSeconds % 60;
+
+      if (this.countdownTotalSeconds === 0) {
+        // Countdown has expired, show the resend link
+        this.showResendLink = true;
+      }
+      else{
+        this.showResendLink = false;
+      }
+    });
+  }
+
   handleFillEvent(value: string): void {
     console.log(value);
     this.OTP_entered=value;
   }
   OTPSubmit(){
 
+    if(this.reg_form_data.tradeLicenseNumber==null){
+      this.reg_form_data.tradeLicenseNumber=""; 
+    }
+
    let data={
       "uuid":this.user_info_taken_using_authtoken.uuid,
       "otp": this.OTP_entered,
-      "tradelicenseno":this.reg_form_data.tradeLicenseNumber
+      "tradelicenseno":this.reg_form_data.tradeLicenseNumber,
+      "companyname":this.reg_form_data.name_of_Business,
+    "emirate":this.reg_form_data.issuingAuthority
   }
 
     let OTPRetrival;

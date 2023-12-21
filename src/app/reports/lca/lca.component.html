@@ -53,6 +53,8 @@
          
              
               </ng-template>
+<!-- {{showfooter}} -->
+
               <ng-template pTemplate="right">
                 <div *ngIf="enableFilters" style="padding: 5px;" class="col-md-3 col-lg-3  col-md-6">
                   <mat-form-field  class="filter_datepicker">
@@ -92,7 +94,7 @@
                     </p-tableHeaderCheckbox>
                 </th> -->
                 <th *ngFor="let col of columns" pResizableColumn [pSortableColumn]="col.field" [style.width]="col.width"  >
-                    {{col.header}} <p-sortIcon field="code"></p-sortIcon>
+                    {{col.header}} <p-sortIcon  [field]="col.field"></p-sortIcon>
                     <p-columnFilter 
                     type="text"  *ngIf="enableFilters"
                     [field]="col.field"
@@ -111,7 +113,9 @@
                   <span >{{customer.edasattestno}} </span>
                     
                 </td>
-                <td><span class="image-text">{{customer.companyname}}</span></td>
+                <td>
+                  <p-tag [value]="customer.statusname" severity="success"></p-tag>
+                </td>
                 <td style="text-align: right;"><span class="image-text">{{common.formatAmount(customer.invoiceamount)}}</span></td>
                 <td style="text-align: right;"><span class="image-text">{{common.formatAmount(customer.feesamount)}}</span></td>
                 <td>
@@ -128,10 +132,9 @@
                     <span class="image-text">{{splitdatetime(customer.attestreqdate)?.date}}</span>
                 </td>
                 <td><span class="image-text">{{customer.lcaname}}</span></td>
-                <td>
-                  <p-tag [value]="customer.statusname" severity="success"></p-tag>
-                  <!-- <span class="image-text">{{customer.statusname}}</span> -->
-                </td>
+               
+                <td><span class="image-text">{{customer.companyname}}</span></td>
+
                 <td pFrozenColumn alignFrozen="right">
                   <span (click)="openNew(customer)" style="padding:15px; cursor: pointer;" pTooltip="Details" tooltipPosition="bottom"  class="image-text viewaction">
                     <mat-icon class="action_eye_icon" >visibility</mat-icon>
@@ -144,27 +147,24 @@
                 </td>
             </tr>
           </ng-template>
-
-          <ng-template
-              pTemplate="footer"
-              *ngIf="list.length > 0"
-            >
-              <tr>
-                <td colspan="2">
-                  {{ "Total" | translate }}
-                </td>
-                <td class="text-align"> AED
-                  {{ common.formatAmount(total_invoiceamount) }}
-                </td>
-                <td class="text-align">AED
-                  {{ common.formatAmount(total_feesamount) }}
-                </td>
-                <td class="text-align">
-                  <!-- {{ totals?.totaltotalamount | customCurrency : "AED" }} -->
-                </td>
-                <td colspan="100" class="text-align"></td>
-              </tr>
-            </ng-template>
+          <ng-template pTemplate="footer" >
+            <ng-container *ngIf="list.length>0">
+            <tr>
+              <td colspan="2">
+                {{ "Total" | translate }}
+              </td>
+              <td class="text-align"> AED
+                {{ common.formatAmount(total_invoiceamount) }}
+              </td>
+              <td class="text-align">AED
+                {{ common.formatAmount(total_feesamount) }}
+              </td>
+              <td class="text-align">
+              </td>
+              <td colspan="100" class="text-align"></td>
+            </tr>
+          </ng-container>
+          </ng-template>
 			
 			
 			
@@ -175,10 +175,7 @@
           </ng-template>
         </p-table>
                 </div>
-                <div class="bg-white rounded-lg mofa-tab-section show"
-                  [ngClass]="{'show': shouldShow, 'hide': !shouldShow }">
-                  <app-attestation-workflow [src]="src" [selectedAttestations]="selectedAttestations"></app-attestation-workflow>
-                </div>
+               
               </div>
             </div>
           </div>
