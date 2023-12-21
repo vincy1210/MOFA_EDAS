@@ -62,7 +62,7 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
   }
 
   ngOnInit(): void {
-    this.currentcompany=this.auth.getSelectedCompany().companyuno;
+    this.currentcompany=this.auth.getSelectedCompany().companyuno || '';
    
     let data11=this.common.getUserProfile();
     let uuid;
@@ -91,7 +91,11 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
         header: 'edasattestno',
         width:'20%'
       },
-      // { field: 'entityshareamount', header: 'entityshareamount' },
+      {
+        field:'statusname',
+        header:'Status',
+        width:'9%'
+      },
       {
         field: 'totalamount',
         header: 'totalamount',
@@ -107,11 +111,6 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
         header: 'attestreqdate',
         width:'13%'
       },
-      {
-        field:'statusname',
-        header:'statusname',
-        width:'9%'
-      }
     ];
     this.InitTable();
   }

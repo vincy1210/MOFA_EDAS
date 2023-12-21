@@ -52,7 +52,8 @@ export class AuthService {
             let abc=JSON.parse(data2)
             this.userprofilesubject.next(abc.Data?.firstnameEN);
             let usertypedata=this.getLCAUser() || '';
-            if(usertypedata!=undefined || usertypedata !=null){
+            console.log(usertypedata)
+            if(usertypedata){
        this.lcauserloggedinSubject.next(true)
             }
             else{
@@ -160,9 +161,18 @@ sessionStorage.setItem('userrole', role);
         console.log("to landing page from common service line 284")
         this.router.navigateByUrl('/landingpage');
       }
+      // else{
+      //   //this.logout();//vincy
+      //   this.redirecttoEdas();
+      // }
      }
      //return null;
    }
+   redirecttoEdas(){
+    window.location.href = "https://stg-id.uaepass.ae/idshub/logout?redirect_uri=https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2"
+  }
+
+
    
  setSelectedCompany(data: any) {
      sessionStorage.setItem('currentcompany', JSON.stringify(data));

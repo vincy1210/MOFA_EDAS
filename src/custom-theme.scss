@@ -122,6 +122,13 @@ $uaemofa-lime-theme: mat.define-light-theme(
 
 // theme-green
 .theme-green {
+
+  .p-datatable .p-sortable-column.p-highlight {
+    color: #fff !important;
+  }
+  .p-datatable .p-sortable-column.p-highlight .p-sortable-column-icon {
+    color: #fff !important;
+  }
   .company-info.selected {
     border: solid 2px var(--green-color);
     background-color: var(--light-green-color);
@@ -152,7 +159,7 @@ $uaemofa-lime-theme: mat.define-light-theme(
   }
 
   .ng-trigger .p-button {
-    color: var(--green-color) !important;
+    border-color: var(--green-color);
     background-color: var(--green-color);
   }
 
@@ -343,6 +350,12 @@ $uaemofa-lime-theme: mat.define-light-theme(
 
 // theme-red
 .theme-red {
+  .p-datatable .p-sortable-column.p-highlight {
+    color: #fff !important;
+  }
+  .p-datatable .p-sortable-column.p-highlight .p-sortable-column-icon {
+    color: #fff !important;
+  }
   .company-info.selected {
     border: solid 2px var(--red-color);
     background-color: var(--light-red-color);
@@ -562,6 +575,13 @@ $uaemofa-lime-theme: mat.define-light-theme(
 
 // theme-red
 .theme-grey {
+  .p-datatable .p-sortable-column.p-highlight {
+    color: #fff !important;
+  }
+  .p-datatable .p-sortable-column.p-highlight .p-sortable-column-icon {
+    color: #fff !important;
+  }
+  
   .company-info.selected {
     border: solid 2px var(--grey-color);
     background-color: var(--light-grey-color);

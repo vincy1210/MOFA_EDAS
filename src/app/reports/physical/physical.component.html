@@ -92,7 +92,7 @@
                     </th> -->
                   <th *ngFor="let col of columns" [pSortableColumn]="col.field">
                     {{ col.header | translate }}
-                    <p-sortIcon field="code" ></p-sortIcon>
+                    <p-sortIcon  [field]="col.field" ></p-sortIcon>
                     <p-columnFilter
                       type="text"
                       [field]="col.field"
@@ -105,11 +105,11 @@
               </ng-template>
               <ng-template pTemplate="body" let-data>
                 <tr [pSelectableRow]="data">
-                  <!-- <td>
-                      <p-tableCheckbox [value]="data"></p-tableCheckbox>
-                    </td> -->
                   <td>
                     <span class="image-text">{{ data.edasreqno }}</span>
+                  </td>
+                  <td>
+                    <p-tag [value]="data.wfstatus" [severity]="'success'"></p-tag>
                   </td>
                   <td>
                     <span class="image-text">{{ data.entitycode }}</span>
@@ -128,9 +128,7 @@
                       splitdatetime1(data.invoicedate)?.date
                     }}</span>
                   </td>
-                  <td>
-                    <p-tag [value]="data.wfstatus" [severity]="'success'"></p-tag>
-                  </td>
+                 
                   <td pFrozenColumn alignFrozen="right">
                     <span (click)="openNew(data)" style="padding:15px; cursor: pointer;" pTooltip="Details"  class="image-text viewaction">
                       <mat-icon class="action_eye_icon" >visibility</mat-icon>
@@ -140,12 +138,10 @@
   </td>
                 </tr>
               </ng-template>
-              <ng-template
-              pTemplate="footer"  
-             
-            >
+              <ng-template pTemplate="footer" >
+                <ng-container *ngIf="invoiceRequestLists.length>0">
               <tr>
-                <td colspan="3">
+                <td colspan="4">
                   {{ "Total" | translate }}
                 </td>
                 <td style="text-align: right;"> AED
@@ -159,6 +155,7 @@
                 </td>
                 <td colspan="100" class="text-right"></td>
               </tr>
+            </ng-container>
             </ng-template>
 
 

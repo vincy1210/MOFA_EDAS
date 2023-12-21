@@ -147,8 +147,9 @@ role2:string='';
     idle.setInterrupts(DEFAULT_INTERRUPTSOURCES); 
 
     idle.onIdleStart.subscribe(() => {
-      let data=this.common.getUserProfile();
-      if(data!=undefined  || data!=null){
+      // let data=this.common.getUserProfile();
+      //let data=this.auth.getSelectedCompany().companyuno;
+      if(this.userloggedin || this.lcauserloggedin){
         this.idleState = "IDLE";
       console.log("popup has to appear now")
       this.userwasIdle=true;
@@ -166,16 +167,20 @@ role2:string='';
     });
     // do something when the user has timed out
     idle.onTimeout.subscribe(() =>{
-      this.userwasIdle = false;
-      this.idleState = "TIMED_OUT"
-      console.log("session timeout");
-      this.common.showWarningMessage("session timeout");
-      sessionStorage.clear();
-      this.userloggedin=false;
-      this.lcauserloggedin=false;
-      this.common.setlogoutreason("session");
-     this.auth.logout();
-
+      if(this.userloggedin || this.lcauserloggedin){
+        this.userwasIdle = false;
+        this.idleState = "TIMED_OUT"
+        console.log("session timeout");
+        this.common.showWarningMessage("session timeout");
+        sessionStorage.clear();
+        this.userloggedin=false;
+        this.lcauserloggedin=false;
+        this.common.setlogoutreason("session");
+       this.auth.logout();
+      //  window.location.reload();
+  
+      }
+     
     } );
     // do something as the timeout countdown does its thing
     idle.onTimeoutWarning.subscribe(seconds => this.countdown = seconds);
@@ -271,34 +276,34 @@ else{
       this.lcauserloggedin = lcaloggedIn;
     });
 
-if(this.userrole){
-  console.log('usertype empty')
-    this.auth.userCompany$.subscribe((loggedIn) => {
-      this.companyname = loggedIn;
-    });
+// if(this.userrole){
+//   console.log('usertype empty')
+//     this.auth.userCompany$.subscribe((loggedIn) => {
+//       this.companyname = loggedIn;
+//     });
 
-    this.common.userprofile$.subscribe((username) => {
-      //  this.userprofile = username;
-      this.username=username;
-    });
-    let data=this.common.getUserProfile();
-    if(data!=undefined  || data!=null){
-    let abc=JSON.parse(data);
-    console.log(JSON.parse(data))
-    this.username=abc.Data.firstnameEN;
-    console.log("calling getselected company")
-    let companyname1=this.auth.getSelectedCompany()
-    console.log(companyname1)
-    this.companyname=companyname1?.business_name || '';
+//     this.common.userprofile$.subscribe((username) => {
+//       //  this.userprofile = username;
+//       this.username=username;
+//     });
+//   //   let data=this.common.getUserProfile();
+//   //   if(data!=undefined  || data!=null){
+//   //   // let abc=JSON.parse(data);
+//   //   // console.log(JSON.parse(data))
+//   //   // this.username=abc.Data.firstnameEN;
+//   //   // console.log("calling getselected company")
+//   //   // let companyname1=this.auth.getSelectedCompany()
+//   //   // console.log(companyname1)
+//   //   // this.companyname=companyname1?.business_name || '';
     
-  }
-  else{
-    this.auth.logout();
-  }
-}
-else{
+//   // }
+//   // else{
+//   //   this.auth.logout();
+//   // }
+// }
+// else{
 
-}
+// }
 
   }
 

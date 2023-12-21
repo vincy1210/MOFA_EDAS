@@ -22,7 +22,7 @@
   align-self: stretch;
   flex-grow: 0;
   font-family: Arial;
-  font-size: 40px;
+  font-size: 30px;
   font-weight: bold;
   font-stretch: normal;
   font-style: normal;
@@ -65,12 +65,10 @@
   background-color: #b68a35;
 }
 .VISIT-MOFAGOVAE {
-  width: 312px;
-  height: 32px;
   flex-grow: 0;
   font-family: Arial;
-  font-size: 32px;
-  font-weight: bold;
+  font-size: 22px;
+  font-weight: 700;
   font-stretch: normal;
   font-style: normal;
   line-height: 1;

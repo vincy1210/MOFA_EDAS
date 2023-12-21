@@ -2,8 +2,8 @@
 <mat-divider></mat-divider>
 <div class="company-bg registration-page">
   <div class="container mx-auto px-32 registration-window">
-    <div class="grid grid-cols-4 gap-6 px-5 py-3">
-    </div>
+    <!-- <div class="grid grid-cols-4 gap-6 px-5 py-3">
+    </div> -->
     <div class="grid grid-cols-4 gap-6 px-5 py-3">
       <div class="grid grid-cols-1 dashboard-card p-5">
         <p>Total Requests</p>
@@ -56,26 +56,31 @@
                 <mat-list-item role="listitem">
                   <mat-icon class="mr-1 kd-dot kdl-chart-color-brown"
                     >circle</mat-icon
-                  >Pending Requests
+                  >Pending
                 </mat-list-item>
                 <mat-list-item role="listitem">
                   <mat-icon class="mr-1 kd-dot kdl-chart-color-black"
                     >circle</mat-icon
-                  >Approved requests
+                  >Approved
                 </mat-list-item>
                 <mat-list-item role="listitem">
                   <mat-icon class="mr-1 kd-dot kdl-chart-color-grey"
                     >circle</mat-icon
-                  >Completed Requests
+                  >Completed
                 </mat-list-item>
               </mat-list>
             </div>
           </div>
         </div>
+        <!-- <div class="button-groups">
+          <button (click)="isLoading = !isLoading" nz-button nztype="default">Toggle Loading</button>
+        </div>  -->
+        <!-- {{isLoading}} -->
+
         <div class="grid grid-cols-1">
           <div class="ps-01">
             <div
-              echarts
+              echarts  [loading]="isLoading"
               [options]="lcaChartOptionattestation"
               class="demo-chart pb-3"
               style="height: 300px; width: 100%"
@@ -109,17 +114,17 @@
                 <mat-list-item role="listitem">
                   <mat-icon class="mr-1 kd-dot kdl-chart-color-brown"
                     >circle</mat-icon
-                  >Pending Requests 
+                  >Pending 
                 </mat-list-item>
                 <mat-list-item role="listitem">
                   <mat-icon class="mr-1 kd-dot kdl-chart-color-black"
                     >circle</mat-icon
-                  >Approved requests
+                  >Approved
                 </mat-list-item>
                 <mat-list-item role="listitem">
                   <mat-icon class="mr-1 kd-dot kdl-chart-color-grey"
                     >circle</mat-icon
-                  >Completed Requests
+                  >Completed
                 </mat-list-item>
               </mat-list>
             </div>
@@ -127,7 +132,7 @@
         </div>
         <div class="grid grid-cols-1">
           <div class="ps-01">
-            <div
+            <div [loading]="isLoading"
               echarts
               [options]="cooChartOptionattestation"
               class="demo-chart pb-3"
@@ -164,17 +169,17 @@
                 <mat-list-item role="listitem">
                   <mat-icon class="mr-1 kd-dot kdl-chart-color-brown"
                     >circle</mat-icon
-                  >Pending Requests
+                  >Pending
                 </mat-list-item>
                 <mat-list-item role="listitem">
                   <mat-icon class="mr-1 kd-dot kdl-chart-color-black"
                     >circle</mat-icon
-                  >Approved requests
+                  >Approved
                 </mat-list-item>
                 <mat-list-item role="listitem">
                   <mat-icon class="mr-1 kd-dot kdl-chart-color-grey"
                     >circle</mat-icon
-                  >Completed Requests
+                  >Completed
                 </mat-list-item>
               </mat-list>
             </div>
@@ -183,7 +188,7 @@
         <div class="grid grid-cols-1">
           <div class="ps-01">
             <div
-              echarts
+              echarts  [loading]="isLoading"
               [options]="physicalChartOptionattestation"
               class="demo-chart pb-3"
               style="height: 300px; width: 100%"

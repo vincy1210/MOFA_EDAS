@@ -29,26 +29,13 @@ export class LeftMenuDrawerComponent implements OnInit {
 
   username:any;
   companyname:any;
-usertype:string='';
+  usertype:string='';
   isAdmin:boolean=false;
   menuList: MenuModel[] = [];
   @ViewChild('myPanel') myPanel!: MatExpansionPanel;
-
-  
   private userRoleSubscription!: Subscription;
-
   constructor(private router: Router, public common:CommonService, private auth:AuthService) {}
-
-
-  setusername(){
-    console.log("calling set user name");
-    let data=this.common.getUserProfile();
-    if(data!=undefined  || data!=null){
-    let abc=JSON.parse(data);
-    console.log(JSON.parse(data))
-    this.username=abc.Data.firstnameEN;
-    }
-  }
+ 
 
   ngOnInit(): void {
  //start of LCA user user flow
@@ -83,7 +70,7 @@ usertype:string='';
     console.log(companyname1)
     this.companyname=companyname1?.business_name || '';
 
-    this.common.isAdmin$.subscribe((isAdmin_) => {
+    this.auth.isAdmin$.subscribe((isAdmin_) => {
       this.isAdmin = isAdmin_;
       if(this.usertype=='11' || this.usertype=='12'){
       }
@@ -126,10 +113,10 @@ usertype:string='';
       hasubMenu:true,
         icon: 'feed',
         subMenus: [
-          { id: 1, menu: 'Import', icon: 'play_arrow', link: '/importslca' },
-          { id: 2, menu: 'Pending', icon: 'play_arrow',link: '/pendinglca' },
-          { id: 3, menu: 'Completed', icon: 'play_arrow',link: '/completedlca' },
-          { id: 4, menu: 'In Risk', icon: 'play_arrow',link: '/risklca' },
+          { id: 1, menu: 'Import', icon: 'play_arrow', link: '/lca-login/importslca' },  //vincy check here
+          { id: 2, menu: 'Pending', icon: 'play_arrow',link: '/lca-login/pendinglca' },
+          { id: 3, menu: 'Completed', icon: 'play_arrow',link: '/lca-login/completedlca' },
+          { id: 4, menu: 'In Risk', icon: 'play_arrow',link: '/lca-login/risklca' },
 
         ]
     });
@@ -152,8 +139,8 @@ usertype:string='';
         icon: 'event_note',
         hasubMenu:true,
         subMenus: [
-          {  id: 1, menu: 'Pending ', icon: 'play_arrow', link: '/attestation'},
-          {  id: 2,  menu: 'Completed',   icon: 'play_arrow', link: '/lcacompletedattestation',  param:'true' },
+          {  id: 1, menu: 'Pending ', icon: 'play_arrow', link: '/lca/attestation'},
+          {  id: 2,  menu: 'Completed',   icon: 'play_arrow', link: '/lca/lcacompletedattestation',  param:'true' },
         
         ],
       },
@@ -163,9 +150,9 @@ usertype:string='';
         hasubMenu:true,
         icon: 'travel_explore',
         subMenus: [
-          { id: 1, menu: 'Pending', icon: 'play_arrow', link: '/cooattestation' },
-          { id: 2, menu: 'In Review', icon: 'play_arrow',link: '/cooinreview' },
-          { id: 3, menu: 'Completed', icon: 'play_arrow',link: '/CompletedCooRequest' },
+          { id: 1, menu: 'Pending', icon: 'play_arrow', link: '/coo/cooattestation' },
+          { id: 2, menu: 'In Review', icon: 'play_arrow',link: '/coo/cooinreview' },
+          { id: 3, menu: 'Completed', icon: 'play_arrow',link: '/coo/CompletedCooRequest' },
         ],
       },
       {
@@ -174,9 +161,9 @@ usertype:string='';
         hasubMenu:true,
         icon: 'save_as',
         subMenus: [
-          { id: 1, menu: 'Pending', icon: 'play_arrow', link: '/physicalattestation' },
-          { id: 2, menu: 'In Review', icon: 'play_arrow',link: '/physicalinreview' },
-          { id: 3, menu: 'Completed', icon: 'play_arrow',link: '/completedattestation' },
+          { id: 1, menu: 'Pending', icon: 'play_arrow', link: '/physical/physicalattestation' },
+          { id: 2, menu: 'In Review', icon: 'play_arrow',link: '/physical/physicalinreview' },
+          { id: 3, menu: 'Completed', icon: 'play_arrow',link: '/physical/completedattestation' },
         ],
       },
       {
@@ -185,10 +172,10 @@ usertype:string='';
         hasubMenu:true,
         icon: 'feed',
         subMenus: [
-          { id: 1, menu: 'LCA', icon: 'play_arrow', link: '/rptlca' },
-          { id: 2, menu: 'COO', icon: 'play_arrow',link: '/rptcoo' },
-          { id: 3, menu: 'Physical', icon: 'play_arrow',link: '/rptphysical' },
-          { id: 4, menu: 'Fines', icon: 'play_arrow',link: '/rptfines' },
+          { id: 1, menu: 'LCA', icon: 'play_arrow', link: '/reports/rptlca' },
+          { id: 2, menu: 'COO', icon: 'play_arrow',link: '/reports/rptcoo' },
+          { id: 3, menu: 'Physical', icon: 'play_arrow',link: '/reports/rptphysical' },
+          { id: 4, menu: 'Fines', icon: 'play_arrow',link: '/reports/rptfines' },
         ],
       },
     );
@@ -196,7 +183,7 @@ usertype:string='';
     if(this.isAdmin){
       this.menuList.push( {
         id: 3,
-        menu: 'Authorized Users',
+        menu: 'My Team',
         icon: 'supervisor_account',
         link:'/userslist',
         hasubMenu:false
@@ -249,5 +236,15 @@ usertype:string='';
     this.currentlyExpandedIndex = this.currentlyExpandedIndex === index ? -1 : index;
   }
   
+
+  setusername(){
+    console.log("calling set user name");
+    let data=this.common.getUserProfile();
+    if(data!=undefined  || data!=null){
+    let abc=JSON.parse(data);
+    console.log(JSON.parse(data))
+    this.username=abc.Data.firstnameEN;
+    }
+  }
   
 }

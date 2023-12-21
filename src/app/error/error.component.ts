@@ -6,6 +6,7 @@ import jspdf from 'jspdf';
 import * as FileSaver from 'file-saver';
 import { AuthService } from 'src/service/auth.service';
 
+
 @Component({
   selector: 'app-error',
   templateUrl: './error.component.html',
@@ -23,6 +24,7 @@ export class ErrorComponent implements OnInit {
   }
 
   constructor(public common:CommonService,private datePipe: DatePipe, private Router:Router, private auth:AuthService) { 
+    // window.location.reload();
 
     this.common.getlogoutreason().subscribe(data => {
    
@@ -41,6 +43,8 @@ else{
   }
 
   ngOnInit(): void {
+
+    // 
 
     this.timestr = this.datePipe.transform(this.timenow, 'MMM d yyyy h:mm:ss a');
     if(this.sessionnote==''){
@@ -69,22 +73,7 @@ else{
   
   }
   redirecttologin(){
-
-    // window.location.href = "https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2"
     window.location.href = "https://stg-id.uaepass.ae/idshub/logout?redirect_uri=https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2"
-
-
-    // this.Router.navigateByUrl('https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2')
-
-    // const doc=new jspdf();
-
-    // const content=`<p> name is ${this.data.name} <p>`
-
-    // doc.text(content, 10,10);
-    // const pdf=doc.output('blob');
-    // FileSaver.saveAs(pdf, 'output.pdf')
-
-
   }
 
 }

@@ -20,13 +20,30 @@
         </p>
       
         <div class=" mt-3 grid grid-cols-1 rtl-form">
+
+          <div class="grid grid-cols-1">
+            <mat-form-field appearance="outline">
+              <mat-label>{{'licenseIssuingauthorityemiratelabel' | translate }}</mat-label>
+              <mat-select name="issuingAuthority"  formControlName="issuingAuthority" (selectionChange)="onDropdownChange($event)">
+                <mat-option value="AUH">{{'Abu Dhabi' | translate}}</mat-option>
+                <mat-option value="AJM">{{'Ajman'| translate}}</mat-option>
+                <mat-option value="DXB">{{'Dubai' | translate}}</mat-option>
+                <mat-option value="FUJ">{{'Fujairah' | translate}}</mat-option>
+                <mat-option value="SHJ">{{'Sharjah'| translate}}</mat-option>
+                <mat-option value="RAK">{{'Ras Al Khaimah' | translate}}</mat-option>
+                <mat-option value="UAQ">{{'Umm Al Quwain' | translate}}</mat-option>
+    
+              </mat-select>
+              <mat-error class="error" *ngIf="registrationForm.get('issuingAuthority')?.hasError('required')">{{'Please select an option.'|translate}}</mat-error>
+            </mat-form-field>
+          </div>
+
           <div class="grid grid-cols-1">
 
             <mat-form-field appearance="outline">
               <mat-label>{{'nameofthebusinessaspertradelicense' | translate }}</mat-label>
-              <input class="amount-input" autocomplete="off" formControlName="name_of_Business" name="name_of_Business" maxlength="100"  matInput placeholder="{{'Example Technologies L.L.C' | translate}}">
+              <input class="amount-input" autocomplete="off" (input)="onInput($event)"   (paste)="onPaste($event)" formControlName="name_of_Business" name="name_of_Business" maxlength="100"  matInput placeholder="{{'Example Technologies L.L.C' | translate}}">
           <mat-hint>{{'Your Consignee Name will be verified with our existing registrations.' | translate}}</mat-hint>
-              
               <mat-error *ngIf="registrationForm.get('name_of_Business')?.hasError('required')">{{'Name of the Business is required' | translate }} </mat-error>
               <mat-error *ngIf="registrationForm.get('name_of_Business')?.hasError('pattern')">{{'Name of the Business is required' | translate }} </mat-error>
               
@@ -41,6 +58,7 @@
           <mat-hint>{{'Your Trade License number will be verified with our existing registrations.' | translate}}</mat-hint>
           <mat-error class="error" *ngIf="!registrationForm.get('tradeLicenseNumber')?.hasError('required') && registrationForm.get('tradeLicenseNumber')?.hasError('minlength')">
             {{'Trade license Number length cannot be less than 4 digits'|translate}}</mat-error>
+          <mat-error class="error" *ngIf="!registrationForm.get('tradeLicenseNumber')?.hasError('minlength') && registrationForm.get('tradeLicenseNumber')?.hasError('pattern')">{{'Trade license number is required.'|translate}}</mat-error>
           
           <mat-error class="error" *ngIf="registrationForm.get('tradeLicenseNumber')?.hasError('required')">{{'Trade license number is required.'|translate}}</mat-error>
         </mat-form-field>
@@ -63,22 +81,7 @@
         </mat-form-field>
       
       </div>
-      <div class="grid grid-cols-1">
-        <mat-form-field appearance="outline">
-          <mat-label>{{'licenseIssuingauthorityemiratelabel' | translate }}</mat-label>
-          <mat-select name="issuingAuthority"  formControlName="issuingAuthority" (selectionChange)="onDropdownChange($event)">
-            <mat-option value="AUH">{{'Abu Dhabi' | translate}}</mat-option>
-            <mat-option value="AJM">{{'Ajman'| translate}}</mat-option>
-            <mat-option value="DXB">{{'Dubai' | translate}}</mat-option>
-            <mat-option value="FUJ">{{'Fujairah' | translate}}</mat-option>
-            <mat-option value="SHJ">{{'Sharjah'| translate}}</mat-option>
-            <mat-option value="RAK">{{'Ras Al Khaimah' | translate}}</mat-option>
-            <mat-option value="UAQ">{{'Umm Al Quwain' | translate}}</mat-option>
-
-          </mat-select>
-          <mat-error class="error" *ngIf="registrationForm.get('issuingAuthority')?.hasError('required')">{{'Please select an option.'|translate}}</mat-error>
-        </mat-form-field>
-      </div>
+     
       <div class="grid grid-cols-1">
 
         <h3 class="font-bold">{{'choosetypeofissuingauthoritylabel' | translate }}</h3>
@@ -113,6 +116,10 @@
       </div>
       </ng-container>
       <div class="text-right">
+        <!-- <button pButton pRipple label="{{'Cancel' | translate}}" icon="pi pi-times" class="p-confirm-dialog-reject" (click)="CancelForLoggedinUsers()"></button> -->
+        <button *ngIf="UserHavingCompany"  mat-flat-button color="secondary" class="p-confirm-dialog-reject secondary_button"  (click)="CancelForLoggedinUsers()" >{{'Cancel' | translate }}</button>
+   
+        &nbsp;
         <button mat-flat-button color="primary"  (click)="proceed()" >{{'proceedbtn' | translate }}</button>
       </div>
 

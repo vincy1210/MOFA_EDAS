@@ -69,7 +69,7 @@ todayModel:Date=new Date();
 
   this.form=this.fb.group({
     company:[this.currentcompany_name,Validators.required, ],
-    username:['',Validators.required],
+    username:['',[Validators.required, Validators.pattern('^(?=.*\\S).+$')]],
     emiratesID:['',[Validators.required,this.emiratesIDValidator()]],
     emailaddress:['',[Validators.required, Validators.email]],
     mobilenumber:['',[Validators.required, Validators.maxLength(9), Validators.minLength(9), Validators.pattern(/^5\d+$/)]],

@@ -95,6 +95,7 @@ isfilenotfouund:boolean=false;
 
 fields: { label: string, value: any }[] = [];
 isButtonDisabled = false;
+showfooter:boolean=false;
   constructor(private datePipe: DatePipe, private http:HttpClient,private _liveAnnouncer: LiveAnnouncer, private api:ApiService, public common:CommonService, 
     private consts:ConstantsService, private auth:AuthService) {
     this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
@@ -114,9 +115,8 @@ isButtonDisabled = false;
 
   ngOnInit(): void {
 
-   
 
-    this.currentcompany=this.auth.getSelectedCompany().companyuno;
+    this.currentcompany=this.auth.getSelectedCompany().companyuno || '';
 
     
     this.loading = true;
@@ -138,7 +138,8 @@ isButtonDisabled = false;
     }
     this.cols = [
       { field: 'edasattestno', header: 'Attestation No', width:'25%' },
-      { field: 'companyname', header: 'Company Name', width:'20%' },
+      { field: 'statusname', header: 'Status', width:'20%' },
+
       { field: 'invoiceamount', header: 'Invoice Amount', width:'20%' },
       
       { field: 'feesamount', header: 'Fees Amount', width:'20%' },
@@ -146,10 +147,10 @@ isButtonDisabled = false;
       { field: 'declarationumber', header: 'Declaration No', width:'25%' },
       { field: 'declarationdate', header: 'Declaration Date', width:'15%' },
       { field: 'attestreqdate', header: 'Created' , width:'15%'},
-      { field: 'statusname', header: 'LCA', width:'20%' },
+      { field: 'lcaname', header: 'Channel', width:'20%' },
       
-      { field: 'statusname', header: 'Status', width:'20%' },
-      // { field: 'Noofdaysleft', header: 'Days Left' },
+      { field: 'companyname', header: 'Company', width:'20%' },
+
   
   ];
 
@@ -209,6 +210,10 @@ this.common.showLoading();
         this.list=resp.dictionary.data
         this.datasource=resp.dictionary.data;
         this.totalrecords=resp.dictionary.recordcount;
+        // this.showfooter=false;
+    this.showfooter = true;
+
+      
 
         const totalInvoiceAmount = resp.dictionary.data.reduce((total:any, item:any) => total + item.invoiceamount, 0);
 console.log(totalInvoiceAmount)
@@ -220,7 +225,7 @@ console.log(totalFeeAmount)
         this.total_feesamount=totalFeeAmount;
 
         this.loading = false;
-        this.Reduce();
+        // this.Reduce();
 
         if ($event.globalFilter) {
           this.datasource = this.datasource.filter((row: any) => this.globalFilter(row, $event.globalFilter));
@@ -234,6 +239,9 @@ console.log(totalFeeAmount)
           this.totalrecords=this.list.length;
         }
         console.log(this.datasource);
+        // if(this.totalrecords>0){
+        //   this.showfooter=true;
+        // }
        // this.common.showSuccessMessage('Data retrived'); // Show the verification alert
 
       }
@@ -251,31 +259,31 @@ console.log(totalFeeAmount)
   }
 
   
-Reduce(){
-  const selectedProperties: string[] = [
-    'edasattestno',
-    'invoicenumber',
-    'declarationumber',
-    'declarationdate',
-    'attestreqdate',
-    'Noofdaysleft', // Make sure this property name matches your actual data
-  ];
+// Reduce(){
+//   const selectedProperties: string[] = [
+//     'edasattestno',
+//     'invoicenumber',
+//     'declarationumber',
+//     'declarationdate',
+//     'attestreqdate',
+//     'Noofdaysleft', // Make sure this property name matches your actual data
+//   ];
 
-  const selectedData = this.list.map((customer:any) => {
-    const selectedCustomer: Record<string, any> = {}; // Initialize as an empty object
+//   const selectedData = this.list.map((customer:any) => {
+//     const selectedCustomer: Record<string, any> = {}; // Initialize as an empty object
   
-    // Iterate through the selected property names and copy them to the new object
-    selectedProperties.forEach((propertyName) => {
-      selectedCustomer[propertyName] = customer[propertyName];
-    });
+//     // Iterate through the selected property names and copy them to the new object
+//     selectedProperties.forEach((propertyName) => {
+//       selectedCustomer[propertyName] = customer[propertyName];
+//     });
   
-    return selectedCustomer;
-  });
-  this.AttestationList=selectedData;
+//     return selectedCustomer;
+//   });
+//   this.AttestationList=selectedData;
   
-  // Now, 'selectedData' contains an array of objects with only the selected properties
-  console.log(selectedData);
-}
+//   // Now, 'selectedData' contains an array of objects with only the selected properties
+//   console.log(selectedData);
+// }
 
 
 getimagebase64(attestfilelocation:any){
@@ -459,7 +467,10 @@ this.common.showLoading();
       this.datasource=resp.dictionary.data;
       this.totalrecords=resp.dictionary.data.length;
       this.loading = false;
-      this.Reduce();
+      // this.Reduce();
+      // if(this.totalrecords>0){
+      //   this.showfooter=true;
+      // }
       console.log('Data retrived'); // Show the verification alert
 
     }
@@ -511,9 +522,9 @@ openNew(data:any) {
     importername: 'Importer Name',
     exportportname: 'Export Port Name',
     invoiceid: 'Invoice ID',
-    companyname: 'Company Name',
+    companyname: 'Company',
     comments: 'Comments',
-    lcaname: 'LCA'
+    lcaname: 'Channel'
     // Add more fields as needed
   };
 

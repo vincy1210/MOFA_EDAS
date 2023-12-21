@@ -8,11 +8,21 @@
                 <div class="p-4">
                     
                     <div class="grid grid-cols-1 pb-5">
-                        <div class="flex justify-center">
-                            <img src="./assets/svg/check-circle.svg" width="35px" height="auto">
-                        </div>
+                        
                         <div class="flex justify-center mt-3 mb-5">
-                            <h1 class="db-sub-title">{{'Transaction is Successful' | translate}}</h1>
+                            <!-- <h1 class="db-sub-title">{{'Transaction is' | translate}}</h1> -->
+                            <div *ngIf="status === 'CAPTURED'; else failureBlock">
+                                <div class="flex justify-center">
+                                    <img src="./assets/svg/check-circle.svg" width="35px" height="auto">
+                                </div>
+                                <br>
+                                
+                                <h1 class="db-sub-title">{{ 'Transaction is' | translate }} {{ 'Successful' | translate }}</h1>
+                              </div>
+                              
+                              <ng-template #failureBlock>
+                                <h1 class="db-sub-title">{{ 'Transaction is' | translate }} {{ 'Failure' | translate }}</h1>
+                              </ng-template>
                         </div>
                         <div class="grid grid-cols-1 ">
                             <ul>

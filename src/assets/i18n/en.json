@@ -211,7 +211,7 @@
   "something went wrong": "something went wrong",
   "UUID or tradelicence no is missing": "UUID or tradelicence no is missing",
   "Please fill the mandatory Fields": "Please fill the mandatory Fields",
-  "Provide valid details and Try Again": "Provide valid details and Try Again",
+  "Provide valid details and Try Again": "Please provide valid details and try again",
   "OTP is verified": "OTP is verified",
   "add": "Add",
   "file": "File",
@@ -234,7 +234,7 @@
     "page.completedlcatitle": "LCA",
     "submitbtn": "Submit",
     "lcadetailList": {
-      "LCACode": "LCACode",
+      "LCACode": "Channel Code",
       "RequestNo": "RequestNo",
       "RequestDate": "RequestDate",
       "DeclarationNo": "DeclarationNo",
