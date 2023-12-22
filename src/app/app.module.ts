@@ -11,13 +11,20 @@ import { CdkTreeModule } from '@angular/cdk/tree';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
-import {
-  MatChipsModule,
-} from '@angular/material/chips';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import {
+  MatMomentDateModule,
+  MomentDateAdapter,
+} from '@angular/material-moment-adapter';
 
-import { MatNativeDateModule } from '@angular/material/core';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE,
+  MatDateFormats,
+  MatNativeDateModule,
+} from '@angular/material/core';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -27,7 +34,6 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { NgxEchartsModule } from 'ngx-echarts';
 import * as echarts from 'echarts';
-
 
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -91,6 +97,19 @@ import { AuthGuard } from './auth.guard';
 import { UnauthorizedComponent } from './error/unauthorized/unauthorized.component';
 import { MatDialogModule } from '@angular/material/dialog';
 
+// Define the custom date format
+const customDateFormats: MatDateFormats = {
+  parse: {
+    dateInput: 'DD-MMM-YYYY',
+  },
+  display: {
+    dateInput: 'DD-MMM-YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -106,7 +125,7 @@ import { MatDialogModule } from '@angular/material/dialog';
   ],
 
   imports: [
-    NgIdleKeepaliveModule.forRoot(), 
+    NgIdleKeepaliveModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -163,9 +182,22 @@ import { MatDialogModule } from '@angular/material/dialog';
     TabViewModule,
     NgxEchartsModule.forRoot({
       echarts,
-    }),MatNativeDateModule, MatMomentDateModule, MatDialogModule
+    }),
+    MatNativeDateModule,
+    MatMomentDateModule,
+    MatDialogModule,
   ],
   providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE],
+    },
+    {
+      provide: MAT_DATE_FORMATS,
+      useValue: customDateFormats,
+    },
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: { appearance: 'outline' },
@@ -181,12 +213,11 @@ import { MatDialogModule } from '@angular/material/dialog';
       provide: RECAPTCHA_V3_SITE_KEY,
       useValue: RECAPTCHA_V3_STACKBLITZ_KEY,
     },
-    
 
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     ModalPopupService,
     DatePipe,
-    AuthGuard
+    AuthGuard,
   ],
   bootstrap: [AppComponent],
   // exports: [
