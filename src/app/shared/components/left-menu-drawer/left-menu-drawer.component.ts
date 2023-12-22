@@ -325,7 +325,7 @@ export class LeftMenuDrawerComponent implements OnInit {
     this.recentlyUsedMenus(this.selectedMenu);
     const elements = document.getElementsByClassName('mat-items');
     const elementsActive = document.getElementsByClassName(
-      this.selectedMenu.menu
+      this.selectedMenu.link ? this.selectedMenu.link : ''
     );
     let elementsArray = Array.from(elements);
     for (const element of elementsArray) {
@@ -365,6 +365,9 @@ export class LeftMenuDrawerComponent implements OnInit {
       this.router.navigate([items.link]);
       this.myPanel.close();
     }
+    // mat-list-item
+    this.selectedMenu = items;
+    this.stylingMenus();
   }
 
   setSelectedMenuIndex(index: number): void {
