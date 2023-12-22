@@ -33,13 +33,28 @@
       *ngFor="let items of menuList"
       [expanded]="usertype === 'LCAAdmin'"
     >
-      <mat-expansion-panel-header *ngIf="!items.hasubMenu">
+      <mat-expansion-panel-header *ngIf="!items.hasubMenu"  [class]="items.link"  (click)="onSubMenuClick(items)">
         <span class="mat-items">
           <mat-icon>{{ items.icon }}</mat-icon>
-          <span class="menutitle">{{ items.menu | translate }}</span>
+          <span class="menutitle" >{{ items.menu | translate }}</span>
         </span>
+        <!-- <mat-nav-list >
+          <span class="mat-items">
+            <a
+              mat-list-item
+              [routerLink]="items.link"
+              [class]="items.link"
+              (click)="onSubMenuClick(items)"
+            >
+              <mat-icon>{{ items.icon }}</mat-icon
+              ><span style="font-size: 13px !important">{{
+                items.menu | translate
+              }}</span>
+            </a>
+          </span>
+        </mat-nav-list> -->
       </mat-expansion-panel-header>
-      <mat-nav-list style="padding: 0%" *ngFor="let item of items.subMenus">
+      <!-- <mat-nav-list style="padding: 0%" *ngFor="let item of items.subMenus">
         <span class="mat-items">
           <a
             mat-list-item
@@ -53,7 +68,7 @@
             }}</span>
           </a>
         </span>
-      </mat-nav-list>
+      </mat-nav-list> -->
     </mat-expansion-panel>
 
     <mat-expansion-panel

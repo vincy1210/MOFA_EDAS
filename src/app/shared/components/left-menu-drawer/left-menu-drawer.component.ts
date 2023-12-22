@@ -323,6 +323,14 @@ export class LeftMenuDrawerComponent implements OnInit {
 
   stylingMenus() {
     this.recentlyUsedMenus(this.selectedMenu);
+//
+    const elements2 = document.getElementsByClassName('mat-list-item-content active');
+    let elementsArray2 = Array.from(elements2);
+    for (const element of elementsArray2) {
+      element.className='mat-list-item-content';
+    }
+
+    //
     const elements = document.getElementsByClassName('mat-items');
     const elementsActive = document.getElementsByClassName(
       this.selectedMenu.link ? this.selectedMenu.link : ''
@@ -339,11 +347,18 @@ export class LeftMenuDrawerComponent implements OnInit {
       for (const element of elementsArray) {
         const childDiv = element.querySelector('span');
         if (childDiv) {
-          childDiv.className = 'mat-list-item-content active';
+          if (childDiv.className == 'mat-list-item-content active') {
+            childDiv.className = 'mat-list-item-content';
+          } else {
+            childDiv.className = 'mat-list-item-content active';
+          }
           // lement.firstChild.className = element.firstChild.className + ' active';
         }
+
       }
     }
+
+   
   }
 
   recentlyUsedMenus(selectedMenu: MenuModel) {

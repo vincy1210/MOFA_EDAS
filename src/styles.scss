@@ -1655,8 +1655,8 @@ button.white-icon-button.mat-menu-item {
   display: none;
 }
 
-.mat-list-base .mat-list-item .mat-list-item-content.active:before,
-.mat-list-base .mat-list-option .mat-list-item-content.active:before {
+ .mat-list-item-content.active:before,
+ .mat-list-item-content.active:before {
   content: "";
   width: 3px;
   height: 100%;
