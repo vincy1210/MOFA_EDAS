@@ -24,6 +24,10 @@ import { MatChipsModule } from '@angular/material/chips';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { MatDialogModule } from '@angular/material/dialog';
 
+
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+
 const routes=[
   {path:'attestation',component:AttestationComponent,  data: { role: ['Admin', 'User'] }},
   {path:'lcacompletedattestation',component:LcaCompletedAttestationsComponent,  data: { role: ['Admin', 'User'] }}]
@@ -51,7 +55,7 @@ const routes=[
     TagModule,ToolbarModule,
     PdfViewerModule, TabViewModule,
     MultiSelectModule, MatTabsModule, MatChipsModule, ConfirmDialogModule,
-    MatDialogModule
+    MatDialogModule, MatButtonModule, MatButtonToggleModule
   ]
 })
 export class LcaModule { }
