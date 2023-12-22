@@ -200,40 +200,46 @@ if(this.reg_form_data==undefined){
     const file = event.target.files[0];
 
     if (file) {
-      // Check if the file size is less than or equal to 2 MB (in bytes)
-      if (file.size <= 2 * 1024 * 1024) {
-        // Add the selected file to the list
-        //this.listOfFiles.push(file.name);
-        const form = { ...this.companyDetailsForm.value };
-        this.isLoading = true;
-        this.fileList=[];
-        this.listOfFiles=[];
-        for (var i = 0; i <= event.target.files.length - 1; i++) {
-          var selectedFile = event.target.files[i];
-          this.sel_file_test=selectedFile;
-            this.fileList.push(selectedFile);
-            this.listOfFiles.push(selectedFile.name);
-        }
-        setTimeout(() => {
-          // After the upload is complete
-          this.isLoading = false;
-        }, 3000);
-        const timestamp = new Date().getTime();
-        const newFileName = form.trade_Licence +'_'+timestamp+ '.pdf'; 
-        const renamedFile = new File([selectedFile], newFileName, { type: selectedFile.type });
-        this.sel_file_test=renamedFile;
-      } else {
-        // Notify the user that the file size is too large
-        this.common.showErrorMessage('File size should be less than or equal to 2 MB');
-        // Clear the file input
-        this.companyDetailsForm.get('Upload_trade_license')?.setValue('');
-        this.fileInput.nativeElement.value = '';
-      }
+      if(file.type === 'application/pdf')
+      {
+              if (file.size <= 2 * 1024 * 1024) {
+              const form = { ...this.companyDetailsForm.value };
+              this.isLoading = true;
+              this.fileList=[];
+              this.listOfFiles=[];
+              for (var i = 0; i <= event.target.files.length - 1; i++) {
+                var selectedFile = event.target.files[i];
+                this.sel_file_test=selectedFile;
+                  this.fileList.push(selectedFile);
+                  this.listOfFiles.push(selectedFile.name);
+              }
+              setTimeout(() => {
+                this.isLoading = false;
+              }, 3000);
+              const timestamp = new Date().getTime();
+              const newFileName = form.trade_Licence +'_'+timestamp+ '.pdf'; 
+              const renamedFile = new File([selectedFile], newFileName, { type: selectedFile.type });
+              this.sel_file_test=renamedFile;
+            } 
+            else {
+              this.listOfFiles=[];
+              this.common.showErrorMessage('File size should be less than or equal to 2 MB');
+              // Clear the file input
+              this.companyDetailsForm.get('Upload_trade_license')?.setValue('');
+              this.fileInput.nativeElement.value = '';
+            }
     }
-
-
-    
-
+    else
+    {
+      this.listOfFiles=[];
+            this.common.showErrorMessage('Only PDF files are allowed');
+            // Clear the file input
+            this.companyDetailsForm.get('Upload_trade_license')?.setValue('');
+            this.fileInput.nativeElement.value = '';
+            return; // Exit the function if the file type is not PDF
+        
+    }
+    }
   }
 
   removeSelectedFile(index: number) {

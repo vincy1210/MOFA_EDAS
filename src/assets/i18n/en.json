@@ -152,7 +152,7 @@
   "status": "Status",
   "DraftPendAttest": "Draft Pending Attestations",
   "ShowEntries": "Showing {first} to {last} of {totalRecords} entries",
-  "SearchKeyword": "Search keyword",
+  "SearchKeyword": "Search",
   "CSV": "CSV",
   "XLS": "XLS",
   "Timeline": "Timeline",

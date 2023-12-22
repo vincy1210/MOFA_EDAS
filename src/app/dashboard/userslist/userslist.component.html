@@ -33,14 +33,14 @@
             <ng-template pTemplate="left">
               <div style="padding: 5px;" class="col-md-3 col-lg-3 col-sm-6">
                       <mat-form-field class="searchboxinput" >
-                        <mat-label><mat-icon style="font-size:larger;">{{'search' | translate}}</mat-icon> {{'Search keyword' | translate}}</mat-label>
-                        <input  matInput type="text" (input)="tableref.filterGlobal($any($event.target).value, 'contains')" placeholder="Search keyword">
+                        <mat-label><mat-icon style="font-size:larger;">{{'search' | translate}}</mat-icon> {{'Search' | translate}}</mat-label>
+                        <input  matInput type="text" (input)="tableref.filterGlobal($any($event.target).value, 'contains')" placeholder="Search">
                       </mat-form-field>
               </div>
            
 </ng-template>
           <ng-template pTemplate="right">
-            <div *ngIf="enableFilters" style="padding: 5px;" class="col-md-3 col-lg-3  col-md-6">
+            <!-- <div *ngIf="enableFilters" style="padding: 5px;" class="col-md-3 col-lg-3  col-md-6">
                       <mat-form-field style="height: 20px; margin: 0; padding-top: 0; margin-top: -2.89em !important;width: 170px; ">
                         <mat-label>{{'Start Date' | translate}}</mat-label>
                         <input matInput [matDatepicker]="decDatepicker1" [max]="todayModel" [(ngModel)]="oneMonthAgo" placeholder="{{'From' | translate}}" name="createdatefrom"  />
@@ -56,11 +56,11 @@
                   <mat-datepicker-toggle matSuffix [for]="decDatepicker2"></mat-datepicker-toggle>
                   <mat-datepicker #decDatepicker2></mat-datepicker>
                 </mat-form-field>
-              </div>
-              <div *ngIf="enableFilters" style="padding: 5px;" clasFrs="col-md-3 col-lg-3">
+              </div> -->
+              <!-- <div *ngIf="enableFilters" style="padding: 5px;" clasFrs="col-md-3 col-lg-3">
   <button pButton pRipple label="{{'Apply' | translate}}" class="p-button-text primary" (click)="InitTable()"></button>
 
-              </div>
+              </div> -->
             
         
        
