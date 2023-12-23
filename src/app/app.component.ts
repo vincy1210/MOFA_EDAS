@@ -2,7 +2,7 @@ import {
   ChangeDetectorRef,
   Component,
   HostBinding,
-  ViewChild,
+  ViewChild,HostListener
 } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -281,34 +281,6 @@ export class AppComponent {
       this.lcauserloggedin = lcaloggedIn;
     });
 
-    // if(this.userrole){
-    //   console.log('usertype empty')
-    //     this.auth.userCompany$.subscribe((loggedIn) => {
-    //       this.companyname = loggedIn;
-    //     });
-
-    //     this.common.userprofile$.subscribe((username) => {
-    //       //  this.userprofile = username;
-    //       this.username=username;
-    //     });
-    //   //   let data=this.common.getUserProfile();
-    //   //   if(data!=undefined  || data!=null){
-    //   //   // let abc=JSON.parse(data);
-    //   //   // console.log(JSON.parse(data))
-    //   //   // this.username=abc.Data.firstnameEN;
-    //   //   // console.log("calling getselected company")
-    //   //   // let companyname1=this.auth.getSelectedCompany()
-    //   //   // console.log(companyname1)
-    //   //   // this.companyname=companyname1?.business_name || '';
-
-    //   // }
-    //   // else{
-    //   //   this.auth.logout();
-    //   // }
-    // }
-    // else{
-
-    // }
   }
 
   useLanguage(language: string) {
@@ -347,6 +319,12 @@ export class AppComponent {
     this.common.setlogoutreason('user');
     this.auth.logout();
   }
+  @HostListener('mouseover') onMouseOver() {
+    // Call your reset method when the mouse is over
+    // console.log('reset');
+    this.reset();
+  }
+
 }
 // function useLanguage(language: any, string: any) {
 //   throw new Error('Function not implemented.');

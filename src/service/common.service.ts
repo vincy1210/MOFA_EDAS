@@ -1080,7 +1080,12 @@ export class CommonService {
   }
 
   isArrayIncluded(arr1: number[], arr2: number[]) {
-    return arr2.some((value) => arr1.includes(value));
+    if(arr1.length){
+      return arr2.some((value) => arr1.includes(value));
+    }
+    else{
+      return null;
+    }
   }
 
   // checkPermissionAvailable
