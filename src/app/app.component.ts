@@ -16,6 +16,7 @@ import { Idle, DEFAULT_INTERRUPTSOURCES } from '@ng-idle/core'; //vincy
 import { Keepalive } from '@ng-idle/keepalive';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/service/auth.service';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-root',
@@ -130,7 +131,7 @@ export class AppComponent {
   role2: string = '';
   showHead: boolean = false;
   private userRoleSubscription!: Subscription;
-  constructor(
+  constructor(private dialog: MatDialog,
     public auth: AuthService,
     private router: Router,
     private translate: TranslateService,
@@ -157,27 +158,33 @@ export class AppComponent {
     } else {
       this.userrole = role;
     }
-
-    idle.setIdle(1200); // how long can they be inactive before considered idle, in seconds
-    idle.setTimeout(600); // how long can they be idle before considered timed out, in seconds
+    // if (this.userloggedin || this.lcauserloggedin) {
+    idle.setIdle(1200); // how long can they be inactive before considered idle, in seconds 1200
+    idle.setTimeout(600); // how long can they be idle before considered timed out, in seconds 600
     idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
 
     idle.onIdleStart.subscribe(() => {
-      // let data=this.common.getUserProfile();
-      //let data=this.auth.getSelectedCompany().companyuno;
       if (this.userloggedin || this.lcauserloggedin) {
         this.idleState = 'IDLE';
+        // $('.modal').modal('hide');
+        console.log('User is now idle. Logout will occur after ' + idle.getTimeout() + ' seconds of inactivity.');
+        this.closeAllModals();
         console.log('popup has to appear now');
         this.userwasIdle = true;
         //this.common.showSuccessMessage("popup has to appear now");
       }
     });
     // do something when the user is no longer idle
+  
     idle.onIdleEnd.subscribe(() => {
       // this.userwasIdle = false;
-      this.idleState = 'NOT_IDLE';
-      console.log(`${this.idleState} ${new Date()}`);
-      this.countdown = 0;
+      if(!this.userwasIdle){
+        this.idleState = 'NOT_IDLE';
+        console.log(`User is no longer idle. Last activity at ${new Date()}.`);
+   
+        console.log(`${this.idleState} ${new Date()}`);
+        this.countdown = 0;
+      }
       cd.detectChanges(); // how do i avoid this kludge?
     });
     // do something when the user has timed out
@@ -186,6 +193,7 @@ export class AppComponent {
         this.userwasIdle = false;
         this.idleState = 'TIMED_OUT';
         console.log('session timeout');
+        
         this.common.showWarningMessage('session timeout');
         sessionStorage.clear();
         this.userloggedin = false;
@@ -201,6 +209,8 @@ export class AppComponent {
     // set keepalive parameters, omit if not using keepalive
     keepalive.interval(15); // will ping at this interval while not idle, in seconds
     keepalive.onPing.subscribe(() => (this.lastPing = new Date())); // do something when it pings
+
+  // }
 
     iconRegistry.addSvgIcon(
       'profile-dropdownarrow-icon',
@@ -307,13 +317,36 @@ export class AppComponent {
   reset() {
     // we'll call this method when we want to start/reset the idle process
     // reset any component state and be sure to call idle.watch()
-    console.log('reset');
-    this.userwasIdle = false;
-    this.idle.watch();
-    this.idleState = 'NOT_IDLE';
-    this.countdown = 0;
-    this.lastPing;
+    if (this.userloggedin || this.lcauserloggedin) {
+    if(!this.userwasIdle){
+      console.log('reset');
+      this.userwasIdle = false;
+      this.idle.watch();
+      this.idleState = 'NOT_IDLE';
+      this.countdown = 0;
+      this.lastPing;
+
+    }
   }
+
+  
+  }
+  
+  resetfromhtml() {
+    // we'll call this method when we want to start/reset the idle process
+    // reset any component state and be sure to call idle.watch()
+    // if (this.userloggedin || this.lcauserloggedin) {
+    // if(!this.userwasIdle){
+      console.log('reset');
+      this.userwasIdle = false;
+      this.idle.watch();
+      this.idleState = 'NOT_IDLE';
+      this.countdown = 0;
+      this.lastPing;
+
+    // }
+  // }
+}
 
   logout() {
     this.common.setlogoutreason('user');
@@ -323,6 +356,10 @@ export class AppComponent {
     // Call your reset method when the mouse is over
     // console.log('reset');
     this.reset();
+  }
+
+  closeAllModals() {
+    this.dialog.closeAll();
   }
 
 }

@@ -4,7 +4,7 @@
 
     <div class="container registration-window alreadyregisteredapproved-section">
         <div class="w-50 m-auto">
-            <mat-card>
+            <mat-card *ngIf="paymentstatus!=''">
                 <div class="p-4">
                     
                     <div class="grid grid-cols-1 pb-5">
@@ -17,11 +17,11 @@
                                 </div>
                                 <br>
                                 
-                                <h1 class="db-sub-title">{{ 'Transaction is' | translate }} {{ 'Successful' | translate }}</h1>
+                                <h1 class="db-sub-title">{{ transactionis | translate }} {{ paymentstatus | translate }}</h1>
                               </div>
                               
                               <ng-template #failureBlock>
-                                <h1 class="db-sub-title">{{ 'Transaction is' | translate }} {{ 'Failure' | translate }}</h1>
+                                <h1 class="db-sub-title">{{ transactionis | translate }} {{ paymentstatus | translate }}</h1>
                               </ng-template>
                         </div>
                         <div class="grid grid-cols-1 ">

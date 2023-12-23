@@ -40,7 +40,7 @@ const routes = [
   {
     path: 'physicalattestation',
     component: PhysicalAttestationComponent,
-    data: { role: [['Admin', 'User']], name: 'physicalattestation' },
+    data: { role: ['Admin', 'User'], name: 'physicalattestation' },
     canActivate: [AuthGuard],
   },
   {

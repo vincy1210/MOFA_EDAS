@@ -44,10 +44,16 @@
         </mat-error>
       </mat-form-field>
     </div>
+    <!-- started -->
     <div class="grid grid-cols-1 mr-1">
       <mat-form-field [ngClass]="{'error-border': registrationForm.get('invoiceDate')?.hasError('required')}" appearance="outline">
         <mat-label>{{ "invoiceCurrency" | translate }}</mat-label>
-        <input matInput maxlength="100" [placeholder]="translate.instant('invoiceCurrency')" name="invoiceCurrency" formControlName="invoiceCurrency" (input)="capitalizeInput($event)" />
+
+        <mat-select name="invoiceCurrency" formControlName="invoiceCurrency">
+          <mat-option *ngFor="let authority of issuingAuthorities" [value]="authority.typeuno">
+            {{ authority.typename }}
+          </mat-option>
+        </mat-select>
         <mat-error class="error" *ngIf="registrationForm.get('invoiceCurrency')?.hasError('required')">
           {{ "invoiceCurrencyrequired" | translate }}
         </mat-error>
@@ -56,6 +62,7 @@
         </mat-error>
       </mat-form-field>
     </div>
+    <!--  -->
   
     <div class="grid grid-cols-1 mr-1">
       <mat-form-field [ngClass]="{'error-border': registrationForm.get('invoiceAmount')?.hasError('required')}" appearance="outline">

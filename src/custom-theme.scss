@@ -173,6 +173,10 @@ $uaemofa-lime-theme: mat.define-light-theme(
     border-color: var(--green-color);
   }
 
+  .hyperlink .p-button:enabled:hover{
+    background-color: var(--light-green-color);
+  }
+
   .p-button:enabled:hover,
   .mofa-tab-section .mat-tab-label.mat-tab-label-active,
   .grid-header-right-icon :hover,
@@ -407,6 +411,10 @@ $uaemofa-lime-theme: mat.define-light-theme(
   .mat-mini-fab.mat-primary {
     background-color: var(--red-color);
   }
+  .hyperlink .p-button:enabled:hover{
+    background-color: var(--light-red-color);
+  }
+
 
   ~ .cdk-overlay-container {
     .mat-calendar-body-selected,
@@ -623,6 +631,10 @@ $uaemofa-lime-theme: mat.define-light-theme(
   .dw-container .timeline-block::before {
     border-color: var(--grey-color);
   }
+  .hyperlink .p-button:enabled:hover{
+    background-color: var(--light-grey-color);
+  }
+
 
   .p-button:enabled:hover,
   .mofa-tab-section .mat-tab-label.mat-tab-label-active,

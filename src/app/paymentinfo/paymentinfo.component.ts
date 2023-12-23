@@ -36,8 +36,25 @@ fail_msg="Transaction Failed"
 check_circle_outline="check_circle_outline"
 paymenttype:any;
 isButtonDisabled = false;
+currentcompany:any;
+transactionis:string='';
+paymentstatus:string=''
   constructor(private router:Router,private common:CommonService, private _activatedRoute:ActivatedRoute, private apicall:ApiService, 
-    private consts:ConstantsService, private auth:AuthService) { }
+    private consts:ConstantsService, private auth:AuthService) {
+      console.log("calling getselected company")
+    let currcompany=this.auth.getSelectedCompany();
+    if(currcompany){
+      this.currentcompany=currcompany.companyuno || '';
+      if(this.currentcompany==null || this.currentcompany==undefined || this.currentcompany===''){
+        console.log("to landing page from attestation page line 195")
+        this.router.navigateByUrl('/landingpage')
+      }
+    }
+    else{
+      this.common.redirecttologin();
+      return;
+    }
+     }
 
   ngOnInit() {
 
@@ -97,9 +114,11 @@ isButtonDisabled = false;
         
       resp=success;
       if(resp.status==="CAPTURED"){
+        this.transactionis='Transaction is';
         this.paymentsuccess=true;
         this.paymentfailure=false;
         this.status=resp.status;
+        this.paymentstatus='Success'
         this.amt=resp.amt;
         this.tranid=resp.tranid;
         this.ref=resp.ref;
@@ -123,6 +142,8 @@ isButtonDisabled = false;
         return;
       }
       else{
+        this.transactionis='Transaction is';
+        this.paymentstatus='Failure';
         this.paymentsuccess=false;
         this.paymentfailure=true;
 
