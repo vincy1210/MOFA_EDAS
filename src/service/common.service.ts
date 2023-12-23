@@ -16,7 +16,9 @@ import { AuthService } from './auth.service';
 import {
   RoleEnums,
   PermissionEnums,
+  TYPE,
 } from 'src/app/shared/constants/status-enum';
+import Swal from 'sweetalert2';
 
 export type RetType = {
   name: string;
@@ -1132,5 +1134,14 @@ export class CommonService {
       }
     }
     return null; // Invalid or null datetime string
+  }
+
+  showSweetAlert(title: string, text: string, typeIcon = TYPE.WARNING) {
+    Swal.fire({
+      title: title,
+      text: text,
+      icon: typeIcon,
+      confirmButtonText: 'Close',
+    });
   }
 }

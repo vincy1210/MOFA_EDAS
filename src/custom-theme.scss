@@ -122,7 +122,6 @@ $uaemofa-lime-theme: mat.define-light-theme(
 
 // theme-green
 .theme-green {
-
   .p-datatable .p-sortable-column.p-highlight {
     color: #fff !important;
   }
@@ -173,7 +172,7 @@ $uaemofa-lime-theme: mat.define-light-theme(
     border-color: var(--green-color);
   }
 
-  .hyperlink .p-button:enabled:hover{
+  .hyperlink .p-button:enabled:hover {
     background-color: var(--light-green-color);
   }
 
@@ -338,6 +337,21 @@ $uaemofa-lime-theme: mat.define-light-theme(
     color: var(--green-color) !important;
   }
 
+  .swal2-styled.swal2-confirm {
+    background-color: var(--green-color) !important;
+  }
+
+  .swal2-icon.swal2-warning {
+    border-color: var(--green-color) !important;
+    color: var(--green-color) !important;
+  }
+
+  .p-toolbar-group-right {
+    .info {
+      color: var(--green-color) !important;
+    }
+  }
+
   .grid-header-right-btn {
     color: var(--green-color) !important;
     border-color: var(--green-color) !important;
@@ -411,10 +425,9 @@ $uaemofa-lime-theme: mat.define-light-theme(
   .mat-mini-fab.mat-primary {
     background-color: var(--red-color);
   }
-  .hyperlink .p-button:enabled:hover{
+  .hyperlink .p-button:enabled:hover {
     background-color: var(--light-red-color);
   }
-
 
   ~ .cdk-overlay-container {
     .mat-calendar-body-selected,
@@ -567,6 +580,21 @@ $uaemofa-lime-theme: mat.define-light-theme(
     color: var(--red-color) !important;
   }
 
+  .swal2-styled.swal2-confirm {
+    background-color: var(--red-color) !important;
+  }
+
+  .swal2-icon.swal2-warning {
+    border-color: var(--red-color) !important;
+    color: var(--red-color) !important;
+  }
+
+  .p-toolbar-group-right {
+    .info {
+      color: var(--red-color) !important;
+    }
+  }
+
   .grid-header-right-btn {
     color: var(--red-color) !important;
     border-color: var(--red-color) !important;
@@ -589,7 +617,7 @@ $uaemofa-lime-theme: mat.define-light-theme(
   .p-datatable .p-sortable-column.p-highlight .p-sortable-column-icon {
     color: #fff !important;
   }
-  
+
   .company-info.selected {
     border: solid 2px var(--grey-color);
     background-color: var(--light-grey-color);
@@ -631,10 +659,9 @@ $uaemofa-lime-theme: mat.define-light-theme(
   .dw-container .timeline-block::before {
     border-color: var(--grey-color);
   }
-  .hyperlink .p-button:enabled:hover{
+  .hyperlink .p-button:enabled:hover {
     background-color: var(--light-grey-color);
   }
-
 
   .p-button:enabled:hover,
   .mofa-tab-section .mat-tab-label.mat-tab-label-active,
@@ -796,5 +823,20 @@ $uaemofa-lime-theme: mat.define-light-theme(
   .highlighted-row {
     background-color: var(--light-grey-color) !important;
     color: var(--grey-color) !important;
+  }
+
+  .swal2-styled.swal2-confirm {
+    background-color: var(--grey-color) !important;
+  }
+
+  .swal2-icon.swal2-warning {
+    border-color: var(--grey-color) !important;
+    color: var(--grey-color) !important;
+  }
+
+  .p-toolbar-group-right {
+    .info {
+      color: var(--grey-color) !important;
+    }
   }
 }
