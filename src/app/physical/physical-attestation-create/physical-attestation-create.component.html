@@ -50,8 +50,8 @@
         <mat-label>{{ "invoiceCurrency" | translate }}</mat-label>
 
         <mat-select name="invoiceCurrency" formControlName="invoiceCurrency">
-          <mat-option *ngFor="let authority of issuingAuthorities" [value]="authority.typeuno">
-            {{ authority.typename }}
+          <mat-option *ngFor="let currency of currencylist" [value]="currency.itemcode">
+            {{ currency.itemcode }}
           </mat-option>
         </mat-select>
         <mat-error class="error" *ngIf="registrationForm.get('invoiceCurrency')?.hasError('required')">
