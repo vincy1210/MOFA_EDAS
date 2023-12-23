@@ -75,5 +75,6 @@ export class ConstantsService {
 
   getcoolistforlcaattestno="user/getcoolistforlcaattestno";
   getlcalistforcoodeclaration="user/getlcalistforcoodeclaration"
+  getListOfValues="user/getListOfValues"
 
 }

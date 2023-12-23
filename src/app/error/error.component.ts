@@ -22,10 +22,17 @@ export class ErrorComponent implements OnInit {
     name: "vincy",
     company:"Ducont"
   }
+  firsttime:number=1;
 
   constructor(public common:CommonService,private datePipe: DatePipe, private Router:Router, private auth:AuthService) { 
-    // window.location.reload();
 
+    
+
+    // sessionStorage.clear();
+
+    // if(this.firsttime==1){
+    //  window.location.reload();
+    // }
     this.common.getlogoutreason().subscribe(data => {
    
 
@@ -43,20 +50,21 @@ else{
   }
 
   ngOnInit(): void {
-
-    // 
-
     this.timestr = this.datePipe.transform(this.timenow, 'MMM d yyyy h:mm:ss a');
     if(this.sessionnote==''){
       this.sessionnote='You have been successfully logged out, we look forward to serve you again';
 
     }
 
-    this.auth.logout();
+    // this.auth.logout();
     window.history.replaceState({}, document.title, window.location.href);
 
     if (this.isUserSignedOut()){
       this.showSignOutMessage = true;
+    }
+    else{
+      sessionStorage.clear();
+      window.location.reload();
     }
   }
 

@@ -39,6 +39,8 @@ export class PhysicalAttestationCreateComponent implements OnInit {
   today: Date = new Date();
   isLoading = false;
   issuingAuthorities: { typeuno: string; typename: string }[] = [];
+  currencylist: { itemcode: string; itemno: string }[] = [];
+
   listOfFiles: File[] = [];
   uuid:any;
   currentcompany:any;
@@ -85,6 +87,7 @@ export class PhysicalAttestationCreateComponent implements OnInit {
     });
 
     this.getIssuingAuthorities();
+    this.getAvailableCurrencies();
   }
 
   getIssuingAuthorities() {
@@ -106,6 +109,29 @@ export class PhysicalAttestationCreateComponent implements OnInit {
         }
       });
   }
+
+  getAvailableCurrencies() {
+    let data = {
+      uuid: this.uuid,
+      languagecode: 0, 
+      processname: "CURRENCYMST"
+    };
+    this.common.showLoading();
+
+    this.apiservice
+      .post(this.consts.getListOfValues, data)
+      .subscribe((response: any) => {
+        this.common.hideLoading();
+
+        if (`${response.responsecode}` === '1') {
+          const dataArray = response.data;
+          this.currencylist = dataArray;
+          console.log(response)
+        }
+      });
+  }
+
+
 
   onFileChanged(event: any) {
     this.listOfFiles = [];

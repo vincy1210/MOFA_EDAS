@@ -504,11 +504,18 @@ this.checkcompanyuserforcancel(userProfilejson.Data);
         // Now lcauser will be true if any lcauno is 11 or 12
         console.log("Is lcauser true?", lcauser);
 
-        if(lcauser){
+        if (lcauser) {
+          const { rolename } = response.data[0];
+          if (rolename && rolename.length > 0) {
+            const UserRoleList: number[] =
+              this.common.getRolefromString(rolename);
+            sessionStorage.setItem(
+              'userrolelist',
+              JSON.stringify(UserRoleList)
+            );
+          }
           this.auth.setLCAUser(response.data[0].roleuno);
           this.router.navigateByUrl('/lcadashboard');
-
-          
         }
         else{
           sessionStorage.setItem('usertype','CompanyUser')
