@@ -13,6 +13,7 @@ import { ErrorComponent } from './error/error.component';
 import { AuthGuard } from './auth.guard';
 import { RoleGuard } from './role.guard';
 import { UnauthorizedComponent } from './error/unauthorized/unauthorized.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 const routes: Routes = [
   {
@@ -78,8 +79,8 @@ const routes: Routes = [
     loadChildren: () =>
       import('./lca-login/lca-login.module').then((m) => m.LcaLoginModule),
   },
-
   { path: 'unauthorized', component: UnauthorizedComponent },
+  { path: '**', component: PageNotFoundComponent },
 ];
 
 @NgModule({
