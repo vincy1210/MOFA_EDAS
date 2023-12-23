@@ -7,6 +7,7 @@ import * as XLSX from 'xlsx';
 import { ModalPopupService } from 'src/service/modal-popup.service';
 import { CommonService } from 'src/service/common.service';
 import { AuthService } from 'src/service/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-completed-coo-requests',
@@ -43,7 +44,7 @@ isButtonDisabled = false;
     public translate: TranslateService,
     public apiservice: ApiService,
     public consts: ConstantsService,
-    private datePipe: DatePipe, public common:CommonService, private auth:AuthService
+    private datePipe: DatePipe, public common:CommonService, private auth:AuthService, private router:Router
   ) {
 this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
 
@@ -61,7 +62,18 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
   }
 
   ngOnInit(): void {
-    this.currentcompany=this.auth.getSelectedCompany().companyuno || '';
+    console.log("calling getselected company")
+    let currcompany=this.auth.getSelectedCompany();
+    if(currcompany){
+      this.currentcompany=currcompany.companyuno || '';
+      if(this.currentcompany==null || this.currentcompany==undefined || this.currentcompany===''){
+        this.router.navigateByUrl('/landingpage')
+      }
+    }
+    else{
+      this.common.redirecttologin();
+      return;
+    }
    
     let data11=this.common.getUserProfile();
     let uuid;

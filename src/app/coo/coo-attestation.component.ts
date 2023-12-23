@@ -17,6 +17,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import {MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
 import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/service/auth.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -101,7 +102,7 @@ paymentcount=environment.appdetails.payment_count;
     public translate: TranslateService,
     public apiservice: ApiService,
     public consts: ConstantsService,
-    private datePipe: DatePipe, public common:CommonService, private fb:FormBuilder, private auth:AuthService
+    private datePipe: DatePipe, public common:CommonService, private fb:FormBuilder, private auth:AuthService, private router:Router
   ) {
 
     this.isRowSelectable = this.isRowSelectable.bind(this);
@@ -138,7 +139,18 @@ this.form = this.fb.group({
   }
 
   ngOnInit(): void {
-    this.currentcompany=this.auth.getSelectedCompany().companyuno || '';
+    console.log("calling getselected company")
+    let currcompany=this.auth.getSelectedCompany();
+    if(currcompany){
+      this.currentcompany=currcompany.companyuno || '';
+      if(this.currentcompany==null || this.currentcompany==undefined || this.currentcompany===''){
+        this.router.navigateByUrl('/landingpage')
+      }
+    }
+    else{
+      this.common.redirecttologin();
+      return;
+    }
    
     let data11=this.common.getUserProfile();
     let uuid;
@@ -151,11 +163,13 @@ this.form = this.fb.group({
       this.contactno=data11.Data.mobile;
 
     }
-    else{
-       this.common.setlogoutreason("session");
-      this.auth.logout();
+
+    
+    // else{
+    //    this.common.setlogoutreason("session");
+    //   this.auth.logout();
      
-    }
+    // }
    
     this.cols = [
       // { field: 'coorequestno', header: 'Request No.' },

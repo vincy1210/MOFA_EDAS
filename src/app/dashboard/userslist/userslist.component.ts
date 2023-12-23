@@ -82,6 +82,24 @@ todayModel:Date=new Date();
 
   ngOnInit(): void {
 
+    let currcompany  =this.auth.getSelectedCompany();
+    
+
+  if(currcompany){
+    this.currentcompany=currcompany.companyuno;
+    if(this.currentcompany==null || this.currentcompany==undefined || this.currentcompany===''){
+      this.router.navigateByUrl('/landingpage')
+    }
+  }
+  else{
+    this.common.redirecttologin();
+    return;
+  }
+
+
+
+
+
     let data11=this.common.getUserProfile();
     let uuid;
     if(data11!=null || data11!=undefined){

@@ -64,8 +64,19 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
   }
 
   ngOnInit(): void {
-
-    this.currentcompany=this.auth.getSelectedCompany().companyuno || '';
+    console.log("calling getselected company")
+    let currcompany=this.auth.getSelectedCompany();
+    if(currcompany){
+      this.currentcompany=currcompany.companyuno || '';
+      if(this.currentcompany==null || this.currentcompany==undefined || this.currentcompany===''){
+        this.router.navigateByUrl('/landingpage')
+      }
+    }
+    else{
+      this.common.redirecttologin();
+      return;
+    }
+    // this.currentcompany=this.auth.getSelectedCompany().companyuno || '';
    
     
     

@@ -54,7 +54,10 @@ export class PhysicalAttestationCreateComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.currentcompany=this.auth.getSelectedCompany().companyuno || '';
+    let curr=this.auth.getSelectedCompany();
+    if(curr){
+    this.currentcompany=curr.companyuno || '';
+    }
 
     let data11=this.common.getUserProfile();
     let uuid;

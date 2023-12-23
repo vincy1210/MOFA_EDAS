@@ -704,4 +704,9 @@ export class CommonService {
   }
   
 
+  redirecttologin(){
+    window.location.href = "https://stg-id.uaepass.ae/idshub/logout?redirect_uri=https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2"
+  }
+
+
 }

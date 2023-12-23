@@ -19,6 +19,7 @@ interface Column {
   header: string;
   customExportHeader?: string;
 }
+import { Router } from '@angular/router';
 
 interface ExportColumn {
   title: string;
@@ -99,7 +100,7 @@ isfilenotfouund:boolean=false;
 fields: { label: string, value: any }[] = [];
 isButtonDisabled = false;
   constructor(private datePipe: DatePipe, private http:HttpClient,private _liveAnnouncer: LiveAnnouncer, private api:ApiService,
-     public common:CommonService, private consts:ConstantsService, private auth:AuthService) {
+     public common:CommonService, private consts:ConstantsService, private auth:AuthService, private router:Router) {
     this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
    }
 
@@ -118,8 +119,19 @@ isButtonDisabled = false;
   ngOnInit(): void {
 
    
-
-    this.currentcompany=this.auth.getSelectedCompany().companyuno || '';
+    console.log("calling getselected company")
+    let currcompany=this.auth.getSelectedCompany();
+    if(currcompany){
+      this.currentcompany=currcompany.companyuno || '';
+      if(this.currentcompany==null || this.currentcompany==undefined || this.currentcompany===''){
+        this.router.navigateByUrl('/landingpage')
+      }
+    }
+    else{
+      this.common.redirecttologin();
+      return;
+    }
+    // this.currentcompany=this.auth.getSelectedCompany().companyuno || '';
 
     
     this.loading = true;

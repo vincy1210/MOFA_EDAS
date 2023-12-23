@@ -13,7 +13,7 @@ import { LazyLoadEvent } from 'primeng/api';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/service/auth.service';
-
+import { Router } from '@angular/router';
 
 
 
@@ -86,7 +86,7 @@ paymentcount=environment.appdetails.payment_count;
     public translate: TranslateService,
     public apiservice: ApiService,
     public consts: ConstantsService,
-    public common: CommonService,private datePipe: DatePipe, private fb:FormBuilder, private auth:AuthService
+    public common: CommonService,private datePipe: DatePipe, private fb:FormBuilder, private auth:AuthService, private router:Router
  
   ) {
     this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
@@ -104,7 +104,20 @@ paymentcount=environment.appdetails.payment_count;
   }
 
   ngOnInit(): void {
-    this.currentcompany=this.auth.getSelectedCompany().companyuno || '';
+    console.log("calling getselected company")
+    let currcompany=this.auth.getSelectedCompany();
+    if(currcompany){
+      this.currentcompany=currcompany.companyuno || '';
+      if(this.currentcompany==null || this.currentcompany==undefined || this.currentcompany===''){
+        this.router.navigateByUrl('/landingpage')
+      }
+    }
+    else{
+      this.common.redirecttologin();
+      return;
+    }
+    // this.currentcompany=this.auth.getSelectedCompany().companyuno || '';
+
   
     let data11=this.common.getUserProfile();
     let uuid;

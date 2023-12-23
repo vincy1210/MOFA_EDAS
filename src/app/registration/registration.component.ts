@@ -252,7 +252,7 @@ this.checkcompanyuserforcancel(userProfilejson.Data);
 
         console.log("redirect parameters undefined");
 
-        this.common.showErrorMessage("Something went wrong! Please try again")
+        console.log("Something went wrong! Please try again")
 
          // Delay the execution  by 2 seconds
   setTimeout(() => {
@@ -374,7 +374,7 @@ this.checkcompanyuserforcancel(userProfilejson.Data);
         } 
         else if (response.IsSucceeded === "False") {
           console.log(response.message)
-          this.common.showErrorMessage("Something went wrong");
+          // this.common.showErrorMessage("Something went wrong");
           console.log("Auth1 failed")
           return;
         }

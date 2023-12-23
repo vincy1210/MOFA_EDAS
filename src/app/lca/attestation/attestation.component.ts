@@ -206,40 +206,33 @@ _selectedColumns: any;
 
   ngOnInit() {
 console.log("calling getselected company")
-    
-    this.currentcompany=this.auth.getSelectedCompany().companyuno || '';
-    if(this.currentcompany==null || this.currentcompany==undefined || this.currentcompany===''){
-      console.log("to landing page from attestation page line 195")
-
-      this.router.navigateByUrl('/landingpage')
+    let currcompany=this.auth.getSelectedCompany();
+    if(currcompany){
+      this.currentcompany=currcompany.companyuno || '';
+      if(this.currentcompany==null || this.currentcompany==undefined || this.currentcompany===''){
+        console.log("to landing page from attestation page line 195")
+        this.router.navigateByUrl('/landingpage')
+      }
+    }
+    else{
+      this.common.redirecttologin();
+      return;
     }
     this.totalFineAmount=0.0;
     this.totalAttestationFee=0.0;
     this.totalFee=0.0;
-
-   
     this.loading = true;
-   
-
     let data11=this.common.getUserProfile();
     let uuid;
-    if(data11!=null || data11!=undefined){
+    if(data11!=null || data11!=undefined)
+    {
       data11=JSON.parse(data11)
       console.log(data11.Data)
       uuid=data11.Data.uuid;
       this.uuid=uuid;
       this.user_mailID=data11.Data.email;
       this.contactno=data11.Data.mobile;
-      //mobile
-
     }
-    else{
-      
-       this.common.setlogoutreason("session");
-      this.auth.logout();
-
-    }
-    // width:'17%'
     this.cols_xl = [
       { field: 'Noofdaysleft', header: 'Age',  width:'5%' },
       { field: 'edasattestno', header: 'Attestation No', width:'20%' },
@@ -982,15 +975,10 @@ openNew_(data:any) {
   this.getCooForMyLCAInvoice(data);
 }
 
-
 openNew(data:any) {
   console.log(data);
   this.currentrow=data;
-
   //api call for getting the declaration number
-
-
-
   this.AddInvoiceDialog=true
   const fieldMappings: { [key: string]: string } = {
     edasattestno: this.translate.instant('Attestation No'),
@@ -1011,7 +999,8 @@ openNew(data:any) {
     invoiceid:  this.translate.instant('Invoice ID'),
     companyname:  this.translate.instant('Company'),
     comments:  this.translate.instant('Comments'),
-    lcaname:  this.translate.instant('Channel')
+    lcaname:  this.translate.instant('Channel'),
+    // lcaname:  this.translate.instant('Channel')
     // Add more fields as needed
   };
 
