@@ -68,7 +68,7 @@ export class AuthGuard implements CanActivate {
       : [];
     const { Roles } = this.common.getUserDetails();
     if (Roles != null) {
-      const allRoles: number[] = Roles;
+      const allRoles: number[] = Array.isArray(Roles) ? Roles : [];
       if (this.common.isArrayIncluded(allRoles, requiredRoles)) {
         return true;
       } else {

@@ -96,6 +96,7 @@ import { TabViewModule } from 'primeng/tabview';
 import { AuthGuard } from './auth.guard';
 import { UnauthorizedComponent } from './error/unauthorized/unauthorized.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 // Define the custom date format
 const customDateFormats: MatDateFormats = {
@@ -122,6 +123,7 @@ const customDateFormats: MatDateFormats = {
     LoginComponent,
     PaymentinfoComponent,
     UnauthorizedComponent,
+    PageNotFoundComponent,
   ],
 
   imports: [
