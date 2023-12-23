@@ -703,7 +703,7 @@ export class CommonService {
       parseInt(dateString.substring(4, 6)) - 1,
       parseInt(dateString.substring(6, 8))
     );
-  
+
     return this.datePipe.transform(date, 'yyyy-MM-dd') || 'Invalid Date'; // Handle invalid date format
   }
 
@@ -1036,9 +1036,9 @@ export class CommonService {
         roleList.push(RoleEnums.Admin);
       } else if (item === 'User') {
         roleList.push(RoleEnums.User);
-      } else if (item === 'LCAAdminUser') {
+      } else if (item === 'LCA Admin') {
         roleList.push(RoleEnums.LcaAdmin);
-      } else if (item === 'LCAUser') {
+      } else if (item === 'LCA User') {
         roleList.push(RoleEnums.LcaUser);
       }
     });
@@ -1080,10 +1080,9 @@ export class CommonService {
   }
 
   isArrayIncluded(arr1: number[], arr2: number[]) {
-    if(arr1.length){
+    if (arr1.length) {
       return arr2.some((value) => arr1.includes(value));
-    }
-    else{
+    } else {
       return null;
     }
   }
@@ -1113,7 +1112,7 @@ export class CommonService {
   //     parseInt(dateString.substring(4, 6)) - 1,
   //     parseInt(dateString.substring(6, 8))
   //   );
-  
+
   //   return this.datePipe.transform(date, 'yyyy-MM-dd') || 'Invalid Date'; // Handle invalid date format
   // }
 
@@ -1125,13 +1124,11 @@ export class CommonService {
           date: this.datePipe.transform(dateTimeParts[0], 'dd-MMM-yyyy'),
           time: dateTimeParts[1],
         };
-      }
-      else{
+      } else {
         return {
           date: this.datePipe.transform(dateTimeParts[0], 'dd-MMM-yyyy'),
           time: '',
         };
-  
       }
     }
     return null; // Invalid or null datetime string

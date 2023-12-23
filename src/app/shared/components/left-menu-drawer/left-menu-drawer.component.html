@@ -31,12 +31,16 @@
       #myPanel
       [class.mat-elevation-z0]="true"
       *ngFor="let items of menuList"
-      [expanded]="usertype === 'LCAAdmin'"
+      [expanded]="usertype === 'LCA Admin' || usertype === 'LCA User'"
     >
-      <mat-expansion-panel-header *ngIf="!items.hasubMenu"  [class]="items.link"  (click)="onSubMenuClick(items)">
+      <mat-expansion-panel-header
+        *ngIf="!items.hasubMenu"
+        [class]="items.link"
+        (click)="onSubMenuClick(items)"
+      >
         <span class="mat-items">
           <mat-icon>{{ items.icon }}</mat-icon>
-          <span class="menutitle" >{{ items.menu | translate }}</span>
+          <span class="menutitle">{{ items.menu | translate }}</span>
         </span>
         <!-- <mat-nav-list >
           <span class="mat-items">
