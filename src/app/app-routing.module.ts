@@ -21,47 +21,69 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   { path: 'registration', component: RegistrationComponent },
-  { path: 'companydetails', component: CompanydetailsComponent },
-  {path:'landingpage',component:LandingPageComponent},
-  {path:'attestationworkflow',component:AttestationWorkflowComponent, data: { role: ['Admin', 'User'] }},
-  {path:'dashboard',component:DashboardComponent,  data: { role: ['Admin', 'User'] }},
+  {
+    path: 'companydetails',
+    component: CompanydetailsComponent,
+    canActivate: [AuthGuard],
+    data: { name: 'companydetails' },
+  },
+  {
+    path: 'landingpage',
+    component: LandingPageComponent,
+    // canActivate: [AuthGuard],
+    data: { name: 'companydetails' },
+  },
+  {
+    path: 'attestationworkflow',
+    component: AttestationWorkflowComponent,
+    data: { role: ['Admin', 'User'] },
+  },
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    data: { role: ['Admin', 'User'], name: 'dashboard' },
+    canActivate: [AuthGuard],
+  },
   // {path:'ESealTest', component:ESealTestComponent},
-  {path:'login', component:LoginComponent},
-  {path:'paymentdetails', component:PaymentinfoComponent},
-  {path:'userslist', component:UserslistComponent,  data: { role: ['Admin', 'User'] }},
-  {path:'logout', component:ErrorComponent},
+  { path: 'login', component: LoginComponent },
+  { path: 'paymentdetails', component: PaymentinfoComponent },
+  {
+    path: 'userslist',
+    component: UserslistComponent,
+    data: { role: ['Admin', 'User'], name: 'userslist' },
+    canActivate: [AuthGuard],
+  },
+  { path: 'logout', component: ErrorComponent },
 
   {
     path: 'reports',
-    loadChildren: () => import('./reports/reports.module').then(m => m.ReportsModule),
+    loadChildren: () =>
+      import('./reports/reports.module').then((m) => m.ReportsModule),
   },
   {
     path: 'lca',
-    loadChildren: () => import('./lca/lca.module').then(m => m.LcaModule),
+    loadChildren: () => import('./lca/lca.module').then((m) => m.LcaModule),
   },
   {
     path: 'coo',
-    loadChildren: () => import('./coo/coo.module').then(m => m.CooModule),
-  }, 
+    loadChildren: () => import('./coo/coo.module').then((m) => m.CooModule),
+  },
   {
     path: 'physical',
-    loadChildren: () => import('./physical/physical.module').then(m => m.PhysicalModule),
+    loadChildren: () =>
+      import('./physical/physical.module').then((m) => m.PhysicalModule),
   },
   {
     path: 'lca-login',
-    loadChildren: () => import('./lca-login/lca-login.module').then(m => m.LcaLoginModule),
+    loadChildren: () =>
+      import('./lca-login/lca-login.module').then((m) => m.LcaLoginModule),
   },
-  
-  {path:'unauthorized', component:UnauthorizedComponent},
 
-
+  { path: 'unauthorized', component: UnauthorizedComponent },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {useHash:true})],
-  exports: [RouterModule]
+  imports: [RouterModule.forRoot(routes, { useHash: true })],
+  exports: [RouterModule],
 })
-export class AppRoutingModule {
-
-  
- }
+export class AppRoutingModule {}

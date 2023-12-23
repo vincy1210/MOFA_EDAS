@@ -20,29 +20,48 @@ import { TagModule } from 'primeng/tag';
 import { ToolbarModule } from 'primeng/toolbar';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { TabViewModule } from 'primeng/tabview';
-
+import { AuthGuard } from '../auth.guard';
 
 const routes: Routes = [
-  {path:'rptlca', component:LCAComponent,  data: { role: ['Admin', 'User'] }},
-  {path:'rptcoo', component:COOComponent,  data: { role: ['Admin', 'User'] }},
-  {path:'rptphysical', component:PhysicalComponent,  data: { role: ['Admin', 'User'] }},
-  {path:'rptfines', component:FinesComponent,  data: { role: ['Admin', 'User'] }},
+  {
+    path: 'rptlca',
+    component: LCAComponent,
+    data: { role: ['Admin', 'User'], name: 'rptlca' },
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'rptcoo',
+    component: COOComponent,
+    data: { role: ['Admin', 'User'], name: 'rptcoo' },
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'rptphysical',
+    component: PhysicalComponent,
+    data: { role: ['Admin', 'User'], name: 'rptphysical' },
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'rptfines',
+    component: FinesComponent,
+    data: { role: ['Admin', 'User'], name: 'rptfines' },
+    canActivate: [AuthGuard],
+  },
 ];
-
-
 
 @NgModule({
   declarations: [
     COOComponent,
     FinesComponent,
     LCAComponent,
-    PhysicalComponent, ReportsComponent
-
+    PhysicalComponent,
+    ReportsComponent,
   ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-    TranslateModule,ButtonModule,
+    TranslateModule,
+    ButtonModule,
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
@@ -51,9 +70,10 @@ const routes: Routes = [
     TableModule,
     TooltipModule,
     DialogModule,
-    TagModule,ToolbarModule,
-    PdfViewerModule, TabViewModule
-
-  ]
+    TagModule,
+    ToolbarModule,
+    PdfViewerModule,
+    TabViewModule,
+  ],
 })
-export class ReportsModule { }
+export class ReportsModule {}

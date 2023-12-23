@@ -37,6 +37,8 @@ export enum RoleEnums {
   RiskAdmin,
   RiskMonitor,
   RiskReportUser,
+  LcaAdmin,
+  LcaUser,
 }
 
 export enum PermissionEnums {

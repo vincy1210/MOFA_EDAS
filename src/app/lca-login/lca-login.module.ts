@@ -7,8 +7,6 @@ import { CompletedAttestationsComponent } from './LCA_ADMIN/completed-attestatio
 import { RisklcaComponent } from './LCA_ADMIN/risklca/risklca.component';
 import { ImportAttestationsCreateComponent } from './LCA_ADMIN/import-attestations/import-attestations-create/import-attestations-create.component';
 
-
-
 import { RouterModule, Routes } from '@angular/router';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
@@ -29,7 +27,6 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatChipsModule } from '@angular/material/chips';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
-
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -38,17 +35,40 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { NgxEchartsModule } from 'ngx-echarts';
 import * as echarts from 'echarts';
+import { AuthGuard } from '../auth.guard';
 
-
-const routes=[
-  {path:'lcadashboard', component:AttestationsComponent, data: { role: [11,12] }},
-  {path:'importslca', component:ImportAttestationsComponent, data: { role: [11,12] }},
-  {path:'pendinglca', component:PendingAttestationsComponent, data: { role: [11,12] }},
-  {path:'completedlca', component:CompletedAttestationsComponent, data: { role: [11,12] }},
-  {path:'risklca', component:RisklcaComponent, data: { role: [11,12] }},
-]
-
-
+const routes = [
+  {
+    path: 'lcadashboard',
+    component: AttestationsComponent,
+    data: { role: [11, 12], name: 'lcadashboard' },
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'importslca',
+    component: ImportAttestationsComponent,
+    data: { role: [11, 12], name: 'importslca' },
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'pendinglca',
+    component: PendingAttestationsComponent,
+    data: { role: [11, 12], name: 'pendinglca' },
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'completedlca',
+    component: CompletedAttestationsComponent,
+    data: { role: [11, 12], name: 'completedlca' },
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'risklca',
+    component: RisklcaComponent,
+    data: { role: [11, 12], name: 'risklca' },
+    canActivate: [AuthGuard],
+  },
+];
 
 @NgModule({
   declarations: [
@@ -56,12 +76,14 @@ const routes=[
     ImportAttestationsComponent,
     PendingAttestationsComponent,
     CompletedAttestationsComponent,
-    RisklcaComponent,ImportAttestationsCreateComponent
+    RisklcaComponent,
+    ImportAttestationsCreateComponent,
   ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-    TranslateModule,ButtonModule,
+    TranslateModule,
+    ButtonModule,
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
@@ -70,12 +92,21 @@ const routes=[
     TableModule,
     TooltipModule,
     DialogModule,
-    TagModule,ToolbarModule,
-    PdfViewerModule, TabViewModule,
-    MultiSelectModule, MatTabsModule, MatChipsModule, ConfirmDialogModule,
-    MatProgressSpinnerModule, ReactiveFormsModule, MatDialogModule,
-    MatDividerModule, MatListModule, NgxEchartsModule, MatSelectModule
-    
-  ]
+    TagModule,
+    ToolbarModule,
+    PdfViewerModule,
+    TabViewModule,
+    MultiSelectModule,
+    MatTabsModule,
+    MatChipsModule,
+    ConfirmDialogModule,
+    MatProgressSpinnerModule,
+    ReactiveFormsModule,
+    MatDialogModule,
+    MatDividerModule,
+    MatListModule,
+    NgxEchartsModule,
+    MatSelectModule,
+  ],
 })
-export class LcaLoginModule { }
+export class LcaLoginModule {}

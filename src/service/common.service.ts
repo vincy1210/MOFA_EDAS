@@ -6,7 +6,6 @@ import * as $ from 'jquery';
 import * as forge from 'node-forge';
 import { Router } from '@angular/router';
 
-
 import { DatePipe } from '@angular/common';
 import { AbstractControl, ValidatorFn } from '@angular/forms';
 import { ApiService } from './api.service';
@@ -14,14 +13,24 @@ import { ConstantsService } from './constants.service';
 
 import { Subject, Observable } from 'rxjs';
 import { AuthService } from './auth.service';
+import {
+  RoleEnums,
+  PermissionEnums,
+} from 'src/app/shared/constants/status-enum';
 
+export type RetType = {
+  name: string;
+  menu: string;
+  menufull?: string;
+  requiredRoles: number[];
+  permissionRoles: { role: number; permission: number[] }[];
+};
+
+export const ConstAccessDenied: string = 'access-denied';
 
 @Injectable({
   providedIn: 'root',
 })
-
-
-
 export class CommonService {
   favink1: string = '';
   favink2: string = '';
@@ -47,7 +56,6 @@ export class CommonService {
   private alrregcompany = new BehaviorSubject<string>('');
   private logoutreason = new BehaviorSubject<string>('');
 
-
   // logoutreason
 
   private userinfo = new BehaviorSubject<string>('');
@@ -55,20 +63,18 @@ export class CommonService {
   private selectedcompany = new BehaviorSubject<string>('');
   private freeZone = new BehaviorSubject<string>('');
 
-
   // private userRoleSubject = new Subject<string>();
   // userRole$ = this.userRoleSubject.asObservable();
   // userRole: string=''; // You might want to initialize this with a default value if needed
 
-
   private inactivityTimer: any;
   private readonly INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minutes in milliseconds
-  isSidebar:boolean=false
+  isSidebar: boolean = false;
 
   // private sidebarOpen = false;
   private isDrawerOpenSubject = new BehaviorSubject<boolean>(false);
 
-   uuid: string = '';
+  uuid: string = '';
   src: any;
   base64PdfString: any;
   usertypedata: string = '';
@@ -76,15 +82,14 @@ export class CommonService {
   constructor(
     private translate: TranslateService,
     private Toastr: ToastrService,
-    private datePipe: DatePipe,private Router:Router, private apicall:ApiService, private consts:ConstantsService, private auth:AuthService
+    private datePipe: DatePipe,
+    private Router: Router,
+    private apicall: ApiService,
+    private consts: ConstantsService,
+    private auth: AuthService
   ) {
-
-  
-// end for company user
-
+    // end for company user
   }
-
-  
 
   //toaster message alerts
   showErrorMessage(data: any) {
@@ -140,7 +145,7 @@ export class CommonService {
     return this.dataSubject.asObservable();
   }
 
-  setDataCommon(objData: { key: string, value: object }) {
+  setDataCommon(objData: { key: string; value: object }) {
     const data = JSON.stringify(objData);
     this.dataSubject.next(data);
   }
@@ -165,19 +170,16 @@ export class CommonService {
     return this.RegisteredCompanyDetails.asObservable();
   }
 
-  
-
   // showLoading(): void {
   //   $('#loading').show();
   // }
   showLoading(): void {
     $('#loading').show();
-  
+
     setTimeout(() => {
       $('#loading').hide(); // Hide the loader after 5 seconds
     }, 30000); // 5000 milliseconds = 5 seconds
   }
-  
 
   formatDateString(dateString: string): string {
     const year = dateString.substring(0, 4);
@@ -185,12 +187,10 @@ export class CommonService {
     const day = dateString.substring(6, 8);
     return `${day}/${month}/${year}`;
   }
-  
 
   hideLoading(): void {
     $('#loading').hide();
   }
-
 
   // setSelectedCompany(data: any) {
   //    sessionStorage.setItem('currentcompany', JSON.stringify(data));
@@ -214,7 +214,7 @@ export class CommonService {
   //     this.userCompanysubject.next('')
   //     }
   //  }
- 
+
   //  getSelectedCompany() {
   //    const myselectedcompany = sessionStorage.getItem('currentcompany');
   //     if (myselectedcompany) {
@@ -231,7 +231,6 @@ export class CommonService {
   //    }
   //    //return null;
   //  }
- 
 
   setfreezone(data: string) {
     this.freeZone.next(data);
@@ -248,7 +247,6 @@ export class CommonService {
   // isSidebarOpen() {
   //   return this.sidebarOpen;
   // }
-  
 
   isDrawerOpen$ = this.isDrawerOpenSubject.asObservable();
 
@@ -256,9 +254,8 @@ export class CommonService {
     this.isDrawerOpenSubject.next(!this.isDrawerOpenSubject.value);
   }
 
-
   setSidebarVisibility(data: boolean) {
-    this.isSidebar=data;
+    this.isSidebar = data;
   }
 
   GetSidebarVisibility() {
@@ -266,19 +263,17 @@ export class CommonService {
   }
 
   encryptWithPublicKey(valueToEncrypt: string): string {
- 
     this.publicKey = `-----BEGIN PUBLIC KEY-----
     MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQClnd0dRXYSiKkHgmzq53FiEAiR
     dWOU2EZMFDYbICt/t0SB0FLfN7pOaI3t9/WxxBmqHPL6MrFTDdmJi0BLD2LTDQ4E
     sZl4Uj1u7PJyDewjQxpehRv5dZ6u7wXOy0U9/WsNrWMrZo3UiL9Dndb6GUciXo31
     MQyXkegCGYxB/qm19wIDAQAB
     -----END PUBLIC KEY-----`;
-    
+
     const rsa = forge.pki.publicKeyFromPem(this.publicKey);
     return window.btoa(rsa.encrypt(valueToEncrypt.toString()));
   }
-  
-  
+
   // splitdatetime(datetimeString: any) {
   //   if (datetimeString && typeof datetimeString === 'string') {
   //     const dateTimeParts = datetimeString.split('T'); // Splitting the string at 'T'
@@ -299,13 +294,11 @@ export class CommonService {
           date: this.datePipe.transform(dateTimeParts[0], 'dd-MMM-yyyy'),
           time: dateTimeParts[1],
         };
-      }
-      else{
+      } else {
         return {
           date: this.datePipe.transform(dateTimeParts[0], 'dd-MMM-yyyy'),
           time: '',
         };
-  
       }
     }
     return null; // Invalid or null datetime string
@@ -332,27 +325,26 @@ export class CommonService {
     console.log(userProfile);
     sessionStorage.setItem('userProfile', JSON.stringify(userProfile));
     this.startInactivityTimer();
-    let userdata=JSON.parse(userProfile)
+    let userdata = JSON.parse(userProfile);
 
     //this.userprofilesubject.next(userdata);
 
-    if(userdata!=undefined || userdata !=null){
-            // let abc=JSON.parse(userdata)
-            this.userprofilesubject.next(userdata.Data?.firstnameEN);
+    if (userdata != undefined || userdata != null) {
+      // let abc=JSON.parse(userdata)
+      this.userprofilesubject.next(userdata.Data?.firstnameEN);
     }
   }
 
   getUserProfile() {
     const userProfileString = sessionStorage.getItem('userProfile');
     if (userProfileString) {
-      let abc=JSON.parse(userProfileString);
-      let abc1=JSON.parse(abc);
+      let abc = JSON.parse(userProfileString);
+      let abc1 = JSON.parse(abc);
 
       console.log(abc1);
       return JSON.parse(userProfileString);
-    }
-    else{
-    return null
+    } else {
+      return null;
     }
   }
 
@@ -402,14 +394,12 @@ export class CommonService {
       this.inactivityTimer = null;
     }
   }
-  
- 
 
   convertBase64ToPdf(base64Data: string): void {
     const binaryData = atob(base64Data);
     const arrayBuffer = new ArrayBuffer(binaryData.length);
     const uint8Array = new Uint8Array(arrayBuffer);
-    
+
     for (let i = 0; i < binaryData.length; i++) {
       uint8Array[i] = binaryData.charCodeAt(i);
     }
@@ -423,12 +413,12 @@ export class CommonService {
   }
   formatDateTime_API_payload(dateTimeString: string): string {
     const date = new Date(dateTimeString);
-  
+
     // Get date components
     const day = date.getDate();
     const month = date.toLocaleString('default', { month: 'short' });
     const year = date.getFullYear().toString().slice(-2); // Get the last two digits of the year
-  
+
     return `${day}-${month}-${year}`;
   }
 
@@ -444,23 +434,22 @@ export class CommonService {
   //   const month = +attestreqdate.substring(4, 6) - 1; // Extract month (0-indexed)
   //   const day = +attestreqdate.substring(6, 8); // Extract day
   //   const reqDate = new Date(year, month, day); // Create a date object
-  
+
   //   const today = new Date();
   //   const differenceInDays = Math.floor((today.getTime() - reqDate.getTime()) / (1000 * 3600 * 24));
   //   return 15 - differenceInDays;
   // }
 
-   formatAmount(amount: number | undefined): string {
+  formatAmount(amount: number | undefined): string {
     if (amount === undefined || isNaN(amount)) {
       return '';
     }
-  
+
     // Use toLocaleString to format the number with commas
     return amount.toLocaleString(undefined, { maximumFractionDigits: 2 });
   }
 
-
-   static blankInputValidator(fieldName: string): ValidatorFn {
+  static blankInputValidator(fieldName: string): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
       const value = control.value;
 
@@ -475,102 +464,103 @@ export class CommonService {
   async getPaymentReceiptbase64(invoiceuno: any): Promise<any> {
     return new Promise((resolve, reject) => {
       let data2 = sessionStorage.getItem('userProfile');
-  
+
       if (data2 != undefined || data2 != null) {
         let abc = JSON.parse(data2);
         let bcd = JSON.parse(abc);
         this.uuid = bcd.Data?.uuid;
       } else {
-        reject("User profile not found");
+        reject('User profile not found');
         return;
       }
-  
+
       let data = {
-        "uuid": this.uuid,
-        "invoiceuno": invoiceuno.toString()
+        uuid: this.uuid,
+        invoiceuno: invoiceuno.toString(),
       };
-  
+
       this.showLoading();
-  
+
       this.apicall.post(this.consts.getPaymentReceipt, data).subscribe({
         next: (success: any) => {
           this.hideLoading();
           const resp = success;
-  
+
           if (resp.responsecode == 1) {
             this.base64PdfString = resp.data;
             var binary_string = this.base64PdfString.replace(/\\n/g, '');
             binary_string = window.atob(this.base64PdfString);
             var len = binary_string.length;
             var bytes = new Uint8Array(len);
-  
+
             for (var i = 0; i < len; i++) {
               bytes[i] = binary_string.charCodeAt(i);
             }
-  
+
             this.src = bytes.buffer;
-            console.log("payment receipt is success");
+            console.log('payment receipt is success');
             resolve(this.src);
           } else {
             this.showErrorMessage('Attachment load failed');
-            reject("Attachment load failed");
+            reject('Attachment load failed');
           }
         },
         error: (error: any) => {
           this.hideLoading();
-          console.error("Error fetching payment receipt:", error);
+          console.error('Error fetching payment receipt:', error);
           reject(error);
-        }
+        },
       });
     });
   }
-  
-  getimagebase64(attestfilelocation:any){
+
+  getimagebase64(attestfilelocation: any) {
     let resp;
-    let data={
-      "attestfilelocation":attestfilelocation,
-      "uuid":this.uuid
-    }
+    let data = {
+      attestfilelocation: attestfilelocation,
+      uuid: this.uuid,
+    };
     this.showLoading();
-  
-    this.apicall.post(this.consts.getAttestationFileContent,data).subscribe({next:(success:any)=>{
-      this.hideLoading();
-  
-      resp=success;
-      if(resp.responsecode==1){
-      this.base64PdfString=resp.data;
-  
-          const base64 = this.base64PdfString.replace('data:application/pdf;base64,', '');
-  
-            // Convert base64 to a byte array
-            const byteArray = new Uint8Array(atob(base64).split('').map(char => char.charCodeAt(0)));
-  
-            // Create a Blob and download the file
-            const file = new Blob([byteArray], { type: 'application/pdf' });
-            const fileUrl = URL.createObjectURL(file);
-            const link = document.createElement('a');
-            link.href = fileUrl;
-            link.download = 'Attestation.pdf'; // You can customize the file name here
-  
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-  
-      }
-      else{
-        this.showErrorMessage('Attachment load failed')
-        //this.loading=false;
-      }
-    }
-  })
-  return this.base64PdfString;
-  
+
+    this.apicall.post(this.consts.getAttestationFileContent, data).subscribe({
+      next: (success: any) => {
+        this.hideLoading();
+
+        resp = success;
+        if (resp.responsecode == 1) {
+          this.base64PdfString = resp.data;
+
+          const base64 = this.base64PdfString.replace(
+            'data:application/pdf;base64,',
+            ''
+          );
+
+          // Convert base64 to a byte array
+          const byteArray = new Uint8Array(
+            atob(base64)
+              .split('')
+              .map((char) => char.charCodeAt(0))
+          );
+
+          // Create a Blob and download the file
+          const file = new Blob([byteArray], { type: 'application/pdf' });
+          const fileUrl = URL.createObjectURL(file);
+
+          const link = document.createElement('a');
+          link.href = fileUrl;
+          link.download = 'Attestation_.pdf'; // You can customize the file name here
+
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        } else {
+          this.showErrorMessage('Attachment load failed');
+          //this.loading=false;
+        }
+      },
+    });
+    return this.base64PdfString;
   }
-  
- 
-
-
-
 
   filterColumnsClientDataTrim(filters: any) {
     let filterList: any[] = [];
@@ -599,8 +589,8 @@ export class CommonService {
       let valueA = a[sortKey];
       let valueB = b[sortKey];
 
-      if (valueA === null) valueA = "";
-      if (valueB === null) valueB = "";
+      if (valueA === null) valueA = '';
+      if (valueB === null) valueB = '';
 
       valueA = valueA.toString().toLowerCase();
       valueB = valueB.toString().toLowerCase();
@@ -614,7 +604,7 @@ export class CommonService {
       }
     });
   }
-  
+
   areAllStringsEmpty(arr: string[]): boolean {
     return arr.every((str) => str === '');
   }
@@ -627,9 +617,9 @@ export class CommonService {
         }
         let filters = filterList[key];
         let { value1, matchMode1, operator1 } = {
-          value1: "",
-          matchMode1: "",
-          operator1: "",
+          value1: '',
+          matchMode1: '',
+          operator1: '',
         };
         if (filters && filters.length > 0) {
           const { value, matchMode, operator } = filters[0];
@@ -640,7 +630,7 @@ export class CommonService {
         if (value1 && value1.length > 0) {
           //key === "tradelicenseno"
           let valuedata = item[key];
-          const result = valuedata === null ? "" : valuedata;
+          const result = valuedata === null ? '' : valuedata;
           if (result.toString().toLowerCase().includes(value1.toLowerCase())) {
             return true;
           }
@@ -665,46 +655,47 @@ export class CommonService {
     });
   }
 
- maskEmail(email: string): string {
+  maskEmail(email: string): string {
     const parts = email.split('@');
     const username = parts[0];
     const domain = parts[1];
-  
+
     // Mask characters in the username, keeping the first three characters
     const maskedUsername =
-      username.length > 3 ? username.substring(0, 3) + '*'.repeat(username.length - 3) : username;
-  
+      username.length > 3
+        ? username.substring(0, 3) + '*'.repeat(username.length - 3)
+        : username;
+
     // Combine masked username and domain to form the masked email
     const maskedEmail = `${maskedUsername}@${domain}`;
-  
+
     return maskedEmail;
   }
   // Example usage
 
-  SetAlreadyregisteredcompanydetails(data:any){
+  SetAlreadyregisteredcompanydetails(data: any) {
     // sessionStorage.setItem('alreadyRegCompanyDetails',data);
-    this.alrregcompany.next(data)
+    this.alrregcompany.next(data);
   }
 
-  GetAlreadyregisteredcompanydetails(){
+  GetAlreadyregisteredcompanydetails() {
     // let data= sessionStorage.getItem('alreadyRegCompanyDetails');
     // return  data;
 
     return this.alrregcompany.asObservable();
-    
   }
 
-  setlogoutreason(data:any){
-    this.logoutreason.next(data)
+  setlogoutreason(data: any) {
+    this.logoutreason.next(data);
   }
 
-  getlogoutreason(){
+  getlogoutreason() {
     return this.logoutreason.asObservable();
   }
-  
 
-  redirecttologin(){
-    window.location.href = "https://stg-id.uaepass.ae/idshub/logout?redirect_uri=https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2"
+  redirecttologin() {
+    window.location.href =
+      'https://stg-id.uaepass.ae/idshub/logout?redirect_uri=https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2';
   }
   formatDatestringtodate(dateString: string): string {
     const date = new Date(
@@ -716,24 +707,398 @@ export class CommonService {
     return this.datePipe.transform(date, 'yyyy-MM-dd') || 'Invalid Date'; // Handle invalid date format
   }
 
-  splitdatetimeforstring(datetimeString: any) {
-    if (datetimeString && typeof datetimeString === 'string') {
-      const dateTimeParts = datetimeString.split('T'); // Splitting the string at 'T'
-      if (dateTimeParts.length === 2) {
-        return {
-          date: this.datePipe.transform(dateTimeParts[0], 'dd-MMM-yyyy'),
-          time: dateTimeParts[1],
-        };
-      }
-      else{
-        return {
-          date: this.datePipe.transform(dateTimeParts[0], 'dd-MMM-yyyy'),
-          time: '',
-        };
-  
-      }
-    }
-    return null; // Invalid or null datetime string
+  allPages() {
+    const allPages: RetType[] = [
+      {
+        name: 'dashboard',
+        menu: 'dashboard',
+        menufull: 'dashboard',
+        requiredRoles: [RoleEnums.Admin, RoleEnums.User],
+        permissionRoles: [
+          { role: RoleEnums.Admin, permission: [PermissionEnums.All] },
+          {
+            role: RoleEnums.User,
+            permission: [PermissionEnums.Add, PermissionEnums.Edit],
+          },
+        ],
+      },
+      {
+        name: 'companydetails',
+        menu: 'companydetails',
+        menufull: 'companydetails',
+        requiredRoles: [RoleEnums.Admin, RoleEnums.User],
+        permissionRoles: [
+          { role: RoleEnums.Admin, permission: [PermissionEnums.All] },
+          {
+            role: RoleEnums.User,
+            permission: [PermissionEnums.Add, PermissionEnums.Edit],
+          },
+        ],
+      },
+      {
+        name: 'userslist',
+        menu: 'userslist',
+        menufull: 'userslist',
+        requiredRoles: [RoleEnums.Admin, RoleEnums.User],
+        permissionRoles: [
+          { role: RoleEnums.Admin, permission: [PermissionEnums.All] },
+          {
+            role: RoleEnums.User,
+            permission: [PermissionEnums.Add, PermissionEnums.Edit],
+          },
+        ],
+      },
+      {
+        name: 'rptlca',
+        menu: 'rptlca',
+        menufull: 'rptlca',
+        requiredRoles: [RoleEnums.Admin, RoleEnums.User],
+        permissionRoles: [
+          { role: RoleEnums.Admin, permission: [PermissionEnums.All] },
+          {
+            role: RoleEnums.User,
+            permission: [PermissionEnums.Add, PermissionEnums.Edit],
+          },
+        ],
+      },
+      {
+        name: 'rptcoo',
+        menu: 'rptcoo',
+        menufull: 'rptcoo',
+        requiredRoles: [RoleEnums.Admin, RoleEnums.User],
+        permissionRoles: [
+          { role: RoleEnums.Admin, permission: [PermissionEnums.All] },
+          {
+            role: RoleEnums.User,
+            permission: [PermissionEnums.Add, PermissionEnums.Edit],
+          },
+        ],
+      },
+      {
+        name: 'rptphysical',
+        menu: 'rptphysical',
+        menufull: 'rptphysical',
+        requiredRoles: [RoleEnums.Admin, RoleEnums.User],
+        permissionRoles: [
+          { role: RoleEnums.Admin, permission: [PermissionEnums.All] },
+          {
+            role: RoleEnums.User,
+            permission: [PermissionEnums.Add, PermissionEnums.Edit],
+          },
+        ],
+      },
+      {
+        name: 'rptfines',
+        menu: 'rptfines',
+        menufull: 'rptfines',
+        requiredRoles: [RoleEnums.Admin, RoleEnums.User],
+        permissionRoles: [
+          { role: RoleEnums.Admin, permission: [PermissionEnums.All] },
+          {
+            role: RoleEnums.User,
+            permission: [PermissionEnums.Add, PermissionEnums.Edit],
+          },
+        ],
+      },
+      {
+        name: 'attestation',
+        menu: 'attestation',
+        menufull: 'attestation',
+        requiredRoles: [RoleEnums.Admin, RoleEnums.User],
+        permissionRoles: [
+          { role: RoleEnums.Admin, permission: [PermissionEnums.All] },
+          {
+            role: RoleEnums.User,
+            permission: [PermissionEnums.Add, PermissionEnums.Edit],
+          },
+        ],
+      },
+      {
+        name: 'lcacompletedattestation',
+        menu: 'lcacompletedattestation',
+        menufull: 'lcacompletedattestation',
+        requiredRoles: [RoleEnums.Admin, RoleEnums.User],
+        permissionRoles: [
+          { role: RoleEnums.Admin, permission: [PermissionEnums.All] },
+          {
+            role: RoleEnums.User,
+            permission: [PermissionEnums.Add, PermissionEnums.Edit],
+          },
+        ],
+      },
+      {
+        name: 'CompletedCooRequest',
+        menu: 'CompletedCooRequest',
+        menufull: 'CompletedCooRequest',
+        requiredRoles: [RoleEnums.Admin, RoleEnums.User],
+        permissionRoles: [
+          { role: RoleEnums.Admin, permission: [PermissionEnums.All] },
+          {
+            role: RoleEnums.User,
+            permission: [PermissionEnums.Add, PermissionEnums.Edit],
+          },
+        ],
+      },
+      {
+        name: 'cooinreview',
+        menu: 'cooinreview',
+        menufull: 'cooinreview',
+        requiredRoles: [RoleEnums.Admin, RoleEnums.User],
+        permissionRoles: [
+          { role: RoleEnums.Admin, permission: [PermissionEnums.All] },
+          {
+            role: RoleEnums.User,
+            permission: [PermissionEnums.Add, PermissionEnums.Edit],
+          },
+        ],
+      },
+      {
+        name: 'cooattestation',
+        menu: 'cooattestation',
+        menufull: 'cooattestation',
+        requiredRoles: [RoleEnums.Admin, RoleEnums.User],
+        permissionRoles: [
+          { role: RoleEnums.Admin, permission: [PermissionEnums.All] },
+          {
+            role: RoleEnums.User,
+            permission: [PermissionEnums.Add, PermissionEnums.Edit],
+          },
+        ],
+      },
+      {
+        name: 'physicalattestation',
+        menu: 'physicalattestation',
+        menufull: 'physicalattestation',
+        requiredRoles: [RoleEnums.Admin, RoleEnums.User],
+        permissionRoles: [
+          { role: RoleEnums.Admin, permission: [PermissionEnums.All] },
+          {
+            role: RoleEnums.User,
+            permission: [PermissionEnums.Add, PermissionEnums.Edit],
+          },
+        ],
+      },
+      {
+        name: 'completedattestation',
+        menu: 'completedattestation',
+        menufull: 'completedattestation',
+        requiredRoles: [RoleEnums.Admin, RoleEnums.User],
+        permissionRoles: [
+          { role: RoleEnums.Admin, permission: [PermissionEnums.All] },
+          {
+            role: RoleEnums.User,
+            permission: [PermissionEnums.Add, PermissionEnums.Edit],
+          },
+        ],
+      },
+      {
+        name: 'physicalinreview',
+        menu: 'physicalinreview',
+        menufull: 'physicalinreview',
+        requiredRoles: [RoleEnums.Admin, RoleEnums.User],
+        permissionRoles: [
+          { role: RoleEnums.Admin, permission: [PermissionEnums.All] },
+          {
+            role: RoleEnums.User,
+            permission: [PermissionEnums.Add, PermissionEnums.Edit],
+          },
+        ],
+      },
+      {
+        name: 'lcadashboard',
+        menu: 'lcadashboard',
+        menufull: 'lcadashboard',
+        requiredRoles: [RoleEnums.LcaAdmin, RoleEnums.LcaUser],
+        permissionRoles: [
+          {
+            role: RoleEnums.LcaAdmin,
+            permission: [PermissionEnums.All],
+          },
+          {
+            role: RoleEnums.LcaUser,
+            permission: [],
+          },
+        ],
+      },
+      {
+        name: 'importslca',
+        menu: 'importslca',
+        menufull: 'importslca',
+        requiredRoles: [RoleEnums.LcaAdmin, RoleEnums.LcaUser],
+        permissionRoles: [
+          {
+            role: RoleEnums.LcaAdmin,
+            permission: [PermissionEnums.All],
+          },
+          {
+            role: RoleEnums.LcaUser,
+            permission: [],
+          },
+        ],
+      },
+      {
+        name: 'pendinglca',
+        menu: 'pendinglca',
+        menufull: 'pendinglca',
+        requiredRoles: [RoleEnums.LcaAdmin, RoleEnums.LcaUser],
+        permissionRoles: [
+          {
+            role: RoleEnums.LcaAdmin,
+            permission: [PermissionEnums.All],
+          },
+          {
+            role: RoleEnums.LcaUser,
+            permission: [],
+          },
+        ],
+      },
+      {
+        name: 'completedlca',
+        menu: 'completedlca',
+        menufull: 'completedlca',
+        requiredRoles: [RoleEnums.LcaAdmin, RoleEnums.LcaUser],
+        permissionRoles: [
+          {
+            role: RoleEnums.LcaAdmin,
+            permission: [PermissionEnums.All],
+          },
+          {
+            role: RoleEnums.LcaUser,
+            permission: [],
+          },
+        ],
+      },
+      {
+        name: 'risklca',
+        menu: 'risklca',
+        menufull: 'risklca',
+        requiredRoles: [RoleEnums.LcaAdmin, RoleEnums.LcaUser],
+        permissionRoles: [
+          {
+            role: RoleEnums.LcaAdmin,
+            permission: [PermissionEnums.All],
+          },
+          {
+            role: RoleEnums.LcaUser,
+            permission: [],
+          },
+        ],
+      },
+      {
+        name: 'lcauserslist',
+        menu: 'LCA User Management',
+        requiredRoles: [
+          RoleEnums.Admin,
+          RoleEnums.User,
+          RoleEnums.LcaAdmin,
+          RoleEnums.LcaUser,
+        ],
+        permissionRoles: [
+          { role: RoleEnums.Admin, permission: [PermissionEnums.All] },
+          {
+            role: RoleEnums.User,
+            permission: [PermissionEnums.Add, PermissionEnums.Edit],
+          },
+          {
+            role: RoleEnums.LcaAdmin,
+            permission: [PermissionEnums.All],
+          },
+          {
+            role: RoleEnums.LcaUser,
+            permission: [],
+          },
+        ],
+      },
+    ];
+    return allPages;
   }
 
+  // allPagesDetails
+  allPagesDetails(name: string) {
+    let retdata: RetType = {} as RetType;
+    const allPages: RetType[] = this.allPages();
+    const oneData = allPages.find((m) => m.name === name);
+    if (oneData?.requiredRoles && oneData?.requiredRoles.length > 0) {
+      retdata.requiredRoles = oneData?.requiredRoles;
+      retdata.permissionRoles = oneData?.permissionRoles;
+      retdata.menu = oneData?.menu;
+      retdata.menufull = oneData?.menufull;
+      retdata.name = oneData?.name;
+    }
+    return retdata;
+  }
+
+  getRolefromString(role: string) {
+    const allRoles: string[] = role.split(',');
+    let roleList: number[] = [];
+    allRoles.map((item) => {
+      if (item === 'Admin') {
+        roleList.push(RoleEnums.Admin);
+      } else if (item === 'User') {
+        roleList.push(RoleEnums.User);
+      } else if (item === 'LCAAdminUser') {
+        roleList.push(RoleEnums.LcaAdmin);
+      } else if (item === 'LCAUser') {
+        roleList.push(RoleEnums.LcaUser);
+      }
+    });
+    return roleList;
+  }
+
+  // getStartingPage
+  getStartingPage(roles: string | undefined) {
+    let startingpage = 'access-denied';
+    if (roles) {
+      const allRoles: number[] = this.getRolefromString(roles);
+      if (allRoles && allRoles.length > 0) {
+        const allPages: RetType[] = this.allPages();
+        const mappedArray = allPages.map((item) => {
+          const requiredRoles = item?.requiredRoles;
+          if (this.isArrayIncluded(allRoles, requiredRoles)) {
+            return item.name;
+          } else {
+            return ConstAccessDenied;
+          }
+        });
+        if (mappedArray && mappedArray.length > 0) {
+          const firstPage = mappedArray.find((m) => m != ConstAccessDenied);
+          startingpage = firstPage ? firstPage : ConstAccessDenied;
+        }
+      }
+    }
+    return startingpage;
+  }
+
+  getUserDetails() {
+    let userdetail: any = {} as any;
+    if (sessionStorage.getItem('userrolelist') != null) {
+      // userProfile, userrole
+      let val: any = sessionStorage.getItem('userrolelist');
+      userdetail = JSON.parse(val);
+    }
+    return { Roles: userdetail };
+  }
+
+  isArrayIncluded(arr1: number[], arr2: number[]) {
+    return arr2.some((value) => arr1.includes(value));
+  }
+
+  // checkPermissionAvailable
+  checkPermissionAvailable(pagename: string, permission: number): boolean {
+    const { Roles } = this.getUserDetails();
+    // const allRoles: number[] = this.getRolefromString(Roles);
+    const permissionRoles: { role: number; permission: number[] }[] =
+      this.allPagesDetails(pagename)?.permissionRoles;
+    const permissionRolesByRole: number[] | undefined = permissionRoles.find(
+      (item) => Roles.includes(item.role)
+    )?.permission;
+    if (permissionRolesByRole && permissionRolesByRole.length > 0) {
+      if (this.isArrayIncluded(permissionRolesByRole, [permission])) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    return false;
+  }
 }

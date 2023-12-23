@@ -28,35 +28,48 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatChipsModule } from '@angular/material/chips';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
-
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { AuthGuard } from '../auth.guard';
 
-
-const routes=[
-  { path: 'physicalattestation', component: PhysicalAttestationComponent,  data: { role: [['Admin', 'User']] }},
-  { path: 'completedattestation', component: CompletedAttestationComponent , data: { role: ['Admin', 'User'] }},
-{path:'physicalinreview', component:PhysicalinreviewComponent,  data: { role: ['Admin', 'User'] }},
-]
-
-
-
+const routes = [
+  {
+    path: 'physicalattestation',
+    component: PhysicalAttestationComponent,
+    data: { role: [['Admin', 'User']], name: 'physicalattestation' },
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'completedattestation',
+    component: CompletedAttestationComponent,
+    data: { role: ['Admin', 'User'], name: 'completedattestation' },
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'physicalinreview',
+    component: PhysicalinreviewComponent,
+    data: { role: ['Admin', 'User'], name: 'physicalinreview' },
+    canActivate: [AuthGuard],
+  },
+];
 
 @NgModule({
   declarations: [
     PhysicalAttestationComponent,
     PhysicalAttestationCreateComponent,
-    PhysicalinreviewComponent, CompletedAttestationComponent
+    PhysicalinreviewComponent,
+    CompletedAttestationComponent,
   ],
   imports: [
     CommonModule,
 
     RouterModule.forChild(routes),
-    TranslateModule,ButtonModule,
+    TranslateModule,
+    ButtonModule,
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
@@ -65,11 +78,20 @@ const routes=[
     TableModule,
     TooltipModule,
     DialogModule,
-    TagModule,ToolbarModule,
-    PdfViewerModule, TabViewModule,
-    MultiSelectModule, MatTabsModule, MatChipsModule, ConfirmDialogModule,
-    MatProgressSpinnerModule, ReactiveFormsModule, MatDialogModule, MatSelectModule,
-    MatButtonModule, MatButtonToggleModule
-  ]
+    TagModule,
+    ToolbarModule,
+    PdfViewerModule,
+    TabViewModule,
+    MultiSelectModule,
+    MatTabsModule,
+    MatChipsModule,
+    ConfirmDialogModule,
+    MatProgressSpinnerModule,
+    ReactiveFormsModule,
+    MatDialogModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatButtonToggleModule,
+  ],
 })
-export class PhysicalModule { }
+export class PhysicalModule {}

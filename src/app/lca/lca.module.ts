@@ -24,26 +24,32 @@ import { MatChipsModule } from '@angular/material/chips';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { MatDialogModule } from '@angular/material/dialog';
 
-
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { AuthGuard } from '../auth.guard';
 
-const routes=[
-  {path:'attestation',component:AttestationComponent,  data: { role: ['Admin', 'User'] }},
-  {path:'lcacompletedattestation',component:LcaCompletedAttestationsComponent,  data: { role: ['Admin', 'User'] }}]
-
-
+const routes = [
+  {
+    path: 'attestation',
+    component: AttestationComponent,
+    data: { role: ['Admin', 'User'], name: 'attestation' },
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'lcacompletedattestation',
+    component: LcaCompletedAttestationsComponent,
+    data: { role: ['Admin', 'User'], name: 'lcacompletedattestation' },
+    canActivate: [AuthGuard],
+  },
+];
 
 @NgModule({
-  declarations: [
-    AttestationComponent,
-    LcaCompletedAttestationsComponent
-
-  ],
+  declarations: [AttestationComponent, LcaCompletedAttestationsComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-    TranslateModule,ButtonModule,
+    TranslateModule,
+    ButtonModule,
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
@@ -52,10 +58,17 @@ const routes=[
     TableModule,
     TooltipModule,
     DialogModule,
-    TagModule,ToolbarModule,
-    PdfViewerModule, TabViewModule,
-    MultiSelectModule, MatTabsModule, MatChipsModule, ConfirmDialogModule,
-    MatDialogModule, MatButtonModule, MatButtonToggleModule
-  ]
+    TagModule,
+    ToolbarModule,
+    PdfViewerModule,
+    TabViewModule,
+    MultiSelectModule,
+    MatTabsModule,
+    MatChipsModule,
+    ConfirmDialogModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatButtonToggleModule,
+  ],
 })
-export class LcaModule { }
+export class LcaModule {}

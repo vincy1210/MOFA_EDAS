@@ -25,28 +25,46 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatChipsModule } from '@angular/material/chips';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
-
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { AuthGuard } from '../auth.guard';
 
-
-const routes=[  {path:'CompletedCooRequest',component:CompletedCooRequestsComponent,  data: { role: ['Admin', 'User'] }},
-{path:'cooinreview', component:CooinreviewComponent,  data: { role: ['Admin', 'User'] }},
-{ path: 'cooattestation', component: CooAttestationComponent,  data: { role: ['Admin', 'User'] } },]
+const routes = [
+  {
+    path: 'CompletedCooRequest',
+    component: CompletedCooRequestsComponent,
+    data: { role: ['Admin', 'User'], name: 'CompletedCooRequest' },
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'cooinreview',
+    component: CooinreviewComponent,
+    data: { role: ['Admin', 'User'], name: 'cooinreview' },
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'cooattestation',
+    component: CooAttestationComponent,
+    data: { role: ['Admin', 'User'], name: 'cooattestation' },
+    canActivate: [AuthGuard],
+  },
+];
 
 @NgModule({
-  declarations: [CooAttestationCreateComponent,
+  declarations: [
+    CooAttestationCreateComponent,
     CompletedCooRequestsComponent,
-     CooinreviewComponent,
-    CooAttestationComponent
+    CooinreviewComponent,
+    CooAttestationComponent,
   ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-    TranslateModule,ButtonModule,
+    TranslateModule,
+    ButtonModule,
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
@@ -55,10 +73,19 @@ const routes=[  {path:'CompletedCooRequest',component:CompletedCooRequestsCompon
     TableModule,
     TooltipModule,
     DialogModule,
-    TagModule,ToolbarModule,
-    PdfViewerModule, TabViewModule,
-    MultiSelectModule, MatTabsModule, MatChipsModule, ConfirmDialogModule,
-    MatProgressSpinnerModule, ReactiveFormsModule, MatDialogModule, MatButtonModule, MatButtonToggleModule
-  ]
+    TagModule,
+    ToolbarModule,
+    PdfViewerModule,
+    TabViewModule,
+    MultiSelectModule,
+    MatTabsModule,
+    MatChipsModule,
+    ConfirmDialogModule,
+    MatProgressSpinnerModule,
+    ReactiveFormsModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatButtonToggleModule,
+  ],
 })
-export class CooModule { }
+export class CooModule {}
