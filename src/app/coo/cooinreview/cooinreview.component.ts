@@ -79,6 +79,7 @@ datasource:any;
 
 
 currentrow:any;
+attchemntisthere:boolean=false;
 isfilenotfouund:boolean=false;
 
 fields: { label: string, value: any }[] = [];
@@ -643,6 +644,14 @@ openDialog(customer:any) {
 openNew(data:any) {
   console.log(data);
   this.currentrow=data;
+
+  if(this.currentrow.attachment!==undefined && this.currentrow.attachment!==null && this.currentrow.attachment!==''){
+    this.attchemntisthere=true;
+  }
+  else{
+    this.attchemntisthere=false;
+
+  }
   
 
   this.common.getPaymentReceiptbase64(this.currentrow.invoiceuno)

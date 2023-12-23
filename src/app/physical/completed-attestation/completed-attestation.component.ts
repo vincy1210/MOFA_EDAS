@@ -36,7 +36,7 @@ AddInvoiceDialog:boolean=false;
 
 currentrow:any;
 isfilenotfouund:boolean=false;
-
+attchemntisthere:boolean=false;
 fields: { label: string, value: any }[] = [];
 isButtonDisabled = false;
   constructor(
@@ -214,6 +214,13 @@ openNew(data:any) {
   console.log(data);
   this.currentrow=data;
   
+  if(this.currentrow.filepath!==undefined && this.currentrow.filepath!==null && this.currentrow.filepath!==''){
+    this.attchemntisthere=true;
+  }
+  else{
+    this.attchemntisthere=false;
+
+  }
 
   this.common.getPaymentReceiptbase64(this.currentrow.invoiceuno)
   .then((result) => {

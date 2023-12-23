@@ -44,7 +44,7 @@ export class PhysicalAttestationComponent implements OnInit {
   todayModel:Date=new Date();
   currentcompany:any;
 AddInvoiceDialog:boolean=false;
-
+attchemntisthere:boolean=false;
 payorpayall:string='pay';
   timelineItems = [
     { status: '', title: 'IN DRAFT', icon: 'check', date: '', time: '' },
@@ -774,6 +774,17 @@ closesidetab(){
 openNew(data:any) {
   console.log(data);
   this.currentrow=data;
+
+  if(this.currentrow.filepath!==undefined && this.currentrow.filepath!==null && this.currentrow.filepath!==''){
+    this.attchemntisthere=true;
+  }
+  else{
+    this.attchemntisthere=false;
+
+  }
+		
+
+
   this.AddInvoiceDialog=true
   const fieldMappings: { [key: string]: string } = {
       edasreqno: 'EDAS Request No',

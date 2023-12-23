@@ -665,11 +665,11 @@ if(this.selectedAttestations[0]?.attestfilelocation!='' || this.selectedAttestat
  this.getimagebase64(this.selectedAttestations[0]?.attestfilelocation);
 }
 
- let createddate=this.splitdatetime(this.selectedAttestations[0]?.enteredon);
-    let approveddate=this.splitdatetime(this.selectedAttestations[0]?.approvedon);
-    let paymentdate=this.splitdatetime(this.selectedAttestations[0]?.paidon);
-    let attestationdate=this.splitdatetime(this.selectedAttestations[0]?.attestedon);
-    let completedDate=this.splitdatetime(this.selectedAttestations[0]?.completedon);
+ let createddate=this.common.splitdatetimeforstring(this.selectedAttestations[0]?.enteredon);
+    let approveddate=this.common.splitdatetimeforstring(this.selectedAttestations[0]?.approvedon);
+    let paymentdate=this.common.splitdatetimeforstring(this.selectedAttestations[0]?.paidon);
+    let attestationdate=this.common.splitdatetimeforstring(this.selectedAttestations[0]?.attestedon);
+    let completedDate=this.common.splitdatetimeforstring(this.selectedAttestations[0]?.completedon);
 
 console.log(this.timelineItems);
 this.timelineItems.forEach(item => (item.status = ''));
@@ -727,25 +727,7 @@ console.log(this.timelineItems);
 //   }
 //   return null; // Invalid or null datetime string
 // }
-splitdatetime(datetimeString: any) {
-  if (datetimeString && typeof datetimeString === 'string') {
-    const dateTimeParts = datetimeString.split('T'); // Splitting the string at 'T'
-    if (dateTimeParts.length === 2) {
-      return {
-        date: this.datepipe.transform(dateTimeParts[0], 'dd-MMM-yyyy'),
-        time: dateTimeParts[1],
-      };
-    }
-    else{
-      return {
-        date: this.datepipe.transform(dateTimeParts[0], 'dd-MMM-yyyy'),
-        time: '',
-      };
 
-    }
-  }
-  return null; // Invalid or null datetime string
-}
 
 
 AttestationPay(){
@@ -1087,6 +1069,24 @@ getCooForMyLCAInvoice(currentrow:any){
           }
         })
 }
+
+// downloadattachment(filelocation:any){
+//   this.common.getimagebase64(filelocation)
+
+
+// }
+
+//  formatDate(dateString: string): string {
+//   const date = new Date(
+//     parseInt(dateString.substring(0, 4)),
+//     parseInt(dateString.substring(4, 6)) - 1,
+//     parseInt(dateString.substring(6, 8))
+//   );
+
+//   return this.datepipe.transform(date, 'yyyy-MM-dd') || 'Invalid Date'; // Handle invalid date format
+// }
+
+
 
 }
 

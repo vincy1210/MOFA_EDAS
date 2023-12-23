@@ -548,10 +548,9 @@ export class CommonService {
             // Create a Blob and download the file
             const file = new Blob([byteArray], { type: 'application/pdf' });
             const fileUrl = URL.createObjectURL(file);
-  
             const link = document.createElement('a');
             link.href = fileUrl;
-            link.download = 'Attestation_.pdf'; // You can customize the file name here
+            link.download = 'Attestation.pdf'; // You can customize the file name here
   
             document.body.appendChild(link);
             link.click();
@@ -707,6 +706,34 @@ export class CommonService {
   redirecttologin(){
     window.location.href = "https://stg-id.uaepass.ae/idshub/logout?redirect_uri=https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2"
   }
+  formatDatestringtodate(dateString: string): string {
+    const date = new Date(
+      parseInt(dateString.substring(0, 4)),
+      parseInt(dateString.substring(4, 6)) - 1,
+      parseInt(dateString.substring(6, 8))
+    );
+  
+    return this.datePipe.transform(date, 'yyyy-MM-dd') || 'Invalid Date'; // Handle invalid date format
+  }
 
+  splitdatetimeforstring(datetimeString: any) {
+    if (datetimeString && typeof datetimeString === 'string') {
+      const dateTimeParts = datetimeString.split('T'); // Splitting the string at 'T'
+      if (dateTimeParts.length === 2) {
+        return {
+          date: this.datePipe.transform(dateTimeParts[0], 'dd-MMM-yyyy'),
+          time: dateTimeParts[1],
+        };
+      }
+      else{
+        return {
+          date: this.datePipe.transform(dateTimeParts[0], 'dd-MMM-yyyy'),
+          time: '',
+        };
+  
+      }
+    }
+    return null; // Invalid or null datetime string
+  }
 
 }

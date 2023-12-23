@@ -189,6 +189,12 @@
                   <mat-label class="more-content-block">{{ field.value }}</mat-label>
                 </div>
               </div>
+              <div class="more-content">
+                <mat-label class="title-label">{{ 'Attestation File' | translate }}</mat-label>
+                <div class="more-content-body">
+                  <mat-label class="more-content-block" >{{ 'Attestation.pdf' }} <span (click)="common.getimagebase64(currentrow.attestfilelocation)">  <mat-icon class="action_eye_icon_popup" >download</mat-icon> </span> </mat-label>
+                </div>
+              </div>
               
             </ng-container>
           </div>

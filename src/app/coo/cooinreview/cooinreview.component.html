@@ -125,7 +125,7 @@
                   </td>
                   <td>
                     <span class="image-text">{{
-                      common.splitdatetime(data.declarationdate)?.date
+                      common.splitdatetime(common.formatDateString(data.declarationdate))?.date
                     }}</span>
                   </td>
                   <td>
@@ -275,6 +275,16 @@
                 <mat-label class="title-label">{{ field.label | translate }}</mat-label>
                 <div class="more-content-body">
                   <mat-label class="more-content-block">{{ field.value }}</mat-label>
+                </div>
+              </div>
+<!-- attachment -->
+              <div class="more-content">
+                <mat-label class="title-label">{{ 'Attestation File' | translate }}</mat-label>
+                <div *ngIf="attchemntisthere" class="more-content-body">
+                  <mat-label class="more-content-block" >{{ 'Attestation.pdf' }} <span (click)="common.getimagebase64(currentrow.attachment)">  <mat-icon class="action_eye_icon_popup" >download</mat-icon> </span> </mat-label>
+                </div>
+                <div class="more-content-body" *ngIf="!attchemntisthere">
+                  <mat-label class="more-content-block" >{{ 'No File uploaded yet' }} </mat-label>
                 </div>
               </div>
               

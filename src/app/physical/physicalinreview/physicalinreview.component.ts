@@ -61,6 +61,7 @@ export class PhysicalinreviewComponent implements OnInit {
 currentrow:any;
 isfilenotfouund:boolean=false;
 
+attchemntisthere:boolean=false;
 fields: { label: string, value: any }[] = [];
 isButtonDisabled = false;
 paymentcount=environment.appdetails.payment_count;
@@ -452,6 +453,16 @@ splitdatetime(datetimeString: any) {
 openNew(data:any) {
   console.log(data);
   this.currentrow=data;
+
+  if(this.currentrow.filepath!==undefined && this.currentrow.filepath!==null && this.currentrow.filepath!==''){
+    this.attchemntisthere=true;
+  }
+  else{
+    this.attchemntisthere=false;
+
+  }
+
+
   let invnumber;
   if(this.currentrow?.invoiceuno!=0 || this.currentrow?.invoiceuno!=null || this.currentrow?.invoiceuno !=undefined){
     invnumber=parseInt(this.currentrow?.invoiceuno,10);

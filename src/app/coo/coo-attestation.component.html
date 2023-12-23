@@ -142,7 +142,7 @@
                   </td>
                   <td>
                     <span class="image-text">{{
-                      common.splitdatetime(data.declarationdate)?.date
+                    common.splitdatetimeforstring(common.formatDatestringtodate(data.declarationdate))?.date
                     }}</span>
                   </td>
                   <td>
@@ -312,6 +312,7 @@
               <mat-label class="more-content-block">{{ field.value }}</mat-label>
             </div>
           </div>
+          
           
         </ng-container>
       </div>
