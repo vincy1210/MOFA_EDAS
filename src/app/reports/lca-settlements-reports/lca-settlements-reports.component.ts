@@ -92,7 +92,6 @@ export class LcaSettlementsReportsComponent
     private route: ActivatedRoute,
     private modalPopupService: ModalPopupService
   ) {
-    debugger;
     super(router, consts, apiservice, common, translate);
     const url = this.router.url;
     this.routesurl = url;
@@ -173,7 +172,7 @@ export class LcaSettlementsReportsComponent
       },
       {
         field: 'enteredby',
-        header: 'companydetails.companyList.enteredby',
+        header: 'settlementdetails.settlementList.enteredby',
       },
       {
         field: 'action',
@@ -370,6 +369,13 @@ export class LcaSettlementsReportsComponent
           this.lcauno = this.lcaList.at(0)?.itemno;
           this.onClickFilterOptionDate(true);
           // }
+
+          let data2 = sessionStorage.getItem('lcauserdetails');
+          if (data2 != undefined || data2 != null) {
+            let lcauserdetails = JSON.parse(data2);
+            this.lcauno = lcauserdetails?.lcauno;
+            this.lcauno = 2;
+          }
         }
       },
     });

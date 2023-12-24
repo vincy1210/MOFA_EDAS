@@ -62,26 +62,33 @@
             <ng-template pTemplate="caption">
               <div class="p-d-flex grid-header">
                 <div class="grid-header-left">
-                  <span class="p-input-icon-left p-ml-auto grid-search">
-                    <i class="pi pi-search"></i>
-                    <input
-                      pInputText
-                      type="text"
-                      (input)="
-                        tableref.filterGlobal(
-                          $any($event.target).value,
-                          'contains'
-                        )
-                      "
-                      placeholder="Search"
-                      appTrimInput
-                    />
-                  </span>
+                  <div style="padding: 5px" class="col-md-3 col-lg-3 col-sm-6">
+                    <mat-form-field class="searchboxinput">
+                      <mat-label
+                        ><mat-icon style="font-size: larger">search</mat-icon>
+                        {{ "SearchKeyword" | translate }}</mat-label
+                      >
+                      <input
+                        matInput
+                        type="text"
+                        (input)="
+                          tableref.filterGlobal(
+                            $any($event.target).value,
+                            'contains'
+                          )
+                        "
+                        placeholder="{{ 'SearchKeyword' | translate }}"
+                      />
+                    </mat-form-field>
+                  </div>
                 </div>
                 <!-- *ngIf="routesname === 'pending'" -->
                 <div class="grid-header-center">
                   <div class="grid grid-cols-1">
-                    <mat-form-field appearance="outline">
+                    <mat-form-field
+                      appearance="outline"
+                      style="visibility: hidden"
+                    >
                       <mat-label>{{ "lcauno" | translate }}</mat-label>
                       <mat-select
                         name="lcauno"
