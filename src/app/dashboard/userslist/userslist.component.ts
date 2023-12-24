@@ -128,6 +128,7 @@ todayModel:Date=new Date();
     let data={
       "uuid":this.uuid,
       "companyuno": this.currentcompany,
+      "isapplnadmin":0
         }
         this.common.showLoading();
             this.apicall.post(this.consts.getCompanyUserList,data).subscribe({next:(success:any)=>{

@@ -271,9 +271,9 @@
                   ></p-tag>
                 </td>
                 <td style="text-align: center" [ngClass]="{
-                  '': customer.noofdaysoverdue < 2,
-                  outofstock: customer.noofdaysoverdue > 2,
-                  lowstock:customer.noofdaysoverdue > 1 &&customer.noofdaysoverdue < 3
+                  '': customer.noofdaysoverdue < 10,
+                  outofstock: customer.noofdaysoverdue > 15,
+                  lowstock:customer.noofdaysoverdue > 9 &&customer.noofdaysoverdue < 16
                 }">
                   <div
                     
@@ -303,7 +303,7 @@
                 </td>
                 <td>
                   <span class="image-text">{{
-                    common.splitdatetimeforstring((customer.declarationdate))?.date
+                    common.splitdatetimeforstring(common.formatDatestringtodate(customer.declarationdate))?.date
                   }}</span>
                 </td>
                 <td>
