@@ -7,7 +7,10 @@
 >
   <!-- {{'currentTheme' | translate}} -->
   <!-- {{userloggedin}} {{this.common.getUserType()==undefined}} -->
-  <mat-toolbar
+
+
+  <mat-drawer-container class="example-container" autosize>
+    <mat-toolbar
     class="main-header"
     style="position: sticky; top: 0; left: 0; right: 0"
   >
@@ -374,8 +377,6 @@
     </div>
     <!--Menu Only Shown on Mobile ends-->
   </mat-toolbar>
-
-  <mat-drawer-container class="example-container" autosize>
     <mat-drawer #drawer class="example-sidenav app-sidenav" mode="over">
       <app-left-menu-drawer
         (submenuClicked)="closeDrawer(drawer)"
