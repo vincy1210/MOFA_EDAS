@@ -188,7 +188,7 @@ export class LeftMenuDrawerComponent implements OnInit {
           subMenus: [
             {
               id: 1,
-              menu: 'Pending ',
+              menu: 'Pending',
               icon: 'play_arrow',
               link: '/lca/attestation',
             },

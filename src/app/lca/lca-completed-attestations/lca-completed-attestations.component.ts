@@ -15,6 +15,8 @@ import { saveAs } from 'file-saver';
 import { AuthService } from 'src/service/auth.service';
 import { Router } from '@angular/router';
 
+import { TranslateService } from '@ngx-translate/core';
+
 interface Column {
   field: string;
   header: string;
@@ -97,7 +99,8 @@ isfilenotfouund:boolean=false;
 fields: { label: string, value: any }[] = [];
 isButtonDisabled = false;
   constructor(private datePipe: DatePipe, private http:HttpClient,private _liveAnnouncer: LiveAnnouncer, private api:ApiService,
-     public common:CommonService, private consts:ConstantsService, private auth:AuthService, private router:Router) {
+     public common:CommonService, private consts:ConstantsService, private auth:AuthService, private router:Router,
+     private translate: TranslateService,) {
     this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
    }
 
@@ -149,7 +152,7 @@ isButtonDisabled = false;
 
     }
     this.cols = [
-      { field: 'lcaname', header: 'Channel', width:'15%' },
+      // { field: 'lcaname', header: 'Channel', width:'15%' },
       { field: 'companyname', header: 'Company', width:'20%' },
   ];
 
@@ -472,27 +475,27 @@ setTimeout(() => {
   console.log(this.src)
   this.AddInvoiceDialog=true
   const fieldMappings: { [key: string]: string } = {
-    edasattestno: 'Attestation No',
-    reqappnumber: 'Request Application Number',
-    attestreqdate: 'Attestation Request Date',
-    declarationdate: 'Declaration Date',
-    invoicenumber: 'Invoice Number',
-    declarationumber: 'Declaration Number',
-    invoicedate: 'Invoice Date',
-    invoiceamount: 'Invoice Amount',
-    currencycode: 'Currency Code',
-    feesamount: 'Fees Amount',
-    paidon: 'Paid On',
-    paidby: 'Paid By',
-    approvedon: 'Approved On',
-    statusname: 'Status',
-    enteredon: 'Entered On',
-    importername: 'Importer Name',
-    exportportname: 'Export Port Name',
-    invoiceid: 'Invoice ID',
-    companyname: 'Company',
-    comments: 'Comments',
-    lcaname: 'Channel ',
+    "edasattestno": this.translate.instant('edasattestno'),
+    "reqappnumber": this.translate.instant('Request Application Number'),
+    "attestreqdate": this.translate.instant('Attestation Request Date'),
+    "declarationdate": this.translate.instant('Declaration Date'),
+    "invoicenumber": this.translate.instant('Invoice Number'),
+    "declarationumber": this.translate.instant('Declaration No'),
+    "invoicedate": this.translate.instant('Invoice Date'),
+    "invoiceamount": this.translate.instant('Invoice Amount'),
+    "currencycode": this.translate.instant('Currency'),
+    "feesamount": this.translate.instant('Fees Amount'),
+    "paidon": this.translate.instant('Paid On'),
+    "paidby": this.translate.instant('Paid By'),
+    "approvedon": this.translate.instant('Approved On'),
+    "statusname": this.translate.instant('Status'),
+    "enteredon": this.translate.instant('Entered On'),
+    "importername": this.translate.instant('Importer Name'),
+    "exportportname": this.translate.instant('Export Port Name'),
+    "invoiceid": this.translate.instant('Invoice ID'),
+    "companyname": this.translate.instant('Company'),
+    "comments": this.translate.instant('Comments'),
+    "lcaname": this.translate.instant('Channel')
     // Add more fields as needed
   };
 

@@ -509,7 +509,7 @@ export class RegistrationComponent {
                 );
               }
               this.auth.setLCAUser(response.data[0].roleuno);
-              this.router.navigateByUrl('/lcadashboard');
+              this.router.navigateByUrl('/lca-login/lcadashboard');
             } else {
               sessionStorage.setItem('usertype', 'CompanyUser');
 

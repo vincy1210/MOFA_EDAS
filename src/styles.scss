@@ -2305,12 +2305,15 @@ h1.db-sub-title {
 .outofstock {
   font-weight: 700;
   color: #ff5252;
+  background-color: #ff52522b;
+
   // text-decoration: line-through;
 }
 
 .lowstock {
   font-weight: 700;
-  color: #ffa726;
+  color: #dda44e;
+  background-color: #ffa82631;
 }
 
 .instock {

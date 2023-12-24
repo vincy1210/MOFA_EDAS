@@ -42,8 +42,8 @@
            
                   <div style="padding: 5px;" class="col-md-3 col-lg-3 col-sm-6">
                           <mat-form-field class="searchboxinput"  >
-                            <mat-label><mat-icon style="font-size:larger;">{{'search' | translate}}</mat-icon> {{'Search' | translate}}</mat-label>
-                            <input  matInput type="text" (input)="tableref.filterGlobal($any($event.target).value, 'contains')" placeholder="{{'Search' | translate}}">
+                            <mat-label><mat-icon style="font-size:larger;">{{'SearchKeyword' | translate}}</mat-icon> {{'SearchKeyword' | translate}}</mat-label>
+                            <input  matInput type="text" (input)="tableref.filterGlobal($any($event.target).value, 'contains')" placeholder="{{'SearchKeyword' | translate}}">
                           </mat-form-field>
                   </div>
               
@@ -100,7 +100,7 @@
                     display="menu"
                   ></p-columnFilter>
                 </th>
-                <th pFrozenColumn alignFrozen="right">{{'Action' | translate}}</th>
+                <th pFrozenColumn alignFrozen="right">{{'actions' | translate}}</th>
               </tr>
             </ng-template>
             <ng-template pTemplate="body" let-data>
@@ -140,7 +140,7 @@
                     <mat-icon class="action_eye_icon" >visibility</mat-icon>
                       </span>
 
-                      <span (click)="this.common.getimagebase64(data.attachment)" style="padding:15px; cursor: pointer;" tooltipPosition="bottom" pTooltip="Download"  class="image-text viewaction">
+                      <span (click)="this.common.getimagebase64(data.attachment)" style="padding:15px; cursor: pointer;" tooltipPosition="bottom" pTooltip="{{'Download' | translate}}"   class="image-text viewaction">
                         <mat-icon class="action_eye_icon" >download</mat-icon> </span>
 
                
@@ -164,7 +164,7 @@
   
   <p-dialog [(visible)]="AddInvoiceDialog" [draggable]="false" style="top:20%" [style]="{ width: '750px' }" header="COO Attestation Details" [modal]="true" styleClass="p-fluid">
     <p-tabView>
-      <p-tabPanel header="Details">
+      <p-tabPanel header="{{'Details' | translate}}">
     <div class="viewmore">
       <div class="more-content-section">
         <div class="grid grid-cols-2">
