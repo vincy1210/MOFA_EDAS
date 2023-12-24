@@ -17,7 +17,7 @@
             #tableref
             [rowHover]="true"
             [paginator]="true"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            currentPageReportTemplate="{{'Showing' | translate}} {first} {{'to' | translate}} {last} {{'of' | translate}} {totalRecords} {{'entries' | translate}}"
             [filterDelay]="0"
             [totalRecords]="totalrecords"
             [value]="invoiceRequestLists"
@@ -27,7 +27,7 @@
             [rowsPerPageOptions]="[10, 20, 50]"
             [loading]="loading"
             styleClass="p-datatable-customers p-datatable-gridlines"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            currentPageReportTemplate="{{'Showing' | translate}} {first} {{'to' | translate}} {last} {{'of' | translate}} {totalRecords} {{'entries' | translate}}"
             [globalFilterFields]="[
               'edasreqno',
               'entitycode',
@@ -190,7 +190,7 @@
       </div>
     </div>
   </p-tabPanel>
-  <p-tabPanel header="Receipt">
+  <p-tabPanel header="{{'Receipt' | translate}}">
     <!-- {{this.src}} -->
     <div class="grid grid-cols-1">
       <div id="outerContainer">

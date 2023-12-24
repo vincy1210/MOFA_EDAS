@@ -57,10 +57,10 @@ user_mailID:string='';
 currentcompany:any;
 contactno:string='';
 timelineItems = [
-  { status: '', title: 'IN DRAFT', icon: 'check', date: '', time: '' },
-    { status: '', title: 'PAYMENT', icon: 'check', date: '', time: '' },
-    { status: '', title: 'IN REVIEW', icon: 'check', date: '', time: '' },
-    { status: '', title: 'COMPLETED', icon: 'check', date: '', time: '' },
+  { status: '', title: this.translate.instant('IN DRAFT'), icon: 'check', date: '', time: '' },
+    { status: '', title: this.translate.instant('PAYMENT'), icon: 'check', date: '', time: '' },
+    { status: '', title: this.translate.instant('IN REVIEW'), icon: 'check', date: '', time: '' },
+    { status: '', title: this.translate.instant('COMPLETED'), icon: 'check', date: '', time: '' },
 ];
 ischecked:any;
 invoiceunoresponse:number=0;
@@ -671,7 +671,7 @@ openNew(data:any) {
     edasattestno: 'EDAS Attestation No',
     attestreqdate: 'Attestationn Request Date',
     feesamount: 'Fees Amount',
-    totalamount: 'Total Amount',
+    totalamount: 'totalamount',
     comments: 'Comments',
     feespaid: 'Fees Paid',
     statusname: 'Status'

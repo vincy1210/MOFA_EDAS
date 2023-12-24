@@ -394,7 +394,7 @@ deleteuser(currentrow:any){
 deleteuserpopup(list:any){
   this.confirmationService.confirm({
     message: this.translate.instant('Are you sure you want to delete the selected user?'),
-    header: 'Confirm',
+    header: this.translate.instant('Confirm'),
     icon: 'pi pi-exclamation-triangle',
     accept: () => {
         // this.invoicesData = this.invoicesData.filter((val:any) => !this.selectedAttestations?.includes(val)); 

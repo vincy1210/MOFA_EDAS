@@ -23,7 +23,7 @@
             #tableref
             [rowHover]="true"
             [paginator]="true"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            currentPageReportTemplate="{{'Showing' | translate}} {first} {{'to' | translate}} {last} {{'of' | translate}} {totalRecords} {{'entries' | translate}}"
             [filterDelay]="0"
             [totalRecords]="totalrecords"
             [value]="list"
@@ -33,7 +33,7 @@
             [rowsPerPageOptions]="[10, 20, 50]"
             [loading]="loading"
             styleClass="p-datatable-customers p-datatable-gridlines"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            currentPageReportTemplate="{{'Showing' | translate}} {first} {{'to' | translate}} {last} {{'of' | translate}} {totalRecords} {{'entries' | translate}}"
             [globalFilterFields]="[
               'edasattestno',
               'invoicenumber',
@@ -114,9 +114,9 @@
                     [options]="cols"
                     [(ngModel)]="selectedColumns"
                     optionLabel="header"
-                    selectedItemsLabel="{0} columns selected"
+                    selectedItemsLabel="{0} {{'columns selected' | translate}}"
                     [style]="{ 'min-width': '200px' }"
-                    placeholder="Choose Columns"
+                    placeholder="{{'Choose Columns' |translate}}"
                   ></p-multiSelect>
 
                   <div
@@ -272,15 +272,20 @@
                 </td>
                 <td style="text-align: center" [ngClass]="{
                   '': customer.noofdaysoverdue < 10,
-                  outofstock: customer.noofdaysoverdue > 15,
-                  lowstock:customer.noofdaysoverdue > 9 &&customer.noofdaysoverdue < 16
+                  outofstock: customer.noofdaysoverdue > 14,
+                  lowstock: customer.noofdaysoverdue > 9 && customer.noofdaysoverdue < 15
                 }">
-                  <div
-                    
-                  >
+                  <div *ngIf="customer.noofdaysoverdue > 14" pTooltip="Exceeded 14 days of grace period for the LCA Invoice Attestation payment.">
+                    {{ customer.noofdaysoverdue }}
+                  </div>
+                  <div *ngIf="customer.noofdaysoverdue < 10">
+                    {{ customer.noofdaysoverdue }}
+                  </div>
+                  <div *ngIf="customer.noofdaysoverdue > 9 && customer.noofdaysoverdue < 15" pTooltip="Exceeded {{customer.noofdaysoverdue}} days and nearing grace period of 14 days for the LCA Invoice Attestation payment. ">
                     {{ customer.noofdaysoverdue }}
                   </div>
                 </td>
+                
 
                 <td style="text-align: right">
                   <span class="image-text">{{
@@ -362,7 +367,7 @@
           </div>
           <!-- <app-attestation-workflow [invoiceamt]="totalAttestationFee" [fineamount]="totalFineAmount" [totalamount]="totalFineAmount" [selectedAttestations]="selectedAttestations"></app-attestation-workflow> -->
           <mat-tab-group>
-            <mat-tab label="Timeline" *ngIf="Timelinevisible">
+            <mat-tab label="{{'Timeline' | translate}}" *ngIf="Timelinevisible">
               <div class="grid grid-cols-1">
                 <div class="dw-container mt-5">
                   <div
@@ -392,7 +397,7 @@
                 </div>
               </div>
             </mat-tab>
-            <mat-tab label="Payment">
+            <mat-tab label="{{'Payment' | translate}}">
               <div class="flex grid grid-cols-2 gap-6 p-5 payment-header-label">
                 <div class="p-1">
                   <mat-label class="payment-header-label">{{
@@ -422,7 +427,7 @@
                     <span
                       ><mat-label
                         class="amount_right_align payment-header-label"
-                        >{{ "Total Amount" | translate }}</mat-label
+                        >{{ "totalamount" | translate }}</mat-label
                       ></span
                     >
                   </div>
@@ -567,7 +572,7 @@
        [resizableColumns]="true"  dataKey="coorequestno" 
                     [scrollable]="false"  selectionMode="multiple"
                   #tableref [rowHover]="true" [paginator]="true"
-                  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                  currentPageReportTemplate="{{'Showing' | translate}} {first} {{'to' | translate}} {last} {{'of' | translate}} {totalRecords} {{'entries' | translate}}"
                   [totalRecords]="totalrecords_coo"
                   [value]="cooAttestationLists"
                   [rows]="10"
@@ -575,7 +580,7 @@
                   [showCurrentPageReport]="true"
                   [loading]="loading"
                   styleClass="p-datatable-customers p-datatable-gridlines"
-                  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                  currentPageReportTemplate="{{'Showing' | translate}} {first} {{'to' | translate}} {last} {{'of' | translate}} {totalRecords} {{'entries' | translate}}"
                   [globalFilterFields]="[
                     'declarationumber',
                     'edasattestno',

@@ -261,7 +261,7 @@ openNew(data:any) {
     edasattestno: 'EDAS Attestation No',
     attestreqdate: 'Attestationn Request Date',
     feesamount: 'Fees Amount',
-    totalamount: 'Total Amount',
+    totalamount: 'totalamount',
     comments: 'Comments',
     feespaid: 'Fees Paid',
     statusname: 'Status'

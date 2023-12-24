@@ -22,7 +22,7 @@
             #tableref
             [rowHover]="true"
             [paginator]="true"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            currentPageReportTemplate="{{'Showing' | translate}} {first} {{'to' | translate}} {last} {{'of' | translate}} {totalRecords} {{'entries' | translate}}"
             [totalRecords]="totalrecords"
             [value]="cooAttestationLists"
             [rows]="10"
@@ -31,7 +31,7 @@
             [rowsPerPageOptions]="[10, 20, 50]"
             [loading]="loading"
             styleClass="p-datatable-customers p-datatable-gridlines"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            currentPageReportTemplate="{{'Showing' | translate}} {first} {{'to' | translate}} {last} {{'of' | translate}} {totalRecords} {{'entries' | translate}}"
             [globalFilterFields]="[
               'declarationumber',
               'edasattestno',
@@ -285,7 +285,7 @@
           </div>
           <!-- <app-attestation-workflow [selectedAttestations]="selectedAttestations"></app-attestation-workflow> -->
           <mat-tab-group>
-            <mat-tab label="Timeline" *ngIf="Timelinevisible">
+            <mat-tab label="{{'Timeline' | translate}}" *ngIf="Timelinevisible">
               <div class="grid grid-cols-1">
                 <div class="dw-container mt-5">
                   <div
@@ -317,7 +317,7 @@
                 </div>
               </div>
             </mat-tab>
-            <mat-tab label="Payment">
+            <mat-tab label="{{'Payment' | translate}}">
               <div class="flex grid grid-cols-2 gap-6 p-5 payment-header-label">
                 <div class="p-1">
                   <mat-label class="payment-header-label">{{
@@ -343,7 +343,7 @@
                     <span
                       ><mat-label
                         class="amount_right_align payment-header-label"
-                        >{{ "Total Amount" | translate }}</mat-label
+                        >{{ "totalamount" | translate }}</mat-label
                       ></span
                     >
                   </div>
@@ -378,7 +378,7 @@
                     (click)="AttestationPay()"
                     class="pay-btn"
                   >
-                    {{ payorpayall }}
+                    {{ payorpayall | translate}}
                   </button>
                 </div>
                 <div class="flex items-center justify-center col-span-2">
@@ -469,7 +469,7 @@
     [draggable]="false"
     style="top: 20%"
     [style]="{ width: '750px' }"
-    header="{{ 'LCA Invoice(s) Details' | translate }}"
+    header="{{ 'LCA Invoices Details' | translate }}"
     [modal]="true"
     styleClass="p-fluid"
   >
@@ -484,7 +484,7 @@
       #tableref
       [rowHover]="true"
       [paginator]="true"
-      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      currentPageReportTemplate="{{'Showing' | translate}} {first} {{'to' | translate}} {last} {{'of' | translate}} {totalRecords} {{'entries' | translate}}"
       [filterDelay]="0"
       [totalRecords]="totalrecords_LCA"
       [value]="cooAttestationLists_LCA"
@@ -494,7 +494,7 @@
       [rowsPerPageOptions]="[10, 20, 50]"
       [loading]="loading"
       styleClass="p-datatable-customers p-datatable-gridlines"
-      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      currentPageReportTemplate="{{'Showing' | translate}} {first} {{'to' | translate}} {last} {{'of' | translate}} {totalRecords} {{'entries' | translate}}"
       [globalFilterFields]="[
         'edasattestno',
         'invoicenumber',
@@ -513,7 +513,7 @@
             [pSortableColumn]="col.field"
             [style.width]="col.width"
           >
-            {{ col.header }} <p-sortIcon [field]="col.field"></p-sortIcon>
+            {{ col.header | translate }} <p-sortIcon [field]="col.field"></p-sortIcon>
             <p-columnFilter
               type="text"
               [field]="col.field"
@@ -542,10 +542,10 @@
           <td style="text-align: center">
             <div
               [ngClass]="{
-                '': customer.noofdaysoverdue < 10,
-                outofstock: customer.noofdaysoverdue > 15,
-                lowstock:
-                  customer.noofdaysoverdue > 9 && customer.noofdaysoverdue < 15
+                  '': customer.noofdaysoverdue < 10,
+                  outofstock: customer.noofdaysoverdue > 14,
+                  lowstock:customer.noofdaysoverdue > 9 &&customer.noofdaysoverdue < 15
+                  
               }"
             >
               {{ customer.noofdaysoverdue }}
@@ -570,7 +570,9 @@
           </td>
           <td>
             <span class="image-text">{{
-              common.splitdatetime(customer.declarationdate)?.date
+              common.splitdatetimeforstring(
+                      common.formatDatestringtodate(customer.declarationdate)
+                    )?.date
             }}</span>
           </td>
           <td>

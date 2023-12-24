@@ -495,7 +495,7 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
     row.uno = row.rowNum;
     this.confirmationService.confirm({
       message: this.translate.instant('deleterecord'),
-      header: 'Confirm',
+      header: this.translate.instant('Confirm'),
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         if (row?.uno) {

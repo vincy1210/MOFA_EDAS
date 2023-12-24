@@ -69,10 +69,10 @@ export class CooAttestationComponent implements OnInit {
   currentcompany: any;
   contactno: string = '';
   timelineItems = [
-    { status: '', title: 'IN DRAFT', icon: 'check', date: '', time: '' },
-    { status: '', title: 'PAYMENT', icon: 'check', date: '', time: '' },
-    { status: '', title: 'IN REVIEW', icon: 'check', date: '', time: '' },
-    { status: '', title: 'COMPLETED', icon: 'check', date: '', time: '' },
+    { status: '', title: this.translate.instant('IN DRAFT'), icon: 'check', date: '', time: '' },
+    { status: '', title: this.translate.instant('PAYMENT'), icon: 'check', date: '', time: '' },
+    { status: '', title: this.translate.instant('IN REVIEW'), icon: 'check', date: '', time: '' },
+    { status: '', title: this.translate.instant('COMPLETED'), icon: 'check', date: '', time: '' },
   ];
   ischecked: any;
   invoiceunoresponse: number = 0;
@@ -207,7 +207,7 @@ export class CooAttestationComponent implements OnInit {
     ];
 
     this.cols_ = [
-      { field: 'edasattestno', header: 'Attestation No', width: '20%' },
+      { field: 'edasattestno', header: 'edasattestno', width: '20%' },
       { field: 'canpay', header: 'Status', width: '20%' },
       { field: 'Noofdaysleft', header: 'Age', width: '5%' },
 
@@ -218,7 +218,7 @@ export class CooAttestationComponent implements OnInit {
       { field: 'declarationumber', header: 'Declaration No', width: '20%' },
       { field: 'declarationdate', header: 'Declaration Date', width: '200px' },
       { field: 'attestreqdate', header: 'Created', width: '200px' },
-      { field: 'lcaname', header: 'LCA', width: '15%' },
+      { field: 'lcaname', header: 'Channel', width: '15%' },
       { field: 'companyname', header: 'Company', width: '20%' },
     ];
   }
@@ -778,13 +778,13 @@ export class CooAttestationComponent implements OnInit {
       lcarequestno: 'LCA Request No',
       declarationumber: 'Declaration No',
       declarationdate: 'Declaration Date',
-      enteredon: 'Creation',
-      edasattestno: 'EDAS Attestation No',
-      attestreqdate: 'Attestationn Request Date',
+      enteredon: 'Created on',
+      edasattestno: 'edasattestno',
+      attestreqdate: 'Attestation Request Date',
       feesamount: 'Fees Amount',
-      totalamount: 'Total Amount',
+      totalamount: 'totalamount',
       comments: 'Comments',
-      feespaid: 'Fees Paid',
+      feespaid: 'Payment Status',
       statusname: 'Status',
     };
 
@@ -863,8 +863,8 @@ export class CooAttestationComponent implements OnInit {
   closesidetab() {
     this.confirmationService.confirm({
       message:
-        'Are you sure you want to clear the item(s) selected for payment?',
-      header: 'Confirm',
+        this.translate.instant('Are you sure you want to clear the item(s) selected for payment?'),
+      header: this.translate.instant('Confirm'),
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.shouldShow = false;

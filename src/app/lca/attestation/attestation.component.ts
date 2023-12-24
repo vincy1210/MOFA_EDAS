@@ -150,10 +150,10 @@ export class AttestationComponent implements OnInit {
   currentcompany: any;
   payment_button_isdisabled: boolean = true;
   timelineItems = [
-    { status: '', title: 'IN DRAFT', icon: 'check', date: '', time: '' },
-    { status: '', title: 'PAYMENT', icon: 'check', date: '', time: '' },
-    { status: '', title: 'ATTESTED', icon: 'check', date: '', time: '' },
-    { status: '', title: 'COMPLETED', icon: 'check', date: '', time: '' },
+    { status: '', title: this.translate.instant('IN DRAFT'), icon: 'check', date: '', time: '' },
+    { status: '', title: this.translate.instant('PAYMENT'), icon: 'check', date: '', time: '' },
+    { status: '', title: this.translate.instant('ATTESTED'), icon: 'check', date: '', time: '' },
+    { status: '', title: this.translate.instant('COMPLETED'), icon: 'check', date: '', time: '' },
   ];
   statusess = [
     'IN DRAFT',
@@ -262,7 +262,7 @@ export class AttestationComponent implements OnInit {
       { field: 'Company', header: 'Company', width: '20%' },
     ];
     this.cols = [
-      { field: 'companyname', header: 'Company', width: '20%' },
+      { field: 'companyname', header: this.translate.instant('Company'), width: '20%' },
     ];
 
     this.cols_ = [
@@ -964,9 +964,9 @@ export class AttestationComponent implements OnInit {
   closesidetab() {
     this.confirmationService.confirm({
       message: this.translate.instant(
-        'Are you sure you want to clear the item(s) selected for payment?'
+       this.translate.instant('Are you sure you want to clear the item(s) selected for payment?')
       ),
-      header: 'Confirm',
+      header: this.translate.instant('Confirm'),
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         // this.settingbackgroundcolors(this.selectedAttestations)

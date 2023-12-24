@@ -150,7 +150,7 @@ showfooter:boolean=false;
 
     }
     this.cols = [
-      { field: 'edasattestno', header: 'Attestation No', width:'25%' },
+      { field: 'edasattestno', header: 'edasattestno', width:'25%' },
       { field: 'statusname', header: 'Status', width:'20%' },
 
       { field: 'invoiceamount', header: 'Invoice Amount', width:'20%' },

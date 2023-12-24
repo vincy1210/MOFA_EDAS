@@ -63,6 +63,7 @@
   "chooseadatelabel": "اختر تاريخ إصدار الترخيص",
   "cancelbtn": "إلغاء",
   "applybtn": "تقديم الطلب",
+  "Apply":"تقديم الطلب",
   "licenseIssuingauthorityemiratelabel": "هيئة إصدار التراخيص-الإمارة",
   "choosetypeofissuingauthoritylabel": "جهة الإصدار",
   "dmcclabel": "المنطقة الحرة",
@@ -115,7 +116,7 @@
   "PoweredBy": "مشغّل بخيار المدفوعات الذكية \"ماغناتي\"",
   "Created": "تم الإنشاء",
   "APPROVED": "تم الاعتماد",
-  "PAYMENT": "الدفع",
+  "Payment": "الدفع",
   "ATTESTATION": "التصديق",
   "COMPLETED": "اكتمل",
   "NoCustomersFound": "لم يتم العثور على عملاء",
@@ -366,5 +367,48 @@
       "enteredon": "Created",
       "lcauno": "Channel"
     }
-  }
+  },
+  "FineAmount": "مبلغ الغرامة",
+  "Total": "المجموع",
+  "Choose Columns":"اختر الأعمدة",
+  "columns selected":"الأعمدة المحددة",
+
+
+  "Showing": "عرض",
+  "to": "إلى",
+  "of": "من",
+  "entries": "سجل",
+  "first": "الأول",
+  "last": "الأخير",
+  "totalRecords": "إجمالي السجلات",
+  "COO Details":"تفاصيل مدير العمليات",
+  "Logout":"تسجيل خروج",
+  "Receipt":"إيصال",
+  "COO Request No": "رقم طلب شهادة COO",
+  "LCA Request No": "رقم طلب LCA",
+  "EDAS Attestation No": "رقم شهادة EDAS",
+  "COO Attestation Details": "تفاصيل شهادة COO",
+  "Payment Status": "حالة الدفع",
+  "LCA Invoices Details": "تفاصيل فواتير LCA",
+
+  "Entity Code": "رمز الكيان",
+  "Invoice date": "تاريخ الفاتورة",
+  "Entered": "تم الإدخال",
+  "Physical Attestation Details": "تفاصيل التصديق الفعلي",
+  "Preview": "معاينة",
+  "IN DRAFT": "في مرحلة المسودة",
+  "IN REVIEW": "قيد المراجعة",
+  "No. of Physical Attestation(s)": "عدد التصديق الفعلي",
+  "Attestation Fees": "رسوم التصديق",
+  "Pay": "دفع",
+
+  "PAYMENT": "الدفع",
+  "ATTESTED": "تم التصديق",
+  "Pay All":"دفع",
+  "Confirm":"يتأكد",
+"Are you sure you want to clear the item(s) selected for payment?":"هل أنت متأكد أنك تريد مسح العنصر (العناصر) المحددة للدفع؟"
+
+
+
+  
 }

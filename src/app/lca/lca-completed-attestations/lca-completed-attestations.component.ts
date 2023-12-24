@@ -153,7 +153,8 @@ isButtonDisabled = false;
     }
     this.cols = [
       // { field: 'lcaname', header: 'Channel', width:'15%' },
-      { field: 'companyname', header: 'Company', width:'20%' },
+      // { field: 'companyname', header: 'Company', width:'20%' },
+      { field: 'companyname', header: this.translate.instant('Company'), width: '20%' },
   ];
 
     this.cols_xl = [

@@ -47,10 +47,10 @@ AddInvoiceDialog:boolean=false;
 attchemntisthere:boolean=false;
 payorpayall:string='pay';
   timelineItems = [
-    { status: '', title: 'IN DRAFT', icon: 'check', date: '', time: '' },
-    { status: '', title: 'PAYMENT', icon: 'check', date: '', time: '' },
-    { status: '', title: 'IN REVIEW', icon: 'check', date: '', time: '' },
-    { status: '', title: 'COMPLETED', icon: 'check', date: '', time: '' },
+    { status: '', title: this.translate.instant('IN DRAFT'), icon: 'check', date: '', time: '' },
+    { status: '', title: this.translate.instant('Payment'), icon: 'check', date: '', time: '' },
+    { status: '', title: this.translate.instant('IN REVIEW'), icon: 'check', date: '', time: '' },
+    { status: '', title: this.translate.instant('COMPLETED'), icon: 'check', date: '', time: '' },
   ];
   ischecked:any;
   invoiceunoresponse:number=0;
@@ -726,8 +726,8 @@ FilterInitTable(){
 
 closesidetab(){
   this.confirmationService.confirm({
-    message: 'Are you sure you want to clear the item(s) selected for payment?',
-    header: 'Confirm',
+    message:this.translate.instant('Are you sure you want to clear the item(s) selected for payment?'),
+    header: this.translate.instant('Confirm'),
     icon: 'pi pi-exclamation-triangle',
     accept: () => {
 
@@ -781,7 +781,7 @@ openNew(data:any) {
 
   this.AddInvoiceDialog=true
   const fieldMappings: { [key: string]: string } = {
-      edasreqno: 'EDAS Request No',
+      edasreqno: 'edasreqno',
     entitycode: 'Channel',
     invoiceno: 'Invoice No',
     invoiceamount: 'Invoice Amount',

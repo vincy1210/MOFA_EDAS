@@ -14,7 +14,7 @@
 
            
         <p-table [(selection)]="selectedAttestations"  [resizableColumns]="true" dataKey="edasattestno"  [scrollable]="true"   selectionMode="multiple"
-        #tableref [rowHover]="true" [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
+        #tableref [rowHover]="true" [paginator]="true" currentPageReportTemplate="{{'Showing' | translate}} {first} {{'to' | translate}} {last} {{'of' | translate}} {totalRecords} {{'entries' | translate}}" [filterDelay]="0"
         [totalRecords]="totalrecords"
         [value]="list"
         [rows]="5" [columns]="cols"
@@ -22,7 +22,7 @@
         [rowsPerPageOptions]="[5, 10]"
         [loading]="loading"
         styleClass="p-datatable-customers p-datatable-gridlines"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        currentPageReportTemplate="{{'Showing' | translate}} {first} {{'to' | translate}} {last} {{'of' | translate}} {totalRecords} {{'entries' | translate}}"
         [globalFilterFields]="[
          'eid','fullnameen','usertype','emailid', 'mobilenumber', 'enteredby', 'enteredon'
         ]">

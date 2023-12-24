@@ -16,7 +16,7 @@
             [resizableColumns]="true"  dataKey="coorequestno"  (onRowSelect)="loadsidepanel($event)" 
                          [scrollable]="false"  selectionMode="single"
                        #tableref [rowHover]="true" [paginator]="true"
-                       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                       currentPageReportTemplate="{{'Showing' | translate}} {first} {{'to' | translate}} {last} {{'of' | translate}} {totalRecords} {{'entries' | translate}}"
                      
                        [totalRecords]="totalrecords"
                        [value]="cooAttestationLists"
@@ -26,7 +26,7 @@
                        [rowsPerPageOptions]="[10,20,50]"
                        [loading]="loading"
                        styleClass="p-datatable-customers p-datatable-gridlines"
-                       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                       currentPageReportTemplate="{{'Showing' | translate}} {first} {{'to' | translate}} {last} {{'of' | translate}} {totalRecords} {{'entries' | translate}}"
                        [globalFilterFields]="[
                          'declarationumber',
                          'edasattestno',
@@ -105,7 +105,7 @@
                       display="menu"
                     ></p-columnFilter>
                   </th>
-                  <th pFrozenColumn alignFrozen="right" >{{'Action' | translate}}</th>
+                  <th pFrozenColumn alignFrozen="right" >{{'actions' | translate}}</th>
                 </tr>
               </ng-template>
               <ng-template pTemplate="body" let-data let-rowIndex="rowIndex" >
@@ -169,7 +169,7 @@
           </div>
             <!-- <app-attestation-workflow [selectedAttestations]="selectedAttestations"></app-attestation-workflow> -->
             <mat-tab-group>
-              <mat-tab label="Timeline" *ngIf="Timelinevisible">
+              <mat-tab label="{{'Timeline' | translate}}" *ngIf="Timelinevisible">
                 <div class="grid grid-cols-1">
                   <div  class="dw-container mt-5">
                     <div *ngFor="let item of timelineItems; let i = index" class="timeline-block timeline-block-right {{ item.status }}">
@@ -293,7 +293,7 @@
         </div>
       </div>
     </p-tabPanel>
-    <p-tabPanel header="Receipt">
+    <p-tabPanel header="{{'Receipt' | translate}}">
       <!-- {{this.src}} -->
       <div class="grid grid-cols-1">
         <div id="outerContainer">

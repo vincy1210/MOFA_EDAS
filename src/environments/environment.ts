@@ -7,7 +7,7 @@ export const environment = {
   baseURL: 'https://www.alphadatainsights.com/mofa/edasapi/api/',
   authTokenURL: 'https://mofastg.mofaic.gov.ae/en/Account/',
   appdetails:{
-    version:'2.1',
+    version:'2.3',
     year:'2023',
     payment_count:500,
     idletime_out:1500,

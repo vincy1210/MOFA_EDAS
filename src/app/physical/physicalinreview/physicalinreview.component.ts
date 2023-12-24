@@ -38,10 +38,10 @@ export class PhysicalinreviewComponent implements OnInit {
   currentcompany:any;
 
   timelineItems = [
-    { status: '', title: 'IN DRAFT', icon: 'check', date: '', time: '' },
-    { status: '', title: 'PAYMENT', icon: 'check', date: '', time: '' },
-    { status: '', title: 'IN REVIEW', icon: 'check', date: '', time: '' },
-    { status: '', title: 'COMPLETED', icon: 'check', date: '', time: '' },
+    { status: '', title: this.translate.instant('IN DRAFT'), icon: 'check', date: '', time: '' },
+    { status: '', title: this.translate.instant('PAYMENT'), icon: 'check', date: '', time: '' },
+    { status: '', title: this.translate.instant('IN REVIEW'), icon: 'check', date: '', time: '' },
+    { status: '', title: this.translate.instant('COMPLETED'), icon: 'check', date: '', time: '' },
   ];
   ischecked:any;
   invoiceunoresponse:number=0;
@@ -478,7 +478,7 @@ openNew(data:any) {
  
   this.AddInvoiceDialog=true
   const fieldMappings: { [key: string]: string } = {
-      edasreqno: 'EDAS Request No',
+      edasreqno: 'edasreqno',
     entitycode: 'Entity Code',
     invoiceno: 'Invoice No',
     invoiceamount: 'Invoice Amount',

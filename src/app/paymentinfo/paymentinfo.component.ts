@@ -79,19 +79,7 @@ paymentstatus:string=''
      let resp;
      let paymentidinfo=this.common.getpaymentdetails();
      this.paymenttype=paymentidinfo.processname;
-     let message
-if(this.paymenttype=='COO'){
-  message='<p>Your payment for the Certificate of Origin (COO) has been successfully processed, and according to UAE law, it is mandatory to attest the invoice along with the COO for the import of items. Kindly proceed with the invoice attestation and ensure clearance on time to avoid fines.<p> <br> <p>For Completing the Certificate of Origin (COO) Attestation; Kindly upload the Certificate of Origin (COO); so that it will reviewed and approved by MOFA Customer Care Executive followed by EDAS attestation.</p>'
-  this.common.showSweetAlert('Info', 'Policy sample message', message,'top-end');
-}
-else if(this.paymenttype=='LCA'){
-message='<p>We received your payment towards the Invoice Attestation Request. Our Team is processing your Attestation request and you will notified shortly.<p>'
-this.common.showSweetAlert('Info', 'Policy sample message', message,'top-end');
-}
-else if(this.paymenttype=='PHYSICAL'){
-  message='<p>We received your payment towards the Physical Invoice Attestation Request. Our Customer Care Executives are reviewing  your Attestation request and you will notified shortly once its approved.</p>'
-  this.common.showSweetAlert('Info', 'Policy sample message', message,'top-end');
-}
+     
 
 
      let  invoiceuno=paymentidinfo.invoiceID.toString();
@@ -116,6 +104,20 @@ else if(this.paymenttype=='PHYSICAL'){
         
       resp=success;
       if(resp.status==="CAPTURED"){
+
+        let message
+        if(this.paymenttype=='COO'){
+          message='<p>Your payment for the Certificate of Origin (COO) has been successfully processed, and according to UAE law, it is mandatory to attest the invoice along with the COO for the import of items. Kindly proceed with the invoice attestation and ensure clearance on time to avoid fines.<p> <br> <p>For Completing the Certificate of Origin (COO) Attestation; Kindly upload the Certificate of Origin (COO); so that it will reviewed and approved by MOFA Customer Care Executive followed by EDAS attestation.</p>'
+          this.common.showSweetAlert('Info', 'Policy sample message', message,'top-end');
+        }
+        else if(this.paymenttype=='LCA'){
+        message='<p>We received your payment towards the Invoice Attestation Request. Our Team is processing your Attestation request and you will notified shortly.<p>'
+        this.common.showSweetAlert('Info', 'Policy sample message', message,'top-end');
+        }
+        else if(this.paymenttype=='PHYSICAL'){
+          message='<p>We received your payment towards the Physical Invoice Attestation Request. Our Customer Care Executives are reviewing  your Attestation request and you will notified shortly once its approved.</p>'
+          this.common.showSweetAlert('Info', 'Policy sample message', message,'top-end');
+        }
         this.transactionis='Transaction is';
         this.paymentsuccess=true;
         this.paymentfailure=false;

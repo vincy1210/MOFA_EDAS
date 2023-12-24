@@ -152,15 +152,15 @@ isButtonDisabled = false;
 
     }
     this.cols = [
-      { field: 'edasattestno', header: 'Edas Ref No', width:'25%' },
-      { field: 'declarationumber', header: 'Declaration Number', width:'20%' },
+      { field: 'edasattestno', header: 'edasreqno', width:'25%' },
+      { field: 'declarationumber', header: 'Declaration No', width:'20%' },
       { field: 'noofdaysoverdue', header: 'Age', width:'20%' },
-      { field: 'invoicenumber', header: 'Invoice Number', width:'20%' },
+      { field: 'invoicenumber', header: 'Invoice No', width:'20%' },
       { field: 'invoicedate', header: 'Invoice Date' , width:'25%'},
       { field: 'invoiceamount', header: 'Invoice Amount', width:'25%' },
       { field: 'feesamount', header: 'Fees Amount', width:'15%' },
       { field: 'fineamount', header: 'Fine Amount' , width:'15%'},
-      { field: 'lcaname', header: 'LCA', width:'20%' },
+      { field: 'lcaname', header: 'Channel', width:'20%' },
       
   
   ];

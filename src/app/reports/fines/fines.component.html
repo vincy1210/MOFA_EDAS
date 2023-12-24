@@ -5,7 +5,7 @@
 
                 <div class="grid grid-cols-1" color="primary"  class="page-header">
              
-                    <label style="font-size: 14px; color: white; font-weight: bold;">{{'Reports' | translate}} - {{'Fine(s)' | translate}}</label>
+                    <label style="font-size: 14px; color: white; font-weight: bold;">{{'Reports' | translate}} - {{'Fines' | translate}}</label>
                   </div>
                   
                   <div style="padding: 2px;" >
@@ -20,7 +20,7 @@
           
   
           <p-table [(selection)]="selectedAttestations"  [resizableColumns]="true" dataKey="declarationumber"  [scrollable]="true"   selectionMode="single"
-          #tableref [rowHover]="true" [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
+          #tableref [rowHover]="true" [paginator]="true" currentPageReportTemplate="{{'Showing' | translate}} {first} {{'to' | translate}} {last} {{'of' | translate}} {totalRecords} {{'entries' | translate}}" [filterDelay]="0"
           [totalRecords]="totalrecords"
           [value]="list"
           [rows]="10" [columns]="cols"
@@ -28,7 +28,7 @@
           [rowsPerPageOptions]="[10,20,50]"
           [loading]="loading"
           styleClass="p-datatable-customers p-datatable-gridlines"
-          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+          currentPageReportTemplate="{{'Showing' | translate}} {first} {{'to' | translate}} {last} {{'of' | translate}} {totalRecords} {{'entries' | translate}}"
           [globalFilterFields]="[
             'edasattestno', 'declarationumber', 'invoicenumber', 'invoicedate', 'invoiceamount', 'feesamount', 'fineamount', 'lcaname', 'noofdaysoverdue'
           ]" [lazy]="true" (onLazyLoad)="InitTable($event)" [loading]="loading"
@@ -43,7 +43,7 @@
              
                   <div style="padding: 5px;" class="col-md-3 col-lg-3 col-sm-6">
                           <mat-form-field class="searchboxinput"  >
-                            <mat-label><mat-icon style="font-size:larger;">search</mat-icon> Search</mat-label>
+                            <mat-label><mat-icon style="font-size:larger;">search</mat-icon> {{'SearchKeyword' | translate}}</mat-label>
                             <input  matInput type="text" (input)="tableref.filterGlobal($any($event.target).value, 'contains')" placeholder="{{'SearchKeyword' | translate}}">
                           </mat-form-field>
                   </div>
@@ -71,7 +71,7 @@
             <button type="button" mat-flat-button color="primary" (click)="FilterInitTable()" >Apply</button>
           </div>
           <span style="padding: 10px;"></span>
-                <button type="button" pButton  pRipple  icon="pi pi-file-excel"  (click)="exportExcel()"  class="mr-2 grid-header-right-icon"  pTooltip="Excel"
+                <button type="button" pButton  pRipple  icon="pi pi-file-excel"  (click)="exportExcel()"  class="mr-2 grid-header-right-icon"  pTooltip="{{'Excel' | translate}}"
                 tooltipPosition="bottom"
               ></button>
                <button  type="button"
@@ -89,7 +89,7 @@
                     </p-tableHeaderCheckbox>
                 </th> -->
                 <th *ngFor="let col of columns" pResizableColumn [pSortableColumn]="col.field" [style.width]="col.width"  >
-                    {{col.header}} <p-sortIcon  [field]="col.field"></p-sortIcon>
+                    {{col.header | translate}} <p-sortIcon  [field]="col.field"></p-sortIcon>
                     <p-columnFilter 
                     type="text"  *ngIf="enableFilters"
                     [field]="col.field"
@@ -109,8 +109,20 @@
                     
                 </td>
                 <td><span class="image-text">{{customer.declarationumber}}</span></td>
-                <td>
+                <!-- <td>
                   <span class="image-text">{{customer.noofdaysoverdue}}</span>
+                </td> -->
+                <td style="text-align: center">
+                  <div
+                    [ngClass]="{
+                        '': customer.noofdaysoverdue < 10,
+                        outofstock: customer.noofdaysoverdue > 14,
+                        lowstock:customer.noofdaysoverdue > 9 &&customer.noofdaysoverdue < 15
+                        
+                    }"
+                  >
+                    {{ customer.noofdaysoverdue }}
+                  </div>
                 </td>
                 <td ><span class="image-text">{{(customer.invoicenumber)}}</span></td>
                 <td ><span class="image-text">{{common.splitdatetime1(customer.invoicedate)?.date}}</span></td>
@@ -167,7 +179,7 @@
 			
           <ng-template pTemplate="emptymessage">
             <tr>
-              <td colspan="10">No data found.</td>
+              <td colspan="10">{{'No data found.' | translate}}</td>
             </tr>
           </ng-template>
         </p-table>

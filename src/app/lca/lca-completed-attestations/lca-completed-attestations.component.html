@@ -20,7 +20,7 @@
         
 
         <p-table [(selection)]="selectedAttestations"  [resizableColumns]="true" dataKey="edasattestno"  [scrollable]="true"   selectionMode="single"
-        #tableref [rowHover]="true" [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
+        #tableref [rowHover]="true" [paginator]="true" currentPageReportTemplate="{{'Showing' | translate}} {first} {{'to' | translate}} {last} {{'of' | translate}} {totalRecords} {{'entries' | translate}}" [filterDelay]="0"
         [totalRecords]="totalrecords"
         [value]="list"
         [rows]="10" [columns]="selectedColumns" 
@@ -28,7 +28,7 @@
         [rowsPerPageOptions]="[10,20,50]"
         [loading]="loading"
         styleClass="p-datatable-customers p-datatable-gridlines"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        currentPageReportTemplate="{{'Showing' | translate}} {first} {{'to' | translate}} {last} {{'of' | translate}} {totalRecords} {{'entries' | translate}}"
         [globalFilterFields]="[
           'edasattestno',
           'invoicenumber',
@@ -71,10 +71,10 @@
           </mat-form-field>
         </div>
         <div *ngIf="enableFilters" style="padding: 5px;" class="col-md-3 col-lg-3">
-          <button type="button" mat-flat-button color="primary" (click)="FilterInitTable()" >Apply</button>
+          <button type="button" mat-flat-button color="primary" (click)="FilterInitTable()" >{{'Apply' | translate}}</button>
         </div>
         <p-multiSelect [options]="cols" [(ngModel)]="selectedColumns" optionLabel="header"
-        selectedItemsLabel="{0} columns selected" [style]="{'min-width': '200px'}" placeholder="Choose Columns"></p-multiSelect>
+        selectedItemsLabel="{0} columns selected" [style]="{'min-width': '200px'}" placeholder="{{'Choose Columns' | translate}}"></p-multiSelect>
 
         <span style="padding: 10px;"></span>
               <button type="button" pButton  pRipple  icon="pi pi-file-excel"  (click)="exportExcel()"  class="mr-2 grid-header-right-icon"  pTooltip="Excel"
@@ -205,7 +205,7 @@
         </div>
       </div>
     </p-tabPanel>
-    <p-tabPanel header="Receipt">
+    <p-tabPanel header="{{'Receipt' | translate}}">
       <!-- {{this.src}} -->
       <div class="grid grid-cols-1">
         <div id="outerContainer">

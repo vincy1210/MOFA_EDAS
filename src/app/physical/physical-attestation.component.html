@@ -19,7 +19,7 @@
               #tableref
               [rowHover]="true"
               [paginator]="true"
-              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+              currentPageReportTemplate="{{'Showing' | translate}} {first} {{'to' | translate}} {last} {{'of' | translate}} {totalRecords} {{'entries' | translate}}"
               [filterDelay]="0"
               [totalRecords]="totalrecords"
               [value]="invoiceRequestLists"
@@ -29,7 +29,7 @@
               [rowsPerPageOptions]="[10, 20, 50]"
               [loading]="loading"
               styleClass="p-datatable-customers p-datatable-gridlines"
-              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+              currentPageReportTemplate="{{'Showing' | translate}} {first} {{'to' | translate}} {last} {{'of' | translate}} {totalRecords} {{'entries' | translate}}"
               [globalFilterFields]="[
                 'edasreqno',
                 'entitycode',
@@ -178,7 +178,7 @@
             </div>
   
             <mat-tab-group>
-              <mat-tab label="Timeline" *ngIf="Timelinevisible">
+              <mat-tab label="{{'Timeline' | translate}}" *ngIf="Timelinevisible">
                 <div class="grid grid-cols-1">
                   <div  class="dw-container mt-5">
                     <div *ngFor="let item of timelineItems; let i = index" class="timeline-block timeline-block-right {{ item.status }}">
@@ -207,7 +207,7 @@
                   </div>
                 </div>
               </mat-tab>
-              <mat-tab label="Payment">
+              <mat-tab label="{{'Payment' | translate}}">
                 <div class="flex grid grid-cols-2 gap-6 p-5 payment-header-label">
                   <div class="p-1"><mat-label >{{'No. of Physical Attestation(s)' | translate}}</mat-label></div>
                   <div class="amount_right_align">{{ noOfInvoicesSelected }}</div>
@@ -219,7 +219,7 @@
                   <div class="p-1"></div>
                   <div class="payment-total-amount">
                     <div class="row">
-                      <span><mat-label class="amount_right_align payment-header-label">{{'Total Amount' | translate}}</mat-label></span>
+                      <span><mat-label class="amount_right_align payment-header-label">{{'totalamount' | translate}}</mat-label></span>
                     </div>
                     <div class="row" style="padding: 5px;"></div>
                     <div class="row">
@@ -241,7 +241,7 @@
                       (click)="AttestationPay()"
                       class="pay-btn"
                     >
-                    {{payorpayall}}
+                    {{payorpayall | translate}}
                     </button>
                   </div>
                   <div class="flex items-center justify-center col-span-2">

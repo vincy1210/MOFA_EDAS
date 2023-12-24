@@ -32,7 +32,7 @@
             #tableref
             [rowHover]="true"
             [paginator]="true"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            currentPageReportTemplate="{{'Showing' | translate}} {first} {{'to' | translate}} {last} {{'of' | translate}} {totalRecords} {{'entries' | translate}}"
             [filterDelay]="0"
             [totalRecords]="totalrecords"
             [value]="settlementListsFilter"
@@ -42,7 +42,7 @@
             [rowsPerPageOptions]="[10, 25, 50]"
             [loading]="loading"
             styleClass="p-datatable-customers p-datatable-gridlines"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            currentPageReportTemplate="{{'Showing' | translate}} {first} {{'to' | translate}} {last} {{'of' | translate}} {totalRecords} {{'entries' | translate}}"
             [globalFilterFields]="[
               'lcauno',
               'settlementuno',

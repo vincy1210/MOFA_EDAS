@@ -1,7 +1,7 @@
 <!-- <app-loader></app-loader> -->
 <div class="grid grid-cols-1" color="primary"  class="page-header">
              
-  <label style="font-size: 14px; color: white; font-weight: bold;">{{'physicalattestation_title' |translate}} - {{'In review' | translate}} </label>
+  <label style="font-size: 14px; color: white; font-weight: bold;">{{'physicalattestation_title' |translate}} - {{'In Review' | translate}} </label>
 </div>
 
 <div style="padding:3px; border-radius:2px"  >
@@ -19,7 +19,7 @@
             #tableref
             [rowHover]="true"
             [paginator]="true"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            currentPageReportTemplate="{{'Showing' | translate}} {first} {{'to' | translate}} {last} {{'of' | translate}} {totalRecords} {{'entries' | translate}}"
             [filterDelay]="0"
             [totalRecords]="totalrecords"
             [value]="invoiceRequestLists"
@@ -29,7 +29,7 @@
             [rowsPerPageOptions]="[5, 10]"
             [loading]="loading"
             styleClass="p-datatable-customers p-datatable-gridlines"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            currentPageReportTemplate="{{'Showing' | translate}} {first} {{'to' | translate}} {last} {{'of' | translate}} {totalRecords} {{'entries' | translate}}"
             [globalFilterFields]="[
               'edasreqno',
               'entitycode',
@@ -156,7 +156,7 @@
           <!-- <app-attestation-workflow [selectedAttestations]="selectedAttestations"></app-attestation-workflow> -->
 
           <mat-tab-group>
-            <mat-tab label="Timeline" *ngIf="Timelinevisible">
+            <mat-tab label="{{'Timeline' | translate}}" *ngIf="Timelinevisible">
               <div class="grid grid-cols-1">
                 <div  class="dw-container mt-5">
                   <div *ngFor="let item of timelineItems; let i = index" class="timeline-block timeline-block-right {{ item.status }}">
@@ -254,7 +254,7 @@
         </div>
       </div>
     </p-tabPanel>
-    <p-tabPanel header="Receipt">
+    <p-tabPanel header="{{'Receipt' | translate}}">
       <!-- {{this.src}} -->
       <div class="grid grid-cols-1">
         <div id="outerContainer">
