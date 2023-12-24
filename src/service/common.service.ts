@@ -907,7 +907,11 @@ export class CommonService {
           },
           {
             role: RoleEnums.LcaUser,
-            permission: [],
+            permission: [
+              PermissionEnums.View,
+              PermissionEnums.Add,
+              PermissionEnums.Edit,
+            ],
           },
         ],
       },
@@ -923,7 +927,11 @@ export class CommonService {
           },
           {
             role: RoleEnums.LcaUser,
-            permission: [],
+            permission: [
+              PermissionEnums.View,
+              PermissionEnums.Add,
+              PermissionEnums.Edit,
+            ],
           },
         ],
       },
@@ -939,7 +947,11 @@ export class CommonService {
           },
           {
             role: RoleEnums.LcaUser,
-            permission: [],
+            permission: [
+              PermissionEnums.View,
+              PermissionEnums.Add,
+              PermissionEnums.Edit,
+            ],
           },
         ],
       },
@@ -955,7 +967,11 @@ export class CommonService {
           },
           {
             role: RoleEnums.LcaUser,
-            permission: [],
+            permission: [
+              PermissionEnums.View,
+              PermissionEnums.Add,
+              PermissionEnums.Edit,
+            ],
           },
         ],
       },
@@ -971,7 +987,28 @@ export class CommonService {
           },
           {
             role: RoleEnums.LcaUser,
-            permission: [],
+            permission: [
+              PermissionEnums.View,
+              PermissionEnums.Add,
+              PermissionEnums.Edit,
+            ],
+          },
+        ],
+      },
+      {
+        name: 'lcasettlementsreport',
+        menu: 'lcasettlementsreport',
+        menufull: 'lcasettlementsreport',
+        requiredRoles: [RoleEnums.LcaAdmin, RoleEnums.LcaUser],
+        permissionRoles: [
+          { role: RoleEnums.LcaAdmin, permission: [PermissionEnums.All] },
+          {
+            role: RoleEnums.LcaUser,
+            permission: [
+              PermissionEnums.View,
+              PermissionEnums.Add,
+              PermissionEnums.Edit,
+            ],
           },
         ],
       },

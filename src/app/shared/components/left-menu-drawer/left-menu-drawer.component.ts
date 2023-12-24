@@ -152,6 +152,12 @@ export class LeftMenuDrawerComponent implements OnInit {
               icon: 'play_arrow',
               link: '/lca-login/risklca',
             },
+            {
+              id: 5,
+              menu: 'Settlement',
+              icon: 'play_arrow',
+              link: '/lca-login/lcasettlementsreport',
+            },
           ],
         }
       );
@@ -323,11 +329,13 @@ export class LeftMenuDrawerComponent implements OnInit {
 
   stylingMenus() {
     this.recentlyUsedMenus(this.selectedMenu);
-//
-    const elements2 = document.getElementsByClassName('mat-list-item-content active');
+    //
+    const elements2 = document.getElementsByClassName(
+      'mat-list-item-content active'
+    );
     let elementsArray2 = Array.from(elements2);
     for (const element of elementsArray2) {
-      element.className='mat-list-item-content';
+      element.className = 'mat-list-item-content';
     }
 
     //
@@ -354,11 +362,8 @@ export class LeftMenuDrawerComponent implements OnInit {
           }
           // lement.firstChild.className = element.firstChild.className + ' active';
         }
-
       }
     }
-
-   
   }
 
   recentlyUsedMenus(selectedMenu: MenuModel) {

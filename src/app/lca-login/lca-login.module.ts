@@ -68,6 +68,12 @@ const routes = [
     data: { role: [11, 12], name: 'risklca' },
     canActivate: [AuthGuard],
   },
+  {
+    path: 'lcasettlementsreport',
+    component: RisklcaComponent,
+    data: { role: [11, 12], name: 'lcasettlementsreport' },
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({
