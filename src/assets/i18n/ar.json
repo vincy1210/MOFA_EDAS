@@ -256,9 +256,27 @@
       "InvoiceNo": "الفاتورة",
       "InvoiceCurrency": "العملة",
       "InvoiceId": "InvoiceId",
-      "CompanyName": "اسم الشركة",
+      "companyname": "اسم الشركة",
       "Remarks": "ملاحظات",
       "Status": "الحالة"
     }
-  }
+  },
+  "Company": "اسم الشركة",
+  "Fees Amount":"مبلغ الرسوم",
+  "Age":"عمر",
+  "Draft":"مسودة",
+    "LCA Attestations": "التصديقات LCA",
+    "COO Attestations": "شهادات COO",
+    "Physical Attestations": "التصديقات الفعلية",
+    "Select": "اختر",
+    "Day": "يوم",
+    "Approved": "تم الموافقة عليه",
+    "Completed": "تم الانتهاء",
+    "COO Attestation Requests": "طلبات شهادة COO",
+    "Pending": "قيد الانتظار",
+    "Physical Attestation Requests": "طلبات التصديق الفعلي",
+   
+    "LCA Attestation Requests": "طلبات شهادة LCA",
+    "Total Requests": "إجمالي الطلبات"
+  
 }

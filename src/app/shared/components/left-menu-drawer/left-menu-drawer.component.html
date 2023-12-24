@@ -42,37 +42,9 @@
           <mat-icon>{{ items.icon }}</mat-icon>
           <span class="menutitle">{{ items.menu | translate }}</span>
         </span>
-        <!-- <mat-nav-list >
-          <span class="mat-items">
-            <a
-              mat-list-item
-              [routerLink]="items.link"
-              [class]="items.link"
-              (click)="onSubMenuClick(items)"
-            >
-              <mat-icon>{{ items.icon }}</mat-icon
-              ><span style="font-size: 13px !important">{{
-                items.menu | translate
-              }}</span>
-            </a>
-          </span>
-        </mat-nav-list> -->
+      
       </mat-expansion-panel-header>
-      <!-- <mat-nav-list style="padding: 0%" *ngFor="let item of items.subMenus">
-        <span class="mat-items">
-          <a
-            mat-list-item
-            [routerLink]="item.link"
-            [class]="item.link"
-            (click)="onSubMenuClick(item)"
-          >
-            <mat-icon>{{ item.icon }}</mat-icon
-            ><span style="font-size: 13px !important">{{
-              item.menu | translate
-            }}</span>
-          </a>
-        </span>
-      </mat-nav-list> -->
+     
     </mat-expansion-panel>
 
     <mat-expansion-panel

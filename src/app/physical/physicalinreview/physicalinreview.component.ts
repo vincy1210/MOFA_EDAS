@@ -41,7 +41,6 @@ export class PhysicalinreviewComponent implements OnInit {
     { status: '', title: 'IN DRAFT', icon: 'check', date: '', time: '' },
     { status: '', title: 'PAYMENT', icon: 'check', date: '', time: '' },
     { status: '', title: 'IN REVIEW', icon: 'check', date: '', time: '' },
-    { status: '', title: 'ATTESTED', icon: 'check', date: '', time: '' },
     { status: '', title: 'COMPLETED', icon: 'check', date: '', time: '' },
   ];
   ischecked:any;

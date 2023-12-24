@@ -6,25 +6,25 @@
     </div> -->
     <div class="grid grid-cols-4 gap-6 px-5 py-3">
       <div class="grid grid-cols-1 dashboard-card p-5">
-        <p>Total Requests</p>
+        <p>{{'Total Requests' | translate}}</p>
         <h1 class="font-bold dashboard-scores">{{ totalTile.noofrequests }}</h1>
       </div>
      
       
       <div class="grid grid-cols-1 dashboard-card p-5">
-        <p>LCA Attestations</p>
+        <p>{{'LCA Attestations' | translate}}</p>
         <h1 class="font-bold dashboard-scores">
           {{ totalTile.nooflcarequestapproved }}
         </h1>
       </div>
       <div class="grid grid-cols-1 dashboard-card p-5">
-        <p>COO Attestations</p>
+        <p>{{'COO Attestations' | translate}}</p>
         <h1 class="font-bold dashboard-scores">
           {{ totalTile.noofcoorequestapproved }}
         </h1>
       </div>
       <div class="grid grid-cols-1 dashboard-card p-5">
-        <p>Physical Attestations</p>
+        <p>{{'Physical Attestations' | translate}}</p>
         <h1 class="font-bold dashboard-scores">
           {{ totalTile.noofphysicalrequestapproved }}
         </h1>
@@ -35,16 +35,16 @@
       <div class="grid grid-cols-1 bg-white-r p-5">
         <div class="grid grid-cols-3">
           <div class="labelandddl">
-            <h1 class="font-bold float-left mr-3">LCA Attestation Requests</h1>
+            <h1 class="font-bold float-left mr-3"> {{'LCA Attestation Requests' | translate}}  </h1>
             <div style="width: 100px; padding-right: 10px;" class="float-left">
               <mat-form-field appearance="outline">
-                <mat-label>Select</mat-label>
+                <mat-label>{{'Select' | translate}}</mat-label>
                 <mat-select
                   (selectionChange)="onClickFilterOption('lca', $event.value)" value="01"
                 >
-                  <mat-option value="01">Day</mat-option>
-                  <mat-option value="02">Week</mat-option>
-                  <mat-option value="03">Month</mat-option>
+                  <mat-option value="01">{{'Day' | translate}}</mat-option>
+                  <mat-option value="02">{{'Week' | translate}}</mat-option>
+                  <mat-option value="03">{{'Month' | translate}}</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
@@ -56,17 +56,17 @@
                 <mat-list-item role="listitem">
                   <mat-icon class="mr-1 kd-dot kdl-chart-color-brown"
                     >circle</mat-icon
-                  >Pending
+                  >{{'Pending' | translate}}
                 </mat-list-item>
                 <mat-list-item role="listitem">
                   <mat-icon class="mr-1 kd-dot kdl-chart-color-black"
                     >circle</mat-icon
-                  >Approved
+                  >{{'Approved' | translate}}
                 </mat-list-item>
                 <mat-list-item role="listitem">
                   <mat-icon class="mr-1 kd-dot kdl-chart-color-grey"
                     >circle</mat-icon
-                  >Completed
+                  >{{'Completed' | translate}}
                 </mat-list-item>
               </mat-list>
             </div>
@@ -93,16 +93,16 @@
       <div class="grid grid-cols-1 bg-white-r p-5">
         <div class="grid grid-cols-3">
           <div class="labelandddl">
-            <h1 class="font-bold float-left mr-3">COO Attestation Requests</h1>
+            <h1 class="font-bold float-left mr-3">{{'COO Attestation Requests' | translate}}</h1>
             <div style="width: 100px; padding-right: 10px;" class="float-left">
               <mat-form-field appearance="outline">
                 <mat-label>Select</mat-label>
                 <mat-select
                   (selectionChange)="onClickFilterOption('coo', $event.value)" value="01"
                 >
-                  <mat-option value="01">Day</mat-option>
-                  <mat-option value="02">Week</mat-option>
-                  <mat-option value="03">Month</mat-option>
+                  <mat-option value="01">{{'Day' | translate}}</mat-option>
+                  <mat-option value="02">{{'Week' | translate}}</mat-option>
+                  <mat-option value="03">{{'Month' | translate}}</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
@@ -114,17 +114,17 @@
                 <mat-list-item role="listitem">
                   <mat-icon class="mr-1 kd-dot kdl-chart-color-brown"
                     >circle</mat-icon
-                  >Pending 
+                  >{{'Pending' | translate}} 
                 </mat-list-item>
                 <mat-list-item role="listitem">
                   <mat-icon class="mr-1 kd-dot kdl-chart-color-black"
                     >circle</mat-icon
-                  >Approved
+                  >{{'Approved' | translate}}
                 </mat-list-item>
                 <mat-list-item role="listitem">
                   <mat-icon class="mr-1 kd-dot kdl-chart-color-grey"
                     >circle</mat-icon
-                  >Completed
+                  >{{'Completed' | translate}}
                 </mat-list-item>
               </mat-list>
             </div>
@@ -147,17 +147,17 @@
         <div class="grid grid-cols-3">
           <div class="labelandddl">
             <h1 class="font-bold float-left mr-3">
-              Physical Attestation Requests
+              {{'Physical Attestation Requests' | translate}}
             </h1>
             <div style="width: 100px; padding-right: 10px;" class="float-left">
               <mat-form-field appearance="outline">
-                <mat-label>Select</mat-label>
+                <mat-label>{{'Select' | translate}}</mat-label>
                 <mat-select
                   (selectionChange)="
                     onClickFilterOption('physical', $event.value) " value="01">
-                  <mat-option value="01">Day</mat-option>
-                  <mat-option value="02">Week</mat-option>
-                  <mat-option value="03">Month</mat-option>
+                  <mat-option value="01">{{'Day' | translate}}</mat-option>
+                  <mat-option value="02">{{'Week' | translate}}</mat-option>
+                  <mat-option value="03">{{'Month' | translate}}</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
@@ -169,17 +169,17 @@
                 <mat-list-item role="listitem">
                   <mat-icon class="mr-1 kd-dot kdl-chart-color-brown"
                     >circle</mat-icon
-                  >Pending
+                  >{{'Pending' | translate}}
                 </mat-list-item>
                 <mat-list-item role="listitem">
                   <mat-icon class="mr-1 kd-dot kdl-chart-color-black"
                     >circle</mat-icon
-                  >Approved
+                  >{{'Approved' | translate}}
                 </mat-list-item>
                 <mat-list-item role="listitem">
                   <mat-icon class="mr-1 kd-dot kdl-chart-color-grey"
                     >circle</mat-icon
-                  >Completed
+                  >{{'Completed' | translate}}
                 </mat-list-item>
               </mat-list>
             </div>
