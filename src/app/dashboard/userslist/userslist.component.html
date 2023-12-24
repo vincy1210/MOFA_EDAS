@@ -190,7 +190,7 @@
       <div style="display: flex; justify-content: space-between; ">
         <div style="flex: 1; padding-right: 10px;">
           <mat-form-field  appearance="outline">
-            <mat-label>{{'Name' | translate}}</mat-label>
+            <mat-label>{{'User Name' | translate}}</mat-label>
           <mat-hint>{{'Enter your name as on Emirates ID' | translate}}</mat-hint>
             <input matInput maxlength="200" placeholder="{{'Enter User Name' | translate}}"  formControlName="username" name="username">
           <mat-error *ngIf="form.get('username')?.hasError('required')"> {{'User Name is required' | translate }} </mat-error>

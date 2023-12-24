@@ -159,8 +159,8 @@ export class AppComponent {
       this.userrole = role;
     }
     // if (this.userloggedin || this.lcauserloggedin) {
-    idle.setIdle(20); // how long can they be inactive before considered idle, in seconds 1200
-    idle.setTimeout(30); // how long can they be idle before considered timed out, in seconds 600
+    idle.setIdle(1200); // how long can they be inactive before considered idle, in seconds 1200
+    idle.setTimeout(300); // how long can they be idle before considered timed out, in seconds 600
     idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
 
     idle.onIdleStart.subscribe(() => {

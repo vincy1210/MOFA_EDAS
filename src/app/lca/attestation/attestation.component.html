@@ -57,7 +57,7 @@
               </span>
             
               <span *ngIf="overdue"  class="overduefilter_reset" (click)="this.overdue=0; onfilterclick()">
-                <i class="fa fa-circle" pTooltip="Clear Filter" aria-hidden="true" ></i>
+                <i class="fa fa-circle" pTooltip="All attestations" aria-hidden="true" ></i>
               </span>
             </span>
 
@@ -104,16 +104,16 @@
                   <p-tableHeaderCheckbox (click)="loadsidepanel(list)"  >                    
                   </p-tableHeaderCheckbox>
               </th>
-              <th pSortableColumn="edasattestno" >Attestation No  <p-sortIcon field="edasattestno"></p-sortIcon> </th>
-              <th pSortableColumn="currencycode">Currency  <p-sortIcon field="currencycode"></p-sortIcon></th>
-              <th pSortableColumn="canpay">Status  <p-sortIcon field="canpay"></p-sortIcon></th>
-              <th pSortableColumn="noofdaysoverdue">Age  <p-sortIcon field="noofdaysoverdue"></p-sortIcon></th>
-              <th pSortableColumn="invoiceamount">Invoice Amount  <p-sortIcon field="invoiceamount"></p-sortIcon></th>
-              <th pSortableColumn="feesamount">Fees Amount  <p-sortIcon field="feesamount"></p-sortIcon></th>
-              <th pSortableColumn="invoiceid">Invoice ID  <p-sortIcon field="invoiceid"></p-sortIcon></th>
-              <th pSortableColumn="declarationumber">Declaration No <p-sortIcon field="declarationumber"></p-sortIcon></th>
-              <th pSortableColumn="declarationdate">Declaration Date  <p-sortIcon field="declarationdate"></p-sortIcon></th>
-              <th pSortableColumn="attestreqdate">Created  <p-sortIcon field="attestreqdate"></p-sortIcon> </th>
+              <th pSortableColumn="edasattestno" >{{'edasattestno' | translate}}  <p-sortIcon field="edasattestno"></p-sortIcon> </th>
+              <th pSortableColumn="currencycode">{{'Currency' | translate}}  <p-sortIcon field="currencycode"></p-sortIcon></th>
+              <th pSortableColumn="canpay">{{'Status' | translate}}  <p-sortIcon field="canpay"></p-sortIcon></th>
+              <th pSortableColumn="noofdaysoverdue">{{'Age' | translate}}  <p-sortIcon field="noofdaysoverdue"></p-sortIcon></th>
+              <th pSortableColumn="invoiceamount">{{'Invoice Amount' | translate}}  <p-sortIcon field="invoiceamount"></p-sortIcon></th>
+              <th pSortableColumn="feesamount">{{'Fees Amount' | translate}}  <p-sortIcon field="feesamount"></p-sortIcon></th>
+              <th pSortableColumn="invoiceid">{{'Invoice ID' | translate}}  <p-sortIcon field="invoiceid"></p-sortIcon></th>
+              <th pSortableColumn="declarationumber">{{'Declaration No' | translate}} <p-sortIcon field="declarationumber"></p-sortIcon></th>
+              <th pSortableColumn="declarationdate">{{'Declaration Date' | translate}}  <p-sortIcon field="declarationdate"></p-sortIcon></th>
+              <th pSortableColumn="attestreqdate">{{'Created' |translate}}  <p-sortIcon field="attestreqdate"></p-sortIcon> </th>
               <th *ngFor="let col of columns" pResizableColumn [pSortableColumn]="col.field" [style.width]="col.width" >
                   {{col.header}} <p-sortIcon [field]="col.field"  ></p-sortIcon>
                   <p-columnFilter
@@ -395,9 +395,11 @@
                <span class="image-text">{{ common.formatAmount(data.totalamount) }}</span>
              </td>
              <td>
-               <span class="image-text">{{
+               <span class="image-text">
+                <!-- {{
                  common.splitdatetime(data.declarationdate)?.date
-               }}</span>
+               }} --> {{common.splitdatetimeforstring(common.formatDatestringtodate(data.declarationdate))?.date}}
+               </span>
              </td>
              <td>
                <span class="image-text">{{
