@@ -508,6 +508,7 @@ export class RegistrationComponent {
                   JSON.stringify(UserRoleList)
                 );
               }
+              sessionStorage.setItem('lcauserdetails', JSON.stringify(response.data[0]));
               this.auth.setLCAUser(response.data[0].roleuno);
               this.router.navigateByUrl('/lca-login/lcadashboard');
             } else {

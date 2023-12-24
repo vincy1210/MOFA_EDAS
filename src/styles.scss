@@ -2367,3 +2367,15 @@ h1.db-sub-title {
   border-color: var(--primary-color) !important;
   color: var(--primary-color) !important;
 }
+.grecaptcha-badge {
+  z-index: 9!important;
+}
+.mat-drawer-content {
+  padding-top: 64px;
+  overflow:visible!important;
+}
+mat-toolbar.main-header {
+  position:fixed!important;
+  width:100%;
+  z-index: 2;
+}
