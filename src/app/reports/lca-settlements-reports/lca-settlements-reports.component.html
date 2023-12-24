@@ -3,10 +3,10 @@
   <div class="grid grid-cols-1" color="primary" class="page-header">
     <h3>
       <ng-container *ngIf="routesname === 'pending'">{{
-        "label.reports.lcaSettlements.page.title" | translate
+        "settlementdetails.page.approvetitle" | translate
       }}</ng-container>
       <ng-container *ngIf="routesname === 'approve'">{{
-        "label.reports.lcaSettlements.page.title" | translate
+        "settlementdetails.page.approvetitle" | translate
       }}</ng-container>
     </h3>
   </div>
@@ -82,10 +82,7 @@
                 <div class="grid-header-center">
                   <div class="grid grid-cols-1">
                     <mat-form-field appearance="outline">
-                      <mat-label>{{
-                        "label.settlementinvoicedetails.settlementinvoiceList.lcauno"
-                          | translate
-                      }}</mat-label>
+                      <mat-label>{{ "lcauno" | translate }}</mat-label>
                       <mat-select
                         name="lcauno"
                         [(ngModel)]="lcauno"
@@ -104,9 +101,7 @@
                     <mat-form-field
                       class="example-form-field custom-mat-form-field"
                     >
-                      <mat-label>{{
-                        "label.settlementinvoicedetails.selectmonth" | translate
-                      }}</mat-label>
+                      <mat-label>{{ "Month" | translate }}</mat-label>
                       <input
                         matInput
                         [matDatepicker]="selectmonth"
@@ -131,7 +126,7 @@
                       >
                         <mat-datepicker-actions>
                           <button mat-button matDatepickerCancel>
-                            {{ "label.cancelbtn" | translate }}
+                            {{ "cancelbtn" | translate }}
                           </button>
                           <button
                             mat-raised-button
@@ -139,7 +134,7 @@
                             matDatepickerApply
                             (click)="onClickFilterOptionDate(true)"
                           >
-                            {{ "label.applybtn" | translate }}
+                            {{ "applybtn" | translate }}
                           </button>
                         </mat-datepicker-actions>
                       </mat-datepicker>
@@ -158,7 +153,7 @@
                           class="example-form-field custom-mat-form-field"
                         >
                           <mat-label>{{
-                            "label.completedCooRequests.fromdate" | translate
+                            "completedCooRequests.fromdate" | translate
                           }}</mat-label>
                           <input
                             matInput
@@ -176,7 +171,7 @@
                           <mat-datepicker #fromdate>
                             <mat-datepicker-actions>
                               <button mat-button matDatepickerCancel>
-                                {{ "label.cancelbtn" | translate }}
+                                {{ "cancelbtn" | translate }}
                               </button>
                               <button
                                 mat-raised-button
@@ -184,7 +179,7 @@
                                 matDatepickerApply
                                 (click)="onClickFilterOptionDate(true)"
                               >
-                                {{ "label.applybtn" | translate }}
+                                {{ "applybtn" | translate }}
                               </button>
                             </mat-datepicker-actions>
                           </mat-datepicker>
@@ -196,7 +191,7 @@
                           class="example-form-field custom-mat-form-field"
                         >
                           <mat-label>{{
-                            "label.completedCooRequests.todate" | translate
+                            "completedCooRequests.todate" | translate
                           }}</mat-label>
                           <input
                             matInput
@@ -214,7 +209,7 @@
                           <mat-datepicker #todate>
                             <mat-datepicker-actions>
                               <button mat-button matDatepickerCancel>
-                                {{ "label.cancelbtn" | translate }}
+                                {{ "cancelbtn" | translate }}
                               </button>
                               <button
                                 mat-raised-button
@@ -222,7 +217,7 @@
                                 matDatepickerApply
                                 (click)="onClickFilterOptionDate(true)"
                               >
-                                {{ "label.applybtn" | translate }}
+                                {{ "applybtn" | translate }}
                               </button>
                             </mat-datepicker-actions>
                           </mat-datepicker>
@@ -237,7 +232,7 @@
                     icon="pi pi-file-excel"
                     (click)="exportExcel()"
                     class="mr-2 grid-header-right-icon"
-                    [pTooltip]="'label.excelExport' | translate"
+                    [pTooltip]="'excelExport' | translate"
                     tooltipPosition="bottom"
                   ></button>
                   <button
@@ -248,7 +243,7 @@
                     (click)="clickChips()"
                     class="mr-2 grid-header-right-icon"
                     [ngClass]="{ clicked: enableFilters }"
-                    [pTooltip]="'label.filter' | translate"
+                    [pTooltip]="'filter' | translate"
                     tooltipPosition="bottom"
                   ></button>
                   <!-- <button
@@ -259,7 +254,7 @@
                     (click)="openDialogAdd()"
                     *ngIf="routesname === 'pending' && permission.add"
                     class="mr-2 grid-header-right-icon"
-                    [pTooltip]="'label.companydetails.add' | translate"
+                    [pTooltip]="'companydetails.add' | translate"
                     tooltipPosition="bottom"
                   ></button> -->
                 </div>
@@ -312,28 +307,25 @@
               >
                 <td class="lg:noaction-width-header">
                   <span class="p-column-title">{{
-                    "label.settlementdetails.settlementList.lcauno" | translate
+                    "settlementdetails.settlementList.lcauno" | translate
                   }}</span>
                   <span class="image-text">{{ data.lcaname }}</span>
                 </td>
                 <td class="lg:noaction-width-header">
                   <span class="p-column-title">{{
-                    "label.settlementdetails.settlementList.settlementuno"
-                      | translate
+                    "settlementdetails.settlementList.settlementuno" | translate
                   }}</span>
                   <span class="image-text">{{ data.settlementuno }}</span>
                 </td>
                 <td class="">
                   <span class="p-column-title">{{
-                    "label.settlementdetails.settlementList.noofinvoices"
-                      | translate
+                    "settlementdetails.settlementList.noofinvoices" | translate
                   }}</span>
                   <span class="image-text">{{ data.noofinvoices }}</span>
                 </td>
                 <td class="lg:noaction-width-header">
                   <span class="p-column-title">{{
-                    "label.settlementdetails.settlementList.totalamount"
-                      | translate
+                    "settlementdetails.settlementList.totalamount" | translate
                   }}</span>
                   <span class="image-text amount-text">{{
                     data.totalamount | customCurrency
@@ -341,8 +333,7 @@
                 </td>
                 <td class="lg:noaction-width-header">
                   <span class="p-column-title">{{
-                    "label.settlementdetails.settlementList.invoiceamount"
-                      | translate
+                    "settlementdetails.settlementList.invoiceamount" | translate
                   }}</span>
                   <span class="image-text amount-text">{{
                     data.invoiceamount | customCurrency
@@ -350,7 +341,7 @@
                 </td>
                 <td class="lg:noaction-width-header">
                   <span class="p-column-title">{{
-                    "label.settlementdetails.settlementList.adjustmentamount"
+                    "settlementdetails.settlementList.adjustmentamount"
                       | translate
                   }}</span>
                   <span class="image-text amount-text">{{
@@ -359,7 +350,7 @@
                 </td>
                 <td class="lg:noaction-width-header">
                   <span class="p-column-title">{{
-                    "label.settlementdetails.settlementList.settlementamount"
+                    "settlementdetails.settlementList.settlementamount"
                       | translate
                   }}</span>
                   <span class="image-text amount-text">{{
@@ -368,35 +359,34 @@
                 </td>
                 <td class="lg:noaction-width-header">
                   <span class="p-column-title">{{
-                    "label.settlementdetails.settlementList.settlementcycle"
+                    "settlementdetails.settlementList.settlementcycle"
                       | translate
                   }}</span>
                   <span class="image-text">{{ data.settlementcycle }}</span>
                 </td>
                 <td class="lg:noaction-width-header">
                   <span class="p-column-title">{{
-                    "label.settlementdetails.settlementList.paymentref"
-                      | translate
+                    "settlementdetails.settlementList.paymentref" | translate
                   }}</span>
                   <span class="image-text">{{ data.paymentref }}</span>
                 </td>
                 <!-- <td class="lg:noaction-width-header">
                   <span class="p-column-title">{{
-                    "label.settlementdetails.settlementList.paymentremarks"
+                    "settlementdetails.settlementList.paymentremarks"
                       | translate
                   }}</span>
                   <span class="image-text">{{ data.paymentremarks }}</span>
                 </td>
                 <td class="lg:noaction-width-header">
                   <span class="p-column-title">{{
-                    "label.settlementdetails.settlementList.settlementremarks"
+                    "settlementdetails.settlementList.settlementremarks"
                       | translate
                   }}</span>
                   <span class="image-text">{{ data.settlementremarks }}</span>
                 </td> -->
                 <!-- <td class="lg:noaction-width-header">
                   <span class="p-column-title">{{
-                    "label.settlementdetails.settlementList.settlementstatus"
+                    "settlementdetails.settlementList.settlementstatus"
                       | translate
                   }}</span>
                   <span class="image-text">
@@ -408,7 +398,7 @@
                 </td> -->
                 <td class="frozen2">
                   <span class="p-column-title">{{
-                    "label.companydetails.companyList.enteredon" | translate
+                    "companydetails.companyList.enteredon" | translate
                   }}</span>
                   <span class="image-text">{{
                     splitdatetime(data.enteredon)?.date
@@ -416,7 +406,7 @@
                 </td>
                 <td class="frozen2">
                   <span class="p-column-title">{{
-                    "label.companydetails.companyList.enteredby" | translate
+                    "companydetails.companyList.enteredby" | translate
                   }}</span>
                   <span class="image-text">{{ data.enteredby }}</span>
                 </td>
@@ -431,7 +421,7 @@
                     <!-- <button
                       type="button"
                       (click)="DeleteRow(data)"
-                      [pTooltip]="'label.delete' | translate"
+                      [pTooltip]="'delete' | translate"
                       tooltipPosition="bottom"
                       class="p-element mr-2 grid-header-right-icon p-button p-component p-button-icon-only"
                       title="{{ 'tlpDelete' | translate }}"
@@ -447,7 +437,7 @@
               <ng-container *ngIf="settlementListsFilter.length > 0">
                 <tr>
                   <td colspan="3">
-                    {{ "label.companydetails.totals" | translate }}
+                    {{ "companydetails.totals" | translate }}
                   </td>
                   <td class="text-right">
                     {{ totals?.totaltotalamount | customCurrency : "AED" }}
@@ -478,10 +468,7 @@
         >
           <div class="ng_show_close_icon">
             <br />
-            <span
-              (click)="closeWorkflow()"
-              [pTooltip]="'label.hide' | translate"
-            >
+            <span (click)="closeWorkflow()" [pTooltip]="'hide' | translate">
               <mat-icon class="rounded-icon">chevron_right</mat-icon>
             </span>
             <br />

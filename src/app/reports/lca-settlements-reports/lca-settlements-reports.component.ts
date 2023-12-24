@@ -92,6 +92,7 @@ export class LcaSettlementsReportsComponent
     private route: ActivatedRoute,
     private modalPopupService: ModalPopupService
   ) {
+    debugger;
     super(router, consts, apiservice, common, translate);
     const url = this.router.url;
     this.routesurl = url;
@@ -120,63 +121,63 @@ export class LcaSettlementsReportsComponent
     this.cols = [
       {
         field: 'lcauno',
-        header: 'label.settlementdetails.settlementList.lcauno',
+        header: 'settlementdetails.settlementList.lcauno',
       },
       {
         field: 'settlementuno',
-        header: 'label.settlementdetails.settlementList.settlementuno',
+        header: 'settlementdetails.settlementList.settlementuno',
       },
       {
         field: 'noofinvoices',
-        header: 'label.settlementdetails.settlementList.noofinvoices',
+        header: 'settlementdetails.settlementList.noofinvoices',
       },
       {
         field: 'totalamount',
-        header: 'label.settlementdetails.settlementList.totalamount',
+        header: 'settlementdetails.settlementList.totalamount',
       },
       {
         field: 'invoiceamount',
-        header: 'label.settlementdetails.settlementList.invoiceamount',
+        header: 'settlementdetails.settlementList.invoiceamount',
       },
       {
         field: 'adjustmentamount',
-        header: 'label.settlementdetails.settlementList.adjustmentamount',
+        header: 'settlementdetails.settlementList.adjustmentamount',
       },
       {
         field: 'settlementamount',
-        header: 'label.settlementdetails.settlementList.settlementamount',
+        header: 'settlementdetails.settlementList.settlementamount',
       },
       {
         field: 'settlementcycle',
-        header: 'label.settlementdetails.settlementList.settlementcycle',
+        header: 'settlementdetails.settlementList.settlementcycle',
       },
       {
         field: 'paymentref',
-        header: 'label.settlementdetails.settlementList.paymentref',
+        header: 'settlementdetails.settlementList.paymentref',
       },
       // {
       //   field: "paymentremarks",
-      //   header: "label.settlementdetails.settlementList.paymentremarks",
+      //   header: "settlementdetails.settlementList.paymentremarks",
       // },
       // {
       //   field: "settlementremarks",
-      //   header: "label.settlementdetails.settlementList.settlementremarks",
+      //   header: "settlementdetails.settlementList.settlementremarks",
       // },
       // {
       //   field: "settlementstatus",
-      //   header: "label.settlementdetails.settlementList.settlementstatus",
+      //   header: "settlementdetails.settlementList.settlementstatus",
       // },
       {
         field: 'enteredon',
-        header: 'label.settlementdetails.settlementList.enteredon',
+        header: 'settlementdetails.settlementList.enteredon',
       },
       {
         field: 'enteredby',
-        header: 'label.companydetails.companyList.enteredby',
+        header: 'companydetails.companyList.enteredby',
       },
       {
         field: 'action',
-        header: 'label.companydetails.companyList.action',
+        header: 'companydetails.companyList.action',
       },
     ];
     //
@@ -412,11 +413,11 @@ export class LcaSettlementsReportsComponent
   //     .subscribe((response: any) => {
   //       if (`${response.responsecode}` === '1') {
   //         this.common.showSuccessMessage(
-  //           this.translate.instant('label.deleted')
+  //           this.translate.instant('deleted')
   //         );
   //         this.onClickFilterOptionCommon();
   //       } else {
-  //         this.common.showErrorMessage(this.translate.instant('label.error'));
+  //         this.common.showErrorMessage(this.translate.instant('error'));
   //       }
   //     });
   // }
@@ -428,48 +429,44 @@ export class LcaSettlementsReportsComponent
 
   exportExcel() {
     const jsonData = {
-      lcauno: this.translate.instant(
-        'label.settlementdetails.settlementList.lcauno'
-      ),
+      lcauno: this.translate.instant('settlementdetails.settlementList.lcauno'),
       settlementuno: this.translate.instant(
-        'label.settlementdetails.settlementList.settlementuno'
+        'settlementdetails.settlementList.settlementuno'
       ),
       noofinvoices: this.translate.instant(
-        'label.settlementdetails.settlementList.noofinvoices'
+        'settlementdetails.settlementList.noofinvoices'
       ),
       totalamount: this.translate.instant(
-        'label.settlementdetails.settlementList.totalamount'
+        'settlementdetails.settlementList.totalamount'
       ),
       invoiceamount: this.translate.instant(
-        'label.settlementdetails.settlementList.invoiceamount'
+        'settlementdetails.settlementList.invoiceamount'
       ),
       adjustmentamount: this.translate.instant(
-        'label.settlementdetails.settlementList.adjustmentamount'
+        'settlementdetails.settlementList.adjustmentamount'
       ),
       settlementamount: this.translate.instant(
-        'label.settlementdetails.settlementList.settlementamount'
+        'settlementdetails.settlementList.settlementamount'
       ),
       settlementcycle: this.translate.instant(
-        'label.settlementdetails.settlementList.settlementcycle'
+        'settlementdetails.settlementList.settlementcycle'
       ),
       paymentref: this.translate.instant(
-        'label.settlementdetails.settlementList.paymentref'
+        'settlementdetails.settlementList.paymentref'
       ),
       // paymentremarks: this.translate.instant(
-      //   "label.settlementdetails.settlementList.paymentremarks"
+      //   "settlementdetails.settlementList.paymentremarks"
       // ),
       // settlementremarks: this.translate.instant(
-      //   "label.settlementdetails.settlementList.settlementremarks"
+      //   "settlementdetails.settlementList.settlementremarks"
       // ),
       // settlementstatus: this.translate.instant(
-      //   "label.settlementdetails.settlementList.settlementstatus"
+      //   "settlementdetails.settlementList.settlementstatus"
       // ),
       enteredon: this.translate.instant(
-        'label.settlementdetails.settlementList.enteredon'
+        'settlementdetails.settlementList.enteredon'
       ),
-      enteredby: this.translate.instant(
-        'label.companydetails.companyList.enteredby'
-      ),
+      enteredby: this.translate.instant('companydetails.companyList.enteredby'),
     };
     const dataList: any = [];
     this.settlementListsFilter.map((item: any) => {
