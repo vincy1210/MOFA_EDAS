@@ -71,9 +71,9 @@
                       />
                     </mat-form-field>
                   </div>
+                  <mat-icon (click)="showInfo()" class="info">info</mat-icon>
                 </ng-template>
                 <ng-template pTemplate="right">
-                  <mat-icon (click)="showInfo()" class="info">info</mat-icon>
                   <!-- {{totalrecords}}  {{overdue}} -->
                   <span
                     *ngIf="totalrecords != 0 || overdue == 1 || overdue == 2"
