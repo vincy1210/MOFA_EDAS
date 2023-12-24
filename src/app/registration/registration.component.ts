@@ -6,198 +6,210 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { ApiService } from 'src/service/api.service';
 import { filter, takeWhile } from 'rxjs/operators';
 import { CommonService } from 'src/service/common.service';
-import { HttpClient, HttpResponse, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpResponse,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 // import { RecaptchaComponent } from 'ng-recaptcha';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { ConstantsService } from 'src/service/constants.service';
 import { AuthService } from 'src/service/auth.service';
 
-
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.css'],
-
 })
 export class RegistrationComponent {
-
   @ViewChild('invisible') invisibleRecaptcha: any;
 
   showSection03a: boolean = false;
 
-  expressType: string='';
-  typeExpress: string[] = ['Department of Economic Development (DED)', 'Freezone'];
+  expressType: string = '';
+  typeExpress: string[] = [
+    'Department of Economic Development (DED)',
+    'Freezone',
+  ];
 
- // radioOptions: FormGroup | undefined;
+  // radioOptions: FormGroup | undefined;
   registrationForm: FormGroup;
-  issuing_auth:boolean=false;
+  issuing_auth: boolean = false;
 
-  param1:any;
+  param1: any;
   param2: any;
   param3: any;
-  alive: boolean = true
-  today:Date=new Date()
-  reg_form_data:any;
-  captcha:string='';
-  email:string='';
+  alive: boolean = true;
+  today: Date = new Date();
+  reg_form_data: any;
+  captcha: string = '';
+  email: string = '';
 
   //testvar vincy
 
-  userinfo:any;
-  captcha_token:any;
-  user_info_taken_using_authtoken:any;
-  freezone:any;
-  freezone1:any;
+  userinfo: any;
+  captcha_token: any;
+  user_info_taken_using_authtoken: any;
+  freezone: any;
+  freezone1: any;
   isButtonDisabled = false;
-  UserHavingCompany:boolean=false;
-  constructor(private auth:AuthService,private consts:ConstantsService,private recaptchaV3Service: ReCaptchaV3Service,private http:HttpClient ,private common:CommonService,private FormBuilder:FormBuilder, private router:Router, private _activatedRoute:ActivatedRoute, private apiservice:ApiService){
-    this.common.getData().subscribe(data => {
+  UserHavingCompany: boolean = false;
+  constructor(
+    private auth: AuthService,
+    private consts: ConstantsService,
+    private recaptchaV3Service: ReCaptchaV3Service,
+    private http: HttpClient,
+    private common: CommonService,
+    private FormBuilder: FormBuilder,
+    private router: Router,
+    private _activatedRoute: ActivatedRoute,
+    private apiservice: ApiService
+  ) {
+    this.common.getData().subscribe((data) => {
       this.reg_form_data = data;
-      console.log(this.reg_form_data)
+      console.log(this.reg_form_data);
     });
-    
+
     this.registrationForm = this.FormBuilder.group({
-      tradeLicenseNumber: [this.reg_form_data.tradeLicenseNumber,  [Validators.required,Validators.minLength(4),Validators.pattern('^(?=.*\\S).+$')]],
+      tradeLicenseNumber: [
+        this.reg_form_data.tradeLicenseNumber,
+        [
+          Validators.required,
+          Validators.minLength(4),
+          Validators.pattern('^(?=.*\\S).+$'),
+        ],
+      ],
       chosenDate: [this.reg_form_data.chosenDate, Validators.required],
-      issuingAuthority: [this.reg_form_data.issuingAuthority, Validators.required],
+      issuingAuthority: [
+        this.reg_form_data.issuingAuthority,
+        Validators.required,
+      ],
       expressType: [this.reg_form_data.expressType, Validators.required],
-      dmccOption:[this.reg_form_data.dmccOption],
-      name_of_Business:[this.reg_form_data.name_of_Business, [Validators.required ,Validators.pattern('^(?=.*\\S).+$')]]
+      dmccOption: [this.reg_form_data.dmccOption],
+      name_of_Business: [
+        this.reg_form_data.name_of_Business,
+        [Validators.required, Validators.pattern('^(?=.*\\S).+$')],
+      ],
     });
 
-  //  if(this.reg_form_data==="Freezone"){
+    //  if(this.reg_form_data==="Freezone"){
 
-  if(this.reg_form_data.issuingAuthority==="AUH"){
+    if (this.reg_form_data.issuingAuthority === 'AUH') {
       //this.registrationForm.removeValidators('dmccOption')
       this.registrationForm.get('tradeLicenseNumber')?.clearValidators();
       this.registrationForm.get('tradeLicenseNumber')?.updateValueAndValidity();
-  }
-  else{
-    this.registrationForm.get('tradeLicenseNumber')?.setValidators([Validators.required, Validators.minLength(4),Validators.pattern('^(?=.*\\S).+$')]);
-    this.registrationForm.get('tradeLicenseNumber')?.updateValueAndValidity();
-  }
-  
+    } else {
+      this.registrationForm
+        .get('tradeLicenseNumber')
+        ?.setValidators([
+          Validators.required,
+          Validators.minLength(4),
+          Validators.pattern('^(?=.*\\S).+$'),
+        ]);
+      this.registrationForm.get('tradeLicenseNumber')?.updateValueAndValidity();
+    }
 
-      if(this.reg_form_data.expressType==="Freezone"){
-        this.registrationForm.get('dmccOption')?.setValidators(Validators.required);
-        this.registrationForm.get('dmccOption')?.updateValueAndValidity();
-      }
-      else{
-        //this.registrationForm.removeValidators('dmccOption')
-        this.registrationForm.get('dmccOption')?.clearValidators();
-        this.registrationForm.get('dmccOption')?.updateValueAndValidity();
-      }
+    if (this.reg_form_data.expressType === 'Freezone') {
+      this.registrationForm
+        .get('dmccOption')
+        ?.setValidators(Validators.required);
+      this.registrationForm.get('dmccOption')?.updateValueAndValidity();
+    } else {
+      //this.registrationForm.removeValidators('dmccOption')
+      this.registrationForm.get('dmccOption')?.clearValidators();
+      this.registrationForm.get('dmccOption')?.updateValueAndValidity();
+    }
 
     //}
-
   }
 
- 
-  proceed(){
-    this.registrationForm.markAllAsTouched()
-   
+  proceed() {
+    this.registrationForm.markAllAsTouched();
+
     console.log(this.registrationForm.get('tradeLicenseNumber'));
-  
-    if(this.userinfo===""||this.userinfo==undefined)
-    {
-      console.log("Missing Data!!!")
-      this.common.showErrorMessage("Something went wrong")
+
+    if (this.userinfo === '' || this.userinfo == undefined) {
+      console.log('Missing Data!!!');
+      this.common.showErrorMessage('Something went wrong');
       return;
-
     }
-    console.log(this.userinfo.Data.uuid)
+    console.log(this.userinfo.Data.uuid);
 
-
-    if(this.registrationForm.valid){
-      console.log("success");
+    if (this.registrationForm.valid) {
+      console.log('success');
       const formData = this.registrationForm.value;
       console.log('Form Data:', formData);
-     // formData.captcha_token=this.captcha_token;
-      this.common.setData(formData); 
+      // formData.captcha_token=this.captcha_token;
+      this.common.setData(formData);
       console.log(formData);
 
-      
+      this.user_info_taken_using_authtoken = this.common.getUserProfile().Data;
+      let data = {
+        tradelicensenumber: this.reg_form_data.tradeLicenseNumber,
+        nameofbusiness: this.reg_form_data.name_of_Business,
+        emirate: this.reg_form_data.issuingAuthority,
+        uuid: this.userinfo.Data.uuid,
+        //need to pass consignee name, issuing auth emirate
+      };
 
-      this.user_info_taken_using_authtoken=this.common.getUserProfile().Data;
-      let data=
-      {
-        "tradelicensenumber": this.reg_form_data.tradeLicenseNumber,
-        "nameofbusiness":this.reg_form_data.name_of_Business,
-        "emirate":this.reg_form_data.issuingAuthority,
-         "uuid":this.userinfo.Data.uuid,
-         //need to pass consignee name, issuing auth emirate
-     }
-    
-     let response;
-     let response1;
+      let response;
+      let response1;
 
-    this.common.showLoading();
+      this.common.showLoading();
 
-     try{
+      try {
+        this.apiservice
+          .post(this.consts.CheckCompanyRegStatus, data)
+          .subscribe({
+            next: (success: any) => {
+              response = success;
+              this.common.hideLoading();
 
-      this.apiservice.post(this.consts.CheckCompanyRegStatus,data).subscribe({next:(success:any)=>{
-        response=success;
-        this.common.hideLoading();
-
-        if(response.responseCode==200){
-
-
-         if(response.data.dictionary.data.length==0){
-          this.common.SetAlreadyregisteredcompanydetails('');
-          this.router.navigateByUrl('/companydetails')
-         }
-         else if(response.data.dictionary.data.length>0  ){
-                          this.common.SetAlreadyregisteredcompanydetails(response.data.dictionary.data[0]);
-                          this.router.navigateByUrl('/companydetails')
-           
- 
-         }
-         else{
-          this.common.SetAlreadyregisteredcompanydetails([]);
-           this.router.navigateByUrl('/companydetails')
-         }
-        }
-
-        else if(response.responseCode==500){
-          //this.proceed();
-          this.common.showErrorMessage("Something went wrong");
-          return;
-        }
-        else{
-          console.log() 
-        }
-     }})
-
-     
-
-
-     }
-     finally{
-     }
+              if (response.responseCode == 200) {
+                if (response.data.dictionary.data.length == 0) {
+                  this.common.SetAlreadyregisteredcompanydetails('');
+                  this.router.navigateByUrl('/companydetails');
+                } else if (response.data.dictionary.data.length > 0) {
+                  this.common.SetAlreadyregisteredcompanydetails(
+                    response.data.dictionary.data[0]
+                  );
+                  this.router.navigateByUrl('/companydetails');
+                } else {
+                  this.common.SetAlreadyregisteredcompanydetails([]);
+                  this.router.navigateByUrl('/companydetails');
+                }
+              } else if (response.responseCode == 500) {
+                //this.proceed();
+                this.common.showErrorMessage('Something went wrong');
+                return;
+              } else {
+                console.log();
+              }
+            },
+          });
+      } finally {
+      }
       // set data in common service so that data can be pass from registration to company details component
-    }
-    else{
-      
-      console.log(this.expressType)
-      if(this.expressType===""){
-        this.issuing_auth=true;
+    } else {
+      console.log(this.expressType);
+      if (this.expressType === '') {
+        this.issuing_auth = true;
+      } else {
+        this.issuing_auth = true;
       }
-      else{
-        this.issuing_auth=true;
-      }
-      const form={...this.registrationForm.value}
-      console.log(form)
-      console.log("invalid form")
+      const form = { ...this.registrationForm.value };
+      console.log(form);
+      console.log('invalid form');
       const formData = this.registrationForm.value;
       console.log('Form Data:', formData);
     }
-
   }
   ngOnInit() {
-     this.common.showLoading();
+    this.common.showLoading();
 
     // try{
-      
+
     console.log('---------');
     this._activatedRoute.queryParams.subscribe((params: Params) => {
       // Access and capture the parameters here
@@ -205,206 +217,188 @@ export class RegistrationComponent {
       this.param2 = params['lang'];
       this.param3 = params['email'];
 
-     
-
       console.log(this.param1);
       console.log(this.param2);
       console.log(this.param3);
-      
+
       // You can perform any actions or logic with these parameters
     });
-//for cancel button checking whether any company already there
-    this.reg_form_data= this.common.getUserProfile();
-    const userProfilejson=JSON.parse(this.reg_form_data)
-    if(userProfilejson){
-this.checkcompanyuserforcancel(userProfilejson.Data);
+    //for cancel button checking whether any company already there
+    this.reg_form_data = this.common.getUserProfile();
+    const userProfilejson = JSON.parse(this.reg_form_data);
+    if (userProfilejson) {
+      this.checkcompanyuserforcancel(userProfilejson.Data);
     }
 
     console.log(this.reg_form_data);
-    let data={
-      "useruno":"1",
-      "languagecode":0
-    }
+    let data = {
+      useruno: '1',
+      languagecode: 0,
+    };
     // this.common.showLoading();
 
-    this.apiservice.post(this.consts.getFreezonetypes, data).subscribe((response: any) => {
-      this.common.hideLoading();
+    this.apiservice
+      .post(this.consts.getFreezonetypes, data)
+      .subscribe((response: any) => {
+        this.common.hideLoading();
 
-      const dataArray = response.data; // Access the 'data' property from the response
-      this.freezone1=dataArray.dictionary.data;
-      this.common.setfreezone(this.freezone1)
-      console.log(this.freezone1);
+        const dataArray = response.data; // Access the 'data' property from the response
+        this.freezone1 = dataArray.dictionary.data;
+        this.common.setfreezone(this.freezone1);
+        console.log(this.freezone1);
 
-      if(this.freezone1==undefined){
-        this.common.showErrorMessage("Error in loading zone type");
-        return;
-      }
-    });
+        if (this.freezone1 == undefined) {
+          this.common.showErrorMessage('Error in loading zone type');
+          return;
+        }
+      });
 
-    if(this.param3==undefined ||this.param1==undefined || this.param2==undefined){
-
-      if(this.reg_form_data!=null ||this.reg_form_data!=undefined){
-       
-        this.userinfo=JSON.parse(this.reg_form_data);
+    if (
+      this.param3 == undefined ||
+      this.param1 == undefined ||
+      this.param2 == undefined
+    ) {
+      if (this.reg_form_data != null || this.reg_form_data != undefined) {
+        this.userinfo = JSON.parse(this.reg_form_data);
         this.common.setUserIfoData(this.reg_form_data);
-      }
-      else{
+      } else {
+        console.log('redirect parameters undefined');
 
-        console.log("redirect parameters undefined");
+        console.log('Something went wrong! Please try again');
 
-        console.log("Something went wrong! Please try again")
-
-         // Delay the execution  by 2 seconds
-  setTimeout(() => {
-    // this.auth.logout();
-    window.location.href = "https://stg-id.uaepass.ae/idshub/logout?redirect_uri=https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2"
-
-
-  }, 2000); // 2000 milliseconds = 2 seconds
+        // Delay the execution  by 2 seconds
+        setTimeout(() => {
+          // this.auth.logout();
+          window.location.href =
+            'https://stg-id.uaepass.ae/idshub/logout?redirect_uri=https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2';
+        }, 2000); // 2000 milliseconds = 2 seconds
         return;
       }
-
-    }
-    else{
-
-      if(this.reg_form_data==null ||this.reg_form_data==undefined){
+    } else {
+      if (this.reg_form_data == null || this.reg_form_data == undefined) {
         this.addItem();
-      }
-      else{
-        this.userinfo=JSON.parse(this.reg_form_data);
+      } else {
+        this.userinfo = JSON.parse(this.reg_form_data);
         this.common.setUserIfoData(this.reg_form_data);
       }
-      
-
     }
     //this.common.hideLoading();
-    
-  // }
-  // finally{
-  //   this.common.hideLoading()
-  // }
 
+    // }
+    // finally{
+    //   this.common.hideLoading()
+    // }
   }
 
-  checkcompanyuserforcancel(userinfo:any){
+  checkcompanyuserforcancel(userinfo: any) {
     let response, data;
-    data={
-      "uuid": userinfo.uuid,
-      "emiratesid": userinfo.idn,
-      "email": userinfo.email,
-      "mobile": userinfo.mobile,
-      "firstname": userinfo.firstnameEN
+    data = {
+      uuid: userinfo.uuid,
+      emiratesid: userinfo.idn,
+      email: userinfo.email,
+      mobile: userinfo.mobile,
+      firstname: userinfo.firstnameEN,
+    };
+    this.common.showLoading();
+    this.apiservice.post(this.consts.checkCompanyUser, data).subscribe({
+      next: (success: any) => {
+        this.common.hideLoading();
+        response = success;
+        if (response.data.length > 0) {
+          this.UserHavingCompany = true;
+        } else {
+          this.UserHavingCompany = false;
+        }
+      },
+    });
   }
-  this.common.showLoading();
-    this.apiservice.post(this.consts.checkCompanyUser,data).subscribe({next:(success:any)=>{
-      this.common.hideLoading();
-      response=success;
-      if(response.data.length>0){
-        this.UserHavingCompany=true;
-      }
-      else{
-        this.UserHavingCompany=false;
-      }
-
-
-    }})
-  }
-  radio(event:any){
-
-
+  radio(event: any) {
     console.log(event.value);
-    var issuing_auth=event.value
-    this.expressType=issuing_auth;
+    var issuing_auth = event.value;
+    this.expressType = issuing_auth;
     console.log(issuing_auth);
-    console.log(this.expressType)
-    
-    if(this.expressType==="Freezone"){
-      this.registrationForm.get('dmccOption')?.setValidators(Validators.required);
+    console.log(this.expressType);
+
+    if (this.expressType === 'Freezone') {
+      this.registrationForm
+        .get('dmccOption')
+        ?.setValidators(Validators.required);
       this.registrationForm.get('dmccOption')?.updateValueAndValidity();
-    }
-    else{
+    } else {
       //this.registrationForm.removeValidators('dmccOption')
       this.registrationForm.get('dmccOption')?.clearValidators();
       this.registrationForm.get('dmccOption')?.updateValueAndValidity();
     }
-
   }
 
-  
   //Redirection from MOFA start
 
   addItem() {
-    
     const objTxData = {
       AuthenticationCode: this.param1,
-      email: this.param3
-    }
+      email: this.param3,
+    };
     this.sRetriveUserProfile();
   }
-//commented for testing
+  //commented for testing
   sRetriveUserProfile() {
     // Show the loader before making the API request
-    this.apiservice.sPassAuthGetUserprofile(this.param1, this.param3)
+    this.apiservice
+      .sPassAuthGetUserprofile(this.param1, this.param3)
       .toPromise()
       .then((response: any) => {
-
         if (typeof response === 'string' && !response.includes('/')) {
-         // response = response.slice(1, -1);
+          // response = response.slice(1, -1);
           response = JSON.parse(response);
-        }
-        else{
+        } else {
           response = JSON.stringify(response).replace(/\\/g, '');
-         // response = response.slice(1, -1);
+          // response = response.slice(1, -1);
           response = JSON.parse(response);
         }
-        if (response.IsSucceeded === "True") {
+        if (response.IsSucceeded === 'True') {
           this.userinfo = response;
 
           const userProfileString = JSON.stringify(this.userinfo);
 
-         this.common.setUserProfile(userProfileString);
+          this.common.setUserProfile(userProfileString);
 
-// Set the user profile data in SessionStorage
-       // sessionStorage.setItem('userProfile', userProfileString);
+          // Set the user profile data in SessionStorage
+          // sessionStorage.setItem('userProfile', userProfileString);
 
-       //verify the user whether he already has company and if he already having redirect him to company listing page
-       this.useralreadyhavingcompany(this.userinfo.Data);
+          //verify the user whether he already has company and if he already having redirect him to company listing page
+          this.useralreadyhavingcompany(this.userinfo.Data);
 
           console.log(response.IsSucceeded);
-        } 
-        else if (response.IsSucceeded === "False") {
-          console.log(response.message)
+        } else if (response.IsSucceeded === 'False') {
+          console.log(response.message);
           // this.common.showErrorMessage("Something went wrong");
-          console.log("Auth1 failed")
+          console.log('Auth1 failed');
           return;
         }
-  
+
         if (this.userinfo == undefined) {
-          this.common.showErrorMessage("Something went wrong");
-          console.log("Auth2 Failed!!!");
+          this.common.showErrorMessage('Something went wrong');
+          console.log('Auth2 Failed!!!');
           return;
         }
-  
+
         this.common.setUserIfoData(response.Data);
       })
       .catch(console.log);
   }
-  
-  
-  ngOnDestroy() {
-    console.log("--Stop--");
-    this.alive = false
-  }
 
+  ngOnDestroy() {
+    console.log('--Stop--');
+    this.alive = false;
+  }
 
   // resolved(captchaResponse: string) {
   //   console.log(`Resolved captcha with response: ${captchaResponse}`);
   // }
-  
 
   // public executeImportantAction(): void {
   //   this.recaptchaV3Service.execute('importantAction')
-  //     .subscribe((token) => 
+  //     .subscribe((token) =>
   //    console.log(token)
   //     );
   // }
@@ -425,35 +419,38 @@ this.checkcompanyuserforcancel(userProfilejson.Data);
   // }
   //for recaptcha end
 
-  mainpage(){
-    this.router.navigateByUrl('/registration')
+  mainpage() {
+    this.router.navigateByUrl('/registration');
   }
-  licenseauthchange(event:any){
+  licenseauthchange(event: any) {
     console.log(event);
-   // const filteredData = this.freezone.filter((item:any) => item.emiratesuno === emiratesUnoValue);
+    // const filteredData = this.freezone.filter((item:any) => item.emiratesuno === emiratesUnoValue);
   }
-  
 
-  onDropdownChange(event:any) {
+  onDropdownChange(event: any) {
     console.log(event);
     const selectedValue = this.registrationForm.get('issuingAuthority')?.value;
     console.log(`Selected value: ${selectedValue}`);
-    console.log(this.freezone1)
+    console.log(this.freezone1);
 
     if (selectedValue === 'AUH') {
       // Remove validators from tradeLicenseNumber
       this.registrationForm.get('tradeLicenseNumber')?.clearValidators();
       this.registrationForm.get('tradeLicenseNumber')?.updateValueAndValidity();
-  } else {
+    } else {
       // Add validators back to tradeLicenseNumber
-      this.registrationForm.get('tradeLicenseNumber')?.setValidators([Validators.required, Validators.minLength(4)]);
+      this.registrationForm
+        .get('tradeLicenseNumber')
+        ?.setValidators([Validators.required, Validators.minLength(4)]);
       this.registrationForm.get('tradeLicenseNumber')?.updateValueAndValidity();
-  }
-    if(this.freezone1!=undefined){
-      const filteredData = this.freezone1.filter((item:any) => item.emiratesuno === parseInt(selectedValue, 10));
+    }
+    if (this.freezone1 != undefined) {
+      const filteredData = this.freezone1.filter(
+        (item: any) => item.emiratesuno === parseInt(selectedValue, 10)
+      );
       console.log(filteredData);
-      this.freezone=filteredData;
-    console.log(this.freezone);
+      this.freezone = filteredData;
+      console.log(this.freezone);
     }
   }
 
@@ -467,71 +464,64 @@ this.checkcompanyuserforcancel(userProfilejson.Data);
   //   console.log(`${message}: ${this.formatToken(token)}`);
   //   this.captcha_token=token;
 
-
   // }
 
-  useralreadyhavingcompany(userinfo:any){
-
+  useralreadyhavingcompany(userinfo: any) {
     let response, data;
-    data={
-      "uuid": userinfo.uuid,
-      "emiratesid": userinfo.idn,
-      "email": userinfo.email,
-      "mobile": userinfo.mobile,
-      "firstname": userinfo.firstnameEN
-  }
-  this.common.showLoading();
+    data = {
+      uuid: userinfo.uuid,
+      emiratesid: userinfo.idn,
+      email: userinfo.email,
+      mobile: userinfo.mobile,
+      firstname: userinfo.firstnameEN,
+    };
+    this.common.showLoading();
 
-    this.apiservice.post(this.consts.checkCompanyUser,data).subscribe({next:(success:any)=>{
-      this.common.hideLoading();
-      response=success;
-      this.common.hideLoading();
-      if(response.responsecode==1){
-       if(response.data==="User not available"){
-        return;
-       }
-       else{
-       
-        let lcauser: boolean = false;
+    this.apiservice.post(this.consts.checkCompanyUser, data).subscribe({
+      next: (success: any) => {
+        this.common.hideLoading();
+        response = success;
+        this.common.hideLoading();
+        if (response.responsecode == 1) {
+          if (response.data === 'User not available') {
+            return;
+          } else {
+            let lcauser: boolean = false;
 
-        // Iterate through the JSON data
-        for (const data of response.data) {
-          if (data.roleuno === 11 || data.roleuno === 12) {
-            lcauser = true;
-            break; // No need to continue checking once condition is met
+            // Iterate through the JSON data
+            for (const data of response.data) {
+              if (data.roleuno === 11 || data.roleuno === 12) {
+                lcauser = true;
+                break; // No need to continue checking once condition is met
+              }
+            }
+            // Now lcauser will be true if any lcauno is 11 or 12
+            console.log('Is lcauser true?', lcauser);
+
+            if (lcauser) {
+              const { rolename } = response.data[0];
+              if (rolename && rolename.length > 0) {
+                const UserRoleList: number[] =
+                  this.common.getRolefromString(rolename);
+                sessionStorage.setItem(
+                  'userrolelist',
+                  JSON.stringify(UserRoleList)
+                );
+              }
+              this.auth.setLCAUser(response.data[0].roleuno);
+              this.router.navigateByUrl('/lcadashboard');
+            } else {
+              sessionStorage.setItem('usertype', 'CompanyUser');
+
+              this.common.userType.next('CompanyUser');
+              console.log('to landing page from registration page line 535');
+
+              this.router.navigateByUrl('/landingpage');
+            }
           }
         }
-        // Now lcauser will be true if any lcauno is 11 or 12
-        console.log("Is lcauser true?", lcauser);
-
-        if (lcauser) {
-          const { rolename } = response.data[0];
-          if (rolename && rolename.length > 0) {
-            const UserRoleList: number[] =
-              this.common.getRolefromString(rolename);
-            sessionStorage.setItem(
-              'userrolelist',
-              JSON.stringify(UserRoleList)
-            );
-          }
-          this.auth.setLCAUser(response.data[0].roleuno);
-          this.router.navigateByUrl('/lcadashboard');
-        }
-        else{
-          sessionStorage.setItem('usertype','CompanyUser')
-
-          this.common.userType.next('CompanyUser');
-          console.log("to landing page from registration page line 535")
-
-          this.router.navigateByUrl('/landingpage');
-
-        }
-       }
-      
-      }
-      
-      }});
-
+      },
+    });
   }
 
   onInput(event: Event) {
@@ -545,7 +535,6 @@ this.checkcompanyuserforcancel(userProfilejson.Data);
     this.registrationForm.patchValue({ name_of_Business: inputElement.value });
   }
 
-
   onPaste(event: ClipboardEvent) {
     event.preventDefault();
     const clipboardData = event.clipboardData?.getData('text/plain');
@@ -553,9 +542,8 @@ this.checkcompanyuserforcancel(userProfilejson.Data);
     document.execCommand('insertText', false, sanitizedData);
   }
 
-  CancelForLoggedinUsers(){
+  CancelForLoggedinUsers() {
     this.router.navigateByUrl('/landingpage');
     //vincy
   }
-  
 }
