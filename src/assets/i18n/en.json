@@ -148,7 +148,7 @@
   "entityshareamount": "Entity Share Amount",
   "totalamount": "Fees",
   "declarationdate": "Declaration Date",
-  "attestreqdate": "Request Date",
+  "attestreqdate": "Created",
   "status": "Status",
   "DraftPendAttest": "Draft Pending Attestations",
   "ShowEntries": "Showing {first} to {last} of {totalRecords} entries",
@@ -252,10 +252,30 @@
       "InvoiceAmount": "InvoiceAmount",
       "InvoiceNo": "InvoiceNo",
       "InvoiceCurrency": "InvoiceCurrency",
-      "InvoiceId": "InvoiceId",
-      "CompanyName": "CompanyName",
+      "InvoiceId": "Invoice Id",
+      "companyname": "Company",
       "Remarks": "Remarks",
       "Status": "Status"
     }
-  }
+  },
+  "Company": "Company",
+  "Fees Amount":"Fees Amount",
+  "Age":"Age",
+  "Draft":"Draft",
+
+
+    "LCA Attestations": "LCA Attestations",
+    "COO Attestations": "COO Attestations",
+    "Physical Attestations": "Physical Attestations",
+    "Select": "Select",
+    "Day": "Day",
+    "Approved": "Approved",
+    "Completed": "Completed",
+    "COO Attestation Requests": "COO Attestation Requests",
+    "Pending": "Pending",
+    "Physical Attestation Requests": "Physical Attestation Requests",
+    "LCA Attestation Requests": "LCA Attestation Requests",
+    "Total Requests": "Total Requests"
+
+  
 }

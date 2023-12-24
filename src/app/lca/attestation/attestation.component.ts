@@ -151,25 +151,13 @@ export class AttestationComponent implements OnInit {
   payment_button_isdisabled: boolean = true;
   timelineItems = [
     { status: '', title: 'IN DRAFT', icon: 'check', date: '', time: '' },
-    // { status: '', title: 'IN RISK', icon: 'check', date: '', time: '' },
     { status: '', title: 'PAYMENT', icon: 'check', date: '', time: '' },
-    // { status: '', title: 'IN REVIEW', icon: 'check', date: '', time: '' },
-    // { status: '', title: 'PENDING', icon: 'check', date: '', time: '' },
-    // { status: '', title: 'APPROVED', icon: 'check', date: '', time: '' },
-    // { status: '', title: 'RETURNED', icon: 'check', date: '', time: '' },
-    // { status: '', title: 'ON HOLD', icon: 'check', date: '', time: '' },
     { status: '', title: 'ATTESTED', icon: 'check', date: '', time: '' },
     { status: '', title: 'COMPLETED', icon: 'check', date: '', time: '' },
   ];
   statusess = [
     'IN DRAFT',
-    // 'IN RISK',
     'PAYMENT',
-    // 'IN REVIEW',
-    // 'PENDING',
-    // 'APPROVED',
-    // 'RETURNED',
-    // 'ON HOLD',
     'ATTESTED',
     'COMPLETED',
   ];
@@ -189,6 +177,8 @@ export class AttestationComponent implements OnInit {
   cooAttestationLists: any;
   overdue: number = 0;
   _selectedColumns: any;
+  processname:string='LCA';
+  showcoopaybutton:boolean=false;
   constructor(
     private translate: TranslateService,
     private fb: FormBuilder,
@@ -269,10 +259,9 @@ export class AttestationComponent implements OnInit {
       { field: 'declarationdate', header: 'Declaration Date', width: '200px' },
       { field: 'attestreqdate', header: 'Created', width: '200px' },
       { field: 'lcaname', header: 'Channel', width: '15%' },
-      { field: 'companyname', header: 'Company', width: '20%' },
+      { field: 'Company', header: 'Company', width: '20%' },
     ];
     this.cols = [
-      { field: 'lcaname', header: 'Channel', width: '15%' },
       { field: 'companyname', header: 'Company', width: '20%' },
     ];
 
@@ -801,7 +790,7 @@ export class AttestationComponent implements OnInit {
 
     let header = {
       uuid: this.uuid,
-      processname: 'LCA',
+      processname: this.processname,
     };
     this.common.showLoading();
     this.apicall
@@ -819,7 +808,7 @@ export class AttestationComponent implements OnInit {
             let data = {
               invoiceID: this.invoiceunoresponse,
               paymentID: code,
-              processname: 'LCA',
+              processname: this.processname,
             };
             this.common.setpaymentdetails(data);
 
@@ -998,6 +987,14 @@ export class AttestationComponent implements OnInit {
     });
   }
   openNew_(data: any) {
+
+    if(data.canpay==0){
+      this.showcoopaybutton=true;
+    }
+    else{
+      this.showcoopaybutton=false;
+    }
+
     this.AddInvoiceDialog_ = true;
     this.getCooForMyLCAInvoice(data);
   }
@@ -1082,6 +1079,14 @@ export class AttestationComponent implements OnInit {
         return 'danger';
     }
   }
+  getSeverity1(canpay: string) {
+    switch (canpay) {
+      case 'Paid':
+        return 'success';
+      default:
+        return 'danger';
+    }
+  }
 
   getCooForMyLCAInvoice(currentrow: any) {
     let resp;
@@ -1132,4 +1137,41 @@ export class AttestationComponent implements OnInit {
 
   //   return this.datepipe.transform(date, 'yyyy-MM-dd') || 'Invalid Date'; // Handle invalid date format
   // }
+
+  async paycoo(event:any){
+    let data;
+
+  if (event.length === 1) {
+    data = {
+      requstno: event[0].coorequestno,
+      invoiceuno: 0,
+      action: 'ADD',
+      uuid: this.uuid,
+    };
+  }
+
+  try {
+    // Use await to wait for the API call to complete
+    const response: any = await this.apicall.post(this.consts.getCOOAttestpaymentdetails, data).toPromise();
+
+    this.common.hideLoading();
+
+    if (response.status === 'Success') {
+      this.totalAttestationFee = response.invoiceamount;
+      this.totalFineAmount = response.fineamount;
+      this.totalFee = response.totalamount;
+      this.invoiceunoresponse = response.invoiceuno;
+      // Now, you can call the AttestationPay function
+      this.processname='COO'
+      this.AttestationPay();
+    } else {
+      console.log('Something went wrong!!');
+      this.common.showErrorMessage('Something went wrong');
+      return;
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    this.common.showErrorMessage('An error occurred while fetching data');
+  }
+  }
 }

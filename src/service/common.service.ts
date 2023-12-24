@@ -36,17 +36,6 @@ export const ConstAccessDenied: string = 'access-denied';
 export class CommonService {
   favink1: string = '';
   favink2: string = '';
-  // public userloggedinSubject = new BehaviorSubject<boolean>(false);
-  // userloggedin$ = this.userloggedinSubject.asObservable();
-
-  // public lcauserloggedinSubject = new BehaviorSubject<boolean>(false);
-  // lcauserloggedin$ = this.lcauserloggedinSubject.asObservable();
-
-  // private userCompanysubject = new BehaviorSubject<string>('');
-  // userCompany$ = this.userCompanysubject.asObservable();
-
-  // private isAdmin = new BehaviorSubject<boolean>(false);
-  // isAdmin$ = this.isAdmin.asObservable();
 
   public userType = new BehaviorSubject<string>('');
   userType$ = this.userType.asObservable();

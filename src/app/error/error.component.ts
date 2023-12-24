@@ -40,7 +40,7 @@ export class ErrorComponent implements OnInit {
 if(data=="session"){
   this.sessionnote='Your session got logged out due to inactivity, we look forward to serve you again';
 }
-else{
+else if(data=="manuallogout"){
   this.sessionnote='You have been successfully logged out, we look forward to serve you again';
 }
       }

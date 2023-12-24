@@ -53,10 +53,8 @@
                   <div style="padding: 5px" class="col-md-3 col-lg-3 col-sm-6">
                     <mat-form-field class="searchboxinput">
                       <mat-label
-                        ><mat-icon style="font-size: larger">{{
-                          "search" | translate
-                        }}</mat-icon
-                        >{{ "Search" | translate }}</mat-label
+                        ><mat-icon style="font-size: larger">search</mat-icon
+                        >{{ "SearchKeyword" | translate }}</mat-label
                       >
                       <input
                         matInput
@@ -212,18 +210,18 @@
                   <p-tableHeaderCheckbox (click)="loadsidepanel(list)">
                   </p-tableHeaderCheckbox>
               </th>
-              <th pSortableColumn="edasattestno" >Attestation No  <p-sortIcon field="edasattestno"></p-sortIcon> </th>
-              <th pSortableColumn="currencycode">Currency  <p-sortIcon field="currencycode"></p-sortIcon></th>
-              <th pSortableColumn="canpay">Status  <p-sortIcon field="canpay"></p-sortIcon></th>
-              <th pSortableColumn="noofdaysoverdue">Age  <p-sortIcon field="noofdaysoverdue"></p-sortIcon></th>
-              <th pSortableColumn="invoiceamount">Invoice Amount  <p-sortIcon field="invoiceamount"></p-sortIcon></th>
-              <th pSortableColumn="feesamount">Fees Amount  <p-sortIcon field="feesamount"></p-sortIcon></th>
-              <th pSortableColumn="invoiceid">Invoice ID  <p-sortIcon field="invoiceid"></p-sortIcon></th>
-              <th pSortableColumn="declarationumber">Declaration No <p-sortIcon field="declarationumber"></p-sortIcon></th>
-              <th pSortableColumn="declarationdate">Declaration Date  <p-sortIcon field="declarationdate"></p-sortIcon></th>
-              <th pSortableColumn="attestreqdate">Created  <p-sortIcon field="attestreqdate"></p-sortIcon> </th>
+              <th pSortableColumn="edasattestno" >{{'edasattestno' | translate}}  <p-sortIcon field="edasattestno"></p-sortIcon> </th>
+              <th pSortableColumn="currencycode">{{'invoiceCurrency' | translate}}  <p-sortIcon field="currencycode"></p-sortIcon></th>
+              <th pSortableColumn="canpay">{{'status' | translate}}  <p-sortIcon field="canpay"></p-sortIcon></th>
+              <th pSortableColumn="noofdaysoverdue">{{'Age'| translate}}  <p-sortIcon field="noofdaysoverdue"></p-sortIcon></th>
+              <th pSortableColumn="invoiceamount">{{'invoiceamount' | translate}}  <p-sortIcon field="invoiceamount"></p-sortIcon></th>
+              <th pSortableColumn="feesamount">{{'Fees Amount' | translate}}  <p-sortIcon field="feesamount"></p-sortIcon></th>
+              <th pSortableColumn="invoiceid">{{'invoiceId' | translate}}  <p-sortIcon field="invoiceid"></p-sortIcon></th>
+              <th pSortableColumn="declarationumber">{{'declarationumber' | translate}} <p-sortIcon field="declarationumber"></p-sortIcon></th>
+              <th pSortableColumn="declarationdate">{{'declarationdate' | translate}}  <p-sortIcon field="declarationdate"></p-sortIcon></th>
+              <th pSortableColumn="attestreqdate">{{'attestreqdate' | translate}}  <p-sortIcon field="attestreqdate"></p-sortIcon> </th>
               <th *ngFor="let col of columns" pResizableColumn [pSortableColumn]="col.field" [style.width]="col.width" >
-                  {{col.header}} <p-sortIcon [field]="col.field"  ></p-sortIcon>
+                  {{col.header | translate}} <p-sortIcon [field]="col.field"  ></p-sortIcon>
                   <p-columnFilter
                     type="text"
                     [field]="col.field"
@@ -232,7 +230,7 @@
                   ></p-columnFilter>
                 </th>
                 <th pFrozenColumn alignFrozen="right">
-                  {{ "Action" | translate }}
+                  {{ "actions" | translate }}
                 </th>
               </tr>
             </ng-template>
@@ -305,9 +303,7 @@
                 </td>
                 <td>
                   <span class="image-text">{{
-                    common.splitdatetimeforstring(
-                      common.formatDatestringtodate(customer.declarationdate)
-                    )?.date
+                    common.splitdatetimeforstring(common.formatDatestringtodate(customer.declarationdate))?.date
                   }}</span>
                 </td>
                 <td>
@@ -602,19 +598,18 @@
             <td>
                <span class="image-text">{{ data.declarationumber }}</span>
              </td>
-            
              <td>
                <span class="image-text">{{ data.edasattestno }}</span>
              </td>
              <td>
-              <p-tag [value]="data.feespaid" [severity]="getSeverity(data.feespaid)"></p-tag>
+              <p-tag [value]="data.feespaid" [severity]="getSeverity1(data.feespaid)"></p-tag>
             </td>
              <td style="text-align: right;">
                <span class="image-text">{{ common.formatAmount(data.totalamount) }}</span>
              </td>
              <td>
                <span class="image-text">{{
-                 common.splitdatetime(data.declarationdate)?.date
+                  common.splitdatetimeforstring(common.formatDatestringtodate(data.declarationdate))?.date
                }}</span>
              </td>
              <td>
@@ -635,6 +630,16 @@
        </p-table>
      
                <ng-template pTemplate="footer">
+
+                <button  *ngIf="showcoopaybutton"
+                mat-flat-button 
+                color="primary"
+                (click)="paycoo(cooAttestationLists)"
+                class="pay-btn"
+              >
+                {{ 'pay' | translate }}
+              </button>
+
                  <p-button icon="pi pi-times" (click)="AddInvoiceDialog_ = false" label="{{'Cancel' | translate}}" styleClass="p-confirm-dialog-reject"></p-button>
              </ng-template>
           

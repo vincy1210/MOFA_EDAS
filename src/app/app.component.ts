@@ -348,7 +348,8 @@ export class AppComponent {
 }
 
   logout() {
-    this.common.setlogoutreason('user');
+    sessionStorage.clear()
+    this.common.setlogoutreason('manuallogout');
     this.auth.logout();
   }
   @HostListener('mouseover') onMouseOver() {
