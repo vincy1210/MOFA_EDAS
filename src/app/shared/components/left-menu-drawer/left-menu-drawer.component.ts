@@ -119,7 +119,7 @@ export class LeftMenuDrawerComponent implements OnInit {
           id: 1,
           menu: 'Dashboard',
           icon: 'dashboard',
-          link: '/lcadashboard',
+          link: '/lca-login/lcadashboard',
           hasubMenu: false,
         },
         {
