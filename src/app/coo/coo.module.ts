@@ -31,6 +31,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { AuthGuard } from '../auth.guard';
+// import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 const routes = [
   {
@@ -63,6 +64,7 @@ const routes = [
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
+    // SweetAlert2Module.forRoot(),
     TranslateModule,
     ButtonModule,
     FormsModule,

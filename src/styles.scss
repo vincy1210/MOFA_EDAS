@@ -1655,8 +1655,8 @@ button.white-icon-button.mat-menu-item {
   display: none;
 }
 
- .mat-list-item-content.active:before,
- .mat-list-item-content.active:before {
+.mat-list-item-content.active:before,
+.mat-list-item-content.active:before {
   content: "";
   width: 3px;
   height: 100%;
@@ -1866,7 +1866,6 @@ button.white-icon-button.mat-menu-item {
   font-size: 20px;
   height: 1rem !important;
 }
-
 
 .action_eye_icon {
   cursor: pointer;
@@ -2348,7 +2347,20 @@ h1.db-sub-title {
   padding: 5px 20px 5px 20px;
 }
 
-.p-toolbar-group-right {
+.p-toolbar-group-left {
   height: 3rem;
   align-items: end !important;
+  .info {
+    cursor: pointer;
+    color: var(--primary-color) !important;
+  }
+}
+
+.swal2-styled.swal2-confirm {
+  background-color: var(--primary-color) !important;
+}
+
+.swal2-icon.swal2-warning {
+  border-color: var(--primary-color) !important;
+  color: var(--primary-color) !important;
 }
