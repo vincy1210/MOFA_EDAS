@@ -1,0 +1,512 @@
+<!-- <app-loader></app-loader> -->
+<div>
+  <div class="grid grid-cols-1" color="primary" class="page-header">
+    <h3>
+      <ng-container *ngIf="routesname === 'pending'">{{
+        "label.reports.lcaSettlements.page.title" | translate
+      }}</ng-container>
+      <ng-container *ngIf="routesname === 'approve'">{{
+        "label.reports.lcaSettlements.page.title" | translate
+      }}</ng-container>
+    </h3>
+  </div>
+  <div class="company-bg lcaSettlements-page">
+    <div class="mx-auto lcaSettlements-window">
+      <div class="lcaSettlements-window grid grid-cols-1 lg:grid-cols-3 gap-1">
+        <!-- Content here -->
+        <div
+          class="settlementdetails-window bg-white rounded-lg col-span-3"
+          [ngClass]="{
+            'col-span-2 hidden sm:hidden lg:block': shouldShow,
+            'col-span-3': !shouldShow
+          }"
+        >
+          <p-table
+            [responsiveLayout]="responsiveLayout"
+            [scrollable]="responsiveLayout === 'scroll' ? true : false"
+            [(selection)]="selectedRows"
+            selectionMode="single"
+            [lazy]="true"
+            (onLazyLoad)="loadDatas($event)"
+            dataKey="settlementuno"
+            #tableref
+            [rowHover]="true"
+            [paginator]="true"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [filterDelay]="0"
+            [totalRecords]="totalrecords"
+            [value]="settlementListsFilter"
+            [rows]="50"
+            [columns]="cols"
+            [showCurrentPageReport]="true"
+            [rowsPerPageOptions]="[10, 25, 50]"
+            [loading]="loading"
+            styleClass="p-datatable-customers p-datatable-gridlines"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [globalFilterFields]="[
+              'lcauno',
+              'settlementuno',
+              'noofinvoices',
+              'totalamount',
+              'invoiceamount',
+              'adjustmentamount',
+              'settlementamount',
+              'settlementcycle',
+              'paymentref',
+              'settlementstatus',
+              'enteredon',
+              'enteredby',
+              ''
+            ]"
+          >
+            <ng-template pTemplate="caption">
+              <div class="p-d-flex grid-header">
+                <div class="grid-header-left">
+                  <span class="p-input-icon-left p-ml-auto grid-search">
+                    <i class="pi pi-search"></i>
+                    <input
+                      pInputText
+                      type="text"
+                      (input)="
+                        tableref.filterGlobal(
+                          $any($event.target).value,
+                          'contains'
+                        )
+                      "
+                      placeholder="Search"
+                      appTrimInput
+                    />
+                  </span>
+                </div>
+                <!-- *ngIf="routesname === 'pending'" -->
+                <div class="grid-header-center">
+                  <div class="grid grid-cols-1">
+                    <mat-form-field appearance="outline">
+                      <mat-label>{{
+                        "label.settlementinvoicedetails.settlementinvoiceList.lcauno"
+                          | translate
+                      }}</mat-label>
+                      <mat-select
+                        name="lcauno"
+                        [(ngModel)]="lcauno"
+                        (selectionChange)="onDropdownChange($event, 'lcauno')"
+                      >
+                        <mat-option
+                          *ngFor="let data of lcaList"
+                          [value]="data.itemno"
+                          >{{ data.itemname }}</mat-option
+                        >
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <!-- month selection -->
+                  <div class="custom-container1">
+                    <mat-form-field
+                      class="example-form-field custom-mat-form-field"
+                    >
+                      <mat-label>{{
+                        "label.settlementinvoicedetails.selectmonth" | translate
+                      }}</mat-label>
+                      <input
+                        matInput
+                        [matDatepicker]="selectmonth"
+                        placeholder="MMM-YYYY"
+                        name="selectmonth"
+                        [(ngModel)]="monthname"
+                        (dateInput)="addEvent('input', $event)"
+                        appDisableKeyboardInput
+                        appTrimInput
+                      />
+                      <mat-datepicker-toggle
+                        matSuffix
+                        [for]="selectmonth"
+                      ></mat-datepicker-toggle>
+                      <mat-datepicker
+                        #selectmonth
+                        startView="multi-year"
+                        (yearSelected)="chosenYearHandler($event)"
+                        (monthSelected)="
+                          chosenMonthHandler($event, selectmonth)
+                        "
+                      >
+                        <mat-datepicker-actions>
+                          <button mat-button matDatepickerCancel>
+                            {{ "label.cancelbtn" | translate }}
+                          </button>
+                          <button
+                            mat-raised-button
+                            color="primary"
+                            matDatepickerApply
+                            (click)="onClickFilterOptionDate(true)"
+                          >
+                            {{ "label.applybtn" | translate }}
+                          </button>
+                        </mat-datepicker-actions>
+                      </mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="grid-header-right">
+                  <ng-container *ngIf="enableFilters">
+                    <div
+                      class="hidden lg:flex gap-2 full-content"
+                      *ngIf="false"
+                    >
+                      <!-- fromdate -->
+                      <div class="custom-container">
+                        <mat-form-field
+                          class="example-form-field custom-mat-form-field"
+                        >
+                          <mat-label>{{
+                            "label.completedCooRequests.fromdate" | translate
+                          }}</mat-label>
+                          <input
+                            matInput
+                            [matDatepicker]="fromdate"
+                            placeholder="DD-MMM-YYYY"
+                            name="fromdate"
+                            [(ngModel)]="selectedFilterOption.Startdate"
+                            appDisableKeyboardInput
+                            appTrimInput
+                          />
+                          <mat-datepicker-toggle
+                            matSuffix
+                            [for]="fromdate"
+                          ></mat-datepicker-toggle>
+                          <mat-datepicker #fromdate>
+                            <mat-datepicker-actions>
+                              <button mat-button matDatepickerCancel>
+                                {{ "label.cancelbtn" | translate }}
+                              </button>
+                              <button
+                                mat-raised-button
+                                color="primary"
+                                matDatepickerApply
+                                (click)="onClickFilterOptionDate(true)"
+                              >
+                                {{ "label.applybtn" | translate }}
+                              </button>
+                            </mat-datepicker-actions>
+                          </mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                      <!-- todate -->
+                      <div class="custom-container">
+                        <mat-form-field
+                          class="example-form-field custom-mat-form-field"
+                        >
+                          <mat-label>{{
+                            "label.completedCooRequests.todate" | translate
+                          }}</mat-label>
+                          <input
+                            matInput
+                            [matDatepicker]="todate"
+                            placeholder="DD-MMM-YYYY"
+                            name="todate"
+                            [(ngModel)]="selectedFilterOption.Enddate"
+                            appDisableKeyboardInput
+                            appTrimInput
+                          />
+                          <mat-datepicker-toggle
+                            matSuffix
+                            [for]="todate"
+                          ></mat-datepicker-toggle>
+                          <mat-datepicker #todate>
+                            <mat-datepicker-actions>
+                              <button mat-button matDatepickerCancel>
+                                {{ "label.cancelbtn" | translate }}
+                              </button>
+                              <button
+                                mat-raised-button
+                                color="primary"
+                                matDatepickerApply
+                                (click)="onClickFilterOptionDate(true)"
+                              >
+                                {{ "label.applybtn" | translate }}
+                              </button>
+                            </mat-datepicker-actions>
+                          </mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <button
+                    type="button"
+                    pButton
+                    pRipple
+                    icon="pi pi-file-excel"
+                    (click)="exportExcel()"
+                    class="mr-2 grid-header-right-icon"
+                    [pTooltip]="'label.excelExport' | translate"
+                    tooltipPosition="bottom"
+                  ></button>
+                  <button
+                    type="button"
+                    pButton
+                    pRipple
+                    icon="pi pi-filter"
+                    (click)="clickChips()"
+                    class="mr-2 grid-header-right-icon"
+                    [ngClass]="{ clicked: enableFilters }"
+                    [pTooltip]="'label.filter' | translate"
+                    tooltipPosition="bottom"
+                  ></button>
+                  <!-- <button
+                    type="button"
+                    pButton
+                    pRipple
+                    icon="pi pi-plus"
+                    (click)="openDialogAdd()"
+                    *ngIf="routesname === 'pending' && permission.add"
+                    class="mr-2 grid-header-right-icon"
+                    [pTooltip]="'label.companydetails.add' | translate"
+                    tooltipPosition="bottom"
+                  ></button> -->
+                </div>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <ng-container *ngFor="let col of columns">
+                  <th
+                    *ngIf="
+                      col.field !== 'action' ||
+                      (col.field === 'action' && routesname === 'pending')
+                    "
+                    [pSortableColumn]="col.field"
+                    pFrozenColumn
+                    [frozen]="col.field === 'action'"
+                    alignFrozen="right"
+                    [ngClass]="{
+                      'action-width-header': col.field === 'action',
+                      'lg:noaction-width-header': col.field !== 'action',
+                      frozen1: col.field === 'action',
+                      frozen2: col.field === 'enteredon'
+                    }"
+                  >
+                    <span class="table-head-column">
+                      <span> {{ col.header | translate }}</span>
+                      <p-sortIcon
+                        field="code"
+                        *ngIf="col.field !== 'action'"
+                      ></p-sortIcon>
+                      <p-columnFilter
+                        type="text"
+                        [field]="col.field"
+                        display="menu"
+                        *ngIf="col.field !== 'action' && enableFilters"
+                      ></p-columnFilter>
+                    </span>
+                  </th>
+                </ng-container>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-data>
+              <tr
+                [ngClass]="{
+                  active:
+                    selectedRows &&
+                    selectedRows.length > 0 &&
+                    selectedRows[0] === data
+                }"
+              >
+                <td class="lg:noaction-width-header">
+                  <span class="p-column-title">{{
+                    "label.settlementdetails.settlementList.lcauno" | translate
+                  }}</span>
+                  <span class="image-text">{{ data.lcaname }}</span>
+                </td>
+                <td class="lg:noaction-width-header">
+                  <span class="p-column-title">{{
+                    "label.settlementdetails.settlementList.settlementuno"
+                      | translate
+                  }}</span>
+                  <span class="image-text">{{ data.settlementuno }}</span>
+                </td>
+                <td class="">
+                  <span class="p-column-title">{{
+                    "label.settlementdetails.settlementList.noofinvoices"
+                      | translate
+                  }}</span>
+                  <span class="image-text">{{ data.noofinvoices }}</span>
+                </td>
+                <td class="lg:noaction-width-header">
+                  <span class="p-column-title">{{
+                    "label.settlementdetails.settlementList.totalamount"
+                      | translate
+                  }}</span>
+                  <span class="image-text amount-text">{{
+                    data.totalamount | customCurrency
+                  }}</span>
+                </td>
+                <td class="lg:noaction-width-header">
+                  <span class="p-column-title">{{
+                    "label.settlementdetails.settlementList.invoiceamount"
+                      | translate
+                  }}</span>
+                  <span class="image-text amount-text">{{
+                    data.invoiceamount | customCurrency
+                  }}</span>
+                </td>
+                <td class="lg:noaction-width-header">
+                  <span class="p-column-title">{{
+                    "label.settlementdetails.settlementList.adjustmentamount"
+                      | translate
+                  }}</span>
+                  <span class="image-text amount-text">{{
+                    data.adjustmentamount | customCurrency
+                  }}</span>
+                </td>
+                <td class="lg:noaction-width-header">
+                  <span class="p-column-title">{{
+                    "label.settlementdetails.settlementList.settlementamount"
+                      | translate
+                  }}</span>
+                  <span class="image-text amount-text">{{
+                    data.settlementamount | customCurrency
+                  }}</span>
+                </td>
+                <td class="lg:noaction-width-header">
+                  <span class="p-column-title">{{
+                    "label.settlementdetails.settlementList.settlementcycle"
+                      | translate
+                  }}</span>
+                  <span class="image-text">{{ data.settlementcycle }}</span>
+                </td>
+                <td class="lg:noaction-width-header">
+                  <span class="p-column-title">{{
+                    "label.settlementdetails.settlementList.paymentref"
+                      | translate
+                  }}</span>
+                  <span class="image-text">{{ data.paymentref }}</span>
+                </td>
+                <!-- <td class="lg:noaction-width-header">
+                  <span class="p-column-title">{{
+                    "label.settlementdetails.settlementList.paymentremarks"
+                      | translate
+                  }}</span>
+                  <span class="image-text">{{ data.paymentremarks }}</span>
+                </td>
+                <td class="lg:noaction-width-header">
+                  <span class="p-column-title">{{
+                    "label.settlementdetails.settlementList.settlementremarks"
+                      | translate
+                  }}</span>
+                  <span class="image-text">{{ data.settlementremarks }}</span>
+                </td> -->
+                <!-- <td class="lg:noaction-width-header">
+                  <span class="p-column-title">{{
+                    "label.settlementdetails.settlementList.settlementstatus"
+                      | translate
+                  }}</span>
+                  <span class="image-text">
+                    <p-tag
+                      [value]="data.settlementstatus"
+                      [severity]="'success'"
+                    ></p-tag>
+                  </span>
+                </td> -->
+                <td class="frozen2">
+                  <span class="p-column-title">{{
+                    "label.companydetails.companyList.enteredon" | translate
+                  }}</span>
+                  <span class="image-text">{{
+                    splitdatetime(data.enteredon)?.date
+                  }}</span>
+                </td>
+                <td class="frozen2">
+                  <span class="p-column-title">{{
+                    "label.companydetails.companyList.enteredby" | translate
+                  }}</span>
+                  <span class="image-text">{{ data.enteredby }}</span>
+                </td>
+                <td
+                  class="action-width-header frozen1"
+                  pFrozenColumn
+                  [frozen]="true"
+                  alignFrozen="right"
+                  *ngIf="routesname === 'pending'"
+                >
+                  <div class="flex action-width-body">
+                    <!-- <button
+                      type="button"
+                      (click)="DeleteRow(data)"
+                      [pTooltip]="'label.delete' | translate"
+                      tooltipPosition="bottom"
+                      class="p-element mr-2 grid-header-right-icon p-button p-component p-button-icon-only"
+                      title="{{ 'tlpDelete' | translate }}"
+                      *ngIf="permission.delete"
+                    >
+                      <i class="fa fa-trash"></i>
+                    </button> -->
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="footer">
+              <ng-container *ngIf="settlementListsFilter.length > 0">
+                <tr>
+                  <td colspan="3">
+                    {{ "label.companydetails.totals" | translate }}
+                  </td>
+                  <td class="text-right">
+                    {{ totals?.totaltotalamount | customCurrency : "AED" }}
+                  </td>
+                  <td class="text-right">
+                    {{ totals?.totalinvoiceamount | customCurrency : "AED" }}
+                  </td>
+                  <td class="text-right">
+                    {{ totals?.totaladjustmentamount | customCurrency : "AED" }}
+                  </td>
+                  <td class="text-right">
+                    {{ totals?.totalsettlementamount | customCurrency : "AED" }}
+                  </td>
+                  <td colspan="100" class="text-right"></td>
+                </tr>
+              </ng-container>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="100">{{ "noDataFound" | translate }}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+        <div
+          class="bg-white rounded-lg mofa-tab-section show"
+          [ngClass]="{ show: shouldShow, hide: !shouldShow }"
+        >
+          <div class="ng_show_close_icon">
+            <br />
+            <span
+              (click)="closeWorkflow()"
+              [pTooltip]="'label.hide' | translate"
+            >
+              <mat-icon class="rounded-icon">chevron_right</mat-icon>
+            </span>
+            <br />
+          </div>
+          <div class="flex g-2 workflow-header">
+            <div class="workflow-header-left"></div>
+            <!-- <div class="workflow-header-right">
+              <button mat-icon-button class="close-button">
+                <mat-icon
+                  class="close-icon"
+                  color="warn"
+                  (click)="closeWorkflow()"
+                  >close</mat-icon
+                >
+              </button>
+            </div> -->
+          </div>
+          <div class="show-p-5">
+            <!-- <app-attestation-workflow
+              [selectedRows]="selectedRows"
+              [fileContentEncode]="fileContentEncode"
+            ></app-attestation-workflow> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

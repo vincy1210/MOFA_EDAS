@@ -21,6 +21,9 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { TabViewModule } from 'primeng/tabview';
 import { AuthGuard } from '../auth.guard';
+import { LcaSettlementsReportsComponent } from './lca-settlements-reports/lca-settlements-reports.component';
+import { CustomCurrencyPipe } from 'src/service/custom.pipe';
+import { MatSelectModule } from '@angular/material/select';
 
 const routes: Routes = [
   {
@@ -47,15 +50,23 @@ const routes: Routes = [
     data: { role: ['Admin', 'User'], name: 'rptfines' },
     canActivate: [AuthGuard],
   },
+  {
+    path: 'lcasettlementsreport',
+    component: LcaSettlementsReportsComponent,
+    canActivate: [AuthGuard],
+    data: { name: 'lcasettlementsreport' },
+  },
 ];
 
 @NgModule({
   declarations: [
+    CustomCurrencyPipe,
     COOComponent,
     FinesComponent,
     LCAComponent,
     PhysicalComponent,
     ReportsComponent,
+    LcaSettlementsReportsComponent,
   ],
   imports: [
     CommonModule,
@@ -74,6 +85,7 @@ const routes: Routes = [
     ToolbarModule,
     PdfViewerModule,
     TabViewModule,
+    MatSelectModule,
   ],
 })
 export class ReportsModule {}

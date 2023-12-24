@@ -61,20 +61,20 @@ export class ConstantsService {
   getWeeklyStatistics = 'dashboard/getWeeklyStatistics';
   getMonthlyStatistics = 'dashboard/getMonthlyStatistics';
   saveSiteAnalytics = '/dashboard/saveSiteAnalytics';
-  getLCAStatistics = "dashboard/getLCAStatistics";
+  getLCAStatistics = 'dashboard/getLCAStatistics';
 
   // this.consts.getDailyStatistics: filterType === "weekly"? this.consts.getWeeklyStatistics: this.consts.getMonthlyStatistics;
 
-  getFinesReport="lca/getFinesReport"
+  getFinesReport = 'lca/getFinesReport';
 
   requestAttestationFromExcelImport = 'lca/requestAttestationFromExcelImport';
-  getPendingReqforlcauser = "lca/getPendingReqforlcauser";
-  getCompletedReqforlcauser = "lca/getCompletedReqforlcauser";
-  getCompanyListForLcaUser = "lca/getCompanyListForLcaUser";
-  getInRiskReqforlcauser = "lca/getInRiskReqforlcauser";
+  getPendingReqforlcauser = 'lca/getPendingReqforlcauser';
+  getCompletedReqforlcauser = 'lca/getCompletedReqforlcauser';
+  getCompanyListForLcaUser = 'lca/getCompanyListForLcaUser';
+  getInRiskReqforlcauser = 'lca/getInRiskReqforlcauser';
 
-  getcoolistforlcaattestno="user/getcoolistforlcaattestno";
-  getlcalistforcoodeclaration="user/getlcalistforcoodeclaration"
-  getListOfValues="user/getListOfValues"
-
+  getcoolistforlcaattestno = 'user/getcoolistforlcaattestno';
+  getlcalistforcoodeclaration = 'user/getlcalistforcoodeclaration';
+  getListOfValues = 'user/getListOfValues';
+  getSettlementList = 'payment/getSettlementList';
 }
