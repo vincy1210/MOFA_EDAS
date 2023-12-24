@@ -1027,7 +1027,7 @@ export class CommonService {
         roleList.push(RoleEnums.Admin);
       } else if (item === 'User') {
         roleList.push(RoleEnums.User);
-      } else if (item === 'LCA Admin') {
+      } else if (item === 'LCA Admin User') {
         roleList.push(RoleEnums.LcaAdmin);
       } else if (item === 'LCA User') {
         roleList.push(RoleEnums.LcaUser);
