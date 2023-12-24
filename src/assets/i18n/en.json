@@ -275,7 +275,39 @@
     "Pending": "Pending",
     "Physical Attestation Requests": "Physical Attestation Requests",
     "LCA Attestation Requests": "LCA Attestation Requests",
-    "Total Requests": "Total Requests"
+    "Total Requests": "Total Requests",
+    "Save":"Save",
+      "Created By":"Created By",
+      "Update":"Update",
+      
+
+        "Request Application Number": "Request Application Number",
+        "Attestation Request Date": "Attestation Request Date",
+        "Declaration Date": "Declaration Date",
+        "Invoice No": "Invoice No",
+        "Declaration No": "Declaration No",
+        "Invoice Date": "Invoice Date",
+        "Invoice Amount": "Invoice Amount",
+        "Currency": "Currency",
+        "Approved On": "Approved On",
+        "Status": "Status",
+        "Entered On": "Entered On",
+        "Importer Name": "Importer Name",
+        "Export Port Name": "Export Port Name",
+        "Invoice ID": "Invoice ID",
+        "Comments": "Comments",
+        "Channel": "Channel",
+        "Attestation File":"Attestation File",
+        "Attestation Details":"Attestation Details",
+
+
+        "Paid On":"Paid On",
+"Paid By":"Paid By",
+"Download":"Download",
+"COO Attestation(s)":"COO Attestation(s)"
+
+
+      
 
   
 }

@@ -298,6 +298,8 @@ export class AttestationComponent implements OnInit {
         header: 'attestreqdate',
         width: '15%',
       },
+      
+      // { field: 'lcaname', header: 'Channel', width: '15%' },
     ];
 
     this._selectedColumns = this.cols;
@@ -1005,15 +1007,15 @@ export class AttestationComponent implements OnInit {
     //api call for getting the declaration number
     this.AddInvoiceDialog = true;
     const fieldMappings: { [key: string]: string } = {
-      edasattestno: this.translate.instant('Attestation No'),
+      edasattestno: this.translate.instant('edasattestno'),
       reqappnumber: this.translate.instant('Request Application Number'),
       attestreqdate: this.translate.instant('Attestation Request Date'),
       declarationdate: this.translate.instant('Declaration Date'),
-      invoicenumber: this.translate.instant('Invoice Number'),
-      declarationumber: this.translate.instant('Declaration Number'),
+      invoicenumber: this.translate.instant('Invoice No'),
+      declarationumber: this.translate.instant('Declaration No'),
       invoicedate: this.translate.instant('Invoice Date'),
       invoiceamount: this.translate.instant('Invoice Amount'),
-      currencycode: this.translate.instant('Currency Code'),
+      currencycode: this.translate.instant('Currency'),
       feesamount: this.translate.instant('Fees Amount'),
       approvedon: this.translate.instant('Approved On'),
       statusname: this.translate.instant('Status'),

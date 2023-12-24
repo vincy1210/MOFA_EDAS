@@ -58,10 +58,10 @@ todayModel:Date=new Date();
 
     this.cols = [
       { field: 'edasattestno', header: 'Emirates ID' },
-      { field: 'invoicenumber', header: 'Name' },
+      { field: 'invoicenumber', header: 'User Name' },
       { field: 'declarationumber', header: 'Role' },
       { field: 'attestreqdate', header: 'Email ID' },
-      { field: 'mobilenumber', header: 'Mobile' },
+      { field: 'mobilenumber', header: 'mobilenumber' },
       { field: 'enteredon', header: 'Created By' },
       { field: 'enteredby', header: 'Created' }
 

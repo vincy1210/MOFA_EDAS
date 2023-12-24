@@ -1125,12 +1125,15 @@ export class CommonService {
     return null; // Invalid or null datetime string
   }
 
-  showSweetAlert(title: string, text: string, typeIcon = TYPE.WARNING) {
+  showSweetAlert(title: string, text: string, html?:any, position?:any) {
+   let  typeIcon = TYPE.WARNING
     Swal.fire({
+      position: position,
       title: title,
       text: text,
       icon: typeIcon,
-      confirmButtonText: 'Close',
+      confirmButtonText: 'OK',
+      html:html
     });
   }
 }

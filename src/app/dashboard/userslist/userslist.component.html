@@ -33,39 +33,19 @@
             <ng-template pTemplate="left">
               <div style="padding: 5px;" class="col-md-3 col-lg-3 col-sm-6">
                       <mat-form-field class="searchboxinput" >
-                        <mat-label><mat-icon style="font-size:larger;">{{'search' | translate}}</mat-icon> {{'Search' | translate}}</mat-label>
-                        <input  matInput type="text" (input)="tableref.filterGlobal($any($event.target).value, 'contains')" placeholder="Search">
+                        <mat-label><mat-icon style="font-size:larger;">search</mat-icon> {{'SearchKeyword' | translate}}</mat-label>
+                        <input  matInput type="text" (input)="tableref.filterGlobal($any($event.target).value, 'contains')" placeholder="{{'SearchKeyword' | translate}}">
                       </mat-form-field>
               </div>
            
 </ng-template>
           <ng-template pTemplate="right">
-            <!-- <div *ngIf="enableFilters" style="padding: 5px;" class="col-md-3 col-lg-3  col-md-6">
-                      <mat-form-field style="height: 20px; margin: 0; padding-top: 0; margin-top: -2.89em !important;width: 170px; ">
-                        <mat-label>{{'Start Date' | translate}}</mat-label>
-                        <input matInput [matDatepicker]="decDatepicker1" [max]="todayModel" [(ngModel)]="oneMonthAgo" placeholder="{{'From' | translate}}" name="createdatefrom"  />
-                        <mat-datepicker-toggle matSuffix [for]="decDatepicker1"></mat-datepicker-toggle>
-                        <mat-datepicker #decDatepicker1></mat-datepicker>
-                      </mat-form-field>
-              </div>
-
-              <div *ngIf="enableFilters" style="padding: 5px;" class="col-md-3 col-lg-3  col-sm-6">
-                <mat-form-field style="height: 20px; margin: 0; padding-top: 0; margin-top: -2.89em !important; width: 170px;">
-                  <mat-label>{{'End Date' | translate}}</mat-label>
-                  <input matInput [matDatepicker]="decDatepicker2" [min]="oneMonthAgo" [max]="today" placeholder="{{'To' | translate}}" [(ngModel)]="todayModel" name="createdateto"  />
-                  <mat-datepicker-toggle matSuffix [for]="decDatepicker2"></mat-datepicker-toggle>
-                  <mat-datepicker #decDatepicker2></mat-datepicker>
-                </mat-form-field>
-              </div> -->
-              <!-- <div *ngIf="enableFilters" style="padding: 5px;" clasFrs="col-md-3 col-lg-3">
-  <button pButton pRipple label="{{'Apply' | translate}}" class="p-button-text primary" (click)="InitTable()"></button>
-
-              </div> -->
+          
             
         
        
         
-        <button type="button" pButton  pRipple  icon="pi pi-file-excel"  (click)="exportExcel()"  class="mr-2 grid-header-right-icon"  pTooltip="Excel"
+        <button type="button" pButton  pRipple  icon="pi pi-file-excel"  (click)="exportExcel()"  class="mr-2 grid-header-right-icon"  pTooltip="{{'Excel' | translate}}"
         tooltipPosition="bottom"
       ></button>
         
@@ -93,14 +73,14 @@
               <!-- <th>
               </th> -->
               <th *ngFor="let col of columns" pResizableColumn [pSortableColumn]="col.field" >
-                  {{col.header}} <p-sortIcon  [field]="col.field"  ></p-sortIcon>
+                  {{col.header | translate}} <p-sortIcon  [field]="col.field"  ></p-sortIcon>
                   <p-columnFilter
                   type="text"
                   [field]="col.field"  *ngIf="enableFilters"
                   display="menu"
                 ></p-columnFilter>
               </th>
-              <th pFrozenColumn alignFrozen="right">{{'Action' | translate}}</th>
+              <th pFrozenColumn alignFrozen="right">{{'actions' | translate}}</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-list>
@@ -215,9 +195,9 @@
     <div style="display: flex;">
       <div style="flex: 1; padding-right: 10px;">
         <mat-form-field style="width: 100%;" class="example-full-width">
-          <mat-label>{{'Email Address' | translate}}</mat-label>
+          <mat-label>{{'Email ID' | translate}}</mat-label>
           <input maxlength="100" matInput placeholder="{{'Enter Email ID' | translate}}" name="emailaddress" formControlName="emailaddress">
-          <mat-error *ngIf="form.get('emailaddress')?.hasError('required')"> {{'Email Address is required' | translate }} </mat-error>
+          <mat-error *ngIf="form.get('emailaddress')?.hasError('required')"> {{'Email ID is required' | translate }} </mat-error>
           <mat-error *ngIf="form.get('emailaddress')?.hasError('email')"> {{'Invalid Email ID' | translate }} </mat-error>
 
 
