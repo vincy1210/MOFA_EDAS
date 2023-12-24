@@ -42,38 +42,38 @@ const routes = [
     path: 'lcadashboard',
     component: AttestationsComponent,
     data: { role: [11, 12], name: 'lcadashboard' },
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
   },
   {
     path: 'importslca',
     component: ImportAttestationsComponent,
     data: { role: [11, 12], name: 'importslca' },
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
   },
   {
     path: 'pendinglca',
     component: PendingAttestationsComponent,
     data: { role: [11, 12], name: 'pendinglca' },
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
   },
   {
     path: 'completedlca',
     component: CompletedAttestationsComponent,
     data: { role: [11, 12], name: 'completedlca' },
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
   },
   {
     path: 'risklca',
     component: RisklcaComponent,
     data: { role: [11, 12], name: 'risklca' },
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
   },
-  {
-    path: 'lcasettlementsreport',
-    component: RisklcaComponent,
-    data: { role: [11, 12], name: 'lcasettlementsreport' },
-    canActivate: [AuthGuard],
-  },
+  // {
+  //   path: 'lcasettlementsreport',
+  //   component: LcaSettlementsReportsComponent,
+  //   data: { role: [11, 12], name: 'lcasettlementsreport' },
+  //   // canActivate: [AuthGuard],
+  // },
 ];
 
 @NgModule({

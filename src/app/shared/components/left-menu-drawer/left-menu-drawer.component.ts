@@ -119,7 +119,7 @@ export class LeftMenuDrawerComponent implements OnInit {
           id: 1,
           menu: 'Dashboard',
           icon: 'dashboard',
-          link: '/lcadashboard',
+          link: '/lca-login/lcadashboard',
           hasubMenu: false,
         },
         {
@@ -152,11 +152,19 @@ export class LeftMenuDrawerComponent implements OnInit {
               icon: 'play_arrow',
               link: '/lca-login/risklca',
             },
+          ],
+        },
+        {
+          id: 2,
+          menu: 'Reports',
+          hasubMenu: true,
+          icon: 'assessment',
+          subMenus: [
             {
               id: 5,
               menu: 'Settlement',
               icon: 'play_arrow',
-              link: '/lca-login/lcasettlementsreport',
+              link: '/reports/lcasettlementsreport',
             },
           ],
         }
