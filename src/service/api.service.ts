@@ -25,9 +25,9 @@ export class ApiService {
 
   constructor(private http: HttpClient, private json: AppConfigService) {}
 
-  get(servicename: any, data: any) {
+  get(servicename: any) {
     return this.http
-      .get(this.baseURL + servicename, data)
+      .get(this.baseURL + servicename)
       .pipe(catchError(this.handleError));
   }
 

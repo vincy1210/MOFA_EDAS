@@ -217,6 +217,7 @@ export class AttestationComponent implements OnInit {
     let currcompany = this.auth.getSelectedCompany();
     if (currcompany) {
       this.currentcompany = currcompany.companyuno || '';
+
       if (
         this.currentcompany == null ||
         this.currentcompany == undefined ||
@@ -242,6 +243,8 @@ export class AttestationComponent implements OnInit {
       this.uuid = uuid;
       this.user_mailID = data11.Data.email;
       this.contactno = data11.Data.mobile;
+      this.getLCAoverdueCount();
+
     }
     this.cols_xl = [
       { field: 'Noofdaysleft', header: 'Age', width: '5%' },
@@ -302,7 +305,8 @@ export class AttestationComponent implements OnInit {
       // { field: 'lcaname', header: 'Channel', width: '15%' },
     ];
 
-    this._selectedColumns = this.cols;
+    this._selectedColumns = this.cols.filter((c:any,index:any) => index < 0);
+    //this.cols;
   }
 
   @Input() get selectedColumns(): any[] {
@@ -311,7 +315,7 @@ export class AttestationComponent implements OnInit {
 
   set selectedColumns(val: any[]) {
     //restore original order
-    this._selectedColumns = this.cols.filter((col: any) => val.includes(col));
+    this._selectedColumns = this.cols.filter((col: any, index:any) => val.includes(col));
   }
 
   filterField(row: any, filter: any) {
@@ -1035,7 +1039,7 @@ export class AttestationComponent implements OnInit {
         let value = data[key];
         if (
           key == 'attestreqdate' ||
-          key == 'declarationdate' ||
+        
           key == 'invoicedate' ||
           key == 'paidon' ||
           key == 'approvedon' ||
@@ -1050,7 +1054,13 @@ export class AttestationComponent implements OnInit {
           } else {
             value = splitResult?.date;
           }
-        } else if (key == 'invoiceamount' || key == 'feesamount') {
+        }
+        else if(  key == 'declarationdate'){
+          value= this.common.stringtodate(value)
+        }
+        
+        
+        else if (key == 'invoiceamount' || key == 'feesamount') {
           value = this.common.formatAmount(value);
         }
 
@@ -1122,7 +1132,11 @@ export class AttestationComponent implements OnInit {
   }
 
   showInfo() {
-    this.common.showSweetAlert('Info', 'Policy sample message');
+    let message='<p>Invoice Attestation Pending Request are shown in this list.</p><p>You have 14 days to pay for the Invoice Attestation request fees.</p>';
+    message=message+'<p>COO payment is mandatory to pay for the Invoice Attestation request</p><p>If Invoice Attestation request is not paid within 14 days additional fine of AED 150 is added to the Invoice Attestation request.</p>';
+    message=message+'<p>Fine amount has to be paid along with the Invoice Attestation fees amount<p>'
+    // this.common.showSweetAlert('Info', 'Policy sample message');
+    this.common.showSweetAlert('Info', 'Policy sample message', message,'top-end');
   }
 
   // downloadattachment(filelocation:any){
@@ -1176,4 +1190,23 @@ export class AttestationComponent implements OnInit {
     this.common.showErrorMessage('An error occurred while fetching data');
   }
   }
+
+
+  
+getLCAoverdueCount(){
+
+  let data={
+    "companyuno":this.currentcompany,
+    "uuid":this.uuid,
+    "startdate":this.common.formatDateTime_API_payload(this.oneMonthAgo.toDateString()),
+    "enddate":this.common.formatDateTime_API_payload(this.todayModel.toDateString())
+};
+  this.apicall
+  .post(this.consts.getLCAOverdueCount, data)
+  .subscribe((response: any) => {
+    this.common.hideLoading();
+    console.log(response);
+   
+  });
+}
 }

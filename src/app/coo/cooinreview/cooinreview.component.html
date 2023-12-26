@@ -125,8 +125,11 @@
                   </td>
                   <td>
                     <span class="image-text">{{
-                      common.splitdatetime(common.formatDateString(data.declarationdate))?.date
+                    common.stringtodate(data.declarationdate)
+
                     }}</span>
+                      
+                      <!-- common.splitdatetime(common.formatDateString(data.declarationdate))?.date -->
                   </td>
                   <td>
                     <span class="image-text">{{

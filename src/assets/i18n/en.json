@@ -322,5 +322,7 @@
       "enteredon": "Created",
       "lcauno": "Channel"
     }
-  }
+  },
+  "pay":"Pay",
+  "Pay All":"Pay All"
 }

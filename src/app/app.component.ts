@@ -35,7 +35,7 @@ export class AppComponent {
   lcauserloggedin: boolean = false;
   username: string = '';
   companyname: string = '';
-  copyrightyear = environment.appdetails.year;
+  copyrightyear:string='';
   version = environment.appdetails.version;
   idle_timeout = environment.appdetails.idletime_out;
   session_timeout = environment.appdetails.session_timeout;
@@ -91,6 +91,7 @@ export class AppComponent {
   role: any;
 
   ngOnInit(): void {
+    // this.getcopyright();
     console.log(this.userloggedin);
     console.log(this.lcauserloggedin);
 
@@ -361,6 +362,15 @@ export class AppComponent {
   closeAllModals() {
     this.dialog.closeAll();
   }
+
+  // getcopyright(){
+  //  this.copyrightyear= this.common.getMyCopyrightYear()
+
+  //  if(!this.copyrightyear){
+  //   this.copyrightyear = environment.appdetails.year;
+  //  }
+  //  //  copyrightyear = environment.appdetails.year;
+  // }
 
 }
 // function useLanguage(language: any, string: any) {

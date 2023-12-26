@@ -176,7 +176,7 @@ isButtonDisabled = false;
   
   ];
 
-  this._selectedColumns = this.cols;
+  this._selectedColumns = this.cols.filter((c:any,index:any) => index < 0);
   //this.getimagebase64();
   //this.InitTable()
 
@@ -504,7 +504,7 @@ setTimeout(() => {
   if (data) {
     this.fields = Object.keys(fieldMappings).map(key => {
       let value = data[key];
-      if (key=="attestreqdate" || key=="declarationdate" ||key=="invoicedate" || key=="paidon" || key=="approvedon" || key=="enteredon") {
+      if (key=="attestreqdate" || key=="invoicedate" || key=="paidon" || key=="approvedon" || key=="enteredon") {
         const splitResult = this.splitdatetime(value);
 
         if (splitResult?.date === '01-Jan-1970' || splitResult?.date === '01-Jan-0001') {
@@ -512,6 +512,9 @@ setTimeout(() => {
         } else {
           value = splitResult?.date;
         }
+      }
+      else if(key=="declarationdate"){
+        value=this.common.stringtodate(value) 
       }
       else if(key=="invoiceamount" || key=="feesamount"){
         value =this.common.formatAmount(value);

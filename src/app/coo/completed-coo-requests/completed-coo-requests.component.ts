@@ -215,7 +215,7 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
       dataItem[jsonData.edasattestno] = item.edasattestno;
       // dataItem[jsonData.entityshareamount] = item.entityshareamount;
       dataItem[jsonData.totalamount] = item.totalamount;
-      dataItem[jsonData.declarationdate] = this.common.splitdatetime(item.declarationdate)?.date;
+      dataItem[jsonData.declarationdate] = this.common.stringtodate(item.declarationdate);
       dataItem[jsonData.attestreqdate] = this.common.splitdatetime(item.attestreqdate)?.date;
       dataItem[jsonData.status] = item.status;
       dataList.push(dataItem);
@@ -270,7 +270,7 @@ openNew(data:any) {
   if (data) {
     this.fields = Object.keys(fieldMappings).map(key => {
       let value = data[key];
-      if (key=="declarationdate" || key=="enteredon" ||key=="attestreqdate" ) {
+      if (key=="enteredon" ||key=="attestreqdate" ) {
         const splitResult = this.common.splitdatetime(value);
 
         if (splitResult?.date === '01-Jan-1970' || splitResult?.date === '01-Jan-0001') {
@@ -278,6 +278,9 @@ openNew(data:any) {
         } else {
           value = splitResult?.date;
         }
+      }
+      else if(key=="declarationdate"){
+value=this.common.stringtodate(value);
       }
       else if(key=="totalamount" || key=="feesamount"){
         value =this.common.formatAmount(value);

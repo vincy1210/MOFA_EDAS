@@ -19,6 +19,7 @@ import {
   TYPE,
 } from 'src/app/shared/constants/status-enum';
 import Swal from 'sweetalert2';
+import { environment } from 'src/environments/environment';
 
 export type RetType = {
   name: string;
@@ -36,6 +37,7 @@ export const ConstAccessDenied: string = 'access-denied';
 export class CommonService {
   favink1: string = '';
   favink2: string = '';
+  private mycopyrightyear: string='';
 
   public userType = new BehaviorSubject<string>('');
   userType$ = this.userType.asObservable();
@@ -1173,4 +1175,42 @@ export class CommonService {
       html:html
     });
   }
+
+  stringtodate(inputDate: string): string{
+    const year = inputDate.slice(0, 4);
+    const month = inputDate.slice(4, 6);
+    const day = inputDate.slice(6, 8);
+  
+    // Manually construct the date string in the desired format
+    return `${day}-${this.getMonthAbbreviation(month)}-${year}`;
+    
+    }
+
+     getMonthAbbreviation(month: string): string {
+      const months = [
+        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+      ];
+    
+      // Ensure the month value is a valid number between 1 and 12
+      const numericMonth = parseInt(month, 10);
+      if (numericMonth >= 1 && numericMonth <= 12) {
+        return months[numericMonth - 1];
+      }
+    
+      // Default to 'Mon' for an invalid month
+      return 'Mon';
+    }
+
+    getMyCopyrightYear(): string {
+
+      if(!this.mycopyrightyear){
+        this.mycopyrightyear=environment.appdetails.year;
+      }
+      // else{}
+      return this.mycopyrightyear;
+    }
+  
+    setMyCopyrightYear(newValue: string): void {
+      this.mycopyrightyear = newValue;
+    }
 }

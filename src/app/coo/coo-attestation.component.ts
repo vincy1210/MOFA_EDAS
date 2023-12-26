@@ -383,9 +383,7 @@ export class CooAttestationComponent implements OnInit {
       dataItem[jsonData.edasattestno] = item.edasattestno;
       // dataItem[jsonData.entityshareamount] = item.entityshareamount;
       dataItem[jsonData.totalamount] = item.totalamount;
-      dataItem[jsonData.declarationdate] = this.common.splitdatetime(
-        item.declarationdate
-      )?.date;
+      dataItem[jsonData.declarationdate] = this.common.stringtodate(item.declarationdate)
       dataItem[jsonData.attestreqdate] = this.common.splitdatetime(
         item.attestreqdate
       )?.date;
@@ -791,8 +789,8 @@ export class CooAttestationComponent implements OnInit {
     if (data) {
       this.fields = Object.keys(fieldMappings).map((key) => {
         let value = data[key];
-        if (
-          key == 'declarationdate' ||
+        //   <!-- "declarationdate": "2023-12-22", -->
+        if (key=='declarationdate'||
           key == 'enteredon' ||
           key == 'attestreqdate'
         ) {
@@ -806,7 +804,13 @@ export class CooAttestationComponent implements OnInit {
           } else {
             value = splitResult?.date;
           }
-        } else if (key == 'totalamount' || key == 'feesamount') {
+        }
+        // else if(key=='declarationdate'){
+        //   value=this.common.splitdatetime(value)
+        //   // common.splitdatetime(data.declarationdate)?.date
+        // }
+        
+        else if (key == 'totalamount' || key == 'feesamount') {
           value = this.common.formatAmount(value);
         }
 
@@ -978,6 +982,12 @@ export class CooAttestationComponent implements OnInit {
   }
 
   showInfo() {
-    this.common.showSweetAlert('Info', 'Policy sample message');
+let message='<p>COO Attestation Pending Request are shown in this list.</p> <p>COO payment is mandatory to pay the related Invoice Attestation request(s)</p>';
+message=message+ '<p>For Each Declaration Number from LCA; One COO will be created</p> <p>Once Payment is done; All related Invoice Attestation request(s) are enabled for payment.</p>';
+message=message+'<p>You will be allowed to upload the COO document once the COO payment is done.</p>';
+message=message+'<p>Uploading the COO document is as per the requirements of the client.</p>';
+
+    this.common.showSweetAlert('Info', 'Policy sample message', message,'top-end');
+    // this.common.showSweetAlert('Info', 'Policy sample message');
   }
 }

@@ -16,6 +16,7 @@ import {
 import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { ConstantsService } from 'src/service/constants.service';
 import { AuthService } from 'src/service/auth.service';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-registration',
@@ -66,6 +67,8 @@ export class RegistrationComponent {
     private _activatedRoute: ActivatedRoute,
     private apiservice: ApiService
   ) {
+
+    this.getcopyrightyear();
     this.common.getData().subscribe((data) => {
       this.reg_form_data = data;
       console.log(this.reg_form_data);
@@ -547,4 +550,20 @@ export class RegistrationComponent {
     this.router.navigateByUrl('/landingpage');
     //vincy
   }
+
+
+  getcopyrightyear(){
+  this.apiservice
+  .get(this.consts.getServerTime)
+  .subscribe((response: any) => {
+    this.common.hideLoading();
+    if (response) {
+      const serverTime = new Date(response);
+      const year = serverTime.getFullYear();
+      this.common.setMyCopyrightYear(year?.toString());
+      console.log('Server Time:', serverTime);
+    }
+  });
+}
+
 }

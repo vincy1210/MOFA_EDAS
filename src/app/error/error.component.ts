@@ -52,7 +52,7 @@ else if(data=="manuallogout"){
   ngOnInit(): void {
     this.timestr = this.datePipe.transform(this.timenow, 'MMM d yyyy h:mm:ss a');
     if(this.sessionnote==''){
-      this.sessionnote='You have been successfully logged out, we look forward to serve you again';
+      this.sessionnote='Your session got logged out due to inactivity, we look forward to serve you again';
 
     }
 

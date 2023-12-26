@@ -77,4 +77,6 @@ export class ConstantsService {
   getlcalistforcoodeclaration = 'user/getlcalistforcoodeclaration';
   getListOfValues = 'user/getListOfValues';
   getSettlementList = 'payment/getSettlementList';
+  getServerTime='Common/getServerTime';
+  getLCAOverdueCount='Admin/getLCAOverdueCount';
 }

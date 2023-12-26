@@ -126,7 +126,10 @@
               </td>
               
                 <td>
-                    <span class="image-text">{{splitdatetime(customer.declarationdate)?.date}}</span>
+                    <span class="image-text">{{
+                      common.splitdatetimeforstring(common.formatDatestringtodate(customer.declarationdate))?.date
+                      }}
+                      </span>
                 </td>
                 <td>
                     <span class="image-text">{{splitdatetime(customer.attestreqdate)?.date}}</span>

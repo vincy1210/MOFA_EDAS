@@ -225,10 +225,9 @@
                   }}</span>
                 </td>
                 <td>
+                  <!-- "declarationdate": "2023-12-22", -->
                   <span class="image-text">{{
-                    common.splitdatetimeforstring(
-                      common.formatDatestringtodate(data.declarationdate)
-                    )?.date
+                    common.splitdatetime(data.declarationdate)?.date
                   }}</span>
                 </td>
                 <td>
@@ -570,14 +569,13 @@
           </td>
           <td>
             <span class="image-text">{{
-              common.splitdatetimeforstring(
-                      common.formatDatestringtodate(customer.declarationdate)
-                    )?.date
+              common.stringtodate(customer.declarationdate)
             }}</span>
           </td>
           <td>
+            <!-- "attestreqdate": "20231222", -->
             <span class="image-text">{{
-              common.splitdatetime(customer.attestreqdate)?.date
+              common.stringtodate(customer.attestreqdate)
             }}</span>
           </td>
           <td>

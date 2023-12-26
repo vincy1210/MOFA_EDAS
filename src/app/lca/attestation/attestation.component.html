@@ -110,14 +110,22 @@
                     </span>
                   </span>
 
-                  <p-multiSelect
+                  <!-- <p-multiSelect
                     [options]="cols"
                     [(ngModel)]="selectedColumns"
                     optionLabel="header"
                     selectedItemsLabel="{0} {{'columns selected' | translate}}"
                     [style]="{ 'min-width': '200px' }"
                     placeholder="{{'Choose Columns' |translate}}"
-                  ></p-multiSelect>
+                  ></p-multiSelect> -->
+                  <p-multiSelect
+                  [options]="cols"
+                  [(ngModel)]="selectedColumns"
+                  optionLabel="header"
+                  selectedItemsLabel="{0} {{'columns selected' | translate}}"
+                  [style]="{ 'min-width': '200px' }"
+                  placeholder="{{'Choose Columns' |translate}}"
+                ></p-multiSelect>
 
                   <div
                     *ngIf="enableFilters"
@@ -308,7 +316,7 @@
                 </td>
                 <td>
                   <span class="image-text">{{
-                    common.splitdatetimeforstring(common.formatDatestringtodate(customer.declarationdate))?.date
+                    common.stringtodate(customer.declarationdate)
                   }}</span>
                 </td>
                 <td>
