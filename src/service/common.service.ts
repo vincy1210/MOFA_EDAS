@@ -507,7 +507,7 @@ export class CommonService {
     });
   }
 
-  getimagebase64(attestfilelocation: any) {
+  getimagebase64(attestfilelocation: any, filename?:any) {
     let resp;
     let data = {
       attestfilelocation: attestfilelocation,
@@ -541,7 +541,12 @@ export class CommonService {
 
           const link = document.createElement('a');
           link.href = fileUrl;
-          link.download = 'Attestation_.pdf'; // You can customize the file name here
+          if(filename){
+            link.download =filename;
+          }
+          else{
+            link.download = 'Attestation.pdf'; // You can customize the file name here
+          }
 
           document.body.appendChild(link);
           link.click();

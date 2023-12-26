@@ -79,4 +79,5 @@ export class ConstantsService {
   getSettlementList = 'payment/getSettlementList';
   getServerTime='Common/getServerTime';
   getLCAOverdueCount='Admin/getLCAOverdueCount';
+  getCOOgroupPaymentDetails='payment/getCOOgroupPaymentDetails';
 }

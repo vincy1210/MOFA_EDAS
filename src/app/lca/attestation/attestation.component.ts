@@ -170,6 +170,8 @@ export class AttestationComponent implements OnInit {
   isfilenotfouund: boolean = false;
   paymentcount = environment.appdetails.payment_count;
   fields: { label: string; value: any }[] = [];
+  fields_coo:{ label: string; value: any }[] = [];
+  popupDownloadfilename:string='Attestation';
   isButtonDisabled = false;
 
   highlightColor: string = 'red';
@@ -179,6 +181,7 @@ export class AttestationComponent implements OnInit {
   _selectedColumns: any;
   processname:string='LCA';
   showcoopaybutton:boolean=false;
+  
   constructor(
     private translate: TranslateService,
     private fb: FormBuilder,
@@ -1005,6 +1008,76 @@ export class AttestationComponent implements OnInit {
     this.getCooForMyLCAInvoice(data);
   }
 
+  openNew_COO(data: any) {
+    console.log(data);
+    this.currentrow = data;
+    //api call for getting the declaration number
+    this.AddInvoiceDialog = true;
+    const fieldMappings: { [key: string]: string } = {
+      edasattestno: this.translate.instant('edasattestno'),
+      reqappnumber: this.translate.instant('Request Application Number'),
+      attestreqdate: this.translate.instant('Attestation Request Date'),
+      declarationdate: this.translate.instant('Declaration Date'),
+      invoicenumber: this.translate.instant('Invoice No'),
+      declarationumber: this.translate.instant('Declaration No'),
+      invoicedate: this.translate.instant('Invoice Date'),
+      invoiceamount: this.translate.instant('Invoice Amount'),
+      currencycode: this.translate.instant('Currency'),
+      feesamount: this.translate.instant('Fees Amount'),
+      approvedon: this.translate.instant('Approved On'),
+      statusname: this.translate.instant('Status'),
+      enteredon: this.translate.instant('Entered On'),
+      importername: this.translate.instant('Importer Name'),
+      exportportname: this.translate.instant('Export Port Name'),
+      invoiceid: this.translate.instant('Invoice ID'),
+      companyname: this.translate.instant('Company'),
+      comments: this.translate.instant('Comments'),
+      lcaname: this.translate.instant('Channel'),
+      // lcaname:  this.translate.instant('Channel')
+      // Add more fields as needed
+    };
+
+    this.popupDownloadfilename='Attest_'+this.currentrow.edasattestno;
+
+    if (data) {
+      this.fields = Object.keys(fieldMappings).map((key) => {
+        let value = data[key];
+        if (
+          key == 'attestreqdate' ||
+        
+          key == 'invoicedate' ||
+          key == 'paidon' ||
+          key == 'approvedon' ||
+          key == 'enteredon'
+        ) {
+          const splitResult = this.common.splitdatetime(value);
+
+          if (splitResult?.date === '01-Jan-1970') {
+            value = this.common.splitdatetime1(value)?.date;
+          } else if (splitResult?.date === '01-Jan-0001') {
+            value = ''; // Set value to an empty string
+          } else {
+            value = splitResult?.date;
+          }
+        }
+        else if(  key == 'declarationdate'){
+          value= this.common.stringtodate(value)
+        }
+        
+        
+        else if (key == 'invoiceamount' || key == 'feesamount') {
+          value = this.common.formatAmount(value);
+        }
+
+        return {
+          label: fieldMappings[key],
+          value: value,
+        };
+      });
+    }
+  }
+
+
   openNew(data: any) {
     console.log(data);
     this.currentrow = data;
@@ -1033,6 +1106,8 @@ export class AttestationComponent implements OnInit {
       // lcaname:  this.translate.instant('Channel')
       // Add more fields as needed
     };
+
+    this.popupDownloadfilename='Attest_'+this.currentrow.edasattestno;
 
     if (data) {
       this.fields = Object.keys(fieldMappings).map((key) => {
@@ -1108,25 +1183,23 @@ export class AttestationComponent implements OnInit {
     };
     this.loading = true;
     this.common.showLoading();
-    this.apicall.post(this.consts.getcoolistforlcaattestno, data).subscribe({
+    this.apicall.post(this.consts.getCOOgroupPaymentDetails, data).subscribe({
       next: (success: any) => {
-        this.common.hideLoading();
-        this.loading = false;
-        resp = success;
-        if (resp.responsecode == 1) {
-          this.cooAttestationLists = resp.data;
-          // this.cooAttestationLists = this.cooAttestationLists.map((item:any) => ({ ...item, selected: false }));
-          console.log(this.cooAttestationLists);
-          this.datasource_ = resp.data;
-          this.totalrecords_coo = resp.data.length;
-          this.loading = false;
+       console.log(success);
+        // if (resp.responsecode == 1) {
+        //   this.cooAttestationLists = resp.data;
+        //   // this.cooAttestationLists = this.cooAttestationLists.map((item:any) => ({ ...item, selected: false }));
+        //   console.log(this.cooAttestationLists);
+        //   this.datasource_ = resp.data;
+        //   this.totalrecords_coo = resp.data.length;
+        //   this.loading = false;
 
-          console.log(this.datasource_);
-          this.Reduce();
-        } else {
-          this.common.showErrorMessage('Something went wrong');
-          this.loading = false;
-        }
+        //   console.log(this.datasource_);
+        //   this.Reduce();
+        // } else {
+        //   this.common.showErrorMessage('Something went wrong');
+        //   this.loading = false;
+        // }
       },
     });
   }
@@ -1204,6 +1277,8 @@ getLCAoverdueCount(){
   this.apicall
   .post(this.consts.getLCAOverdueCount, data)
   .subscribe((response: any) => {
+
+
     this.common.hideLoading();
     console.log(response);
    

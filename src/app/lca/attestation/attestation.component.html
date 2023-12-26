@@ -548,9 +548,9 @@
             }}</mat-label>
             <div class="more-content-body">
               <mat-label class="more-content-block"
-                >{{ "Attestation.pdf" }}
+                >{{ popupDownloadfilename }}{{'.pdf'}}
                 <span
-                  (click)="common.getimagebase64(currentrow.attestfilelocation)"
+                  (click)="common.getimagebase64(currentrow.attestfilelocation, popupDownloadfilename)"
                 >
                   <mat-icon class="action_eye_icon_popup">download</mat-icon>
                 </span>
@@ -575,79 +575,107 @@
 
     <p-dialog [(visible)]="AddInvoiceDialog_"  [draggable]="false" [style]="{ width: '750px' }" header="{{'COO Details' | translate}}" [modal]="true" styleClass="p-fluid ui-dialog">
          <br>
-       <p-table
-       [(selection)]="selectedAttestations_coo" 
-       [resizableColumns]="true"  dataKey="coorequestno" 
-                    [scrollable]="false"  selectionMode="multiple"
-                  #tableref [rowHover]="true" [paginator]="true"
-                  currentPageReportTemplate="{{'Showing' | translate}} {first} {{'to' | translate}} {last} {{'of' | translate}} {totalRecords} {{'entries' | translate}}"
-                  [totalRecords]="totalrecords_coo"
-                  [value]="cooAttestationLists"
-                  [rows]="10"
-                  [columns]="cols_"
-                  [showCurrentPageReport]="true"
-                  [loading]="loading"
-                  styleClass="p-datatable-customers p-datatable-gridlines"
-                  currentPageReportTemplate="{{'Showing' | translate}} {first} {{'to' | translate}} {last} {{'of' | translate}} {totalRecords} {{'entries' | translate}}"
-                  [globalFilterFields]="[
-                    'declarationumber',
-                    'edasattestno',
-                    'totalamount',
-                    'declarationdate',
-                    'attestreqdate',
-                    'status'
-                  ]"
-                [loading]="loading" >
-      
-     
-         <ng-template pTemplate="header" let-columns>
-           <tr>
-           
-             <th *ngFor="let col of columns" pResizableColumn [pSortableColumn]="col.field" [style.width]="col.width">
-               {{ col.header | translate }}
+         <div
+          class="mofa-tab-section show mofa-tab-outer-mask">
+         <mat-tab-group>
+          <mat-tab label="{{'Details' | translate}}" *ngIf="Timelinevisible">
+            <div class="grid grid-cols-1">
+                                        <div class="viewmore">
+                                          <div class="more-content-section">
+                                            <div class="grid grid-cols-2">
+                                              <ng-container>
+                                                <div class="more-content" *ngFor="let field of fields_coo">
+                                                  <mat-label class="title-label">{{
+                                                    field.label | translate
+                                                  }}</mat-label>
+                                                  <div class="more-content-body">
+                                                    <mat-label class="more-content-block">{{
+                                                      field.value
+                                                    }}</mat-label>
+                                                  </div>
+                                                </div>
+                                              </ng-container>
+                                            </div>
+                                          </div>
+                                        </div>
               
-             </th>
-           </tr>
-         </ng-template>
-         <ng-template pTemplate="body" let-data>
-           <tr [ngClass]="{
-             'highlighted-row': data.isSelected,
-             'custom-text-color': data.isSelected,
-             'bold-text': data.isSelected
-           }">
-            <td>
-               <span class="image-text">{{ data.declarationumber }}</span>
-             </td>
-             <td>
-               <span class="image-text">{{ data.edasattestno }}</span>
-             </td>
-             <td>
-              <p-tag [value]="data.feespaid" [severity]="getSeverity1(data.feespaid)"></p-tag>
-            </td>
-             <td style="text-align: right;">
-               <span class="image-text">{{ common.formatAmount(data.totalamount) }}</span>
-             </td>
-             <td>
-               <span class="image-text">{{
-                  common.splitdatetimeforstring(common.formatDatestringtodate(data.declarationdate))?.date
-               }}</span>
-             </td>
-             <td>
-               <span class="image-text">{{
-                 common.splitdatetime(data.attestreqdate)?.date
-               }}</span>
-             </td>
-            
-     
-     
-           </tr>
-         </ng-template>
-         <ng-template pTemplate="emptymessage">
-           <tr>
-             <td colspan="8">{{ "noDataFound" | translate }}</td>
-           </tr>
-         </ng-template>
-       </p-table>
+            </div>
+          </mat-tab>
+          <mat-tab label="{{'Payment' | translate}}">
+            <div class="flex grid grid-cols-2 gap-6 p-5 payment-header-label">
+              <div class="p-1">
+                <mat-label class="payment-header-label">{{
+                  "No. of Invoices" | translate
+                }}</mat-label>
+              </div>
+              <div class="amount_right_align">{{ noOfInvoicesSelected }}</div>
+              <div class="p-1">
+                <mat-label class="payment-header-label">{{
+                  "Total Fines" | translate
+                }}</mat-label>
+              </div>
+              <div class="amount_right_align">{{ totalFineAmount }}</div>
+              <div class="p-1">
+                <mat-label class="payment-header-label">{{
+                  "Attestation Fees" | translate
+                }}</mat-label>
+              </div>
+              <div class="amount_right_align">
+                {{ "AED" | translate }}
+                {{ common.formatAmount(totalAttestationFee) }}
+              </div>
+              <!-- nil -->
+              <div class="p-1"></div>
+              <div class="payment-total-amount">
+                <div class="row">
+                  <span
+                    ><mat-label
+                      class="amount_right_align payment-header-label"
+                      >{{ "totalamount" | translate }}</mat-label
+                    ></span
+                  >
+                </div>
+                <div class="row" style="padding: 5px"></div>
+
+                <div class="row">
+                  <span
+                    ><mat-label
+                      class="payment-total-amount2 amount_right_align"
+                      >{{ "AED" | translate }}
+                      {{ common.formatAmount(totalFee) }}</mat-label
+                    ></span
+                  >
+                </div>
+                <div class="row" style="padding: 2px"></div>
+                <div class="row">
+                  <span
+                    ><mat-label
+                      class="payment-total-amount3 amount_right_align"
+                      >{{ "incl.VAT" | translate }}</mat-label
+                    ></span
+                  >
+                </div>
+                <!-- {{payment_button_isdisabled}} -->
+              </div>
+              <div class="gap-4 flex items-center justify-center col-span-2">
+                <button
+                  [disabled]="payment_button_isdisabled"
+                  mat-flat-button
+                  color="primary"
+                  (click)="AttestationPay()"
+                  class="pay-btn"
+                >
+                  {{ payorpayall | translate }}
+                </button>
+              </div>
+              <div class="flex items-center justify-center col-span-2">
+                <a class="powered_by">{{ "Powered by" | translate }}</a>
+                &nbsp;<a class="magnati">{{ "magnati" | translate }}</a>
+              </div>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
      
                <ng-template pTemplate="footer">
 
@@ -659,6 +687,15 @@
               >
                 {{ 'pay' | translate }}
               </button>
+
+              <button  *ngIf="showcoopaybutton"
+              mat-flat-button 
+              color="primary"
+              (click)="paycoo(cooAttestationLists)"
+              class="pay-btn"
+            >
+              {{ 'Pay COO & Invoice' | translate }}
+            </button>
 
                  <p-button icon="pi pi-times" (click)="AddInvoiceDialog_ = false" label="{{'Cancel' | translate}}" styleClass="p-confirm-dialog-reject"></p-button>
              </ng-template>
