@@ -40,6 +40,7 @@ isfilenotfouund:boolean=false;
 fields: { label: string, value: any }[] = [];
 isButtonDisabled = false;
 total_invoiceamount:any;
+totalfeesamount:any;
 
   constructor(
     private modalPopupService: ModalPopupService,
@@ -102,9 +103,10 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
       { field: 'entitycode', header: 'entitycode' , width:'10%'},
       { field: 'invoiceno', header: 'Invoice ID', width:'20%' },
       { field: 'invoiceamount', header: 'invoiceamount', width:'15%' },
+      { field: 'feesamount', header: 'Fees Amount', width:'15%' },
+
       { field: 'invoicecurrency', header: 'invoicecurrency', width:'10%' },
       { field: 'invoicedate', header: 'invoicedate', width:'15%' },
-
 
       //statusname
     ];
@@ -134,10 +136,12 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
 
           const totalInvoiceAmount = resp.data.reduce((total:any, item:any) => total + item.invoiceamount, 0);
           console.log(totalInvoiceAmount)
-
-          
-          
                   this.total_invoiceamount=totalInvoiceAmount;
+
+                  const totalfessamount = resp.data.reduce((total:any, item:any) => total + item.feesamount, 0);
+                  console.log(totalfessamount)
+                          this.totalfeesamount=totalfessamount;
+
         }
       });
   }

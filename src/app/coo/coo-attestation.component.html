@@ -69,7 +69,7 @@
                       />
                     </mat-form-field>
                   </div>
-                  <mat-icon (click)="showInfo()" class="info">info</mat-icon>
+                  <!-- <mat-icon (click)="showInfo()" class="info">info</mat-icon> -->
                 </ng-template>
 
                 <ng-template pTemplate="right">
@@ -157,6 +157,23 @@
                   ></button>
                 </ng-template>
               </p-toolbar>
+              <tr>
+                <td colspan="12">
+                  <div class="alert alert-info" role="alert">
+                    <span
+                      class="glyphicon glyphicon-exclamation-sign"
+                      aria-hidden="true"
+                    ></span>
+                    <i class="fas fa-lightbulb light-bulb"></i>
+                    COO Attestation Pending Request are shown in this list. COO payment is mandatory to pay the related Invoice Attestation request(s).
+                    For Each Declaration Number from LCA; One COO will be created.
+                    Once Payment is done; All related Invoice Attestation request(s) are enabled for payment.
+                    You will be allowed to upload the COO document once the COO payment is done.
+                    Uploading the COO document is as per the requirements of the client.
+
+                  </div>
+                </td>
+              </tr>
             </ng-template>
 
             <ng-template pTemplate="header" let-columns>
@@ -569,13 +586,13 @@
           </td>
           <td>
             <span class="image-text">{{
-              common.stringtodate(customer.declarationdate)
+             common.splitdatetime(customer.declarationdate)?.date
             }}</span>
           </td>
           <td>
             <!-- "attestreqdate": "20231222", -->
             <span class="image-text">{{
-              common.stringtodate(customer.attestreqdate)
+              common.splitdatetime(customer.attestreqdate)?.date
             }}</span>
           </td>
           <td>

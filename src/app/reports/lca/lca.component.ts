@@ -155,7 +155,7 @@ showfooter:boolean=false;
 
       { field: 'invoiceamount', header: 'Invoice Amount', width:'20%' },
       
-      { field: 'feesamount', header: 'Fees Amount', width:'20%' },
+      { field: 'feesamount', header: 'Fees', width:'20%' },
       { field: 'invoicenumber', header: 'Invoice ID' , width:'25%'},
       { field: 'declarationumber', header: 'Declaration No', width:'25%' },
       { field: 'declarationdate', header: 'Declaration Date', width:'15%' },

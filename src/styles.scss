@@ -1916,7 +1916,7 @@ button.white-icon-button.mat-menu-item {
 }
 
 .pay-btn {
-  width: 100%;
+  width: 140px;
   font-weight: 600;
   border-radius: 10px;
 }
@@ -2379,4 +2379,47 @@ mat-toolbar.main-header {
   position:fixed!important;
   width:100%;
   z-index: 2;
+}
+.light-bulb {
+  padding-right: 0.5rem;
+  font-size: 25px;
+}
+
+
+
+.alert-info {
+  color: #31708f;
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+  border-left: 6px solid #31708f;
+  border-radius: 0;
+  padding: 15px;
+  /* margin-bottom: 20px; */
+  border: 1px solid transparent;
+  border-radius: 1px;
+  border-left: 5px #31708f solid;
+}
+
+.alert-danger {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  border-left: 6px solid #a94442;
+  border-radius: 1px;
+}
+
+.alert-success {
+  color: #3c763d;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+  border-left: 6px solid #3c763d;
+  border-radius: 1px;
+}
+
+.alert-warning {
+  color: #8a6d3b;
+  background-color: #fcf8e3;
+  border-color: #faebcc;
+  border-left: 6px solid #8a6d3b;
+  border-radius: 1px;
 }

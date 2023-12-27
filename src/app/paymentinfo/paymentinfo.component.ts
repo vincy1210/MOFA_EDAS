@@ -169,15 +169,18 @@ redirect(){
   let paymentidinfo=this.common.getpaymentdetails();
   this.paymenttype=paymentidinfo.processname;
 
-  if(paymentidinfo.processname==='LCA'){
+  if(paymentidinfo.processname==='LCA' || paymentidinfo.processname==='COOLCA'){
   this.router.navigateByUrl('/lca/lcacompletedattestation')
   }
   else if(paymentidinfo.processname==='COO'){
     this.router.navigateByUrl('/coo/cooinreview')
     }
-    if(paymentidinfo.processname==='PHYSICAL'){
+   else if(paymentidinfo.processname==='PHYSICAL'){
       this.router.navigateByUrl('/physical/physicalinreview')
       }
+      // else if('COOLCA'){
+
+      // }
 }
 
 

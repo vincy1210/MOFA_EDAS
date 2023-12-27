@@ -45,7 +45,7 @@ export class PhysicalAttestationComponent implements OnInit {
   currentcompany:any;
 AddInvoiceDialog:boolean=false;
 attchemntisthere:boolean=false;
-payorpayall:string='pay';
+payorpayall:string='Pay';
   timelineItems = [
     { status: '', title: this.translate.instant('IN DRAFT'), icon: 'check', date: '', time: '' },
     { status: '', title: this.translate.instant('Payment'), icon: 'check', date: '', time: '' },

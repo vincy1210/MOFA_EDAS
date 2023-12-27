@@ -125,7 +125,7 @@
                   </td>
                   <td>
                     <span class="image-text">{{
-                    common.stringtodate(data.declarationdate)
+                    common.splitdatetime(data.declarationdate)?.date
 
                     }}</span>
                       
@@ -249,7 +249,7 @@
                 </span>
                 <span style="margin: 6rem;
                 font-size: inherit;" *ngIf="!fileisthere">
-                  {{'No File Uploaded Yet' | translate}}
+                  {{'No File data' | translate}}
                 </span>
   
                 </div>
@@ -287,7 +287,7 @@
                   <mat-label class="more-content-block" >{{ 'Attestation.pdf' }} <span (click)="common.getimagebase64(currentrow.attachment)">  <mat-icon class="action_eye_icon_popup" >download</mat-icon> </span> </mat-label>
                 </div>
                 <div class="more-content-body" *ngIf="!attchemntisthere">
-                  <mat-label class="more-content-block" >{{ 'No File uploaded yet' }} </mat-label>
+                  <mat-label class="more-content-block" >{{ 'No File Data' }} </mat-label>
                 </div>
               </div>
               

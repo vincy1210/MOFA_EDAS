@@ -375,7 +375,7 @@ this.common.hideLoading();
         bottom: "10%",
         top: "10%",
       },
-      color: ["#b68a35", "#1b1d21", "#ccc"],
+      color: ["#b68a35", "#1b1d21"],
       toolbox: {
         feature: {
           saveAsImage: {
@@ -395,13 +395,6 @@ this.common.hideLoading();
       series: [
         {
           name: "Pending",
-          type: "line",
-          smooth: true,
-          stack: "Total",
-          data: [],
-        },
-        {
-          name: "Approved",
           type: "line",
           smooth: true,
           stack: "Total",
@@ -451,13 +444,7 @@ this.common.hideLoading();
           stack: "Total",
           data: seriesDataRequest,
         },
-        {
-          name: "Approved",
-          type: "line",
-          smooth: true,
-          stack: "Total",
-          data: seriesDataApproved,
-        },
+       
         {
           name: "Completed",
           type: "line",
@@ -480,15 +467,9 @@ this.common.hideLoading();
           stack: "Total",
           data: seriesDataCompleted,
         },
+        
         {
-          name: "Approved",
-          type: "line",
-          smooth: true,
-          stack: "Total",
-          data: seriesDataRequest,
-        },
-        {
-          name: "Pending",
+          name: "Completed",
           type: "line",
           smooth: true,
           stack: "Total",
@@ -508,13 +489,6 @@ this.common.hideLoading();
           smooth: true,
           stack: "Total",
           data: seriesDataCompleted,
-        },
-        {
-          name: "Approved",
-          type: "line",
-          smooth: true,
-          stack: "Total",
-          data: seriesDataRequest,
         }, {
           name: "Completed",
           type: "line",

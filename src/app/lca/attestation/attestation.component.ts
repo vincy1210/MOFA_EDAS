@@ -130,9 +130,18 @@ export class AttestationComponent implements OnInit {
   redirectselectedcompanyData: any;
   src: any;
   noOfInvoicesSelected: any;
+  noOfInvoicesSelected_coo: any;
+
   totalFineAmount: number = 0.0;
+  totalFineAmount_coo:number=0.0;
+  cooamount:number=0.0;
   totalAttestationFee: number = 0.0;
+  totalAttestationFee_coo:number=0.0;
+  invoicefeesamount:number=0.0;
   totalFee: number = 0.0;
+  totalFee_coo:number=0.0;
+  noofcoo:number=0.0;
+  nooffines:number=0.0;
   AttestationList: any;
   isPending: boolean = true;
   base64PdfString: any;
@@ -167,6 +176,7 @@ export class AttestationComponent implements OnInit {
   AddInvoiceDialog_: boolean = false;
 
   currentrow: any;
+  currentrow_coo:any;
   isfilenotfouund: boolean = false;
   paymentcount = environment.appdetails.payment_count;
   fields: { label: string; value: any }[] = [];
@@ -180,8 +190,14 @@ export class AttestationComponent implements OnInit {
   overdue: number = 0;
   _selectedColumns: any;
   processname:string='LCA';
+  processname_set:string='LCA'
   showcoopaybutton:boolean=false;
-  
+  overdue_filter:boolean=false;
+  nearingoverdue_filter:boolean=false;
+  isPaymentTabVisible:boolean=false;
+  header:string='';
+  selectedTabIndex:number=0;
+
   constructor(
     private translate: TranslateService,
     private fb: FormBuilder,
@@ -257,7 +273,7 @@ export class AttestationComponent implements OnInit {
       { field: 'canpay', header: 'Status', width: '20%' },
 
       { field: 'invoiceamount', header: 'Invoice Amount', width: '20%' },
-      { field: 'feesamount', header: 'Fees Amount', width: '20%' },
+      { field: 'feesamount', header: 'Fees', width: '20%' },
 
       { field: 'invoicenumber', header: 'Invoice ID', width: '20%' },
       { field: 'declarationumber', header: 'Declaration No', width: '20%' },
@@ -817,7 +833,7 @@ export class AttestationComponent implements OnInit {
             let data = {
               invoiceID: this.invoiceunoresponse,
               paymentID: code,
-              processname: this.processname,
+              processname: this.processname_set,
             };
             this.common.setpaymentdetails(data);
 
@@ -1003,48 +1019,63 @@ export class AttestationComponent implements OnInit {
     else{
       this.showcoopaybutton=false;
     }
-
     this.AddInvoiceDialog_ = true;
+    let resp;
+    let data_ = {
+      uuid: this.uuid,
+      lcaattestno: data.coorequestno,
+    };
+    this.loading = true;
+    this.common.showLoading();
+    this.apicall.post(this.consts.getcoolistforlcaattestno, data_).subscribe({
+      next: (success: any) => {
+        this.common.hideLoading();
+        this.loading = false;
+        resp = success;
+        if (resp.responsecode == 1) {
+          this.cooAttestationLists = resp.data;
+          console.log(this.cooAttestationLists);
+          this.datasource_ = resp.data;
+		     this.openNew_COO(resp.data[0]);
+          this.totalrecords_coo = resp.data.length;
+          this.loading = false;
+          console.log(this.datasource_);
+          this.Reduce();
+        } else {
+          this.common.showErrorMessage('Something went wrong');
+          this.loading = false;
+        }
+      },
+    });
+
     this.getCooForMyLCAInvoice(data);
   }
 
   openNew_COO(data: any) {
+    this.isPaymentTabVisible=false
+    this.header='COO Details';
     console.log(data);
-    this.currentrow = data;
+    this.currentrow_coo = data;
     //api call for getting the declaration number
-    this.AddInvoiceDialog = true;
     const fieldMappings: { [key: string]: string } = {
-      edasattestno: this.translate.instant('edasattestno'),
-      reqappnumber: this.translate.instant('Request Application Number'),
-      attestreqdate: this.translate.instant('Attestation Request Date'),
-      declarationdate: this.translate.instant('Declaration Date'),
-      invoicenumber: this.translate.instant('Invoice No'),
       declarationumber: this.translate.instant('Declaration No'),
-      invoicedate: this.translate.instant('Invoice Date'),
-      invoiceamount: this.translate.instant('Invoice Amount'),
-      currencycode: this.translate.instant('Currency'),
-      feesamount: this.translate.instant('Fees Amount'),
-      approvedon: this.translate.instant('Approved On'),
-      statusname: this.translate.instant('Status'),
-      enteredon: this.translate.instant('Entered On'),
-      importername: this.translate.instant('Importer Name'),
-      exportportname: this.translate.instant('Export Port Name'),
-      invoiceid: this.translate.instant('Invoice ID'),
-      companyname: this.translate.instant('Company'),
-      comments: this.translate.instant('Comments'),
-      lcaname: this.translate.instant('Channel'),
-      // lcaname:  this.translate.instant('Channel')
-      // Add more fields as needed
+      declarationdate: this.translate.instant('Declaration Date'),
+      edasattestno: this.translate.instant('edasattestno'),
+      attestreqdate: this.translate.instant('Attestation Request Date'),
+      // feesamount: this.translate.instant('Fees Amount'),
+      // totalamount: this.translate.instant('Total Amount'),
+      enteredon: this.translate.instant('Created'),
+      feespaid: this.translate.instant('Status'),
+   
     };
 
-    this.popupDownloadfilename='Attest_'+this.currentrow.edasattestno;
+    // this.popupDownloadfilename='Attest_'+this.currentrow_coo.edasattestno;
 
     if (data) {
-      this.fields = Object.keys(fieldMappings).map((key) => {
+      this.fields_coo = Object.keys(fieldMappings).map((key) => {
         let value = data[key];
         if (
           key == 'attestreqdate' ||
-        
           key == 'invoicedate' ||
           key == 'paidon' ||
           key == 'approvedon' ||
@@ -1053,7 +1084,7 @@ export class AttestationComponent implements OnInit {
           const splitResult = this.common.splitdatetime(value);
 
           if (splitResult?.date === '01-Jan-1970') {
-            value = this.common.splitdatetime1(value)?.date;
+            value = this.common.splitdatetime(value)?.date;
           } else if (splitResult?.date === '01-Jan-0001') {
             value = ''; // Set value to an empty string
           } else {
@@ -1061,7 +1092,7 @@ export class AttestationComponent implements OnInit {
           }
         }
         else if(  key == 'declarationdate'){
-          value= this.common.stringtodate(value)
+          value= this.common.splitdatetime(value)?.date
         }
         
         
@@ -1131,7 +1162,7 @@ export class AttestationComponent implements OnInit {
           }
         }
         else if(  key == 'declarationdate'){
-          value= this.common.stringtodate(value)
+          value= this.common.splitdatetime(value)?.date
         }
         
         
@@ -1177,29 +1208,29 @@ export class AttestationComponent implements OnInit {
 
   getCooForMyLCAInvoice(currentrow: any) {
     let resp;
-    let data = {
-      uuid: this.uuid,
-      lcaattestno: currentrow.edasattestno,
-    };
+    let data = {    
+    "coorequestno":currentrow.coorequestno,
+    "invoiceuno":0,
+    "action":"ADD",
+    "uuid":this.uuid
+}
     this.loading = true;
     this.common.showLoading();
     this.apicall.post(this.consts.getCOOgroupPaymentDetails, data).subscribe({
       next: (success: any) => {
+        resp=success;
        console.log(success);
-        // if (resp.responsecode == 1) {
-        //   this.cooAttestationLists = resp.data;
-        //   // this.cooAttestationLists = this.cooAttestationLists.map((item:any) => ({ ...item, selected: false }));
-        //   console.log(this.cooAttestationLists);
-        //   this.datasource_ = resp.data;
-        //   this.totalrecords_coo = resp.data.length;
-        //   this.loading = false;
+      
+            this.noOfInvoicesSelected_coo=resp.invoicecount;
+            this.totalFineAmount_coo = resp.fineamount;
+            this.invoicefeesamount = resp.invoicefeesamount;
+            this.totalFee_coo = resp.totalamount;
+            this.invoiceunoresponse = resp.invoiceuno;
+            this.cooamount=resp.coofeesamount;
+            this.noofcoo=resp.coocount;
+            this.nooffines=resp.nooffines;
 
-        //   console.log(this.datasource_);
-        //   this.Reduce();
-        // } else {
-        //   this.common.showErrorMessage('Something went wrong');
-        //   this.loading = false;
-        // }
+            this.totalAttestationFee=resp.totalamount;
       },
     });
   }
@@ -1252,6 +1283,7 @@ export class AttestationComponent implements OnInit {
       this.invoiceunoresponse = response.invoiceuno;
       // Now, you can call the AttestationPay function
       this.processname='COO'
+      this.processname_set='COO';
       this.AttestationPay();
     } else {
       console.log('Something went wrong!!');
@@ -1267,7 +1299,7 @@ export class AttestationComponent implements OnInit {
 
   
 getLCAoverdueCount(){
-
+let resp;
   let data={
     "companyuno":this.currentcompany,
     "uuid":this.uuid,
@@ -1277,11 +1309,37 @@ getLCAoverdueCount(){
   this.apicall
   .post(this.consts.getLCAOverdueCount, data)
   .subscribe((response: any) => {
-
+     resp=response;
+    if(resp.overdue && resp.overdue>0){
+     this.overdue_filter=true;
+    }
+    else{
+     this.overdue_filter=false;
+    }
+    if(resp.nearoverdue && resp.nearoverdue>0){
+     this.nearingoverdue_filter=true;
+    }
+    else{
+     this.overdue_filter=false;
+    }
 
     this.common.hideLoading();
     console.log(response);
    
   });
 }
+
+paycooandinvoice(cooAttestationLists:any){
+  this.showcoopaybutton=true;
+  this.isPaymentTabVisible=true
+  this.selectedTabIndex = 1;
+  this.header='Payment Details';
+}
+
+onTabChange(event:any): void {
+  this.selectedTabIndex = event;
+  console.log(event);
+  console.log('Selected Tab Index:', this.selectedTabIndex);
+}
+
 }

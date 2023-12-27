@@ -137,7 +137,7 @@
             
               <td>
                   <span class="image-text">{{
-                    common.stringtodate(customer.declarationdate) 
+                    common.splitdatetime(customer.declarationdate)?.date
                     }}</span>
               </td>
               <td>

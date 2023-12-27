@@ -54,7 +54,7 @@ export class CooAttestationComponent implements OnInit {
   approveddate: any;
   paymentdate: any;
   attestationdate: any;
-  payorpayall: string = 'pay';
+  payorpayall: string = 'Pay';
   completedDate: any;
 
   noOfInvoicesSelected: any[] = [];
@@ -383,7 +383,7 @@ export class CooAttestationComponent implements OnInit {
       dataItem[jsonData.edasattestno] = item.edasattestno;
       // dataItem[jsonData.entityshareamount] = item.entityshareamount;
       dataItem[jsonData.totalamount] = item.totalamount;
-      dataItem[jsonData.declarationdate] = this.common.stringtodate(item.declarationdate)
+      dataItem[jsonData.declarationdate] = this.common.splitdatetime(item.declarationdate)?.date
       dataItem[jsonData.attestreqdate] = this.common.splitdatetime(
         item.attestreqdate
       )?.date;

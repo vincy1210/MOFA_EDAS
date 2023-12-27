@@ -120,6 +120,9 @@
                   <td style="text-align: right;">
                     <span class="image-text">{{ data.invoiceamount }}</span>
                   </td>
+                  <td style="text-align: right;">
+                    <span class="image-text">{{ data.feesamount }}</span>
+                  </td>
                   <td>
                     <span class="image-text">{{ data.invoicecurrency }}</span>
                   </td>
@@ -144,11 +147,11 @@
                 <td colspan="4">
                   {{ "Total" | translate }}
                 </td>
-                <td style="text-align: right;"> AED
-                  {{ common.formatAmount(total_invoiceamount) }}
+                <td style="text-align: right;"> 
+                  {{ total_invoiceamount | customCurrency : "AED"}}
                 </td>
-                <td class="text-right">
-                  <!-- {{ totals?.totalfineamount | customCurrency : "AED" }} -->
+                <td style="text-align: right;">
+                  {{ totalfeesamount  | customCurrency : "AED" }}
                 </td>
                 <td class="text-right">
                   <!-- {{ totals?.totaltotalamount | customCurrency : "AED" }} -->

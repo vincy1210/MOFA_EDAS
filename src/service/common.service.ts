@@ -695,15 +695,15 @@ export class CommonService {
     window.location.href =
       'https://stg-id.uaepass.ae/idshub/logout?redirect_uri=https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2';
   }
-  formatDatestringtodate(dateString: string): string {
-    const date = new Date(
-      parseInt(dateString.substring(0, 4)),
-      parseInt(dateString.substring(4, 6)) - 1,
-      parseInt(dateString.substring(6, 8))
-    );
+  // formatDatestringtodate(dateString: string): string {
+  //   const date = new Date(
+  //     parseInt(dateString.substring(0, 4)),
+  //     parseInt(dateString.substring(4, 6)) - 1,
+  //     parseInt(dateString.substring(6, 8))
+  //   );
 
-    return this.datePipe.transform(date, 'yyyy-MM-dd') || 'Invalid Date'; // Handle invalid date format
-  }
+  //   return this.datePipe.transform(date, 'yyyy-MM-dd') || 'Invalid Date'; // Handle invalid date format
+  // }
 
   allPages() {
     const allPages: RetType[] = [
@@ -1181,15 +1181,15 @@ export class CommonService {
     });
   }
 
-  stringtodate(inputDate: string): string{
-    const year = inputDate.slice(0, 4);
-    const month = inputDate.slice(4, 6);
-    const day = inputDate.slice(6, 8);
+  // stringtodate(inputDate: string): string{
+  //   const year = inputDate.slice(0, 4);
+  //   const month = inputDate.slice(4, 6);
+  //   const day = inputDate.slice(6, 8);
   
-    // Manually construct the date string in the desired format
-    return `${day}-${this.getMonthAbbreviation(month)}-${year}`;
+  //   // Manually construct the date string in the desired format
+  //   return `${day}-${this.getMonthAbbreviation(month)}-${year}`;
     
-    }
+  //   }
 
      getMonthAbbreviation(month: string): string {
       const months = [
@@ -1218,4 +1218,17 @@ export class CommonService {
     setMyCopyrightYear(newValue: string): void {
       this.mycopyrightyear = newValue;
     }
+
+    formatmobilenumber(number: string): string {
+      // Check if the input number starts with '971'
+      if (number.startsWith('971')) {
+        // If it does, remove the '971' prefix and return the rest
+        return number.substring(3);
+      } else {
+        // If it doesn't start with '971', append '971' and return the updated number
+        return '971' + number;
+      }
+    }
+
+
 }

@@ -514,7 +514,7 @@ setTimeout(() => {
         }
       }
       else if(key=="declarationdate"){
-        value=this.common.stringtodate(value) 
+        value=this.common.splitdatetime(value)?.date
       }
       else if(key=="invoiceamount" || key=="feesamount"){
         value =this.common.formatAmount(value);
