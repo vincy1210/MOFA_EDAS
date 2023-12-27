@@ -67,7 +67,6 @@ export class RegistrationComponent {
     private _activatedRoute: ActivatedRoute,
     private apiservice: ApiService
   ) {
-
     this.getcopyrightyear();
     this.common.getData().subscribe((data) => {
       this.reg_form_data = data;
@@ -256,41 +255,42 @@ export class RegistrationComponent {
         }
       });
 
-    if (
-      this.param3 == undefined ||
-      this.param1 == undefined ||
-      this.param2 == undefined
-    ) {
-      if (this.reg_form_data != null || this.reg_form_data != undefined) {
-        this.userinfo = JSON.parse(this.reg_form_data);
-        this.common.setUserIfoData(this.reg_form_data);
-      } else {
-        console.log('redirect parameters undefined');
+    // if (
+    //   this.param3 == undefined ||
+    //   this.param1 == undefined ||
+    //   this.param2 == undefined
+    // ) {
+    //   if (this.reg_form_data != null || this.reg_form_data != undefined) {
+    //     this.userinfo = JSON.parse(this.reg_form_data);
+    //     this.common.setUserIfoData(this.reg_form_data);
+    //   } else {
+    //     console.log('redirect parameters undefined');
 
-        console.log('Something went wrong! Please try again');
+    //     console.log('Something went wrong! Please try again');
 
-        // Delay the execution  by 2 seconds
-        setTimeout(() => {
-          // this.auth.logout();
-          window.location.href =
-            'https://stg-id.uaepass.ae/idshub/logout?redirect_uri=https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2';
-        }, 2000); // 2000 milliseconds = 2 seconds
-        return;
-      }
-    } else {
-      if (this.reg_form_data == null || this.reg_form_data == undefined) {
-        this.addItem();
-      } else {
-        this.userinfo = JSON.parse(this.reg_form_data);
-        this.common.setUserIfoData(this.reg_form_data);
-      }
-    }
+    //     // Delay the execution  by 2 seconds
+    //     setTimeout(() => {
+    //       // this.auth.logout();
+    //       window.location.href =
+    //         'https://stg-id.uaepass.ae/idshub/logout?redirect_uri=https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2';
+    //     }, 2000); // 2000 milliseconds = 2 seconds
+    //     return;
+    //   }
+    // } else {
+    //   if (this.reg_form_data == null || this.reg_form_data == undefined) {
+    //     this.addItem();
+    //   } else {
+    //     this.userinfo = JSON.parse(this.reg_form_data);
+    //     this.common.setUserIfoData(this.reg_form_data);
+    //   }
+    // }
     //this.common.hideLoading();
 
     // }
     // finally{
     //   this.common.hideLoading()
     // }
+    this.addItem();
   }
 
   checkcompanyuserforcancel(userinfo: any) {
@@ -346,48 +346,51 @@ export class RegistrationComponent {
   //commented for testing
   sRetriveUserProfile() {
     // Show the loader before making the API request
-    this.apiservice
-      .sPassAuthGetUserprofile(this.param1, this.param3)
-      .toPromise()
-      .then((response: any) => {
-        if (typeof response === 'string' && !response.includes('/')) {
-          // response = response.slice(1, -1);
-          response = JSON.parse(response);
-        } else {
-          response = JSON.stringify(response).replace(/\\/g, '');
-          // response = response.slice(1, -1);
-          response = JSON.parse(response);
-        }
-        if (response.IsSucceeded === 'True') {
-          this.userinfo = response;
+    // this.apiservice
+    //   .sPassAuthGetUserprofile(this.param1, this.param3)
+    //   .toPromise()
+    //   .then((response: any) => {
+    let response: any =
+      '{"IsSucceeded":"True","Message":"Succeeded.","Data":{"Id":"bbd83450-953d-42db-b073-32d599e9799b","Token":"2a8b0354-385e-4fd8-948c-1ed9a71ae917","userType":"SOP1","mobile":"971567548576","email":"vincy.v.1210@gmail.com","uuid":"bbd83450-953d-42db-b073-32d599e9799b","spuuid":null,"idn":null,"fullnameEN":"VINCY VARGEES VARGEES","fullnameAR":null,"firstnameEN":"VINCY VARGEES","firstnameAR":null,"lastnameEN":"VARGEES","lastnameAR":null,"nationalityEN":"IND","nationalityAR":"هندى","gender":"Female","idType":null,"titleEN":null,"titleAR":null,"UAEPassJson":null}}';
+    // ' {"IsSucceeded":"True","Message":"Succeeded.","Data":{"Id":"5b31318b-37db-45f5-a7f8-c70311b8d275","Token":"aac7037c-8df6-4703-967d-4cadefa549b7","userType":"SOP1","mobile":"971501435423","email":"navodthalassery@gmail.com","uuid":"a5c7c4a6-84d6-40b7-82a2-ec551424486c","spuuid":null,"idn":null,"fullnameEN":"NAVOD PUTHANPURAYIL MEETHAL","fullnameAR":null,"firstnameEN":"NAVOD","firstnameAR":null,"lastnameEN":"PUTHANPURAYIL MEETHAL","lastnameAR":null,"nationalityEN":"IND","nationalityAR":"هندى","gender":"Male","idType":null,"titleEN":null,"titleAR":null,"UAEPassJson":null}}';
+    if (typeof response === 'string' && !response.includes('/')) {
+      // response = response.slice(1, -1);
+      response = JSON.parse(response);
+    } else {
+      response = JSON.stringify(response).replace(/\\/g, '');
+      // response = response.slice(1, -1);
+      response = JSON.parse(response);
+    }
+    if (response.IsSucceeded === 'True') {
+      this.userinfo = response;
 
-          const userProfileString = JSON.stringify(this.userinfo);
+      const userProfileString = JSON.stringify(this.userinfo);
 
-          this.common.setUserProfile(userProfileString);
+      this.common.setUserProfile(userProfileString);
 
-          // Set the user profile data in SessionStorage
-          // sessionStorage.setItem('userProfile', userProfileString);
+      // Set the user profile data in SessionStorage
+      // sessionStorage.setItem('userProfile', userProfileString);
 
-          //verify the user whether he already has company and if he already having redirect him to company listing page
-          this.useralreadyhavingcompany(this.userinfo.Data);
+      //verify the user whether he already has company and if he already having redirect him to company listing page
+      this.useralreadyhavingcompany(this.userinfo.Data);
 
-          console.log(response.IsSucceeded);
-        } else if (response.IsSucceeded === 'False') {
-          console.log(response.message);
-          // this.common.showErrorMessage("Something went wrong");
-          console.log('Auth1 failed');
-          return;
-        }
+      console.log(response.IsSucceeded);
+    } else if (response.IsSucceeded === 'False') {
+      console.log(response.message);
+      // this.common.showErrorMessage("Something went wrong");
+      console.log('Auth1 failed');
+      return;
+    }
 
-        if (this.userinfo == undefined) {
-          this.common.showErrorMessage('Something went wrong');
-          console.log('Auth2 Failed!!!');
-          return;
-        }
+    if (this.userinfo == undefined) {
+      this.common.showErrorMessage('Something went wrong');
+      console.log('Auth2 Failed!!!');
+      return;
+    }
 
-        this.common.setUserIfoData(response.Data);
-      })
-      .catch(console.log);
+    this.common.setUserIfoData(response.Data);
+    // })
+    // .catch(console.log);
   }
 
   ngOnDestroy() {
@@ -511,7 +514,10 @@ export class RegistrationComponent {
                   JSON.stringify(UserRoleList)
                 );
               }
-              sessionStorage.setItem('lcauserdetails', JSON.stringify(response.data[0]));
+              sessionStorage.setItem(
+                'lcauserdetails',
+                JSON.stringify(response.data[0])
+              );
               this.auth.setLCAUser(response.data[0].roleuno);
               this.router.navigateByUrl('/lca-login/lcadashboard');
             } else {
@@ -551,19 +557,17 @@ export class RegistrationComponent {
     //vincy
   }
 
-
-  getcopyrightyear(){
-  this.apiservice
-  .get(this.consts.getServerTime)
-  .subscribe((response: any) => {
-    this.common.hideLoading();
-    if (response) {
-      const serverTime = new Date(response);
-      const year = serverTime.getFullYear();
-      this.common.setMyCopyrightYear(year?.toString());
-      console.log('Server Time:', serverTime);
-    }
-  });
-}
-
+  getcopyrightyear() {
+    this.apiservice
+      .get(this.consts.getServerTime)
+      .subscribe((response: any) => {
+        this.common.hideLoading();
+        if (response) {
+          const serverTime = new Date(response);
+          const year = serverTime.getFullYear();
+          this.common.setMyCopyrightYear(year?.toString());
+          console.log('Server Time:', serverTime);
+        }
+      });
+  }
 }
