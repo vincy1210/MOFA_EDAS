@@ -253,7 +253,7 @@
       "InvoiceNo": "InvoiceNo",
       "InvoiceCurrency": "InvoiceCurrency",
       "InvoiceId": "Invoice Id",
-      "companyname": "Company",
+      "CompanyName": "Company",
       "Remarks": "Remarks",
       "Status": "Status"
     }
@@ -323,6 +323,6 @@
       "lcauno": "Channel"
     }
   },
-  "pay":"Pay",
-  "Pay All":"Pay All"
+  "pay": "Pay",
+  "Pay All": "Pay All"
 }

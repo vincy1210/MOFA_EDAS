@@ -39,7 +39,11 @@
             #tableref
             [rowHover]="true"
             [paginator]="true"
-            currentPageReportTemplate="{{'Showing' | translate}} {first} {{'to' | translate}} {last} {{'of' | translate}} {totalRecords} {{'entries' | translate}}"
+            currentPageReportTemplate="{{ 'Showing' | translate }} {first} {{
+              'to' | translate
+            }} {last} {{ 'of' | translate }} {totalRecords} {{
+              'entries' | translate
+            }}"
             [filterDelay]="0"
             [totalRecords]="totalrecords"
             [value]="excelLists"
@@ -49,7 +53,11 @@
             [rowsPerPageOptions]="[10, 25, 50]"
             [loading]="loading"
             styleClass="p-datatable-customers p-datatable-gridlines"
-            currentPageReportTemplate="{{'Showing' | translate}} {first} {{'to' | translate}} {last} {{'of' | translate}} {totalRecords} {{'entries' | translate}}"
+            currentPageReportTemplate="{{ 'Showing' | translate }} {first} {{
+              'to' | translate
+            }} {last} {{ 'of' | translate }} {totalRecords} {{
+              'entries' | translate
+            }}"
             [globalFilterFields]="[
               'LCACode',
               'RequestNo',
@@ -94,7 +102,7 @@
                             'contains'
                           )
                         "
-                        placeholder="{{'SearchKeyword' | translate}}"
+                        placeholder="{{ 'SearchKeyword' | translate }}"
                       />
                     </mat-form-field>
                   </div>
@@ -177,7 +185,7 @@
                   <span class="table-head-column">
                     <span>{{ col.header | translate }}</span>
                     <p-sortIcon
-                    [field]="col.field"
+                      [field]="col.field"
                       *ngIf="col.field !== 'action'"
                     ></p-sortIcon>
                     <p-columnFilter
@@ -213,13 +221,25 @@
                   }}</span>
                   <span class="image-text">{{ data.LCACode }}</span>
                 </td>
-                <td class="lg:noaction-width-header">
+                <td
+                  class="lg:noaction-width-header"
+                  [ngClass]="{
+                    'error-style':
+                      getErrorAvailable(data, 'RequestNo').valid === false
+                  }"
+                >
                   <span class="p-column-title">{{
                     "lcadetails.lcadetailList.RequestNo" | translate
                   }}</span>
                   <span class="image-text">{{ data.RequestNo }}</span>
                 </td>
-                <td class="lg:noaction-width-header">
+                <td
+                  class="lg:noaction-width-header"
+                  [ngClass]="{
+                    'error-style':
+                      getErrorAvailable(data, 'RequestDate').valid === false
+                  }"
+                >
                   <span class="p-column-title">{{
                     "lcadetails.lcadetailList.RequestDate" | translate
                   }}</span>
@@ -237,7 +257,13 @@
                   }}</span>
                   <span class="image-text">{{ data.DeclarationNo }}</span>
                 </td>
-                <td class="">
+                <td
+                  class=""
+                  [ngClass]="{
+                    'error-style':
+                      getErrorAvailable(data, 'DeclarationDate').valid === false
+                  }"
+                >
                   <span class="p-column-title">{{
                     "lcadetails.lcadetailList.DeclarationDate" | translate
                   }}</span>
@@ -267,91 +293,181 @@
                   }}</span>
                   <span class="image-text">{{ data.ConsigneeName }}</span>
                 </td>
-                <td class="">
+                <td
+                  class=""
+                  [ngClass]="{
+                    'error-style':
+                      getErrorAvailable(data, 'EmailAddress').valid === false
+                  }"
+                >
                   <span class="p-column-title">{{
                     "lcadetails.lcadetailList.EmailAddress" | translate
                   }}</span>
                   <span class="image-text">{{ data.EmailAddress }}</span>
                 </td>
-                <td class="">
+                <td
+                  class=""
+                  [ngClass]="{
+                    'error-style':
+                      getErrorAvailable(data, 'ContactNo').valid === false
+                  }"
+                >
                   <span class="p-column-title">{{
                     "lcadetails.lcadetailList.ContactNo" | translate
                   }}</span>
                   <span class="image-text">{{ data.ContactNo }}</span>
                 </td>
-                <td class="">
+                <td
+                  class=""
+                  [ngClass]="{
+                    'error-style':
+                      getErrorAvailable(data, 'DocType').valid === false
+                  }"
+                >
                   <span class="p-column-title">{{
                     "lcadetails.lcadetailList.DocType" | translate
                   }}</span>
                   <span class="image-text">{{ data.DocType }}</span>
                 </td>
-                <td class="">
+                <td
+                  class=""
+                  [ngClass]="{
+                    'error-style':
+                      getErrorAvailable(data, 'ExpPortCode').valid === false
+                  }"
+                >
                   <span class="p-column-title">{{
                     "lcadetails.lcadetailList.ExpPortCode" | translate
                   }}</span>
                   <span class="image-text">{{ data.ExpPortCode }}</span>
                 </td>
-                <td class="">
+                <td
+                  class=""
+                  [ngClass]="{
+                    'error-style':
+                      getErrorAvailable(data, 'ExpPortName').valid === false
+                  }"
+                >
                   <span class="p-column-title">{{
                     "lcadetails.lcadetailList.ExpPortName" | translate
                   }}</span>
                   <span class="image-text">{{ data.ExpPortName }}</span>
                 </td>
-                <td class="">
+                <td
+                  class=""
+                  [ngClass]="{
+                    'error-style':
+                      getErrorAvailable(data, 'Mode').valid === false
+                  }"
+                >
                   <span class="p-column-title">{{
                     "lcadetails.lcadetailList.Mode" | translate
                   }}</span>
                   <span class="image-text">{{ data.Mode }}</span>
                 </td>
-                <td class="">
+                <td
+                  class=""
+                  [ngClass]="{
+                    'error-style':
+                      getErrorAvailable(data, 'AttestationNo').valid === false
+                  }"
+                >
                   <span class="p-column-title">{{
                     "lcadetails.lcadetailList.AttestationNo" | translate
                   }}</span>
                   <span class="image-text">{{ data.AttestationNo }}</span>
                 </td>
-                <td class="">
+                <td
+                  class=""
+                  [ngClass]="{
+                    'error-style':
+                      getErrorAvailable(data, 'InvoiceDate').valid === false
+                  }"
+                >
                   <span class="p-column-title">{{
                     "lcadetails.lcadetailList.InvoiceDate" | translate
                   }}</span>
                   <span class="image-text">{{ data.InvoiceDate }}</span>
                 </td>
-                <td class="">
+                <td
+                  class=""
+                  [ngClass]="{
+                    'error-style':
+                      getErrorAvailable(data, 'InvoiceAmount').valid === false
+                  }"
+                >
                   <span class="p-column-title">{{
                     "lcadetails.lcadetailList.InvoiceAmount" | translate
                   }}</span>
                   <span class="image-text">{{ data.InvoiceAmount }}</span>
                 </td>
-                <td class="">
+                <td
+                  class=""
+                  [ngClass]="{
+                    'error-style':
+                      getErrorAvailable(data, 'InvoiceNo').valid === false
+                  }"
+                >
                   <span class="p-column-title">{{
                     "lcadetails.lcadetailList.InvoiceNo" | translate
                   }}</span>
                   <span class="image-text">{{ data.InvoiceNo }}</span>
                 </td>
-                <td class="">
+                <td
+                  class=""
+                  [ngClass]="{
+                    'error-style':
+                      getErrorAvailable(data, 'InvoiceCurrency').valid === false
+                  }"
+                >
                   <span class="p-column-title">{{
                     "lcadetails.lcadetailList.InvoiceCurrency" | translate
                   }}</span>
                   <span class="image-text">{{ data.InvoiceCurrency }}</span>
                 </td>
-                <td class="">
+                <td
+                  class=""
+                  [ngClass]="{
+                    'error-style':
+                      getErrorAvailable(data, 'InvoiceId').valid === false
+                  }"
+                >
                   <span class="p-column-title">{{
                     "lcadetails.lcadetailList.InvoiceId" | translate
                   }}</span>
                   <span class="image-text">{{ data.InvoiceId }}</span>
                 </td>
-                <td class="">
+                <td
+                  class=""
+                  [ngClass]="{
+                    'error-style':
+                      getErrorAvailable(data, 'CompanyName').valid === false
+                  }"
+                >
                   <span class="p-column-title">{{
                     "lcadetails.lcadetailList.CompanyName" | translate
                   }}</span>
                   <span class="image-text">{{ data.CompanyName }}</span>
                 </td>
-                <td class="">
+                <td
+                  class=""
+                  [ngClass]="{
+                    'error-style':
+                      getErrorAvailable(data, 'Remarks').valid === false
+                  }"
+                >
                   <span class="p-column-title">{{
                     "lcadetails.lcadetailList.Remarks" | translate
                   }}</span>
                   <span class="image-text">{{ data.Remarks }}</span>
                 </td>
-                <td class="">
+                <td
+                  class=""
+                  [ngClass]="{
+                    'error-style':
+                      getErrorAvailable(data, 'Status').valid === false
+                  }"
+                >
                   <span class="p-column-title">{{
                     "lcadetails.lcadetailList.Status" | translate
                   }}</span>

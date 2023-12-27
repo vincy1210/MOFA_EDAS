@@ -63,7 +63,7 @@
   "chooseadatelabel": "اختر تاريخ إصدار الترخيص",
   "cancelbtn": "إلغاء",
   "applybtn": "تقديم الطلب",
-  "Apply":"تقديم الطلب",
+  "Apply": "تقديم الطلب",
   "licenseIssuingauthorityemiratelabel": "هيئة إصدار التراخيص-الإمارة",
   "choosetypeofissuingauthoritylabel": "جهة الإصدار",
   "dmcclabel": "المنطقة الحرة",
@@ -257,7 +257,7 @@
       "InvoiceNo": "الفاتورة",
       "InvoiceCurrency": "العملة",
       "InvoiceId": "InvoiceId",
-      "companyname": "اسم الشركة",
+      "CompanyName": "اسم الشركة",
       "Remarks": "ملاحظات",
       "Status": "الحالة"
     }
@@ -370,9 +370,8 @@
   },
   "FineAmount": "مبلغ الغرامة",
   "Total": "المجموع",
-  "Choose Columns":"اختر الأعمدة",
-  "columns selected":"الأعمدة المحددة",
-
+  "Choose Columns": "اختر الأعمدة",
+  "columns selected": "الأعمدة المحددة",
 
   "Showing": "عرض",
   "to": "إلى",
@@ -381,9 +380,9 @@
   "first": "الأول",
   "last": "الأخير",
   "totalRecords": "إجمالي السجلات",
-  "COO Details":"تفاصيل مدير العمليات",
-  "Logout":"تسجيل خروج",
-  "Receipt":"إيصال",
+  "COO Details": "تفاصيل مدير العمليات",
+  "Logout": "تسجيل خروج",
+  "Receipt": "إيصال",
   "COO Request No": "رقم طلب شهادة COO",
   "LCA Request No": "رقم طلب LCA",
   "EDAS Attestation No": "رقم شهادة EDAS",
@@ -404,11 +403,7 @@
   "pay": "دفع",
   "PAYMENT": "الدفع",
   "ATTESTED": "تم التصديق",
-  "Pay All":"دفع",
-  "Confirm":"يتأكد",
-"Are you sure you want to clear the item(s) selected for payment?":"هل أنت متأكد أنك تريد مسح العنصر (العناصر) المحددة للدفع؟"
-
-
-
-  
+  "Pay All": "دفع",
+  "Confirm": "يتأكد",
+  "Are you sure you want to clear the item(s) selected for payment?": "هل أنت متأكد أنك تريد مسح العنصر (العناصر) المحددة للدفع؟"
 }
