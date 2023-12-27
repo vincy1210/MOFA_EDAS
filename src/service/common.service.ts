@@ -37,7 +37,7 @@ export const ConstAccessDenied: string = 'access-denied';
 export class CommonService {
   favink1: string = '';
   favink2: string = '';
-  private mycopyrightyear: string='';
+  private mycopyrightyear: string = '';
 
   public userType = new BehaviorSubject<string>('');
   userType$ = this.userType.asObservable();
@@ -86,12 +86,14 @@ export class CommonService {
 
   //toaster message alerts
   showErrorMessage(data: any) {
+    this.Toastr.clear();
     if (data != undefined) {
       var status = this.translate.instant(data);
       this.Toastr.error(status);
     }
   }
   showSuccessMessage(data: any) {
+    this.Toastr.clear();
     if (data != undefined) {
       var status = this.translate.instant(data);
       this.Toastr.success(status);
@@ -99,6 +101,7 @@ export class CommonService {
   }
 
   showWarningMessage(data: any) {
+    this.Toastr.clear();
     if (data != undefined) {
       var status = this.translate.instant(data);
       this.Toastr.warning(status);
@@ -507,7 +510,7 @@ export class CommonService {
     });
   }
 
-  getimagebase64(attestfilelocation: any, filename?:any) {
+  getimagebase64(attestfilelocation: any, filename?: any) {
     let resp;
     let data = {
       attestfilelocation: attestfilelocation,
@@ -541,10 +544,9 @@ export class CommonService {
 
           const link = document.createElement('a');
           link.href = fileUrl;
-          if(filename){
-            link.download =filename;
-          }
-          else{
+          if (filename) {
+            link.download = filename;
+          } else {
             link.download = 'Attestation.pdf'; // You can customize the file name here
           }
 
@@ -1169,15 +1171,15 @@ export class CommonService {
     return null; // Invalid or null datetime string
   }
 
-  showSweetAlert(title: string, text: string, html?:any, position?:any) {
-   let  typeIcon = TYPE.WARNING
+  showSweetAlert(title: string, text: string, html?: any, position?: any) {
+    let typeIcon = TYPE.WARNING;
     Swal.fire({
       position: position,
       title: title,
       text: text,
       icon: typeIcon,
       confirmButtonText: 'OK',
-      html:html
+      html: html,
     });
   }
 
@@ -1185,50 +1187,58 @@ export class CommonService {
   //   const year = inputDate.slice(0, 4);
   //   const month = inputDate.slice(4, 6);
   //   const day = inputDate.slice(6, 8);
-  
+
   //   // Manually construct the date string in the desired format
   //   return `${day}-${this.getMonthAbbreviation(month)}-${year}`;
-    
+
   //   }
 
-     getMonthAbbreviation(month: string): string {
-      const months = [
-        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-      ];
-    
-      // Ensure the month value is a valid number between 1 and 12
-      const numericMonth = parseInt(month, 10);
-      if (numericMonth >= 1 && numericMonth <= 12) {
-        return months[numericMonth - 1];
-      }
-    
-      // Default to 'Mon' for an invalid month
-      return 'Mon';
+  getMonthAbbreviation(month: string): string {
+    const months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+
+    // Ensure the month value is a valid number between 1 and 12
+    const numericMonth = parseInt(month, 10);
+    if (numericMonth >= 1 && numericMonth <= 12) {
+      return months[numericMonth - 1];
     }
 
-    getMyCopyrightYear(): string {
+    // Default to 'Mon' for an invalid month
+    return 'Mon';
+  }
 
-      if(!this.mycopyrightyear){
-        this.mycopyrightyear=environment.appdetails.year;
-      }
-      // else{}
-      return this.mycopyrightyear;
+  getMyCopyrightYear(): string {
+    if (!this.mycopyrightyear) {
+      this.mycopyrightyear = environment.appdetails.year;
     }
-  
-    setMyCopyrightYear(newValue: string): void {
-      this.mycopyrightyear = newValue;
+    // else{}
+    return this.mycopyrightyear;
+  }
+
+  setMyCopyrightYear(newValue: string): void {
+    this.mycopyrightyear = newValue;
+  }
+
+  formatmobilenumber(number: string): string {
+    // Check if the input number starts with '971'
+    if (number.startsWith('971')) {
+      // If it does, remove the '971' prefix and return the rest
+      return number.substring(3);
+    } else {
+      // If it doesn't start with '971', append '971' and return the updated number
+      return '971' + number;
     }
-
-    formatmobilenumber(number: string): string {
-      // Check if the input number starts with '971'
-      if (number.startsWith('971')) {
-        // If it does, remove the '971' prefix and return the rest
-        return number.substring(3);
-      } else {
-        // If it doesn't start with '971', append '971' and return the updated number
-        return '971' + number;
-      }
-    }
-
-
+  }
 }
