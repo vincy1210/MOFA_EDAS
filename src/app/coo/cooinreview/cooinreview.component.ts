@@ -31,6 +31,9 @@ export class CooinreviewComponent implements OnInit {
   selectedAttestations: any;
   totalrecords: number = 0;
   cooAttestationLists: [] = [];
+  
+  cooAttestationLists_LCA: any;
+
   cols: any;
   loading: boolean = false;
   enableFilters: boolean = false;
@@ -70,10 +73,12 @@ src:any;
 src1:any;
 isLoading=false;
 AddInvoiceDialog:boolean=false;
+AddInvoiceDialog_:boolean=false;
 form:FormGroup;
 datasource:any;
-
-
+cols_: any;
+totalrecords_LCA: number = 0;
+// selectedAttestations_LCA: any;
 
 currentrow:any;
 attchemntisthere:boolean=false;
@@ -192,7 +197,30 @@ this.form = this.fb.group({
       }
     ];
   //  this.InitTable();
+
+
+  
+  this.cols_ = [
+    { field: 'edasattestno', header: 'edasattestno', width: '20%' },
+    { field: 'canpay', header: 'Status', width: '20%' },
+    { field: 'Noofdaysleft', header: 'Age', width: '5%' },
+
+    { field: 'invoiceamount', header: 'Invoice Amount', width: '20%' },
+    { field: 'feesamount', header: 'Fees Amount', width: '20%' },
+
+    { field: 'invoicenumber', header: 'Invoice ID', width: '20%' },
+    { field: 'declarationumber', header: 'Declaration No', width: '20%' },
+    { field: 'declarationdate', header: 'Declaration Date', width: '200px' },
+    { field: 'attestreqdate', header: 'Created', width: '200px' },
+    { field: 'lcaname', header: 'Channel', width: '15%' },
+    { field: 'companyname', header: 'Company', width: '20%' },
+  ];
+
+
+
   }
+
+
 
   InitTable($event:LazyLoadEvent) {
     //this.currentcompany
@@ -683,11 +711,11 @@ openNew(data:any) {
       if ( key=="enteredon" ||key=="attestreqdate" ) {
         const splitResult = this.common.splitdatetime(value);
 
-        if (splitResult?.date === '01-Jan-1970' || splitResult?.date === '01-Jan-0001') {
-          value = ''; // Set value to an empty string
-        } else {
+        // if (splitResult?.date === '01-Jan-1970' || splitResult?.date === '01-Jan-0001') {
+        //   value = ''; // Set value to an empty string
+        // } else {
           value = splitResult?.date;
-        }
+        // }
       }
       else if(key=="declarationdate"){
         value=this.common.splitdatetime(value)?.date;
@@ -777,6 +805,56 @@ isPaid(data:any) {
 isRowSelectable(event:any) {
   return !this.isPaid(event.data);
 }
+openNew_(data: any) {
+   this.getLCAInvoicesForMyCooDec(data);
+  this.AddInvoiceDialog_ = true;
+}
+
+
+getLCAInvoicesForMyCooDec(currentrow: any) {
+  let resp;
+  let data = {
+    uuid: this.uuid,
+    decNo: currentrow.declarationumber,
+  };
+  this.loading = true;
+  this.common.showLoading();
+  this.apiservice
+    .post(this.consts.getlcalistforcoodeclaration, data)
+    .subscribe({
+      next: (success: any) => {
+        this.common.hideLoading();
+        this.loading = false;
+        resp = success;
+        if (resp.responsecode == 1) {
+          this.cooAttestationLists_LCA = resp.data;
+          this.cooAttestationLists_LCA = this.cooAttestationLists_LCA.map(
+            (item: any) => ({ ...item, selected: false })
+          );
+          console.log(this.cooAttestationLists_LCA);
+          // this.datasource=resp.dictionary.data;
+          this.totalrecords_LCA = resp.data.length;
+          this.loading = false;
+
+          // console.log(this.datasource);
+        } else {
+          this.common.showErrorMessage('Something went wrong');
+          this.loading = false;
+        }
+      },
+    });
+}
+
+
+getSeverity_(canpay: number) {
+  switch (canpay) {
+    case 1:
+      return 'success';
+    default:
+      return 'danger';
+  }
+}
+
 
 }
 

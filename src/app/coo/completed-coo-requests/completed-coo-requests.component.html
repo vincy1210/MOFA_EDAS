@@ -11,7 +11,7 @@
 
           <p-table
             [(selection)]="selectedAttestations"
-            dataKey="attestationrequno"
+            dataKey="coorequestno"
             [scrollable]="true"
             selectionMode="single"
             #tableref
@@ -103,13 +103,18 @@
                 <th pFrozenColumn alignFrozen="right">{{'actions' | translate}}</th>
               </tr>
             </ng-template>
-            <ng-template pTemplate="body" let-data>
-              <tr [pSelectableRow]="data">
+            <ng-template pTemplate="body" let-data let-rowIndex="rowIndex">
+              <tr [pSelectableRow]="data" [pSelectableRowIndex]="rowIndex">
                 <!-- <td>
                       <p-tableCheckbox [value]="data"></p-tableCheckbox>
                     </td> -->
-                <td>
+                <!-- <td>
                   <span class="image-text">{{ data.declarationumber }}</span>
+                </td> -->
+                <td class="hyperlink">
+                  <button pButton type="button" (click)="openNew_(data)">
+                    {{ data.declarationumber }}
+                  </button>
                 </td>
                 <td>
                   <span class="image-text">{{ data.edasattestno }}</span>
@@ -225,4 +230,144 @@
   </ng-template>
 
 </p-dialog>
-  
+  <!-- dialog2 -->
+  <p-dialog
+  [(visible)]="AddInvoiceDialog_"
+  [draggable]="false"
+  style="top: 20%"
+  [style]="{ width: '750px' }"
+  header="{{ 'LCA Invoices Details' | translate }}"
+  [modal]="true"
+  styleClass="p-fluid"
+>
+  <br />
+
+  <p-table
+    [resizableColumns]="true"
+    dataKey="edasattestno"
+    [scrollable]="true"
+    selectionMode="multiple"
+    #tableref
+    [rowHover]="true"
+    [paginator]="true"
+    currentPageReportTemplate="{{'Showing' | translate}} {first} {{'to' | translate}} {last} {{'of' | translate}} {totalRecords} {{'entries' | translate}}"
+    [filterDelay]="0"
+    [totalRecords]="totalrecords_LCA"
+    [value]="cooAttestationLists_LCA"
+    [rows]="10"
+    [columns]="cols_"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10, 20, 50]"
+    [loading]="loading"
+    styleClass="p-datatable-customers p-datatable-gridlines"
+    currentPageReportTemplate="{{'Showing' | translate}} {first} {{'to' | translate}} {last} {{'of' | translate}} {totalRecords} {{'entries' | translate}}"
+    [globalFilterFields]="[
+      'edasattestno',
+      'invoicenumber',
+      'declarationumber',
+      'declarationdate',
+      'attestreqdate',
+      'Noofdaysleft'
+    ]"
+  >
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th
+          *ngFor="let col of columns"
+          pResizableColumn
+          [pSortableColumn]="col.field"
+          [style.width]="col.width"
+        >
+          {{ col.header | translate }} <p-sortIcon [field]="col.field"></p-sortIcon>
+          <p-columnFilter
+            type="text"
+            [field]="col.field"
+            *ngIf="enableFilters"
+            display="menu"
+          ></p-columnFilter>
+        </th>
+        <!-- <th pFrozenColumn alignFrozen="right">{{'actions' | translate}}</th> -->
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-customer let-columns="columns">
+      <tr
+        [ngClass]="{
+          'highlighted-row custom-text-color bold-text': customer.isSelected
+        }"
+      >
+        <td>
+          <span class="image-text">{{ customer.edasattestno }}</span>
+        </td>
+        <td>
+          <p-tag
+            [value]="customer.canpay === 1 ? 'COO paid' : 'COO unpaid'"
+            [severity]="getSeverity_(customer.canpay)"
+          ></p-tag>
+        </td>
+        <td style="text-align: center">
+          <div
+            [ngClass]="{
+                '': customer.noofdaysoverdue < 10,
+                outofstock: customer.noofdaysoverdue > 14,
+                lowstock:customer.noofdaysoverdue > 9 &&customer.noofdaysoverdue < 15
+                
+            }"
+          >
+            {{ customer.noofdaysoverdue }}
+          </div>
+        </td>
+
+        <td style="text-align: right">
+          <span class="image-text">{{
+            common.formatAmount(customer.invoiceamount)
+          }}</span>
+        </td>
+        <td style="text-align: right">
+          <span class="image-text">{{
+            common.formatAmount(customer.feesamount)
+          }}</span>
+        </td>
+        <td>
+          <span class="image-text">{{ customer.invoiceid }}</span>
+        </td>
+        <td>
+          <span class="image-text">{{ customer.declarationumber }}</span>
+        </td>
+        <td>
+          <span class="image-text">{{
+           common.splitdatetime(customer.declarationdate)?.date
+          }}</span>
+        </td>
+        <td>
+          <!-- "attestreqdate": "20231222", -->
+          <span class="image-text">{{
+            common.splitdatetime(customer.attestreqdate)?.date
+          }}</span>
+        </td>
+        <td>
+          <span class="image-text">{{ customer.lcaname }}</span>
+        </td>
+        <td>
+          <span class="image-text">{{ customer.companyname }}</span>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="12">{{ "No data found." | translate }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      icon="pi pi-times"
+      (click)="AddInvoiceDialog_ = false"
+      label="{{ 'Cancel' | translate }}"
+      styleClass="p-confirm-dialog-reject"
+    ></p-button>
+  </ng-template>
+</p-dialog>
+
+  <!-- end -->

@@ -241,7 +241,7 @@
                   <span class="p-column-title">{{
                     "lcadetails.lcadetailList.DeclarationDate" | translate
                   }}</span>
-                  <span class="image-text">{{ data.DeclarationDate }}</span>
+                  <span class="image-text">{{common.splitdatetime(data.DeclarationDate)?.date  }}</span>
                 </td>
                 <td
                   class=""

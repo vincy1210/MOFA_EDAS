@@ -35,6 +35,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { AuthGuard } from '../auth.guard';
+import { DropdownModule } from 'primeng/dropdown';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+// import { MatInputModule } from '@angular/material/input';
 
 const routes = [
   {
@@ -91,7 +94,7 @@ const routes = [
     MatDialogModule,
     MatSelectModule,
     MatButtonModule,
-    MatButtonToggleModule,
+    MatButtonToggleModule, DropdownModule, MatAutocompleteModule
   ],
 })
 export class PhysicalModule {}

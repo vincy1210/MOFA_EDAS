@@ -1012,14 +1012,13 @@ export class AttestationComponent implements OnInit {
     });
   }
   openNew_(data: any) {
-
+this.onTabChange(0);
     if(data.canpay==0){
       this.showcoopaybutton=true;
     }
     else{
       this.showcoopaybutton=false;
     }
-    this.AddInvoiceDialog_ = true;
     let resp;
     let data_ = {
       uuid: this.uuid,
@@ -1056,21 +1055,16 @@ export class AttestationComponent implements OnInit {
     this.header='COO Details';
     console.log(data);
     this.currentrow_coo = data;
-    //api call for getting the declaration number
     const fieldMappings: { [key: string]: string } = {
       declarationumber: this.translate.instant('Declaration No'),
       declarationdate: this.translate.instant('Declaration Date'),
       edasattestno: this.translate.instant('edasattestno'),
       attestreqdate: this.translate.instant('Attestation Request Date'),
-      // feesamount: this.translate.instant('Fees Amount'),
-      // totalamount: this.translate.instant('Total Amount'),
       enteredon: this.translate.instant('Created'),
       feespaid: this.translate.instant('Status'),
    
     };
-
     // this.popupDownloadfilename='Attest_'+this.currentrow_coo.edasattestno;
-
     if (data) {
       this.fields_coo = Object.keys(fieldMappings).map((key) => {
         let value = data[key];
@@ -1081,15 +1075,15 @@ export class AttestationComponent implements OnInit {
           key == 'approvedon' ||
           key == 'enteredon'
         ) {
-          const splitResult = this.common.splitdatetime(value);
+          // const splitResult = this.common.splitdatetime(value);
 
-          if (splitResult?.date === '01-Jan-1970') {
+          // if (splitResult?.date === '01-Jan-1970') {
             value = this.common.splitdatetime(value)?.date;
-          } else if (splitResult?.date === '01-Jan-0001') {
-            value = ''; // Set value to an empty string
-          } else {
-            value = splitResult?.date;
-          }
+          // } else if (splitResult?.date === '01-Jan-0001') {
+          //   value = ''; // Set value to an empty string
+          // } else {
+          //   value = splitResult?.date;
+          // }
         }
         else if(  key == 'declarationdate'){
           value= this.common.splitdatetime(value)?.date
@@ -1105,6 +1099,9 @@ export class AttestationComponent implements OnInit {
           value: value,
         };
       });
+console.log(this.fields_coo);
+this.AddInvoiceDialog_ = true;
+
     }
   }
 
@@ -1151,15 +1148,15 @@ export class AttestationComponent implements OnInit {
           key == 'approvedon' ||
           key == 'enteredon'
         ) {
-          const splitResult = this.common.splitdatetime(value);
+          value = this.common.splitdatetime(value)?.date;
 
-          if (splitResult?.date === '01-Jan-1970') {
-            value = this.common.splitdatetime1(value)?.date;
-          } else if (splitResult?.date === '01-Jan-0001') {
-            value = ''; // Set value to an empty string
-          } else {
-            value = splitResult?.date;
-          }
+          // if (splitResult?.date === '01-Jan-1970') {
+          //   value = this.common.splitdatetime1(value)?.date;
+          // } else if (splitResult?.date === '01-Jan-0001') {
+          //   value = ''; // Set value to an empty string
+          // } else {
+          //   value = splitResult?.date;
+          // }
         }
         else if(  key == 'declarationdate'){
           value= this.common.splitdatetime(value)?.date
@@ -1260,7 +1257,6 @@ export class AttestationComponent implements OnInit {
 
   async paycoo(event:any){
     let data;
-
   if (event.length === 1) {
     data = {
       requstno: event[0].coorequestno,
@@ -1269,7 +1265,6 @@ export class AttestationComponent implements OnInit {
       uuid: this.uuid,
     };
   }
-
   try {
     // Use await to wait for the API call to complete
     const response: any = await this.apicall.post(this.consts.getCOOAttestpaymentdetails, data).toPromise();
@@ -1329,7 +1324,7 @@ let resp;
   });
 }
 
-paycooandinvoice(cooAttestationLists:any){
+openpaymenttab(){
   this.showcoopaybutton=true;
   this.isPaymentTabVisible=true
   this.selectedTabIndex = 1;
@@ -1340,6 +1335,51 @@ onTabChange(event:any): void {
   this.selectedTabIndex = event;
   console.log(event);
   console.log('Selected Tab Index:', this.selectedTabIndex);
+}
+
+
+cooonlypayment(cooAttestationLists:any){
+  if(!cooAttestationLists){
+    return;
+  }
+  console.log(cooAttestationLists[0]);
+  this.cooonlyPaymentDetailsCall(cooAttestationLists[0].coorequestno)
+}
+
+cooonlyPaymentDetailsCall(coorequestno:any){
+  console.log(coorequestno);
+  if(!coorequestno){
+    return;
+  }
+  let data = {
+    requstno:coorequestno,
+    invoiceuno: 0,
+    action: 'ADD',
+    uuid: this.uuid,
+  };
+  let response;
+  this.apicall
+  .post(this.consts.getCOOAttestpaymentdetails, data)
+  .subscribe({
+    next: (success: any) => {
+      this.common.hideLoading();
+      response = success;
+      if (response.status === 'Success') {
+        this.noOfInvoicesSelected_coo=0;
+        this.totalAttestationFee = response.invoiceamount;
+        this.totalFineAmount = response.fineamount;
+        this.totalFee = response.totalamount;
+        this.invoiceunoresponse = response.invoiceuno;
+        // this.payment_button_isdisabled = false;
+        
+      } else {
+        this.payment_button_isdisabled = true;
+        console.log('Something went wrong!!');
+        // this.common.showErrorMessage("Something went wrong")
+        return;
+      }
+    },
+  });
 }
 
 }

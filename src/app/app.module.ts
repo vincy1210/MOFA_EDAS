@@ -62,6 +62,8 @@ import { NgxOtpInputModule } from 'ngx-otp-input';
 import { ToastrModule } from 'ngx-toastr';
 import { LoginComponent } from './login/login.component';
 import { ToolbarModule } from 'primeng/toolbar';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+
 
 import {
   RecaptchaModule,
@@ -187,7 +189,7 @@ const customDateFormats: MatDateFormats = {
     }),
     MatNativeDateModule,
     MatMomentDateModule,
-    MatDialogModule,
+    MatDialogModule,MatAutocompleteModule
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },

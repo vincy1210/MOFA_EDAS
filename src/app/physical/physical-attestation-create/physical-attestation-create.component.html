@@ -49,11 +49,26 @@
       <mat-form-field [ngClass]="{'error-border': registrationForm.get('invoiceDate')?.hasError('required')}" appearance="outline">
         <mat-label>{{ "invoiceCurrency" | translate }}</mat-label>
 
-        <mat-select name="invoiceCurrency" formControlName="invoiceCurrency">
+        <input type="text"
+        placeholder="Pick one"
+        aria-label="Number"
+        matInput
+        formControlName="invoiceCurrency" name="invoiceCurrency" (input)="onInputChange($event, 'categoryuno')"
+        [matAutocomplete]="auto">
+        
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let currency of currencylist" [value]="currency.itemcode">
+            {{currency.itemcode}}
+          </mat-option>
+        </mat-autocomplete>
+
+        <!-- <mat-select name="invoiceCurrency" formControlName="invoiceCurrency">
           <mat-option *ngFor="let currency of currencylist" [value]="currency.itemcode">
             {{ currency.itemcode }}
           </mat-option>
-        </mat-select>
+        </mat-select> -->
+
+
         <mat-error class="error" *ngIf="registrationForm.get('invoiceCurrency')?.hasError('required')">
           {{ "invoiceCurrencyrequired" | translate }}
         </mat-error>

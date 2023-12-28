@@ -69,7 +69,7 @@
         <mat-form-field class="example-form-field">
           <mat-label>{{'chooseadatelabel' | translate }}</mat-label>
           <input matInput [max]="today" [matDatepicker]="datepicker" [readonly]="true" name="chosenDate" formControlName="chosenDate">
-          <mat-hint>{{'MM/DD/YYYY' | translate}}</mat-hint>
+          <mat-hint>{{'DD-MMM-YYYY' | translate}}</mat-hint>
           <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
           <mat-datepicker #datepicker>
             <mat-datepicker-actions>

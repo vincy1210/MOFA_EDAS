@@ -529,35 +529,35 @@ this.common.hideLoading();
     return null; // Invalid or null datetime string
   }
  
-  splitdatetime1(
-    datetimeString: any,
-    dateFormat: string = "dd-MMM-yyyy",
-    yearfirst = true
-  ) {
-    if (datetimeString && typeof datetimeString === "string") {
-      const dateTimeParts = datetimeString;
-      if (dateTimeParts.length === 8 || dateTimeParts.length === 11) {
-        let parsedDate = null;
-        if (yearfirst) {
-          parsedDate = new Date(
-            Number(dateTimeParts.substr(0, 4)),
-            Number(dateTimeParts.substr(4, 2)) - 1,
-            Number(dateTimeParts.substr(6, 2))
-          );
-        } else {
-          parsedDate = new Date(
-            Number(dateTimeParts.substr(4, 4)),
-            Number(dateTimeParts.substr(2, 2)) - 1,
-            Number(dateTimeParts.substr(0, 2))
-          );
-        }
-        return {
-          date: this.datePipe.transform(parsedDate, dateFormat),
-        };
-      }
-    }
-    return null; // Invalid or null datetime string
-  }
+  // splitdatetime1(
+  //   datetimeString: any,
+  //   dateFormat: string = "dd-MMM-yyyy",
+  //   yearfirst = true
+  // ) {
+  //   if (datetimeString && typeof datetimeString === "string") {
+  //     const dateTimeParts = datetimeString;
+  //     if (dateTimeParts.length === 8 || dateTimeParts.length === 11) {
+  //       let parsedDate = null;
+  //       if (yearfirst) {
+  //         parsedDate = new Date(
+  //           Number(dateTimeParts.substr(0, 4)),
+  //           Number(dateTimeParts.substr(4, 2)) - 1,
+  //           Number(dateTimeParts.substr(6, 2))
+  //         );
+  //       } else {
+  //         parsedDate = new Date(
+  //           Number(dateTimeParts.substr(4, 4)),
+  //           Number(dateTimeParts.substr(2, 2)) - 1,
+  //           Number(dateTimeParts.substr(0, 2))
+  //         );
+  //       }
+  //       return {
+  //         date: this.datePipe.transform(parsedDate, dateFormat),
+  //       };
+  //     }
+  //   }
+  //   return null; // Invalid or null datetime string
+  // }
  
   splitdatetime2(datetimeString: string) {
     let formattedDate: string = "";

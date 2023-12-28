@@ -796,19 +796,16 @@ export class CooAttestationComponent implements OnInit {
         ) {
           const splitResult = this.common.splitdatetime(value);
 
-          if (
-            splitResult?.date === '01-Jan-1970' ||
-            splitResult?.date === '01-Jan-0001'
-          ) {
-            value = ''; // Set value to an empty string
-          } else {
+          // if (
+          //   splitResult?.date === '01-Jan-1970' ||
+          //   splitResult?.date === '01-Jan-0001'
+          // ) {
+          //   value = ''; // Set value to an empty string
+          // } else {
             value = splitResult?.date;
-          }
+          // }
         }
-        // else if(key=='declarationdate'){
-        //   value=this.common.splitdatetime(value)
-        //   // common.splitdatetime(data.declarationdate)?.date
-        // }
+      
         
         else if (key == 'totalamount' || key == 'feesamount') {
           value = this.common.formatAmount(value);

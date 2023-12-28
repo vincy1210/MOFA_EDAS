@@ -84,8 +84,8 @@ export class AuthService {
   logout() {
     this.userloggedinSubject.next(false);
     this.lcauserloggedinSubject.next(false);
-    sessionStorage.clear();
-    localStorage.clear();
+    // sessionStorage.clear();
+    // localStorage.clear();
     this.router.navigateByUrl('/logout');
   }
 

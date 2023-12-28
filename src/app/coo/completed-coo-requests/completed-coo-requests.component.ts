@@ -37,8 +37,11 @@ currentrow:any;
 isfilenotfouund:boolean=false;
 attchemntisthere:boolean=false;
 fields: { label: string, value: any }[] = [];
- 
+cooAttestationLists_LCA: any;
 isButtonDisabled = false;
+totalrecords_LCA: number = 0;
+AddInvoiceDialog_:boolean=false;
+cols_: any;
   constructor(
     private modalPopupService: ModalPopupService,
     public translate: TranslateService,
@@ -92,38 +95,30 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
     }
    
     this.cols = [
-      {
-        field: 'declarationumber',
-        header: 'declarationumber',
-        width:'20%'
-      },
-      {
-        field: 'edasattestno',
-        header: 'edasattestno',
-        width:'20%'
-      },
-      {
-        fiels:'statusname',
-        header:'status',
-        width:'10%'
-      },
-      // { field: 'entityshareamount', header: 'entityshareamount' },
-      {
-        field: 'totalamount',
-        header: 'totalamount',
-        width:'15%'
-      },
-      {
-        field: 'declarationdate',
-        header: 'declarationdate',
-        width:'13%'
-      },
-      {
-        field: 'attestreqdate',
-        header: 'attestreqdate',
-        width:'13%'
-      }
+      { field: 'declarationumber', header: 'Declaration Number', width: '20%' },
+      { field: 'edasattestno', header: 'EDAS Attestation Number', width: '20%' },
+      { field: 'statusname', header: 'Status', width: '10%' },
+      { field: 'totalamount', header: 'Total Amount', width: '15%' },
+      { field: 'declarationdate', header: 'Declaration Date', width: '13%' },
+      { field: 'attestreqdate', header: 'Attestation Request Date', width: '13%' }
     ];
+    
+
+    
+  this.cols_ = [
+    { field: 'edasattestno', header: 'edasattestno', width: '20%' },
+    { field: 'canpay', header: 'Status', width: '20%' },
+    { field: 'Noofdaysleft', header: 'Age', width: '5%' },
+    { field: 'invoiceamount', header: 'Invoice Amount', width: '20%' },
+    { field: 'feesamount', header: 'Fees Amount', width: '20%' },
+    { field: 'invoicenumber', header: 'Invoice ID', width: '20%' },
+    { field: 'declarationumber', header: 'Declaration No', width: '20%' },
+    { field: 'declarationdate', header: 'Declaration Date', width: '200px' },
+    { field: 'attestreqdate', header: 'Created', width: '200px' },
+    { field: 'lcaname', header: 'Channel', width: '15%' },
+    { field: 'companyname', header: 'Company', width: '20%' },
+  ];
+
     this.InitTable();
   }
 
@@ -166,22 +161,22 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
     return null; // Invalid or null datetime string
   }
 
-  splitdatetime1(datetimeString: any) {
-    if (datetimeString && typeof datetimeString === 'string') {
-      const dateTimeParts = datetimeString;
-      if (dateTimeParts.length === 8) {
-        const parsedDate = new Date(
-          Number(dateTimeParts.substr(4, 4)),
-          Number(dateTimeParts.substr(2, 2)) - 1,
-          Number(dateTimeParts.substr(0, 2))
-        );
-        return {
-          date: this.datePipe.transform(parsedDate, 'dd/MM/yyyy'),
-        };
-      }
-    }
-    return null; // Invalid or null datetime string
-  }
+  // splitdatetime1(datetimeString: any) {
+  //   if (datetimeString && typeof datetimeString === 'string') {
+  //     const dateTimeParts = datetimeString;
+  //     if (dateTimeParts.length === 8) {
+  //       const parsedDate = new Date(
+  //         Number(dateTimeParts.substr(4, 4)),
+  //         Number(dateTimeParts.substr(2, 2)) - 1,
+  //         Number(dateTimeParts.substr(0, 2))
+  //       );
+  //       return {
+  //         date: this.datePipe.transform(parsedDate, 'dd/MM/yyyy'),
+  //       };
+  //     }
+  //   }
+  //   return null; // Invalid or null datetime string
+  // }
 
   clickChips() {
     this.enableFilters = !this.enableFilters;
@@ -273,11 +268,11 @@ openNew(data:any) {
       if (key=="enteredon" ||key=="attestreqdate" ) {
         const splitResult = this.common.splitdatetime(value);
 
-        if (splitResult?.date === '01-Jan-1970' || splitResult?.date === '01-Jan-0001') {
-          value = ''; // Set value to an empty string
-        } else {
+        // if (splitResult?.date === '01-Jan-1970' || splitResult?.date === '01-Jan-0001') {
+        //   value = ''; // Set value to an empty string
+        // } else {
           value = splitResult?.date;
-        }
+        // }
       }
       else if(key=="declarationdate"){
 value=this.common.splitdatetime(value)?.date;
@@ -294,6 +289,56 @@ value=this.common.splitdatetime(value)?.date;
   }
   
 
+}
+
+openNew_(data: any) {
+  this.getLCAInvoicesForMyCooDec(data);
+ this.AddInvoiceDialog_ = true;
+}
+
+
+
+getLCAInvoicesForMyCooDec(currentrow: any) {
+  let resp;
+  let data = {
+    uuid: this.uuid,
+    decNo: currentrow.declarationumber,
+  };
+  this.loading = true;
+  this.common.showLoading();
+  this.apiservice
+    .post(this.consts.getlcalistforcoodeclaration, data)
+    .subscribe({
+      next: (success: any) => {
+        this.common.hideLoading();
+        this.loading = false;
+        resp = success;
+        if (resp.responsecode == 1) {
+          this.cooAttestationLists_LCA = resp.data;
+          this.cooAttestationLists_LCA = this.cooAttestationLists_LCA.map(
+            (item: any) => ({ ...item, selected: false })
+          );
+          console.log(this.cooAttestationLists_LCA);
+          // this.datasource=resp.dictionary.data;
+          this.totalrecords_LCA = resp.data.length;
+          this.loading = false;
+
+          // console.log(this.datasource);
+        } else {
+          this.common.showErrorMessage('Something went wrong');
+          this.loading = false;
+        }
+      },
+    });
+}
+
+getSeverity_(canpay: number) {
+  switch (canpay) {
+    case 1:
+      return 'success';
+    default:
+      return 'danger';
+  }
 }
   
 }

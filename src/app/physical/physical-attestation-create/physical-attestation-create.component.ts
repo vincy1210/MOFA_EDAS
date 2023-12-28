@@ -12,6 +12,7 @@ import { ApiService } from 'src/service/api.service';
 import { CommonService } from 'src/service/common.service';
 import { ConstantsService } from 'src/service/constants.service';
 import { AuthService } from 'src/service/auth.service';
+import {Observable} from 'rxjs';
 
 interface InvoiceAttestModel {
   attesttypeuno: number;
@@ -40,11 +41,18 @@ export class PhysicalAttestationCreateComponent implements OnInit {
   isLoading = false;
   issuingAuthorities: { typeuno: string; typename: string }[] = [];
   currencylist: { itemcode: string; itemno: string }[] = [];
+  currencylistFilter: { itemcode: string; itemno: string }[] = [];
+
 
   listOfFiles: File[] = [];
   uuid:any;
   currentcompany:any;
   isButtonDisabled = false;
+
+  // myControl = new FormControl('');
+  // options: string[] = ['One', 'Two', 'Three'];
+  // filteredOptions: Observable<string[]> ='';
+
   constructor(
     public dialogRef: MatDialogRef<PhysicalAttestationCreateComponent>,
     private FormBuilder: FormBuilder,
@@ -56,6 +64,9 @@ export class PhysicalAttestationCreateComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+
+
+    
     let curr=this.auth.getSelectedCompany();
     if(curr){
     this.currentcompany=curr.companyuno || '';
@@ -80,7 +91,7 @@ export class PhysicalAttestationCreateComponent implements OnInit {
     this.registrationForm = this.FormBuilder.group({
       invoiceId: ['', [Validators.required ,Validators.pattern('^(?=.*\\S).+$')]],
       invoiceDate: [, Validators.required],
-      invoiceCurrency: ['', [Validators.required,Validators.pattern('^(?=.*\\S).+$')]],
+      invoiceCurrency: ['AED', [Validators.required,Validators.pattern('^(?=.*\\S).+$')]],
       invoiceAmount: [, [Validators.required, this.validateNumericInput,Validators.pattern(/^[1-9]\d*(\.\d{1,2})?$/)]],
       issuingAuthority: [, Validators.required],
       uploadInvoiceFile: [, Validators.required],
@@ -126,6 +137,8 @@ export class PhysicalAttestationCreateComponent implements OnInit {
         if (`${response.responsecode}` === '1') {
           const dataArray = response.data;
           this.currencylist = dataArray;
+          this.currencylistFilter=dataArray;
+
           console.log(response)
         }
       });
@@ -337,7 +350,14 @@ export class PhysicalAttestationCreateComponent implements OnInit {
   //   }, 3000);
   // }
   
-  
+  onInputChange(event: any, fieldValue: "categoryuno"): void {
+    const userInput = event.target.value.toLowerCase();
+    if (fieldValue === "categoryuno") {
+      this.currencylist = this.currencylistFilter.filter((item: any) =>
+        item.itemcode.toLowerCase().includes(userInput)
+      );
+    }
+  }
   
   
 }

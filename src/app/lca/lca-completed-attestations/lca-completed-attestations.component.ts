@@ -98,6 +98,18 @@ isfilenotfouund:boolean=false;
 
 fields: { label: string, value: any }[] = [];
 isButtonDisabled = false;
+AddInvoiceDialog_: boolean = false;
+selectedTabIndex:number=0;
+fields_coo:{ label: string; value: any }[] = [];
+noOfInvoicesSelected_coo: any;
+          totalFineAmount_coo:any;
+          invoicefeesamount:any;
+          totalFee_coo:any;
+          invoiceunoresponse:any;
+          cooamount:any;
+          noofcoo:any;
+          nooffines:any;
+
   constructor(private datePipe: DatePipe, private http:HttpClient,private _liveAnnouncer: LiveAnnouncer, private api:ApiService,
      public common:CommonService, private consts:ConstantsService, private auth:AuthService, private router:Router,
      private translate: TranslateService,) {
@@ -507,11 +519,11 @@ setTimeout(() => {
       if (key=="attestreqdate" || key=="invoicedate" || key=="paidon" || key=="approvedon" || key=="enteredon") {
         const splitResult = this.splitdatetime(value);
 
-        if (splitResult?.date === '01-Jan-1970' || splitResult?.date === '01-Jan-0001') {
-          value = ''; // Set value to an empty string
-        } else {
+        // if (splitResult?.date === '01-Jan-1970' || splitResult?.date === '01-Jan-0001') {
+        //   value = ''; // Set value to an empty string
+        // } else {
           value = splitResult?.date;
-        }
+        // }
       }
       else if(key=="declarationdate"){
         value=this.common.splitdatetime(value)?.date
@@ -535,5 +547,129 @@ DownloadFile(attestfilelocation:any){
   this.common.getimagebase64(attestfilelocation);
 
  }
+
+
+
+ openNew_COO(data: any) {
+  // this.isPaymentTabVisible=false
+  // this.header='COO Details';
+  console.log(data);
+  // this.currentrow_coo = data;
+  const fieldMappings: { [key: string]: string } = {
+    declarationumber: this.translate.instant('Declaration No'),
+    declarationdate: this.translate.instant('Declaration Date'),
+    edasattestno: this.translate.instant('edasattestno'),
+    attestreqdate: this.translate.instant('Attestation Request Date'),
+    enteredon: this.translate.instant('Created'),
+    feespaid: this.translate.instant('Status'),
+ 
+  };
+  // this.popupDownloadfilename='Attest_'+this.currentrow_coo.edasattestno;
+  if (data) {
+    this.fields_coo = Object.keys(fieldMappings).map((key) => {
+      let value = data[key];
+      if (
+        key == 'attestreqdate' ||
+        key == 'invoicedate' ||
+        key == 'paidon' ||
+        key == 'approvedon' ||
+        key == 'enteredon'
+      ) {
+        const splitResult = this.common.splitdatetime(value);
+
+        // if (splitResult?.date === '01-Jan-1970') {
+        //   value = this.common.splitdatetime(value)?.date;
+        // } else if (splitResult?.date === '01-Jan-0001') {
+        //   value = ''; // Set value to an empty string
+        // } else {
+          value = splitResult?.date;
+        // }
+      }
+      else if(  key == 'declarationdate'){
+        value= this.common.splitdatetime(value)?.date
+      }
+      
+      
+      else if (key == 'invoiceamount' || key == 'feesamount') {
+        value = this.common.formatAmount(value);
+      }
+
+      return {
+        label: fieldMappings[key],
+        value: value,
+      };
+    });
+console.log(this.fields_coo);
+ this.AddInvoiceDialog_ = true;
+
+  }
+}
+
+
+getCooForMyLCAInvoice(currentrow: any) {
+  let resp;
+  let data = {    
+  "coorequestno":currentrow.coorequestno,
+  "invoiceuno":0,
+  "action":"ADD",
+  "uuid":this.uuid
+}
+  this.loading = true;
+  this.common.showLoading();
+  this.api.post(this.consts.getCOOgroupPaymentDetails, data).subscribe({
+    next: (success: any) => {
+      resp=success;
+     console.log(success);
+    
+          this.noOfInvoicesSelected_coo=resp.invoicecount;
+          this.totalFineAmount_coo = resp.fineamount;
+          this.invoicefeesamount = resp.invoicefeesamount;
+          this.totalFee_coo = resp.totalamount;
+          this.invoiceunoresponse = resp.invoiceuno;
+          this.cooamount=resp.coofeesamount;
+          this.noofcoo=resp.coocount;
+          this.nooffines=resp.nooffines;
+
+          
+
+
+
+          this.totalAttestationFee=resp.totalamount;
+    },
+  });
+}
+
+openNew_(data: any) {
+    
+      let resp;
+      let data_ = {
+        uuid: this.uuid,
+        lcaattestno: data.coorequestno,
+      };
+      this.loading = true;
+      this.common.showLoading();
+      this.api.post(this.consts.getcoolistforlcaattestno, data_).subscribe({
+        next: (success: any) => {
+          this.common.hideLoading();
+          this.loading = false;
+          resp = success;
+          if (resp.responsecode == 1) {
+            // this.cooAttestationLists = resp.data;
+            // console.log(this.cooAttestationLists);
+            // this.datasource_ = resp.data;
+           this.openNew_COO(resp.data[0]);
+            // this.totalrecords_coo = resp.data.length;
+            // this.loading = false;
+            // console.log(this.datasource_);
+           // this.Reduce();
+          } else {
+            this.common.showErrorMessage('Something went wrong');
+            this.loading = false;
+          }
+        },
+      });
+  
+      this.getCooForMyLCAInvoice(data);
+    }
 
 }

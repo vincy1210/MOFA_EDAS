@@ -55,7 +55,8 @@ else if(data=="manuallogout"){
       this.sessionnote='Your session got logged out due to inactivity, we look forward to serve you again';
 
     }
-
+// manual logout will clear the session and redirect
+//session idle logout session will be cleared here 
     // this.auth.logout();
     window.history.replaceState({}, document.title, window.location.href);
 

@@ -161,7 +161,7 @@ export class AppComponent {
     }
     // if (this.userloggedin || this.lcauserloggedin) {
     idle.setIdle(3000); // how long can they be inactive before considered idle, in seconds 1200
-    idle.setTimeout(600); // how long can they be idle before considered timed out, in seconds 600
+    idle.setTimeout(3000); // how long can they be idle before considered timed out, in seconds 600
     idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
 
     idle.onIdleStart.subscribe(() => {
@@ -176,6 +176,9 @@ export class AppComponent {
       }
     });
     // do something when the user is no longer idle
+
+    idle.onTimeoutWarning.subscribe((countdown) => this.idleState = 'You will time out in ' + countdown + ' seconds!');
+
   
     idle.onIdleEnd.subscribe(() => {
       // this.userwasIdle = false;
@@ -200,6 +203,8 @@ export class AppComponent {
         this.lcauserloggedin = false;
         this.common.setlogoutreason('session');
         this.auth.logout();
+
+        //not clearing session here
         //  window.location.reload();
       }
     });
@@ -210,6 +215,9 @@ export class AppComponent {
     keepalive.interval(15); // will ping at this interval while not idle, in seconds
     keepalive.onPing.subscribe(() => (this.lastPing = new Date())); // do something when it pings
 
+     // start the keepalive service
+     
+this.reset();
   // }
 
     iconRegistry.addSvgIcon(
@@ -319,6 +327,7 @@ export class AppComponent {
     // reset any component state and be sure to call idle.watch()
     if (this.userloggedin || this.lcauserloggedin) {
     if(!this.userwasIdle){
+      
       console.log('reset');
       this.userwasIdle = false;
       this.idle.watch();

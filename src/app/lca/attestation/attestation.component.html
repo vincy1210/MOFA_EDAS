@@ -110,22 +110,15 @@
                     </span>
                   </span>
 
+                
                   <!-- <p-multiSelect
-                    [options]="cols"
-                    [(ngModel)]="selectedColumns"
-                    optionLabel="header"
-                    selectedItemsLabel="{0} {{'columns selected' | translate}}"
-                    [style]="{ 'min-width': '200px' }"
-                    placeholder="{{'Choose Columns' |translate}}"
-                  ></p-multiSelect> -->
-                  <p-multiSelect
                   [options]="cols"
                   [(ngModel)]="selectedColumns"
                   optionLabel="header"
                   selectedItemsLabel="{0} {{'columns selected' | translate}}"
                   [style]="{ 'min-width': '200px' }"
                   placeholder="{{'Choose Columns' |translate}}"
-                ></p-multiSelect>
+                ></p-multiSelect> -->
 
                   <div
                     *ngIf="enableFilters"
@@ -604,12 +597,14 @@
 </p-dialog>
 <!-- modal 2 end -->
 
-    <p-dialog [(visible)]="AddInvoiceDialog_"  [draggable]="false" [style]="{ width: '750px', height:'550px' }" header="{{header | translate}}" [modal]="true" styleClass="p-fluid ui-dialog">
+    <p-dialog [(visible)]="AddInvoiceDialog_"  [style]="{ width: '750px', height:'550px' }" header="{{header | translate}}" [modal]="true" styleClass="p-fluid ui-dialog">
          <br>
-         <div
+         <ng-template pTemplate="body">
+          <!-- hello -->
+          <div
           class="mofa-tab-section show mofa-tab-outer-mask">
          <mat-tab-group [selectedIndex]="selectedTabIndex" (selectedIndexChange)="onTabChange($event)">
-          <mat-tab label="{{'Details' | translate}}"  >
+          <mat-tab label="{{'Details' | translate}}"   >
             <div class="grid grid-cols-1">
               <br>
                                         <div class="viewmore">
@@ -686,31 +681,31 @@
           <mat-tab label="{{'Payment' | translate}}" *ngIf="isPaymentTabVisible">
             <div class="flex grid grid-cols-2 gap-6 p-5 payment-header-label">
               <!--  -->
-              <div class="p-1">
+              <div *ngIf="noOfInvoicesSelected_coo" class="p-1">
                 <mat-label class="payment-header-label">{{
                   "No. of Invoices" | translate
                 }}</mat-label>
               </div>
-              <div  class="amount_right_align">{{ noOfInvoicesSelected_coo }}</div>
+              <div *ngIf="noOfInvoicesSelected_coo"   class="amount_right_align">{{ noOfInvoicesSelected_coo }}</div>
               <!--  -->
              <!--  -->
-             <div class="p-1">
+             <div *ngIf="noOfInvoicesSelected_coo"  class="p-1">
               <mat-label class="payment-header-label">{{
                 "Attestation Fees" | translate
               }}</mat-label>
             </div>
-            <div class="amount_right_align">
+            <div *ngIf="noOfInvoicesSelected_coo" class="amount_right_align">
               {{ "AED" | translate }}
               {{ common.formatAmount(invoicefeesamount) }}
             </div>
             <!-- nil -->
               <!--  -->
-              <div *ngIf="cooamount" class="p-1">
+              <div *ngIf="noOfInvoicesSelected_coo" class="p-1">
                 <mat-label class="payment-header-label">{{
                   "COO Fee" | translate
                 }}</mat-label>
               </div>
-              <div *ngIf="cooamount" class="amount_right_align">{{ "AED" | translate }} {{  common.formatAmount(cooamount) }}</div>
+              <div *ngIf="noOfInvoicesSelected_coo" class="amount_right_align">{{ "AED" | translate }} {{  common.formatAmount(cooamount) }}</div>
 
               <!--  -->
               <div *ngIf="totalFineAmount_coo" class="p-1">
@@ -770,15 +765,14 @@
           </mat-tab>
         </mat-tab-group>
       </div>
+         </ng-template>
+         
                <ng-template pTemplate="footer">
-
-    <!-- here {{selectedTabIndex}}here -->
-
 
                 <button  *ngIf="showcoopaybutton && !selectedTabIndex"
                 mat-flat-button 
                 color="primary"
-                (click)="paycoo(cooAttestationLists)"
+                (click)="openpaymenttab(); cooonlypayment(cooAttestationLists); "
                 class="pay-btn"
               >
                 {{ 'Pay' | translate }}
@@ -786,7 +780,7 @@
               <button  *ngIf="showcoopaybutton  && !selectedTabIndex"
               mat-flat-button 
               color="primary"
-              (click)="paycooandinvoice(cooAttestationLists)"
+              (click)="openpaymenttab()"
               class="pay-btn"
             >
               {{ 'Pay COO & Invoice' | translate }}

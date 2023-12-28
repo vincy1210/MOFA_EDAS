@@ -73,8 +73,8 @@
         <div *ngIf="enableFilters" style="padding: 5px;" class="col-md-3 col-lg-3">
           <button type="button" mat-flat-button color="primary" (click)="FilterInitTable()" >{{'Apply' | translate}}</button>
         </div>
-        <p-multiSelect [options]="cols" [(ngModel)]="selectedColumns" optionLabel="header"
-        selectedItemsLabel="{0} columns selected" [style]="{'min-width': '200px'}" placeholder="{{'Choose Columns' | translate}}"></p-multiSelect>
+        <!-- <p-multiSelect [options]="cols" [(ngModel)]="selectedColumns" optionLabel="header"
+        selectedItemsLabel="{0} columns selected" [style]="{'min-width': '200px'}" placeholder="{{'Choose Columns' | translate}}"></p-multiSelect> -->
 
         <span style="padding: 10px;"></span>
               <button type="button" pButton  pRipple  icon="pi pi-file-excel"  (click)="exportExcel()"  class="mr-2 grid-header-right-icon"  pTooltip="Excel"
@@ -115,9 +115,14 @@
         </ng-template>
         <ng-template pTemplate="body" let-customer let-columns="columns" >
           <tr [pSelectableRow]="customer">
-              <td>
+              <!-- <td>
                 <span >{{customer.edasattestno}} </span>
                   
+              </td> -->
+              <td class="hyperlink">
+                <button pButton type="button" (click)="openNew_(customer)">
+                  {{ customer.edasattestno }}
+                </button>
               </td>
               <td>
                 <p-tag [value]="customer.statusname" severity="success"></p-tag>
@@ -237,3 +242,101 @@
     </ng-template>
   
   </p-dialog>
+
+
+
+
+  <!-- dialog2 start -->
+
+  <p-dialog [(visible)]="AddInvoiceDialog_"  [style]="{ width: '750px', height:'550px' }" header="{{'COO details' | translate}}" [modal]="true" styleClass="p-fluid ui-dialog">
+    <br>
+    <ng-template pTemplate="body">
+     <!-- hello -->
+     <div
+     class="mofa-tab-section show mofa-tab-outer-mask">
+    <mat-tab-group>
+     <mat-tab label="{{'Details' | translate}}"   >
+       <div class="grid grid-cols-1">
+         <br>
+                                   <div class="viewmore">
+                                     <div class="more-content-section">
+                                       <div class="grid grid-cols-2">
+                                         <ng-container>
+                                           <div class="more-content" *ngFor="let field of fields_coo">
+                                             <mat-label class="title-label">{{
+                                               field.label | translate
+                                             }}</mat-label>
+                                             <div class="more-content-body">
+                                               <mat-label class="more-content-block">{{
+                                                 field.value
+                                               }}</mat-label>
+                                             </div>
+                                           </div>
+                                           <!--  -->
+                                           <div class="more-content">
+                                             <mat-label class="title-label">{{'No Of Invoice(s)' | translate}}</mat-label>
+                                             <div class="more-content-body">
+                                               <mat-label class="more-content-block">{{ noOfInvoicesSelected_coo}}</mat-label>
+                                             </div>
+                                           </div>
+                                           <!--  -->
+                                           <div class="more-content">
+                                             <mat-label class="title-label">{{'Attestation Fees' | translate}}</mat-label>
+                                             <div class="more-content-body">
+                                               <mat-label class="more-content-block">{{invoicefeesamount }}</mat-label>
+                                             </div>
+                                           </div>
+                                           <!--  -->
+                                           <div class="more-content">
+                                             <mat-label class="title-label">{{'No Of COO' | translate}}</mat-label>
+                                             <div class="more-content-body">
+                                               <mat-label class="more-content-block">{{noofcoo }}</mat-label>
+                                             </div>
+                                           </div>
+                                           <!--  -->
+                                           <div class="more-content">
+                                             <mat-label class="title-label">{{'COO Attestation Fees' | translate}}</mat-label>
+                                             <div class="more-content-body">
+                                               <mat-label class="more-content-block">{{ cooamount}}</mat-label>
+                                             </div>
+                                           </div>
+                                           <!--  -->
+
+                                           <div class="more-content">
+                                             <mat-label class="title-label">{{'No Of Fine(s)' | translate}}</mat-label>
+                                             <div class="more-content-body">
+                                               <mat-label class="more-content-block">{{ nooffines}}</mat-label>
+                                             </div>
+                                           </div>
+                                           <!--  -->
+                                           <div class="more-content">
+                                             <mat-label class="title-label">{{'Fine Amount' | translate}}</mat-label>
+                                             <div class="more-content-body">
+                                               <mat-label class="more-content-block">{{ totalFineAmount_coo }}</mat-label>
+                                             </div>
+                                           </div>
+                                           <!--  -->
+                                           <div class="more-content">
+                                             <mat-label class="title-label">{{'Total Amount' | translate}}</mat-label>
+                                             <div class="more-content-body">
+                                               <mat-label class="more-content-block">{{totalFee_coo }}</mat-label>
+                                             </div>
+                                           </div>
+                                         </ng-container>
+                                       </div>
+                                     </div>
+                                   </div>
+         
+       </div>
+     </mat-tab>
+    
+   </mat-tab-group>
+ </div>
+    </ng-template>
+    
+          <ng-template pTemplate="footer">
+            <p-button icon="pi pi-times" (click)="AddInvoiceDialog_ = false" label="{{'Cancel' | translate}}" styleClass="p-confirm-dialog-reject"></p-button>
+        </ng-template>
+     
+    </p-dialog>
+  <!-- dialog2 end -->

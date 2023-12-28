@@ -441,7 +441,7 @@ export class CompletedAttestationsComponent
       dataItem[jsonData.RequestNo] = item.RequestNo;
       dataItem[jsonData.RequestDate] = item.RequestDate;
       dataItem[jsonData.DeclarationNo] = item.DeclarationNo;
-      dataItem[jsonData.DeclarationDate] = item.DeclarationDate;
+      dataItem[jsonData.DeclarationDate] = this.common.splitdatetime(item.DeclarationDate)?.date ;
       dataItem[jsonData.TradelicenceNo] = item.TradelicenceNo;
       dataItem[jsonData.DocType] = item.DocType;
       dataItem[jsonData.ExpPortCode] = item.ExpPortCode;
@@ -466,11 +466,11 @@ export class CompletedAttestationsComponent
     XLSX.writeFile(wb, 'lca-details.xlsx');
   }
 
-  splitdatetime1(date: any) {
-    return this.common.splitdatetime1(date);
-  }
+  // splitdatetime1(date: any) {
+  //   return this.common.splitdatetime1(date);
+  // }
 
-  splitdatetime(date: any) {
-    return this.common.splitdatetime(date);
-  }
+  // splitdatetime(date: any) {
+  //   return this.common.splitdatetime(date);
+  // }
 }

@@ -397,7 +397,7 @@ export class AttestationsComponent extends LayoutModel implements OnInit {
     }
   }
 
-  splitdatetime1(date: any) {
-    return this.common.splitdatetime1(date);
-  }
+  // splitdatetime1(date: any) {
+  //   return this.common.splitdatetime1(date);
+  // }
 }
