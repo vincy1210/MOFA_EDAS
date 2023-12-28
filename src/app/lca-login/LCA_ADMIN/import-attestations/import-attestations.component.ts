@@ -62,6 +62,7 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
   currentDate: Date = new Date();
   responsiveLayout: 'scroll' | 'stack' = 'scroll';
   issubmitvalid: boolean = false;
+  LCACode: string = '';
 
   constructor(
     public override router: Router,
@@ -236,6 +237,7 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
     );
     // this.onClickFilterOptionDate(false);
     this.siteAnalyticsData({ action: ActionConstants.load });
+    this.lcaDataList();
   }
 
   onClickFilterOptionDate(fromHtml: boolean) {
@@ -290,13 +292,43 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
     this.getLcaDetailList(payload);
   }
 
+  lcaDataList() {
+    this.selectedFilterOption.uuid = '1111';
+    let data = {
+      uuid: this.selectedFilterOption.uuid,
+      languagecode: '1033',
+      processname: 'LCAMASTER',
+    };
+    this.getListOfValues(data);
+  }
+
+  getListOfValues(data: any) {
+    const getLists = this.consts.getListOfValues;
+    this.apiservice.post(getLists, data).subscribe({
+      next: (response: any) => {
+        const dictionary = response;
+        if (`${dictionary.responsecode}` === '1') {
+          const lcaList: any[] = dictionary.data;
+          let data2 = sessionStorage.getItem('lcauserdetails');
+          if (data2 != undefined || data2 != null) {
+            let lcauserdetails = JSON.parse(data2);
+            const itemname = lcaList.find(
+              (m) => m.itemno === lcauserdetails?.lcauno
+            )?.itemname;
+            this.LCACode = itemname;
+          }
+        }
+      },
+    });
+  }
+
   getDataFromExcels(dataList: any[]) {
     this.excelLists = [];
     if (dataList && dataList.length > 0) {
       this.common.showSuccessMessage(this.translate.instant('datareadsuccess'));
       dataList.map((row, index) => {
+        // row.LCACode = this.LCACode;
         const [
-          LCACode,
           RequestNo,
           RequestDate,
           DeclarationNo,
@@ -320,11 +352,11 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
         ] = row;
         if (
           index != 0 &&
-          typeof LCACode === 'string' &&
-          LCACode.trim().length > 0
+          typeof RequestNo === 'string' &&
+          RequestNo.trim().length > 0
         ) {
           const error = {
-            LCACode: LCACode,
+            LCACode: this.LCACode,
             TradelicenceNo: TradelicenceNo,
             ConsigneeName: ConsigneeName,
             DeclarationNo: DeclarationNo,
@@ -341,7 +373,8 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
           const Status: string = this.errorsChecker(error);
           this.excelLists.push({
             rowNum: index + 1,
-            LCACode: typeof LCACode === 'string' ? LCACode.trim() : '',
+            LCACode:
+              typeof this.LCACode === 'string' ? this.LCACode.trim() : '',
             RequestNo: typeof RequestNo === 'string' ? RequestNo.trim() : '',
             RequestDate:
               typeof RequestDate === 'string' ? RequestDate.trim() : '',
@@ -386,8 +419,8 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
   errorsChecker(error: any) {
     let Status = 'Not valid';
     if (
-      (error.LCACode === 'AUH' ||
-        (error.LCACode !== 'AUH' && error.TradelicenceNo)) &&
+      (error.LCACode === 'LCA AUH' ||
+        (error.LCACode !== 'LCA AUH' && error.TradelicenceNo)) &&
       error.ConsigneeName &&
       error.DeclarationNo &&
       error.RequestNo &&
@@ -412,7 +445,7 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
     if (!data.LCACode && field === 'LCACode') {
       result = { valid: false, text: 'Not valid' };
     } else if (
-      data.LCACode !== 'AUH' &&
+      data.LCACode !== 'LCA AUH' &&
       !data.TradelicenceNo &&
       field === 'TradelicenceNo'
     ) {
@@ -572,7 +605,7 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
   }
 
   postDataValid() {
-    const dataList1 = this.excelLists;
+    const dataList1 = this.excelLists.filter((row) => row.Status === 'Valid');
     this.submitDataJson(dataList1);
   }
 
@@ -607,7 +640,7 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
       allRequestData.push({
         requestNo: RequestNo,
         requestDate: row1.RequestDate,
-        lcaCode: row1.LCACode,
+        lcaCode: row1.LCACode.replace('LCA ', ''),
         requestDetails: {}, //[]
       });
     });
@@ -692,6 +725,12 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
             );
             this.loading = false;
           }
+        },
+        error: (error: any) => {
+          this.common.hideLoading();
+          this.common.showErrorMessage(
+            this.translate.instant('something went wrong')
+          );
         },
       });
   }
