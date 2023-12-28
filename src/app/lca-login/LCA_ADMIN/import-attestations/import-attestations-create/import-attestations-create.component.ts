@@ -66,7 +66,7 @@ export class ImportAttestationsCreateComponent implements OnInit {
   listOfFiles: any[] = [];
   importedData: any[] = [];
   excelColumns: string[] = [
-    'LCACode',
+    // 'LCACode',
     'RequestNo',
     'RequestDate',
     'DeclarationNo',
