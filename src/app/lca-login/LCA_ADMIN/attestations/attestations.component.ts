@@ -53,7 +53,8 @@ export class AttestationsComponent extends LayoutModel implements OnInit {
     public override apiservice: ApiService,
     public override common: CommonService,
     public override translate: TranslateService,
-    private modalPopupService: ModalPopupService, private auth:AuthService
+    private modalPopupService: ModalPopupService,
+    private auth: AuthService
   ) {
     super(router, consts, apiservice, common, translate);
     this.progress_val = 0;
@@ -64,16 +65,14 @@ export class AttestationsComponent extends LayoutModel implements OnInit {
   }
 
   ngOnInit(): void {
-
-    let data11=this.common.getUserProfile();
+    let data11 = this.common.getUserProfile();
     let uuid;
-    if(data11!=null || data11!=undefined){
-      data11=JSON.parse(data11)
-      console.log(data11.Data)
-      uuid=data11.Data.uuid;
-    }
-    else{
-       this.common.setlogoutreason("session");
+    if (data11 != null || data11 != undefined) {
+      data11 = JSON.parse(data11);
+      console.log(data11.Data);
+      uuid = data11.Data.uuid;
+    } else {
+      this.common.setlogoutreason('session');
       this.auth.logout();
     }
 
@@ -294,14 +293,14 @@ export class AttestationsComponent extends LayoutModel implements OnInit {
       },
       series: [
         {
-          name: 'Requests completed',
+          name: 'Completed',
           type: 'line',
           smooth: true,
           stack: 'Total',
           data: [],
         },
         {
-          name: 'Number of requests',
+          name: 'Pending',
           type: 'line',
           smooth: true,
           stack: 'Total',
@@ -336,14 +335,14 @@ export class AttestationsComponent extends LayoutModel implements OnInit {
       };
       this.lcaChartOptionattestation.series = [
         {
-          name: 'Requests completed',
+          name: 'Completed',
           type: 'line',
           smooth: true,
           stack: 'Total',
           data: seriesDataCompleted,
         },
         {
-          name: 'Number of requests',
+          name: 'Pending',
           type: 'line',
           smooth: true,
           stack: 'Total',
@@ -358,14 +357,14 @@ export class AttestationsComponent extends LayoutModel implements OnInit {
       // };
       // this.cooChartOptionattestation.series = [
       //   {
-      //     name: 'Requests completed',
+      //     name: 'Completed',
       //     type: 'line',
       //     smooth: true,
       //     stack: 'Total',
       //     data: seriesDataCompleted,
       //   },
       //   {
-      //     name: 'Number of requests',
+      //     name: 'Pending',
       //     type: 'line',
       //     smooth: true,
       //     stack: 'Total',
@@ -380,14 +379,14 @@ export class AttestationsComponent extends LayoutModel implements OnInit {
       // };
       // this.physicalChartOptionattestation.series = [
       //   {
-      //     name: 'Requests completed',
+      //     name: 'Completed',
       //     type: 'line',
       //     smooth: true,
       //     stack: 'Total',
       //     data: seriesDataCompleted,
       //   },
       //   {
-      //     name: 'Number of requests',
+      //     name: 'Pending',
       //     type: 'line',
       //     smooth: true,
       //     stack: 'Total',
