@@ -621,56 +621,6 @@
                                                     }}</mat-label>
                                                   </div>
                                                 </div>
-                                                <!--  -->
-                                                <div class="more-content">
-                                                  <mat-label class="title-label">{{'No Of Invoice(s)' | translate}}</mat-label>
-                                                  <div class="more-content-body">
-                                                    <mat-label class="more-content-block">{{ noOfInvoicesSelected_coo}}</mat-label>
-                                                  </div>
-                                                </div>
-                                                <!--  -->
-                                                <div class="more-content">
-                                                  <mat-label class="title-label">{{'Attestation Fees' | translate}}</mat-label>
-                                                  <div class="more-content-body">
-                                                    <mat-label class="more-content-block">{{invoicefeesamount }}</mat-label>
-                                                  </div>
-                                                </div>
-                                                <!--  -->
-                                                <div class="more-content">
-                                                  <mat-label class="title-label">{{'No Of COO' | translate}}</mat-label>
-                                                  <div class="more-content-body">
-                                                    <mat-label class="more-content-block">{{noofcoo }}</mat-label>
-                                                  </div>
-                                                </div>
-                                                <!--  -->
-                                                <div class="more-content">
-                                                  <mat-label class="title-label">{{'COO Attestation Fees' | translate}}</mat-label>
-                                                  <div class="more-content-body">
-                                                    <mat-label class="more-content-block">{{ cooamount}}</mat-label>
-                                                  </div>
-                                                </div>
-                                                <!--  -->
-
-                                                <div class="more-content">
-                                                  <mat-label class="title-label">{{'No Of Fine(s)' | translate}}</mat-label>
-                                                  <div class="more-content-body">
-                                                    <mat-label class="more-content-block">{{ nooffines}}</mat-label>
-                                                  </div>
-                                                </div>
-                                                <!--  -->
-                                                <div class="more-content">
-                                                  <mat-label class="title-label">{{'Fine Amount' | translate}}</mat-label>
-                                                  <div class="more-content-body">
-                                                    <mat-label class="more-content-block">{{ totalFineAmount_coo }}</mat-label>
-                                                  </div>
-                                                </div>
-                                                <!--  -->
-                                                <div class="more-content">
-                                                  <mat-label class="title-label">{{'Total Amount' | translate}}</mat-label>
-                                                  <div class="more-content-body">
-                                                    <mat-label class="more-content-block">{{totalFee_coo }}</mat-label>
-                                                  </div>
-                                                </div>
                                               </ng-container>
                                             </div>
                                           </div>
@@ -679,8 +629,9 @@
             </div>
           </mat-tab>
           <mat-tab label="{{'Payment' | translate}}" *ngIf="isPaymentTabVisible">
-            <div class="flex grid grid-cols-2 gap-6 p-5 payment-header-label">
+            <div *ngIf="!popup_iscooOnlyPayment" class="flex grid grid-cols-2 gap-6 p-5 payment-header-label">
               <!--  -->
+              <!-- <div > -->
               <div *ngIf="noOfInvoicesSelected_coo" class="p-1">
                 <mat-label class="payment-header-label">{{
                   "No. of Invoices" | translate
@@ -714,14 +665,13 @@
                 }}</mat-label>
               </div>
               <div *ngIf="totalFineAmount_coo" class="amount_right_align">{{ totalFineAmount_coo }}</div>
-             
               <div class="p-1"></div>
               <div class="payment-total-amount">
                 <div class="row">
                   <span
                     ><mat-label
                       class="amount_right_align payment-header-label"
-                      >{{ "totalamount" | translate }}</mat-label
+                      >{{ "Total Amount" | translate }}</mat-label
                     ></span
                   >
                 </div>
@@ -745,8 +695,9 @@
                     ></span
                   >
                 </div>
-                <!-- {{payment_button_isdisabled}} -->
               </div>
+
+                <!-- {{payment_button_isdisabled}} -->
               <div class="gap-4 flex items-center justify-center col-span-2">
                 <button
                   mat-flat-button
@@ -757,11 +708,86 @@
                   {{ payorpayall | translate }}
                 </button>
               </div>
+             </div>
+<!-- if ends here -->
+<div *ngIf="popup_iscooOnlyPayment" class="flex grid grid-cols-2 gap-6 p-5 payment-header-label">
+  <!--  -->
+  <!-- <div > -->
+  <div  class="p-1">
+    <mat-label class="payment-header-label">{{
+      "No. of COO" | translate
+    }}</mat-label>
+  </div>
+  <div   class="amount_right_align">{{ noofcoo }}</div>
+
+  <div class="p-1">
+    <mat-label class="payment-header-label">{{
+      "COO Fees" | translate
+    }}</mat-label>
+  </div>
+  <div  class="amount_right_align">{{ "AED" | translate }} {{  common.formatAmount(cooamount) }}</div>
+  <div class="p-1"></div>
+  <div class="payment-total-amount">
+    <div class="row">
+      <span
+        ><mat-label
+          class="amount_right_align payment-header-label"
+          >{{ "Total Amount" | translate }}</mat-label
+        ></span
+      >
+    </div>
+    <div class="row" style="padding: 5px"></div>
+
+    <div class="row">
+      <span
+        ><mat-label
+          class="payment-total-amount2 amount_right_align"
+          >{{ "AED" | translate }}
+          {{ common.formatAmount(totalAttestationFee) }}</mat-label
+        ></span
+      >
+    </div>
+    <div class="row" style="padding: 2px"></div>
+    <div class="row">
+      <span
+        ><mat-label
+          class="payment-total-amount3 amount_right_align"
+          >{{ "incl.VAT" | translate }}</mat-label
+        ></span
+      >
+    </div>
+  </div>
+
+  <!-- pay button start -->
+
+        <div class="gap-4 flex items-center justify-center col-span-2">
+          <button
+            mat-flat-button
+            color="primary"
+            (click)="processname='COO';processname_set='COO'; AttestationPay()"
+            class="pay-btn"
+          >
+            {{ payorpayall | translate }}
+          </button>
+        </div>
+
+  <!-- pay button end -->
+
+
+</div>
+
+
+
+<!--  -->
+
+
+
+
               <div class="flex items-center justify-center col-span-2">
                 <a class="powered_by">{{ "Powered by" | translate }}</a>
                 &nbsp;<a class="magnati">{{ "magnati" | translate }}</a>
               </div>
-            </div>
+            <!-- </div> -->
           </mat-tab>
         </mat-tab-group>
       </div>
@@ -772,7 +798,7 @@
                 <button  *ngIf="showcoopaybutton && !selectedTabIndex"
                 mat-flat-button 
                 color="primary"
-                (click)="openpaymenttab(); cooonlypayment(cooAttestationLists); "
+                (click)="cooonlypayment(cooAttestationLists)"
                 class="pay-btn"
               >
                 {{ 'Pay' | translate }}
@@ -780,7 +806,7 @@
               <button  *ngIf="showcoopaybutton  && !selectedTabIndex"
               mat-flat-button 
               color="primary"
-              (click)="openpaymenttab()"
+              (click)="cooAndInvoicetogether(cooAttestationLists)"
               class="pay-btn"
             >
               {{ 'Pay COO & Invoice' | translate }}

@@ -749,6 +749,19 @@ export class CommonService {
         ],
       },
       {
+        name: 'rptpendinglca',
+        menu: 'rptpendinglca',
+        menufull: 'rptpendinglca',
+        requiredRoles: [RoleEnums.Admin, RoleEnums.User],
+        permissionRoles: [
+          { role: RoleEnums.Admin, permission: [PermissionEnums.All] },
+          {
+            role: RoleEnums.User,
+            permission: [PermissionEnums.Add, PermissionEnums.Edit],
+          },
+        ],
+      },
+      {
         name: 'rptlca',
         menu: 'rptlca',
         menufull: 'rptlca',

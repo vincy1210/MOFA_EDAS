@@ -213,12 +213,12 @@ export class LeftMenuDrawerComponent implements OnInit {
               icon: 'play_arrow',
               link: '/coo/cooattestation',
             },
-            {
-              id: 2,
-              menu: 'In Review',
-              icon: 'play_arrow',
-              link: '/coo/cooinreview',
-            },
+            // {
+            //   id: 2,
+            //   menu: 'In Review',
+            //   icon: 'play_arrow',
+            //   link: '/coo/cooinreview',
+            // },
             {
               id: 3,
               menu: 'Completed',
@@ -239,12 +239,12 @@ export class LeftMenuDrawerComponent implements OnInit {
               icon: 'play_arrow',
               link: '/physical/physicalattestation',
             },
-            {
-              id: 2,
-              menu: 'In Review',
-              icon: 'play_arrow',
-              link: '/physical/physicalinreview',
-            },
+            // {
+            //   id: 2,
+            //   menu: 'In Review',
+            //   icon: 'play_arrow',
+            //   link: '/physical/physicalinreview',
+            // },
             {
               id: 3,
               menu: 'Completed',
@@ -253,26 +253,21 @@ export class LeftMenuDrawerComponent implements OnInit {
             },
           ],
         },
+        // rptpendinglca
         {
           id: 1,
           menu: 'Reports',
           hasubMenu: true,
           icon: 'feed',
           subMenus: [
-            { id: 1, menu: 'LCA', icon: 'play_arrow', link: '/reports/rptlca' },
-            { id: 2, menu: 'COO', icon: 'play_arrow', link: '/reports/rptcoo' },
-            {
-              id: 3,
-              menu: 'Physical',
-              icon: 'play_arrow',
-              link: '/reports/rptphysical',
-            },
-            {
-              id: 4,
-              menu: 'Fines',
-              icon: 'play_arrow',
-              link: '/reports/rptfines',
-            },
+            { id: 1, menu: 'LCA - Pending', icon: 'play_arrow', link: '/reports/rptpendinglca' },
+            { id: 2, menu: 'LCA - Completed', icon: 'play_arrow', link: '/reports/rptlca' },
+            { id: 3, menu: 'COO - Pending', icon: 'play_arrow', link: '/reports/rptpendingcoo' },
+            { id: 3, menu: 'COO - Completed', icon: 'play_arrow', link: '/reports/rptcoo' },
+            { id: 4, menu: 'Physical - Pending',icon: 'play_arrow', link: '/reports/rptpendingphysical' },
+
+            { id: 4, menu: 'Physical - Completed',icon: 'play_arrow', link: '/reports/rptphysical' },
+            { id: 5, menu: 'Fines', icon: 'play_arrow',link: '/reports/rptfines',},
           ],
         }
       );

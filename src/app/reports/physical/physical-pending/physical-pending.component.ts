@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { PhysicalAttestationCreateComponent } from './physical-attestation-create/physical-attestation-create.component';
 import { TranslateService } from '@ngx-translate/core';
 import { ApiService } from 'src/service/api.service';
 import { ConstantsService } from 'src/service/constants.service';
@@ -10,7 +9,6 @@ import { CommonService } from 'src/service/common.service';
 import { DatePipe } from '@angular/common';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { LazyLoadEvent } from 'primeng/api';
-import { ConfirmationService, MessageService } from 'primeng/api';
 import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/service/auth.service';
 import { Router } from '@angular/router';
@@ -18,12 +16,11 @@ import { Router } from '@angular/router';
 
 
 @Component({
-  selector: 'app-physical-attestation',
-  templateUrl: './physical-attestation.component.html',
-  styleUrls: ['./physical-attestation.component.css'],
-  providers: [MessageService, ConfirmationService]
+  selector: 'app-physical-pending',
+  templateUrl: './physical-pending.component.html',
+  styleUrls: ['./physical-pending.component.css']
 })
-export class PhysicalAttestationComponent implements OnInit {
+export class PhysicalPendingComponent implements OnInit {
   progress_val: number = 0;
   selectedAttestations: any;
   totalrecords: number = 0;
@@ -74,8 +71,11 @@ fields: { label: string, value: any }[] = [];
 isButtonDisabled = false;
 paymentcount=environment.appdetails.payment_count;
 
+
+total_invoiceamount:any;
+totalfeesamount:any;
+
   constructor(
-    private confirmationService:ConfirmationService,private messageService:MessageService,
     private modalPopupService: ModalPopupService,
     public translate: TranslateService,
     public apiservice: ApiService,
@@ -156,6 +156,11 @@ paymentcount=environment.appdetails.payment_count;
         width:'13%'
       },
       {
+        field: 'feesamount',
+        header: 'Fees',
+        width:'13%'
+      },
+      {
         field: 'invoicecurrency',
         header:
           'invoicecurrency',
@@ -233,6 +238,16 @@ paymentcount=environment.appdetails.payment_count;
           // dataArray = dataArray.map((item:any) => ({ ...item, selected: false }));
 	   this.totalrecords=response.recordcount;
           this.invoiceRequestLists = dataArray;
+
+          const totalInvoiceAmount = response.data.reduce((total:any, item:any) => total + item.invoiceamount, 0);
+          console.log(totalInvoiceAmount)
+                  this.total_invoiceamount=totalInvoiceAmount;
+
+                  const totalfessamount = response.data.reduce((total:any, item:any) => total + item.feesamount, 0);
+                  console.log(totalfessamount)
+                          this.totalfeesamount=totalfessamount;
+
+
           this.invoiceRequestLists.map((row: any) => {
             if (row.statusuno === AttestationStatusEnum.Status0) {
               row.status = 'Created';
@@ -271,16 +286,16 @@ paymentcount=environment.appdetails.payment_count;
 
   }
 
-  openDialogAttest() {
-    const dialogRef =
-      this.modalPopupService.openPopup<PhysicalAttestationCreateComponent>(
-        PhysicalAttestationCreateComponent,
-        null
-      );
-    dialogRef.afterClosed().subscribe((result) => {
-      this.FilterInitTable();
-    });
-  }
+  // openDialogAttest() {
+  //   const dialogRef =
+  //     this.modalPopupService.openPopup<PhysicalAttestationCreateComponent>(
+  //       PhysicalAttestationCreateComponent,
+  //       null
+  //     );
+  //   dialogRef.afterClosed().subscribe((result) => {
+  //     this.FilterInitTable();
+  //   });
+  // }
 
   exportExcel() {
     const jsonData = {
@@ -724,24 +739,24 @@ FilterInitTable(){
 
 }
 
-closesidetab(){
-  this.confirmationService.confirm({
-    message:this.translate.instant('Are you sure you want to clear the item(s) selected for payment?'),
-    header: this.translate.instant('Confirm'),
-    icon: 'pi pi-exclamation-triangle',
-    accept: () => {
+// closesidetab(){
+//   this.confirmationService.confirm({
+//     message:this.translate.instant('Are you sure you want to clear the item(s) selected for payment?'),
+//     header: this.translate.instant('Confirm'),
+//     icon: 'pi pi-exclamation-triangle',
+//     accept: () => {
 
-      this.invoiceRequestLists.forEach((row: any) => {
-        row.isSelected = false;
-      });
+//       this.invoiceRequestLists.forEach((row: any) => {
+//         row.isSelected = false;
+//       });
 
-        this.shouldShow=false;
-  this.selectedAttestations=[]
-      //  this.deleteuser(list)
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Removed Successfully', life: 3000 });
-    }
-});
-}
+//         this.shouldShow=false;
+//   this.selectedAttestations=[]
+//       //  this.deleteuser(list)
+//         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Removed Successfully', life: 3000 });
+//     }
+// });
+// }
 
 // openNew(data:any){
 

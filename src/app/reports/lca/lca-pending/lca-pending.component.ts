@@ -52,7 +52,6 @@ import { MatInputModule } from '@angular/material/input';
 import { formatDate } from '@angular/common';
 
 import { saveAs } from 'file-saver';
-import { ConfirmationService, MessageService } from 'primeng/api';
 import { environment } from 'src/environments/environment';
 
 interface Column {
@@ -71,12 +70,11 @@ interface ExportColumn {
 }
 
 @Component({
-  selector: 'app-attestation',
-  templateUrl: './attestation.component.html',
-  styleUrls: ['./attestation.component.css'],
-  providers: [MessageService, ConfirmationService],
+  selector: 'app-lca-pending',
+  templateUrl: './lca-pending.component.html',
+  styleUrls: ['./lca-pending.component.css']
 })
-export class AttestationComponent implements OnInit {
+export class LcaPendingComponent implements OnInit {
   @ViewChild('tableref', { static: true }) tableref: any;
   highlighted: any;
   payorpayall: string = 'pay';
@@ -198,12 +196,11 @@ export class AttestationComponent implements OnInit {
   header:string='';
   selectedTabIndex:number=0;
   popup_iscooOnlyPayment:boolean=false
-
+  total_invoiceamount:any;
+  total_feesamount:any;
   constructor(
     private translate: TranslateService,
     private fb: FormBuilder,
-    private confirmationService: ConfirmationService,
-    private messageService: MessageService,
     public dialog: MatDialog,
     private router: Router,
     private apicall: ApiService,
@@ -447,6 +444,19 @@ export class AttestationComponent implements OnInit {
           console.log(this.list);
           this.datasource = resp.dictionary.data;
           this.totalrecords = resp.dictionary.recordcount;
+
+
+
+          const totalInvoiceAmount = resp.dictionary.data.reduce((total:any, item:any) => total + item.invoiceamount, 0);
+          console.log(totalInvoiceAmount)
+          
+          const totalFeeAmount = resp.dictionary.data.reduce((total:any, item:any) => total + item.feesamount, 0);
+          console.log(totalFeeAmount)
+          
+                  this.total_invoiceamount=totalInvoiceAmount;
+                  this.total_feesamount=totalFeeAmount;
+
+
           this.loading = false;
           if ($event.globalFilter) {
             this.datasource = this.datasource.filter((row: any) =>
@@ -985,33 +995,7 @@ export class AttestationComponent implements OnInit {
     });
   }
 
-  closesidetab() {
-    this.confirmationService.confirm({
-      message: this.translate.instant(
-       this.translate.instant('Are you sure you want to clear the item(s) selected for payment?')
-      ),
-      header: this.translate.instant('Confirm'),
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        // this.settingbackgroundcolors(this.selectedAttestations)
-        this.list.forEach((row: any) => {
-          row.isSelected = false;
-        });
-
-        this.shouldShow = false;
-        this.selectedAttestations = [];
-
-        //  this.deleteuser(list)
-        // this.list = this.list.map((item:any) => ({ ...item, selected: false }));
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Successful',
-          detail: 'Removed Successfully',
-          life: 3000,
-        });
-      },
-    });
-  }
+ 
   openNew_(data: any) {
 this.onTabChange(0);
     if(data.canpay==0){

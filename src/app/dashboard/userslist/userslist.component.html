@@ -34,7 +34,7 @@
               <div style="padding: 5px;" class="col-md-3 col-lg-3 col-sm-6">
                       <mat-form-field class="searchboxinput" >
                         <mat-label><mat-icon style="font-size:larger;">search</mat-icon> {{'SearchKeyword' | translate}}</mat-label>
-                        <input  matInput type="text" (input)="tableref.filterGlobal($any($event.target).value, 'contains')" placeholder="{{'SearchKeyword' | translate}}">
+                        <input   matInput type="text" (input)="tableref.filterGlobal($any($event.target).value, 'contains')" placeholder="{{'SearchKeyword' | translate}}">
                       </mat-form-field>
               </div>
            
@@ -164,7 +164,7 @@
     <p>
         <mat-form-field appearance="outline">
           <mat-label>{{'Company' | translate}}</mat-label>
-          <input matInput formControlName="company" readonly [disabled]="true" name="company" placeholder="{{'Enter Company Name' | translate}}">
+          <input  matInput formControlName="company" readonly [disabled]="true" name="company" placeholder="{{'Enter Company Name' | translate}}">
         </mat-form-field>
       </p>
       <div style="display: flex; justify-content: space-between; ">
@@ -172,7 +172,7 @@
           <mat-form-field  appearance="outline">
             <mat-label>{{'User Name' | translate}}</mat-label>
           <mat-hint>{{'Enter your name as on Emirates ID' | translate}}</mat-hint>
-            <input matInput maxlength="200" placeholder="{{'Enter User Name' | translate}}"  formControlName="username" name="username">
+            <input  matInput maxlength="200" placeholder="{{'Enter User Name' | translate}}"  formControlName="username" name="username">
           <mat-error *ngIf="form.get('username')?.hasError('required')"> {{'User Name is required' | translate }} </mat-error>
           <mat-error *ngIf="form.get('username')?.hasError('pattern')"> {{'User Name is required' | translate }} </mat-error>
 
@@ -209,7 +209,7 @@
         <mat-form-field style="width: 100%;" class="example-full-width">
          
           <mat-label>{{'mobilenumber' | translate }} </mat-label>
-          <input matInput  autocomplete="off" maxlength="9" formControlName="mobilenumber" name="mobilenumber" type="tel" placeholder="55 1234 567" (input)="onInput($event)">
+          <input matInput   autocomplete="off" maxlength="9" formControlName="mobilenumber" name="mobilenumber" type="tel" placeholder="55 1234 567" (input)="onInput($event)">
           <span matPrefix>+971&nbsp;</span>
 
           <mat-error *ngIf="!(form.get('mobilenumber')?.hasError('minlength')|| form.get('mobilenumber')?.hasError('maxlength'))&&form.get('mobilenumber')?.hasError('pattern')"> {{'Invalid Mobile Number' | translate }} </mat-error>
@@ -239,7 +239,7 @@
         <mat-form-field  appearance="outline">
           <mat-label>{{'Emirates ID' | translate}}</mat-label>
           
-          <input matInput placeholder="123-1234-1234567-1" appPhoneMask maxlength="18"  formControlName="emiratesID" name="emiratesID">
+          <input matInput  placeholder="123-1234-1234567-1" appPhoneMask maxlength="18"  formControlName="emiratesID" name="emiratesID">
 
           
         <mat-error *ngIf="form.get('emiratesID')?.hasError('required')"> {{'Emirates ID is required' | translate }} </mat-error>

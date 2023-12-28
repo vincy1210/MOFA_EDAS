@@ -43,7 +43,7 @@ const routes: Routes = [
     DashboardComponent,
     UserslistComponent,
     PhoneMaskDirective,
-    EidFormatterPipe,
+    EidFormatterPipe
   ],
   imports: [
     RouterModule,

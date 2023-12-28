@@ -126,7 +126,7 @@
                   </td>
                   <td>
                     <!-- <span class="image-text">{{ data.statusname }}</span> -->
-                    <p-tag [value]="data.statusname" [severity]="'danger'"></p-tag>
+                    <p-tag [value]="data.statusname" [severity]="getSeverity_(data.statusname)"></p-tag>
                   </td>
                   <td>
                     <span class="image-text">{{ data.invoiceno }}</span>

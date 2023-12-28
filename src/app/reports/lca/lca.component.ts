@@ -546,12 +546,7 @@ openNew(data:any) {
       let value = data[key];
       if (key=="attestreqdate" || key=="declarationdate" ||key=="invoicedate" || key=="paidon" || key=="approvedon" || key=="enteredon") {
         const splitResult = this.splitdatetime(value);
-
-        // if (splitResult?.date === '01-Jan-1970' || splitResult?.date === '01-Jan-0001') {
-        //   value = ''; // Set value to an empty string
-        // } else {
           value = splitResult?.date;
-        // }
       }
       else if(key=="invoiceamount" || key=="feesamount"){
         value =this.common.formatAmount(value);

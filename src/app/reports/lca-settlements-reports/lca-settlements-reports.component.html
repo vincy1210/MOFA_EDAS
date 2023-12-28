@@ -117,7 +117,7 @@
                         [(ngModel)]="monthname"
                         (dateInput)="addEvent('input', $event)"
                         appDisableKeyboardInput
-                        appTrimInput
+                        
                       />
                       <mat-datepicker-toggle
                         matSuffix
@@ -169,7 +169,7 @@
                             name="fromdate"
                             [(ngModel)]="selectedFilterOption.Startdate"
                             appDisableKeyboardInput
-                            appTrimInput
+                            
                           />
                           <mat-datepicker-toggle
                             matSuffix
@@ -207,7 +207,7 @@
                             name="todate"
                             [(ngModel)]="selectedFilterOption.Enddate"
                             appDisableKeyboardInput
-                            appTrimInput
+                            
                           />
                           <mat-datepicker-toggle
                             matSuffix

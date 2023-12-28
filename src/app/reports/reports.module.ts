@@ -24,8 +24,19 @@ import { AuthGuard } from '../auth.guard';
 import { LcaSettlementsReportsComponent } from './lca-settlements-reports/lca-settlements-reports.component';
 import { CustomCurrencyPipe } from 'src/service/custom.pipe';
 import { MatSelectModule } from '@angular/material/select';
+import { LcaPendingComponent } from './lca/lca-pending/lca-pending.component';
+import { CooPendingComponent } from './coo/coo-pending/coo-pending.component';
+import { PhysicalPendingComponent } from './physical/physical-pending/physical-pending.component';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatChipsModule } from '@angular/material/chips';
 
 const routes: Routes = [
+  {
+    path: 'rptpendinglca',
+    component: LcaPendingComponent,
+    data: { role: ['Admin', 'User'], name: 'rptpendinglca' },
+    // canActivate: [AuthGuard],
+  },
   {
     path: 'rptlca',
     component: LCAComponent,
@@ -33,9 +44,21 @@ const routes: Routes = [
     // canActivate: [AuthGuard],
   },
   {
+    path: 'rptpendingcoo',
+    component: CooPendingComponent,
+    data: { role: ['Admin', 'User'], name: 'rptpendingcoo' },
+    // canActivate: [AuthGuard],
+  },
+  {
     path: 'rptcoo',
     component: COOComponent,
     data: { role: ['Admin', 'User'], name: 'rptcoo' },
+    // canActivate: [AuthGuard],
+  },
+  {
+    path: 'rptpendingphysical',
+    component: PhysicalPendingComponent,
+    data: { role: ['Admin', 'User'], name: 'rptpendingphysical' },
     // canActivate: [AuthGuard],
   },
   {
@@ -67,6 +90,9 @@ const routes: Routes = [
     PhysicalComponent,
     ReportsComponent,
     LcaSettlementsReportsComponent,
+    LcaPendingComponent,
+    CooPendingComponent,
+    PhysicalPendingComponent,
   ],
   imports: [
     CommonModule,
@@ -85,7 +111,7 @@ const routes: Routes = [
     ToolbarModule,
     PdfViewerModule,
     TabViewModule,
-    MatSelectModule,
+    MatSelectModule,MatTabsModule, MatChipsModule
   ],
 })
 export class ReportsModule {}

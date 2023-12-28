@@ -11,28 +11,7 @@
     <div class="risk-body">
       <!-- add or edit -->
       <ng-container *ngIf="visibleview === 'edit'">
-        <!-- <div class="grid grid-cols-1">
-            <mat-form-field appearance="outline">
-              <mat-label>{{
-                "lcadetails.lcadetailList.LCACode" | translate
-              }}</mat-label>
-              <input
-                matInput
-                placeholder="Field1"
-                formControlName="LCACode"
-                name="LCACode"
-                appTrimInput
-                maxlength="200"
-              />
-              <mat-error
-                class="error"
-                *ngIf="AddRiskForm.get('LCACode')?.hasError('required')"
-                >{{
-                  "alerts.lcadetails.lcadetailList.LCACode" | translate
-                }}</mat-error
-              >
-            </mat-form-field>
-          </div> -->
+       
         <div class="flex justify-end">
           <button
             type="button"
@@ -66,7 +45,7 @@
               style="display: none"
               readonly
               matInput
-              appTrimInput
+              
             />
             <input
               style="display: none"
