@@ -572,7 +572,7 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
   }
 
   postDataValid() {
-    const dataList1 = this.excelLists;
+    const dataList1 = this.excelLists.filter((row) => row.Status === 'Valid');
     this.submitDataJson(dataList1);
   }
 
