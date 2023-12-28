@@ -72,7 +72,8 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
     private route: ActivatedRoute,
     private modalPopupService: ModalPopupService,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService, private auth:AuthService
+    private confirmationService: ConfirmationService,
+    private auth: AuthService
   ) {
     super(router, consts, apiservice, common, translate);
     const url = this.router.url;
@@ -85,20 +86,17 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
   }
 
   ngOnInit(): void {
-
-    let data11=this.common.getUserProfile();
+    let data11 = this.common.getUserProfile();
     let uuid;
-    if(data11!=null || data11!=undefined){
-      data11=JSON.parse(data11)
-      console.log(data11.Data)
-      uuid=data11.Data.uuid;
-    }
-    else{
-       this.common.setlogoutreason("session");
+    if (data11 != null || data11 != undefined) {
+      data11 = JSON.parse(data11);
+      console.log(data11.Data);
+      uuid = data11.Data.uuid;
+    } else {
+      this.common.setlogoutreason('session');
       this.auth.logout();
     }
 
-    
     if (this.routesname === 'pending') {
       this.selectedFilterOption = {
         id: 1,
@@ -330,6 +328,15 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
             TradelicenceNo: TradelicenceNo,
             ConsigneeName: ConsigneeName,
             DeclarationNo: DeclarationNo,
+            RequestNo: RequestNo,
+            RequestDate: RequestDate,
+            DeclarationDate: DeclarationDate,
+            AttestationNo: AttestationNo,
+            InvoiceDate: InvoiceDate,
+            InvoiceAmount: InvoiceAmount,
+            InvoiceNo: InvoiceNo,
+            InvoiceCurrency: InvoiceCurrency,
+            CompanyName: CompanyName,
           };
           const Status: string = this.errorsChecker(error);
           this.excelLists.push({
@@ -379,10 +386,19 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
   errorsChecker(error: any) {
     let Status = 'Not valid';
     if (
-      error.LCACode &&
-      error.TradelicenceNo &&
+      (error.LCACode === 'AUH' ||
+        (error.LCACode !== 'AUH' && error.TradelicenceNo)) &&
       error.ConsigneeName &&
-      error.DeclarationNo
+      error.DeclarationNo &&
+      error.RequestNo &&
+      error.RequestDate &&
+      error.DeclarationDate &&
+      error.AttestationNo &&
+      error.InvoiceDate &&
+      error.InvoiceAmount &&
+      error.InvoiceNo &&
+      error.InvoiceCurrency &&
+      error.CompanyName
     ) {
       Status = 'Valid';
     } else {
@@ -395,13 +411,52 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
     let result: { valid: boolean; text: string } = { valid: true, text: '' };
     if (!data.LCACode && field === 'LCACode') {
       result = { valid: false, text: 'Not valid' };
-    } else if (!data.TradelicenceNo && field === 'TradelicenceNo') {
+    } else if (
+      data.LCACode !== 'AUH' &&
+      !data.TradelicenceNo &&
+      field === 'TradelicenceNo'
+    ) {
       result = { valid: false, text: 'Not valid' };
     } else if (!data.ConsigneeName && field === 'ConsigneeName') {
       result = { valid: false, text: 'Not valid' };
     } else if (!data.DeclarationNo && field === 'DeclarationNo') {
       result = { valid: false, text: 'Not valid' };
+    } else if (!data.RequestNo && field === 'RequestNo') {
+      result = { valid: false, text: 'Not valid' };
+    } else if (!data.RequestDate && field === 'RequestDate') {
+      result = { valid: false, text: 'Not valid' };
+    } else if (!data.DeclarationDate && field === 'DeclarationDate') {
+      result = { valid: false, text: 'Not valid' };
+    } else if (!data.AttestationNo && field === 'AttestationNo') {
+      result = { valid: false, text: 'Not valid' };
+    } else if (!data.InvoiceDate && field === 'InvoiceDate') {
+      result = { valid: false, text: 'Not valid' };
+    } else if (!data.InvoiceAmount && field === 'InvoiceAmount') {
+      result = { valid: false, text: 'Not valid' };
+    } else if (!data.InvoiceNo && field === 'InvoiceNo') {
+      result = { valid: false, text: 'Not valid' };
+    } else if (!data.InvoiceCurrency && field === 'InvoiceCurrency') {
+      result = { valid: false, text: 'Not valid' };
+    } else if (!data.CompanyName && field === 'CompanyName') {
+      result = { valid: false, text: 'Not valid' };
     }
+    // else if (!data.EmailAddress && field === 'EmailAddress') {
+    //   result = { valid: false, text: 'Not valid' };
+    // } else if (!data.ContactNo && field === 'ContactNo') {
+    //   result = { valid: false, text: 'Not valid' };
+    // } else if (!data.DocType && field === 'DocType') {
+    //   result = { valid: false, text: 'Not valid' };
+    // } else if (!data.ExpPortCode && field === 'ExpPortCode') {
+    //   result = { valid: false, text: 'Not valid' };
+    // } else if (!data.ExpPortName && field === 'ExpPortName') {
+    //   result = { valid: false, text: 'Not valid' };
+    // } else if (!data.Mode && field === 'Mode') {
+    //   result = { valid: false, text: 'Not valid' };
+    // } else if (!data.InvoiceId && field === 'InvoiceId') {
+    //   result = { valid: false, text: 'Not valid' };
+    // } else if (!data.Remarks && field === 'Remarks') {
+    //   result = { valid: false, text: 'Not valid' };
+    // }
     return result;
   }
 

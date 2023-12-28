@@ -36,6 +36,9 @@ import { MatListModule } from '@angular/material/list';
 import { NgxEchartsModule } from 'ngx-echarts';
 import * as echarts from 'echarts';
 import { AuthGuard } from '../auth.guard';
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatCardModule } from '@angular/material/card';
 
 const routes = [
   {
@@ -113,6 +116,14 @@ const routes = [
     MatListModule,
     NgxEchartsModule,
     MatSelectModule,
+    MatIconModule,
+    MatCardModule,
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatListModule,
+    MatChipsModule,
+    MatDatepickerModule,
+    MatInputModule,
   ],
 })
 export class LcaLoginModule {}

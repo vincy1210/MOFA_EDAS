@@ -1,4 +1,3 @@
-
 <mat-divider></mat-divider>
 <div class="company-bg registration-page">
   <div class="container mx-auto px-32 registration-window">
@@ -6,27 +5,59 @@
     </div> -->
     <div class="grid grid-cols-4 gap-6 px-5 py-3">
       <div class="grid grid-cols-1 dashboard-card p-5">
-        <p>{{'Total Requests' | translate}}</p>
+        <p>{{ "Total Requests" | translate }}</p>
         <h1 class="font-bold dashboard-scores">{{ totalTile.noofrequests }}</h1>
       </div>
-     
-      
       <div class="grid grid-cols-1 dashboard-card p-5">
-        <p>{{'LCA Attestations' | translate}}</p>
+        <p>{{ "LCA Attestations" | translate }}</p>
         <h1 class="font-bold dashboard-scores">
           {{ totalTile.nooflcarequestapproved }}
         </h1>
       </div>
       <div class="grid grid-cols-1 dashboard-card p-5">
-        <p>{{'COO Attestations' | translate}}</p>
+        <p>{{ "COO Attestations" | translate }}</p>
         <h1 class="font-bold dashboard-scores">
           {{ totalTile.noofcoorequestapproved }}
         </h1>
       </div>
       <div class="grid grid-cols-1 dashboard-card p-5">
-        <p>{{'Physical Attestations' | translate}}</p>
+        <p>{{ "Physical Attestations" | translate }}</p>
         <h1 class="font-bold dashboard-scores">
           {{ totalTile.noofphysicalrequestapproved }}
+        </h1>
+      </div>
+    </div>
+    <!-- pending tile dashboard  -->
+    <div class="grid grid-cols-4 gap-6 px-5 py-3">
+      <div class="grid grid-cols-1 dashboard-card p-5">
+        <p>{{ "Total Pendings" | translate }}</p>
+        <h1 class="font-bold dashboard-scores">{{ totalTile.noofpendings }}</h1>
+      </div>
+      <div
+        class="grid grid-cols-1 dashboard-card p-5 cursror"
+        [routerLink]="'/lca/attestation'"
+      >
+        <p>{{ "LCA Pendings" | translate }}</p>
+        <h1 class="font-bold dashboard-scores">
+          {{ totalTile.nooflcapendings }}
+        </h1>
+      </div>
+      <div
+        class="grid grid-cols-1 dashboard-card p-5 cursror"
+        [routerLink]="'/coo/cooattestation'"
+      >
+        <p>{{ "COO Pendings" | translate }}</p>
+        <h1 class="font-bold dashboard-scores">
+          {{ totalTile.noofcoopendings }}
+        </h1>
+      </div>
+      <div
+        class="grid grid-cols-1 dashboard-card p-5 cursror"
+        [routerLink]="'/physical/physicalattestation'"
+      >
+        <p>{{ "Physical Pendings" | translate }}</p>
+        <h1 class="font-bold dashboard-scores">
+          {{ totalTile.noofphysicalpendings }}
         </h1>
       </div>
     </div>
@@ -35,16 +66,19 @@
       <div class="grid grid-cols-1 bg-white-r p-5">
         <div class="grid grid-cols-3">
           <div class="labelandddl">
-            <h1 class="font-bold float-left mr-3"> {{'LCA Attestation Requests' | translate}}  </h1>
-            <div style="width: 100px; padding-right: 10px;" class="float-left">
+            <h1 class="font-bold float-left mr-3">
+              {{ "LCA Attestation Requests" | translate }}
+            </h1>
+            <div style="width: 100px; padding-right: 10px" class="float-left">
               <mat-form-field appearance="outline">
-                <mat-label>{{'Select' | translate}}</mat-label>
+                <mat-label>{{ "Select" | translate }}</mat-label>
                 <mat-select
-                  (selectionChange)="onClickFilterOption('lca', $event.value)" value="01"
+                  (selectionChange)="onClickFilterOption('lca', $event.value)"
+                  value="01"
                 >
-                  <mat-option value="01">{{'Day' | translate}}</mat-option>
-                  <mat-option value="02">{{'Week' | translate}}</mat-option>
-                  <mat-option value="03">{{'Month' | translate}}</mat-option>
+                  <mat-option value="01">{{ "Day" | translate }}</mat-option>
+                  <mat-option value="02">{{ "Week" | translate }}</mat-option>
+                  <mat-option value="03">{{ "Month" | translate }}</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
@@ -56,7 +90,7 @@
                 <mat-list-item role="listitem">
                   <mat-icon class="mr-1 kd-dot kdl-chart-color-brown"
                     >circle</mat-icon
-                  >{{'Pending' | translate}}
+                  >{{ "Pending" | translate }}
                 </mat-list-item>
                 <!-- <mat-list-item role="listitem">
                   <mat-icon class="mr-1 kd-dot kdl-chart-color-black"
@@ -66,7 +100,7 @@
                 <mat-list-item role="listitem">
                   <mat-icon class="mr-1 kd-dot kdl-chart-color-black"
                     >circle</mat-icon
-                  >{{'Completed' | translate}}
+                  >{{ "Completed" | translate }}
                 </mat-list-item>
               </mat-list>
             </div>
@@ -80,7 +114,8 @@
         <div class="grid grid-cols-1">
           <div class="ps-01">
             <div
-              echarts  [loading]="isLoading"
+              echarts
+              [loading]="isLoading"
               [options]="lcaChartOptionattestation"
               class="demo-chart pb-3"
               style="height: 300px; width: 100%"
@@ -93,16 +128,19 @@
       <div class="grid grid-cols-1 bg-white-r p-5">
         <div class="grid grid-cols-3">
           <div class="labelandddl">
-            <h1 class="font-bold float-left mr-3">{{'COO Attestation Requests' | translate}}</h1>
-            <div style="width: 100px; padding-right: 10px;" class="float-left">
+            <h1 class="font-bold float-left mr-3">
+              {{ "COO Attestation Requests" | translate }}
+            </h1>
+            <div style="width: 100px; padding-right: 10px" class="float-left">
               <mat-form-field appearance="outline">
                 <mat-label>Select</mat-label>
                 <mat-select
-                  (selectionChange)="onClickFilterOption('coo', $event.value)" value="01"
+                  (selectionChange)="onClickFilterOption('coo', $event.value)"
+                  value="01"
                 >
-                  <mat-option value="01">{{'Day' | translate}}</mat-option>
-                  <mat-option value="02">{{'Week' | translate}}</mat-option>
-                  <mat-option value="03">{{'Month' | translate}}</mat-option>
+                  <mat-option value="01">{{ "Day" | translate }}</mat-option>
+                  <mat-option value="02">{{ "Week" | translate }}</mat-option>
+                  <mat-option value="03">{{ "Month" | translate }}</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
@@ -114,7 +152,7 @@
                 <mat-list-item role="listitem">
                   <mat-icon class="mr-1 kd-dot kdl-chart-color-brown"
                     >circle</mat-icon
-                  >{{'Pending' | translate}} 
+                  >{{ "Pending" | translate }}
                 </mat-list-item>
                 <!-- <mat-list-item role="listitem">
                   <mat-icon class="mr-1 kd-dot kdl-chart-color-black"
@@ -124,7 +162,7 @@
                 <mat-list-item role="listitem">
                   <mat-icon class="mr-1 kd-dot kdl-chart-color-black"
                     >circle</mat-icon
-                  >{{'Completed' | translate}}
+                  >{{ "Completed" | translate }}
                 </mat-list-item>
               </mat-list>
             </div>
@@ -132,7 +170,8 @@
         </div>
         <div class="grid grid-cols-1">
           <div class="ps-01">
-            <div [loading]="isLoading"
+            <div
+              [loading]="isLoading"
               echarts
               [options]="cooChartOptionattestation"
               class="demo-chart pb-3"
@@ -147,17 +186,20 @@
         <div class="grid grid-cols-3">
           <div class="labelandddl">
             <h1 class="font-bold float-left mr-3">
-              {{'Physical Attestation Requests' | translate}}
+              {{ "Physical Attestation Requests" | translate }}
             </h1>
-            <div style="width: 100px; padding-right: 10px;" class="float-left">
+            <div style="width: 100px; padding-right: 10px" class="float-left">
               <mat-form-field appearance="outline">
-                <mat-label>{{'Select' | translate}}</mat-label>
+                <mat-label>{{ "Select" | translate }}</mat-label>
                 <mat-select
                   (selectionChange)="
-                    onClickFilterOption('physical', $event.value) " value="01">
-                  <mat-option value="01">{{'Day' | translate}}</mat-option>
-                  <mat-option value="02">{{'Week' | translate}}</mat-option>
-                  <mat-option value="03">{{'Month' | translate}}</mat-option>
+                    onClickFilterOption('physical', $event.value)
+                  "
+                  value="01"
+                >
+                  <mat-option value="01">{{ "Day" | translate }}</mat-option>
+                  <mat-option value="02">{{ "Week" | translate }}</mat-option>
+                  <mat-option value="03">{{ "Month" | translate }}</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
@@ -169,7 +211,7 @@
                 <mat-list-item role="listitem">
                   <mat-icon class="mr-1 kd-dot kdl-chart-color-brown"
                     >circle</mat-icon
-                  >{{'Pending' | translate}}
+                  >{{ "Pending" | translate }}
                 </mat-list-item>
                 <!-- <mat-list-item role="listitem">
                   <mat-icon class="mr-1 kd-dot kdl-chart-color-black"
@@ -179,7 +221,7 @@
                 <mat-list-item role="listitem">
                   <mat-icon class="mr-1 kd-dot kdl-chart-color-black"
                     >circle</mat-icon
-                  >{{'Completed' | translate}}
+                  >{{ "Completed" | translate }}
                 </mat-list-item>
               </mat-list>
             </div>
@@ -188,7 +230,8 @@
         <div class="grid grid-cols-1">
           <div class="ps-01">
             <div
-              echarts  [loading]="isLoading"
+              echarts
+              [loading]="isLoading"
               [options]="physicalChartOptionattestation"
               class="demo-chart pb-3"
               style="height: 300px; width: 100%"

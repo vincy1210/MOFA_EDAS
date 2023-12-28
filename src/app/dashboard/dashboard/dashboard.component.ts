@@ -1,30 +1,33 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
-import { CommonService } from "src/service/common.service";
-import { NavigationEnd, NavigationStart, Router } from "@angular/router";
-import { ConstantsService, ActionConstants } from "src/service/constants.service";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { CommonService } from 'src/service/common.service';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
+import {
+  ConstantsService,
+  ActionConstants,
+} from 'src/service/constants.service';
 
 // import {
 //   ActionConstants,
 //   ConstantsService,
 // } from "src/app/services/constants.service";
-import { ApiService } from "src/service/api.service";
+import { ApiService } from 'src/service/api.service';
 // import { ModalPopupService } from "src/app/services/modal-popup.service";
-import { TranslateService } from "@ngx-translate/core";
-import { EChartsOption } from "echarts";
-import { LayoutModel } from "src/app/shared/models/layout-model";
-import { CompanyStatusEnums } from "src/app/shared/constants/status-enum";
-import { FilterTypeCompany } from "src/app/shared/models/filetype-model";
-import { MatSelect } from "@angular/material/select";
-import { DatePipe } from "@angular/common";
-import { AuthService } from "src/service/auth.service";
+import { TranslateService } from '@ngx-translate/core';
+import { EChartsOption } from 'echarts';
+import { LayoutModel } from 'src/app/shared/models/layout-model';
+import { CompanyStatusEnums } from 'src/app/shared/constants/status-enum';
+import { FilterTypeCompany } from 'src/app/shared/models/filetype-model';
+import { MatSelect } from '@angular/material/select';
+import { DatePipe } from '@angular/common';
+import { AuthService } from 'src/service/auth.service';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent extends LayoutModel implements OnInit {
-  isLoading:boolean=false;
+  isLoading: boolean = false;
   progress_val: number = 0;
   totalrecords: number = 0;
   statisticsLists: any = {};
@@ -33,13 +36,13 @@ export class DashboardComponent extends LayoutModel implements OnInit {
   statisticsMonthlyListsFilter: any[] = [];
   statisticsData: any = {};
   currentDate: Date = new Date();
-  currentDateStr: string = "2023-10-02T00:00:00"; // (new Date()).toDateString();
-  routesname: "pending" | "approve" = "pending";
-  routesurl: string = "";
+  currentDateStr: string = '2023-10-02T00:00:00'; // (new Date()).toDateString();
+  routesname: 'pending' | 'approve' = 'pending';
+  routesurl: string = '';
   loading: boolean = false;
   selectedFilterOption: FilterTypeCompany = {
     id: CompanyStatusEnums.Approved,
-    value: "Approved",
+    value: 'Approved',
   };
   totalTile = {
     noofentity: 0,
@@ -49,28 +52,33 @@ export class DashboardComponent extends LayoutModel implements OnInit {
     noofrequests: 0,
     nooflcarequestapproved: 0,
     noofcoorequestapproved: 0,
-    noofphysicalrequestapproved:0
+    noofphysicalrequestapproved: 0,
+    noofpendings: 0,
+    nooflcapendings: 0,
+    noofcoopendings: 0,
+    noofphysicalpendings: 0,
   };
   lcaChartOptionattestation: EChartsOption = {};
   cooChartOptionattestation: EChartsOption = {};
   physicalChartOptionattestation: EChartsOption = {};
 
-  uuid:any;
-  weekNumber: number=0;
+  uuid: any;
+  weekNumber: number = 0;
   constructor(
     public override router: Router,
     public override consts: ConstantsService,
     public override apiservice: ApiService,
     public override common: CommonService,
-    public override translate: TranslateService, public datePipe:DatePipe, private auth:AuthService
-    
+    public override translate: TranslateService,
+    public datePipe: DatePipe,
+    private auth: AuthService
   ) {
     super(router, consts, apiservice, common, translate);
     this.progress_val = 0;
     const url = this.router.url;
     this.routesurl = url;
     this.routesname =
-      this.routesurl === "/landingpagepending" ? "pending" : "approve";
+      this.routesurl === '/landingpagepending' ? 'pending' : 'approve';
     // if (this.routesname === "pending" || this.routesname === "approve") {
     //   this.checkPermissionAllPage("landingpage");
     // }
@@ -82,35 +90,30 @@ export class DashboardComponent extends LayoutModel implements OnInit {
   }
 
   ngOnInit(): void {
-
-   
-
     const today = new Date();
     this.weekNumber = this.getWeekNumber(today);
 
-    let data11=this.common.getUserProfile();
+    let data11 = this.common.getUserProfile();
     let uuid;
-    if(data11!=null || data11!=undefined){
-      data11=JSON.parse(data11)
-      console.log(data11.Data)
-      uuid=data11.Data.uuid;
-      this.uuid=uuid;
-
-    }
-    else{
-       this.common.setlogoutreason("session");
+    if (data11 != null || data11 != undefined) {
+      data11 = JSON.parse(data11);
+      console.log(data11.Data);
+      uuid = data11.Data.uuid;
+      this.uuid = uuid;
+    } else {
+      this.common.setlogoutreason('session');
       this.auth.logout();
     }
 
-    if (this.routesname === "pending") {
+    if (this.routesname === 'pending') {
       this.selectedFilterOption = {
         id: 1,
-        value: "Pending",
+        value: 'Pending',
       };
-    } else if (this.routesname === "approve") {
+    } else if (this.routesname === 'approve') {
       this.selectedFilterOption = {
         id: 2,
-        value: "Approved",
+        value: 'Approved',
       };
     }
     this.selectedFilterOption.Enddate = this.currentDate;
@@ -121,80 +124,81 @@ export class DashboardComponent extends LayoutModel implements OnInit {
       this.selectedFilterOption.Startdate.getDate() - 30
     );
     this.selectedFilterOption.uuid = this.uuid;
-    this.onClickFilterOptionDate("daily");
-    this.onClickFilterOptionDate("weekly");
-    this.onClickFilterOptionDate("monthly");
+    this.onClickFilterOptionDate('daily');
+    this.onClickFilterOptionDate('weekly');
+    this.onClickFilterOptionDate('monthly');
     this.siteAnalyticsData({ action: ActionConstants.load });
-
-   
-
   }
 
   bindDataToDaily() {
-    this.onClickFilterOption("lca", "01");
-    this.onClickFilterOption("coo", "01");
-    this.onClickFilterOption("physical", "01");
+    this.onClickFilterOption('lca', '01');
+    this.onClickFilterOption('coo', '01');
+    this.onClickFilterOption('physical', '01');
   }
 
-  onClickFilterOptionDate(type: "daily" | "weekly" | "monthly") {
+  onClickFilterOptionDate(type: 'daily' | 'weekly' | 'monthly') {
     const { Startdate, Enddate } = this.selectedFilterOption;
-    this.selectedFilterOption.StartdateStr = this.splitdatetime(Startdate, "dd-MMM-yyyy")
-      ?.date?.toString();  //, "dd-MMM-yyyy"
-    this.selectedFilterOption.EnddateStr = this.splitdatetime(Enddate, "dd-MMM-yyyy")
-      ?.date?.toString();  //, "dd-MMM-yyyy"
+    this.selectedFilterOption.StartdateStr = this.splitdatetime(
+      Startdate,
+      'dd-MMM-yyyy'
+    )?.date?.toString(); //, "dd-MMM-yyyy"
+    this.selectedFilterOption.EnddateStr = this.splitdatetime(
+      Enddate,
+      'dd-MMM-yyyy'
+    )?.date?.toString(); //, "dd-MMM-yyyy"
     this.onClickFilterOptionDailyMonthlyWeekly(type);
-this.common.showLoading();
+    this.common.showLoading();
     setTimeout(() => {
       // Set isLoading to false after 3 seconds
-this.common.hideLoading();
+      this.common.hideLoading();
 
       this.isLoading = false;
     }, 3000);
   }
 
   onClickFilterOptionDailyMonthlyWeekly(
-    filterType: "daily" | "weekly" | "monthly"
+    filterType: 'daily' | 'weekly' | 'monthly'
   ) {
     let payload = {};
-    if (filterType === "daily") {
+    if (filterType === 'daily') {
       payload = {
         date: this.splitdatetime(this.currentDate)?.date,
         uuid: this.selectedFilterOption.uuid,
       };
-    } else if (filterType === "weekly") {
+    } else if (filterType === 'weekly') {
       payload = {
         week: this.weekNumber,
-        year: this.splitdatetime(this.currentDate, "yyyy")?.date,  //, "yyyy"
+        year: this.splitdatetime(this.currentDate, 'yyyy')?.date, //, "yyyy"
         uuid: this.selectedFilterOption.uuid,
       };
-    } else if (filterType === "monthly") {
+    } else if (filterType === 'monthly') {
       payload = {
-        Month: this.splitdatetime(this.currentDate, "MMM-yyyy")?.date,   //, "MMM-yyyy"
-        year: this.splitdatetime(this.currentDate, "yyyy")?.date,   //, "yyyy"
+        Month: this.splitdatetime(this.currentDate, 'MMM-yyyy')?.date, //, "MMM-yyyy"
+        year: this.splitdatetime(this.currentDate, 'yyyy')?.date, //, "yyyy"
         uuid: this.selectedFilterOption.uuid,
       };
     }
     this.getStatistics(filterType, payload);
   }
 
-  getStatistics(filterType: "daily" | "weekly" | "monthly", data: any) {
+  getStatistics(filterType: 'daily' | 'weekly' | 'monthly', data: any) {
     const getLists =
-      filterType === "daily"
+      filterType === 'daily'
         ? this.consts.getDailyStatistics
-        : filterType === "weekly"
+        : filterType === 'weekly'
         ? this.consts.getWeeklyStatistics
         : this.consts.getMonthlyStatistics;
     this.loading = true;
     this.apiservice.post(getLists, data).subscribe((response: any) => {
       this.loading = false;
-      const dictionary = this.routesname === "pending" ? response : response;
-      if (`${dictionary.responsecode}` === "1") {
+      const dictionary = this.routesname === 'pending' ? response : response;
+      if (`${dictionary.responsecode}` === '1') {
         const dataArray = dictionary.data;
         this.statisticsLists = {
           ...this.statisticsLists,
           [filterType]: dataArray,
         };
-        if (filterType === "daily") {
+        if (filterType === 'daily') {
           this.statisticsDailyListsFilter = this.statisticsLists?.daily;
           this.totalTile.noofentity = this.statisticsDailyListsFilter.reduce(
             (total: any, item: any) => total + item.noofentityrequest,
@@ -225,8 +229,7 @@ this.common.hideLoading();
               total +
               item.nooflcarequest +
               item.noofphysicalrequest +
-              item.noofcoorequest 
-              ,
+              item.noofcoorequest,
             0
           );
           this.totalTile.nooflcarequestapproved =
@@ -239,15 +242,40 @@ this.common.hideLoading();
               (total: any, item: any) => total + item.noofcoorequestapproved,
               0
             );
-            this.totalTile.noofphysicalrequestapproved =
+          this.totalTile.noofphysicalrequestapproved =
             this.statisticsDailyListsFilter.reduce(
-              (total: any, item: any) => total + item.noofphysicalrequestapproved,
+              (total: any, item: any) =>
+                total + item.noofphysicalrequestapproved,
+              0
+            );
+          // Pendings
+          this.totalTile.noofpendings = this.statisticsDailyListsFilter.reduce(
+            (total: any, item: any) =>
+              total +
+              item.nooflcarequestpending +
+              item.noofphysicalrequest +
+              item.noofcoorequest,
+            0
+          );
+          this.totalTile.nooflcapendings =
+            this.statisticsDailyListsFilter.reduce(
+              (total: any, item: any) => total + item.nooflcarequestpending,
+              0
+            );
+          this.totalTile.noofcoopendings =
+            this.statisticsDailyListsFilter.reduce(
+              (total: any, item: any) => total + item.noofcoorequest,
+              0
+            );
+          this.totalTile.noofphysicalpendings =
+            this.statisticsDailyListsFilter.reduce(
+              (total: any, item: any) => total + item.noofphysicalrequest,
               0
             );
           this.bindDataToDaily();
-        } else if (filterType === "weekly") {
+        } else if (filterType === 'weekly') {
           this.statisticsWeeklyListsFilter = this.statisticsLists?.weekly;
-        } else if (filterType === "monthly") {
+        } else if (filterType === 'monthly') {
           this.statisticsMonthlyListsFilter = this.statisticsLists?.monthly;
         }
       }
@@ -255,11 +283,9 @@ this.common.hideLoading();
   }
 
   onClickFilterOption(
-    type: "lca" | "coo" | "physical",
-    dayweekmonth: "01" | "02" | "03"
-  ) 
-  {
-
+    type: 'lca' | 'coo' | 'physical',
+    dayweekmonth: '01' | '02' | '03'
+  ) {
     setTimeout(() => {
       // Set isLoading to false after 3 seconds
       this.isLoading = false;
@@ -268,22 +294,21 @@ this.common.hideLoading();
     this.refreshAttestChartAll(type);
     let xAxis: string[] = [];
     let seriesDataRequest: number[] = [];
-    let seriesDataApproved:number[]=[];
+    let seriesDataApproved: number[] = [];
     let seriesDataCompleted: number[] = [];
     let statisticsListsFilter: any[] = [];
     if (dayweekmonth) {
-      if (dayweekmonth === "01") {
+      if (dayweekmonth === '01') {
         statisticsListsFilter = this.statisticsDailyListsFilter;
         statisticsListsFilter.forEach((row) => {
           xAxis.push(row?.statdate);
         });
-        
-      } else if (dayweekmonth === "02") {
+      } else if (dayweekmonth === '02') {
         statisticsListsFilter = this.statisticsWeeklyListsFilter;
         statisticsListsFilter.forEach((row) => {
           xAxis.push(`${row?.weekno}/${row?.yearuno}`);
         });
-      } else if (dayweekmonth === "03") {
+      } else if (dayweekmonth === '03') {
         statisticsListsFilter = this.statisticsMonthlyListsFilter;
         statisticsListsFilter.forEach((row) => {
           xAxis.push(`${row?.monthname}`);
@@ -291,61 +316,66 @@ this.common.hideLoading();
       }
     }
 
-    if (dayweekmonth === "01") {
+    if (dayweekmonth === '01') {
       statisticsListsFilter = this.statisticsDailyListsFilter;
       xAxis = statisticsListsFilter.map((row) => row?.statdate);
       // Convert date-like strings to comparable format (e.g., Date objects)
       const convertedXAxis = xAxis.map((item) => new Date(item));
       // Sort the array in ascending order
-      convertedXAxis.sort((a:any, b:any) => a - b);
+      convertedXAxis.sort((a: any, b: any) => a - b);
       // Convert back to the original format
-      xAxis = convertedXAxis.map((item) => item.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }));
-    }
-    else if (dayweekmonth === "02") {
+      xAxis = convertedXAxis.map((item) =>
+        item.toLocaleDateString('en-GB', {
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric',
+        })
+      );
+    } else if (dayweekmonth === '02') {
       statisticsListsFilter = this.statisticsWeeklyListsFilter;
-      xAxis = statisticsListsFilter.map((row) => `${row?.weekno}/${row?.yearuno}`);
-    
+      xAxis = statisticsListsFilter.map(
+        (row) => `${row?.weekno}/${row?.yearuno}`
+      );
+
       // Convert week and year strings to comparable format (e.g., Date objects)
       const convertedXAxis = xAxis.map((item) => {
         const [weekNo, year] = item.split('/').map(Number);
-    
+
         // Ensure proper parsing and use numbers in the Date constructor
         return new Date(Number(year), 0, 1 + (Number(weekNo) - 1) * 7);
       });
-    
+
       // Sort the array in ascending order
       convertedXAxis.sort((a, b) => a.getTime() - b.getTime());
-    
-      // Convert back to the original format
-      xAxis = convertedXAxis.map((item) => `${item.getUTCFullYear()}/${Math.ceil((item.getTime() - new Date(item.getUTCFullYear(), 0, 1).getTime()) / (7 * 24 * 60 * 60 * 1000))}`);
-    }
-    
-    
-    
 
-    
+      // Convert back to the original format
+      xAxis = convertedXAxis.map(
+        (item) =>
+          `${item.getUTCFullYear()}/${Math.ceil(
+            (item.getTime() - new Date(item.getUTCFullYear(), 0, 1).getTime()) /
+              (7 * 24 * 60 * 60 * 1000)
+          )}`
+      );
+    }
 
     if (type) {
-      if (type === "lca") {
+      if (type === 'lca') {
         statisticsListsFilter.forEach((row) => {
           seriesDataRequest.push(row?.nooflcarequestpending);
           seriesDataApproved.push(row?.nooflcarequestapproved);
           seriesDataCompleted.push(row?.nooflcarequestcompleted);
-
         });
-      } else if (type === "coo") {
+      } else if (type === 'coo') {
         statisticsListsFilter.forEach((row) => {
           seriesDataRequest.push(row?.noofcoorequest);
           seriesDataApproved.push(row?.noofcoorequestapproved);
           seriesDataCompleted.push(row?.noofcoorequestapproved);
-
         });
-      } else if (type === "physical") {
+      } else if (type === 'physical') {
         statisticsListsFilter.forEach((row) => {
           seriesDataRequest.push(row?.noofphysicalrequest);
           seriesDataApproved.push(row?.noofphysicalrequestapproved);
           seriesDataCompleted.push(row?.noofphysicalrequestcompleted);
-
         });
       }
     }
@@ -355,65 +385,66 @@ this.common.hideLoading();
     this.refreshAttestationChart(
       type,
       xAxis,
-      seriesDataRequest,seriesDataApproved,
+      seriesDataRequest,
+      seriesDataApproved,
       seriesDataCompleted
     );
   }
 
-  refreshAttestChartAll(type: "lca" | "coo" | "physical" | "") {
-    this.isLoading=true;
+  refreshAttestChartAll(type: 'lca' | 'coo' | 'physical' | '') {
+    this.isLoading = true;
     const commonObject: EChartsOption = {
       tooltip: {},
       legend: {
-        right: "5%",
+        right: '5%',
         show: false,
-        orient: "vertical",
+        orient: 'vertical',
       },
       grid: {
-        left: "6%",
-        right: "6%",
-        bottom: "10%",
-        top: "10%",
+        left: '6%',
+        right: '6%',
+        bottom: '10%',
+        top: '10%',
       },
-      color: ["#b68a35", "#1b1d21"],
+      color: ['#b68a35', '#1b1d21'],
       toolbox: {
         feature: {
           saveAsImage: {
             show: true,
-            name: "Attestation Request",
+            name: 'Attestation Request',
           },
         },
       },
       xAxis: {
-        type: "category",
+        type: 'category',
         boundaryGap: false,
         data: [],
       },
       yAxis: {
-        type: "value",
+        type: 'value',
       },
       series: [
         {
-          name: "Pending",
-          type: "line",
+          name: 'Pending',
+          type: 'line',
           smooth: true,
-          stack: "Total",
+          stack: 'Total',
           data: [],
         },
         {
-          name: "Completed",
-          type: "line",
+          name: 'Completed',
+          type: 'line',
           smooth: true,
-          stack: "Total",
+          stack: 'Total',
           data: [],
-        }
+        },
       ],
     };
-    if (type === "lca") {
+    if (type === 'lca') {
       this.lcaChartOptionattestation = { ...commonObject };
-    } else if (type === "coo") {
+    } else if (type === 'coo') {
       this.cooChartOptionattestation = { ...commonObject };
-    } else if (type === "physical") {
+    } else if (type === 'physical') {
       this.physicalChartOptionattestation = { ...commonObject };
     } else {
       this.lcaChartOptionattestation = { ...commonObject };
@@ -423,77 +454,78 @@ this.common.hideLoading();
   }
 
   refreshAttestationChart(
-    type: "lca" | "coo" | "physical",
+    type: 'lca' | 'coo' | 'physical',
     xAxis: string[],
     seriesDataRequest: number[],
     seriesDataApproved: number[],
 
-    seriesDataCompleted: number[],
+    seriesDataCompleted: number[]
   ) {
-    if (type === "lca") {
+    if (type === 'lca') {
       this.lcaChartOptionattestation.xAxis = {
-        type: "category",
+        type: 'category',
         boundaryGap: false,
         data: xAxis,
       };
       this.lcaChartOptionattestation.series = [
         {
-          name: "Pending",
-          type: "line",
+          name: 'Pending',
+          type: 'line',
           smooth: true,
-          stack: "Total",
+          stack: 'Total',
           data: seriesDataRequest,
         },
-       
+
         {
-          name: "Completed",
-          type: "line",
+          name: 'Completed',
+          type: 'line',
           smooth: true,
-          stack: "Total",
+          stack: 'Total',
           data: seriesDataCompleted,
         },
       ];
-    } else if (type === "coo") {
+    } else if (type === 'coo') {
       this.cooChartOptionattestation.xAxis = {
-        type: "category",
+        type: 'category',
         boundaryGap: false,
         data: xAxis,
       };
       this.cooChartOptionattestation.series = [
         {
-          name: "Pending",
-          type: "line",
+          name: 'Pending',
+          type: 'line',
           smooth: true,
-          stack: "Total",
+          stack: 'Total',
           data: seriesDataCompleted,
         },
-        
+
         {
-          name: "Completed",
-          type: "line",
+          name: 'Completed',
+          type: 'line',
           smooth: true,
-          stack: "Total",
+          stack: 'Total',
           data: seriesDataRequest,
         },
       ];
-    } else if (type === "physical") {
+    } else if (type === 'physical') {
       this.physicalChartOptionattestation.xAxis = {
-        type: "category",
+        type: 'category',
         boundaryGap: false,
         data: xAxis,
       };
       this.physicalChartOptionattestation.series = [
         {
-          name: "Pending",
-          type: "line",
+          name: 'Pending',
+          type: 'line',
           smooth: true,
-          stack: "Total",
+          stack: 'Total',
           data: seriesDataCompleted,
-        }, {
-          name: "Completed",
-          type: "line",
+        },
+        {
+          name: 'Completed',
+          type: 'line',
           smooth: true,
-          stack: "Total",
+          stack: 'Total',
           data: seriesDataRequest,
         },
       ];
@@ -504,23 +536,23 @@ this.common.hideLoading();
   //   return this.common.splitdatetime1(date);
   // }
 
-  splitdatetime(datetimeString: any, dateFormat: string = "dd-MMM-yyyy") {
+  splitdatetime(datetimeString: any, dateFormat: string = 'dd-MMM-yyyy') {
     if (datetimeString) {
-      if (typeof datetimeString === "string") {
-        const dateTimeParts = datetimeString.split("T");
-        let date = dateTimeParts.length >= 1 ? dateTimeParts[0] : "";
-        let time = dateTimeParts.length >= 2 ? dateTimeParts[1] : "";
-        if (!date || (date && new Date(date) <= new Date("1900-01-01"))) {
-          date = "";
+      if (typeof datetimeString === 'string') {
+        const dateTimeParts = datetimeString.split('T');
+        let date = dateTimeParts.length >= 1 ? dateTimeParts[0] : '';
+        let time = dateTimeParts.length >= 2 ? dateTimeParts[1] : '';
+        if (!date || (date && new Date(date) <= new Date('1900-01-01'))) {
+          date = '';
         }
-        if (!time || time == "00:00:00") {
-          time = "";
+        if (!time || time == '00:00:00') {
+          time = '';
         }
         return {
           date: this.datePipe.transform(date, dateFormat),
           time: time,
         };
-      } else if (typeof datetimeString === "object") {
+      } else if (typeof datetimeString === 'object') {
         return {
           date: this.datePipe.transform(datetimeString, dateFormat),
         };
@@ -528,66 +560,66 @@ this.common.hideLoading();
     }
     return null; // Invalid or null datetime string
   }
- 
-  // splitdatetime1(
-  //   datetimeString: any,
-  //   dateFormat: string = "dd-MMM-yyyy",
-  //   yearfirst = true
-  // ) {
-  //   if (datetimeString && typeof datetimeString === "string") {
-  //     const dateTimeParts = datetimeString;
-  //     if (dateTimeParts.length === 8 || dateTimeParts.length === 11) {
-  //       let parsedDate = null;
-  //       if (yearfirst) {
-  //         parsedDate = new Date(
-  //           Number(dateTimeParts.substr(0, 4)),
-  //           Number(dateTimeParts.substr(4, 2)) - 1,
-  //           Number(dateTimeParts.substr(6, 2))
-  //         );
-  //       } else {
-  //         parsedDate = new Date(
-  //           Number(dateTimeParts.substr(4, 4)),
-  //           Number(dateTimeParts.substr(2, 2)) - 1,
-  //           Number(dateTimeParts.substr(0, 2))
-  //         );
-  //       }
-  //       return {
-  //         date: this.datePipe.transform(parsedDate, dateFormat),
-  //       };
-  //     }
-  //   }
-  //   return null; // Invalid or null datetime string
-  // }
- 
+
+  splitdatetime1(
+    datetimeString: any,
+    dateFormat: string = 'dd-MMM-yyyy',
+    yearfirst = true
+  ) {
+    if (datetimeString && typeof datetimeString === 'string') {
+      const dateTimeParts = datetimeString;
+      if (dateTimeParts.length === 8 || dateTimeParts.length === 11) {
+        let parsedDate = null;
+        if (yearfirst) {
+          parsedDate = new Date(
+            Number(dateTimeParts.substr(0, 4)),
+            Number(dateTimeParts.substr(4, 2)) - 1,
+            Number(dateTimeParts.substr(6, 2))
+          );
+        } else {
+          parsedDate = new Date(
+            Number(dateTimeParts.substr(4, 4)),
+            Number(dateTimeParts.substr(2, 2)) - 1,
+            Number(dateTimeParts.substr(0, 2))
+          );
+        }
+        return {
+          date: this.datePipe.transform(parsedDate, dateFormat),
+        };
+      }
+    }
+    return null; // Invalid or null datetime string
+  }
+
   splitdatetime2(datetimeString: string) {
-    let formattedDate: string = "";
+    let formattedDate: string = '';
     const monthMap = {
-      Jan: "01",
-      Feb: "02",
-      Mar: "03",
-      Apr: "04",
-      May: "05",
-      Jun: "06",
-      Jul: "07",
-      Aug: "08",
-      Sep: "09",
-      Oct: "10",
-      Nov: "11",
-      Dec: "12",
+      Jan: '01',
+      Feb: '02',
+      Mar: '03',
+      Apr: '04',
+      May: '05',
+      Jun: '06',
+      Jul: '07',
+      Aug: '08',
+      Sep: '09',
+      Oct: '10',
+      Nov: '11',
+      Dec: '12',
     };
-    if (datetimeString && typeof datetimeString === "string") {
+    if (datetimeString && typeof datetimeString === 'string') {
       let dateTimeParts: string = datetimeString;
       while (dateTimeParts.length < 11) {
-        dateTimeParts = "0" + dateTimeParts;
+        dateTimeParts = '0' + dateTimeParts;
       }
       if (dateTimeParts.length === 11) {
-        const parts = dateTimeParts.split("-");
+        const parts = dateTimeParts.split('-');
         const day = parts[0];
         const month = monthMap[parts[1] as keyof typeof monthMap];
         const year = parts[2];
- 
+
         const dateObj = new Date(`${year}-${month}-${day}`);
-        formattedDate = dateObj.toISOString().split("T")[0];
+        formattedDate = dateObj.toISOString().split('T')[0];
       }
     }
     return formattedDate;
