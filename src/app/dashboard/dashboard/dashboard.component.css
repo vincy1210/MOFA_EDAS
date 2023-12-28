@@ -1,3 +1,7 @@
-.labelandddl{
-    display: inherit;
+.labelandddl {
+  display: inherit;
+}
+
+.cursror {
+  cursor: pointer;
 }
