@@ -92,7 +92,7 @@ total_invoiceamount:any;
 total_feesamount:any;
 total_fineamount:any;
 
-
+selectedStatus: string = '0'; 
 
 currentrow:any;
 isfilenotfouund:boolean=false;
@@ -207,12 +207,13 @@ isButtonDisabled = false;
     "startnum": $event.first,
     "limit": 200 + ($event.first ?? 0),
     "startdate": this.common.formatDateTime_API_payload(this.oneMonthAgo.toDateString()),
-    "enddate": this.common.formatDateTime_API_payload(this.todayModel.toDateString())
+    "enddate": this.common.formatDateTime_API_payload(this.todayModel.toDateString()),
+    statusuno:this.selectedStatus
   }
 this.loading=true;
 this.common.showLoading();
 
-    this.api.post(this.consts.getFinesReport,data).subscribe({next:(success:any)=>{
+    this.api.post(this.consts.getFinesReportForAllStatus,data).subscribe({next:(success:any)=>{
       this.common.hideLoading();
 
  this.loading=false;
@@ -462,11 +463,12 @@ data={
   "startnum": 0,
   "limit": 10,
   "startdate": this.common.formatDateTime_API_payload(this.oneMonthAgo.toDateString()),
-  "enddate": this.common.formatDateTime_API_payload(this.todayModel.toDateString())
+  "enddate": this.common.formatDateTime_API_payload(this.todayModel.toDateString()),
+  "statusuno":10
 }
 this.common.showLoading();
 
-  this.api.post(this.consts.getFinesReport,data).subscribe({next:(success:any)=>{
+  this.api.post(this.consts.getFinesReportForAllStatus,data).subscribe({next:(success:any)=>{
     this.common.hideLoading();
 
     resp=success;
@@ -564,5 +566,19 @@ openNew(data:any) {
 //   this.getimagebase64(attestfilelocation);
 
 //  }
+
+onDropdownChange(event:any){
+  console.log(event)
+
+  const updatedLazyLoadEvent: LazyLoadEvent = {
+    // Modify properties as needed
+    first: 0,
+    rows: 10,
+    // ... other properties
+  };
+  // this.overdue=1;
+  this.InitTable(updatedLazyLoadEvent);
+
+}
 
 }

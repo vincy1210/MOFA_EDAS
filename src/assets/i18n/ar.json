@@ -405,5 +405,21 @@
   "ATTESTED": "تم التصديق",
   "Pay All": "دفع",
   "Confirm": "يتأكد",
-  "Are you sure you want to clear the item(s) selected for payment?": "هل أنت متأكد أنك تريد مسح العنصر (العناصر) المحددة للدفع؟"
+  "Are you sure you want to clear the item(s) selected for payment?": "هل أنت متأكد أنك تريد مسح العنصر (العناصر) المحددة للدفع؟",
+
+
+  "Channel Code": "كود القناة",
+  "Request No": "رقم الطلب",
+  "Request Date": "تاريخ الطلب",
+  "Trade Licence No": "رقم الترخيص التجاري",
+  "Document Type": "نوع المستند",
+  "Export Port Code": "رمز ميناء التصدير",
+  "Attestation No": "رقم التوثيق",
+  "Invoice Currency": "عملة الفاتورة",
+  "Company Name": "اسم الشركة",
+  "Mode": "الوسيلة",
+  "Consignee Name": "اسم المستلم",
+  "Email Address": "عنوان البريد الإلكتروني",
+  "Contact No": "رقم الاتصال",
+  "Remarks": "ملاحظات"
 }

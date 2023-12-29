@@ -47,7 +47,7 @@
             [rowSelectable]="isRowSelectable"
             [tableStyle]="{ 'min-width': '50rem' }"
           >
-            <ng-template *ngIf="true" pTemplate="caption">
+            <ng-template pTemplate="caption">
               <p-toolbar>
                 <ng-template pTemplate="left">
                   <div style="padding: 5px" class="col-md-3 col-lg-3 col-sm-6">
@@ -56,17 +56,8 @@
                         ><mat-icon style="font-size: larger">search</mat-icon
                         >{{ "SearchKeyword" | translate }}</mat-label
                       >
-                      <input
-                        matInput
-                        type="text"
-                        (input)="
-                          tableref.filterGlobal(
-                            $any($event.target).value,
-                            'contains'
-                          )
-                        "
-                        placeholder="{{ 'SearchKeyword' | translate }}"
-                      />
+                      <input matInput type="text" (input)="
+                          tableref.filterGlobal( $any($event.target).value,'contains')" placeholder="{{ 'SearchKeyword' | translate }}"/>
                     </mat-form-field>
                   </div>
                 
@@ -287,7 +278,7 @@
                 </td>
 
                 <td>
-                  <p-tag
+                  <p-tag class="cursor"
                     
                     [severity]="getSeverity(customer.canpay)"  (click)="openNew_(customer)"
                   >
@@ -653,7 +644,7 @@
               <!--  -->
               <div *ngIf="noOfInvoicesSelected_coo" class="p-1">
                 <mat-label class="payment-header-label">{{
-                  "COO Fee" | translate
+                  "COO Fees" | translate
                 }}</mat-label>
               </div>
               <div *ngIf="noOfInvoicesSelected_coo" class="amount_right_align">{{ "AED" | translate }} {{  common.formatAmount(cooamount) }}</div>

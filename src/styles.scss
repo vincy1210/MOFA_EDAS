@@ -1504,10 +1504,10 @@ button.white-icon-button.mat-menu-item {
   line-height: 1.123 !important;
 }
 
-.mat-form-field-appearance-outline .mat-form-field-outline {
-  // border: 1px solid green !important;
-  top: 0.95em;
-}
+// .mat-form-field-appearance-outline .mat-form-field-outline {
+//   // border: 1px solid green !important;
+//   top: 0.95em;
+// }
 .mat-calendar td {
   padding: 1rem !important;
   font-size: 12px;
@@ -2441,3 +2441,8 @@ mat-toolbar.main-header {
 .mat-option-text {
   font-size: inherit !important;
 }
+
+.cursor{
+  cursor: pointer;
+}
+

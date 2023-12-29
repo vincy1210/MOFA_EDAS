@@ -115,112 +115,112 @@ export class PendingAttestationsComponent
     this.cols = [
       {
         field: 'LCACode',
-        header: 'lcadetails.lcadetailList.LCACode',
+        header: 'Channel Code',
         errorrs: [],
       },
       {
         field: 'RequestNo',
-        header: 'lcadetails.lcadetailList.RequestNo',
+        header: 'Request No',
         errorrs: [],
       },
       {
         field: 'RequestDate',
-        header: 'lcadetails.lcadetailList.RequestDate',
+        header: 'Request Date',
         errorrs: [],
       },
       {
         field: 'DeclarationNo',
-        header: 'lcadetails.lcadetailList.DeclarationNo',
+        header: 'Declaration No',
         errorrs: [],
       },
       {
         field: 'DeclarationDate',
-        header: 'lcadetails.lcadetailList.DeclarationDate',
+        header: 'Declaration Date',
         errorrs: [],
       },
       {
         field: 'TradelicenceNo',
-        header: 'lcadetails.lcadetailList.TradelicenceNo',
+        header: 'Trade Licence No',
         errorrs: [],
       },
       {
         field: 'DocType',
-        header: 'lcadetails.lcadetailList.DocType',
+        header: 'Document Type',
         errorrs: [],
       },
       {
         field: 'ExpPortCode',
-        header: 'lcadetails.lcadetailList.ExpPortCode',
+        header: 'Export port Code',
         errorrs: [],
       },
       {
         field: 'ExpPortName',
-        header: 'lcadetails.lcadetailList.ExpPortName',
+        header: 'Export port Name',
         errorrs: [],
       },
       {
         field: 'AttestationNo',
-        header: 'lcadetails.lcadetailList.AttestationNo',
+        header: 'Attestation No',
         errorrs: [],
       },
       {
         field: 'InvoiceDate',
-        header: 'lcadetails.lcadetailList.InvoiceDate',
+        header: 'Invoice Date',
         errorrs: [],
       },
       {
         field: 'InvoiceAmount',
-        header: 'lcadetails.lcadetailList.InvoiceAmount',
+        header: 'Invoice Amount',
         errorrs: [],
       },
       {
         field: 'InvoiceNo',
-        header: 'lcadetails.lcadetailList.InvoiceNo',
+        header: 'Invoice No',
         errorrs: [],
       },
       {
         field: 'InvoiceCurrency',
-        header: 'lcadetails.lcadetailList.InvoiceCurrency',
+        header: 'Invoice Currency',
         errorrs: [],
       },
       {
         field: 'InvoiceId',
-        header: 'lcadetails.lcadetailList.InvoiceId',
+        header: 'Invoice ID',
         errorrs: [],
       },
       {
         field: 'CompanyName',
-        header: 'lcadetails.lcadetailList.CompanyName',
+        header: 'Company Name',
         errorrs: [],
       },
       {
         field: 'Mode',
-        header: 'lcadetails.lcadetailList.Mode',
+        header: 'Mode',
         errorrs: [],
       },
       {
         field: 'ConsigneeName',
-        header: 'lcadetails.lcadetailList.ConsigneeName',
+        header: 'Consignee Name',
         errorrs: [],
       },
       {
         field: 'EmailAddress',
-        header: 'lcadetails.lcadetailList.EmailAddress',
+        header: 'Email Address',
         errorrs: [],
       },
       {
         field: 'ContactNo',
-        header: 'lcadetails.lcadetailList.ContactNo',
+        header: 'Contact No',
         errorrs: [],
       },
       {
         field: 'Remarks',
-        header: 'lcadetails.lcadetailList.Remarks',
+        header: 'Remarks',
         errorrs: [],
       },
       // {
       //   field: 'Status',
-      //   header: 'lcadetails.lcadetailList.Status',
+      //   header: 'Status',
       //   errorrs: [],
       // },
       // {
@@ -385,53 +385,53 @@ export class PendingAttestationsComponent
 
   exportExcel() {
     const jsonData = {
-      LCACode: this.translate.instant('lcadetails.lcadetailList.LCACode'),
-      RequestNo: this.translate.instant('lcadetails.lcadetailList.RequestNo'),
+      LCACode: this.translate.instant('LCACode'),
+      RequestNo: this.translate.instant('RequestNo'),
       RequestDate: this.translate.instant(
-        'lcadetails.lcadetailList.RequestDate'
+        'RequestDate'
       ),
       DeclarationNo: this.translate.instant(
-        'lcadetails.lcadetailList.DeclarationNo'
+        'DeclarationNo'
       ),
       DeclarationDate: this.translate.instant(
-        'lcadetails.lcadetailList.DeclarationDate'
+        'DeclarationDate'
       ),
       TradelicenceNo: this.translate.instant(
-        'lcadetails.lcadetailList.TradelicenceNo'
+        'TradelicenceNo'
       ),
-      DocType: this.translate.instant('lcadetails.lcadetailList.DocType'),
+      DocType: this.translate.instant('DocType'),
       ExpPortCode: this.translate.instant(
-        'lcadetails.lcadetailList.ExpPortCode'
+        'ExpPortCode'
       ),
       ExpPortName: this.translate.instant(
-        'lcadetails.lcadetailList.ExpPortName'
+        'ExpPortName'
       ),
       AttestationNo: this.translate.instant(
-        'lcadetails.lcadetailList.AttestationNo'
+        'AttestationNo'
       ),
       InvoiceDate: this.translate.instant(
-        'lcadetails.lcadetailList.InvoiceDate'
+        'InvoiceDate'
       ),
       InvoiceAmount: this.translate.instant(
-        'lcadetails.lcadetailList.InvoiceAmount'
+        'InvoiceAmount'
       ),
-      InvoiceNo: this.translate.instant('lcadetails.lcadetailList.InvoiceNo'),
+      InvoiceNo: this.translate.instant('InvoiceNo'),
       InvoiceCurrency: this.translate.instant(
-        'lcadetails.lcadetailList.InvoiceCurrency'
+        'InvoiceCurrency'
       ),
-      InvoiceId: this.translate.instant('lcadetails.lcadetailList.InvoiceId'),
+      InvoiceId: this.translate.instant('InvoiceId'),
       CompanyName: this.translate.instant(
-        'lcadetails.lcadetailList.CompanyName'
+        'CompanyName'
       ),
-      Mode: this.translate.instant('lcadetails.lcadetailList.Mode'),
+      Mode: this.translate.instant('Mode'),
       ConsigneeName: this.translate.instant(
-        'lcadetails.lcadetailList.ConsigneeName'
+        'ConsigneeName'
       ),
       EmailAddress: this.translate.instant(
-        'lcadetails.lcadetailList.EmailAddress'
+        'EmailAddress'
       ),
-      ContactNo: this.translate.instant('lcadetails.lcadetailList.ContactNo'),
-      Remarks: this.translate.instant('lcadetails.lcadetailList.Remarks'),
+      ContactNo: this.translate.instant('ContactNo'),
+      Remarks: this.translate.instant('Remarks'),
     };
     const dataList: any = [];
     this.excelListsFilter.map((item: any) => {

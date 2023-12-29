@@ -62,7 +62,7 @@
                         <mat-select name="statusddl"  [(ngModel)]="selectedStatus" (selectionChange)="onDropdownChange($event)">
                           <mat-option value="0">{{'All' | translate}}</mat-option>
                           <mat-option value="1">{{'Pending' | translate}}</mat-option>
-                          <mat-option value="10">{{'Completed'| translate}}</mat-option>
+                          <mat-option value="2">{{'Completed'| translate}}</mat-option>
                         </mat-select>
                      
                       </mat-form-field>
@@ -111,6 +111,7 @@
                       in this list. Physical Invoice Records are shown in this list. LCA
                       Request are shown in this list. Physical Invoice Records are shown in
                       this list. Physical Invoice Records are shown in this list. Physical Invoice Records
+                      are shown in this list. Physical Invoice Records
                       are shown in this list.
                     </p>
                   </div>
@@ -195,8 +196,8 @@
                   </tr>
                 </ng-template>
 
-                <ng-template pTemplate="footer" >
-                    <ng-container *ngIf="invoiceRequestLists.length>0">
+                <ng-template *ngIf="invoiceRequestLists && invoiceRequestLists.length>0" pTemplate="footer" >
+                    <ng-container >
                   <tr>
                     <td colspan="4">
                       {{ "Total" | translate }}

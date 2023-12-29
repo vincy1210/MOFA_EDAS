@@ -79,53 +79,6 @@
                   </div>
                 </ng-template>
                 <ng-template pTemplate="right">
-                  <!-- {{totalrecords}}  {{overdue}} -->
-                  <!-- <span
-                      *ngIf="totalrecords != 0 || overdue == 1 || overdue == 2"
-                    >
-                      <span *ngIf="overdue_filter"
-                        class="overduefilter"
-                        (click)="this.overdue = 1; onfilterclick()"
-                      >
-                        <i
-                          class="fa fa-circle"
-                          pTooltip="Overdue Records"
-                          aria-hidden="true"
-                        ></i>
-                      </span>
-                      <span *ngIf="nearingoverdue_filter"
-                        class="overduefilter_2"
-                        (click)="this.overdue = 2; onfilterclick()"
-                      >
-                        <i
-                          class="fa fa-circle"
-                          pTooltip="Nearing Records"
-                          aria-hidden="true"
-                        ></i>
-                      </span>
-  
-                      <span
-                        *ngIf="overdue"
-                        class="overduefilter_reset"
-                        (click)="this.overdue = 0; onfilterclick()"
-                      >
-                        <i
-                          class="fa fa-circle"
-                          pTooltip="Clear Filter"
-                          aria-hidden="true"
-                        ></i>
-                      </span>
-                    </span>
-   -->
-
-                  <!-- <p-multiSelect
-                    [options]="cols"
-                    [(ngModel)]="selectedColumns"
-                    optionLabel="header"
-                    selectedItemsLabel="{0} {{'columns selected' | translate}}"
-                    [style]="{ 'min-width': '200px' }"
-                    placeholder="{{'Choose Columns' |translate}}"
-                  ></p-multiSelect> -->
 
                   <div style="padding: 5px" class="col-md-3 col-lg-3 col-sm-6">
                     <mat-form-field class="searchboxinput">
@@ -235,6 +188,7 @@
                       in this list. LCA Request are shown in this list. LCA
                       Request are shown in this list. LCA Request are shown in
                       this list. LCA Request are shown in this list. LCA Request
+                      are shown in this list.LCA Request are shown in this list. LCA Request
                       are shown in this list.
                     </p>
                   </div>
@@ -343,11 +297,11 @@
                 <td>
                   <span class="image-text">{{ customer.currencycode }}</span>
                 </td>
-
+<!--  (click)="openNew_(customer)" -->
                 <td>
                   <p-tag
                     [severity]="getSeverity(customer.canpay)"
-                    (click)="openNew_(customer)"
+                   
                   >
                     {{
                       customer.canpay === 1
