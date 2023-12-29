@@ -144,7 +144,7 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
     this.common.showLoading();
 
     this.apiservice
-      .post(this.consts.getcompletedCOORequests, data)
+      .post(this.consts.getMyCOORequestsForAllStatus, data)
       .subscribe((resp: any) => {
         this.common.hideLoading();
 

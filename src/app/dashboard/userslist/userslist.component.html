@@ -235,22 +235,34 @@
         </mat-form-field>
       </p>
       </div>
+
+      
+        <div style="flex: 1;">
+      <p>
+      <mat-form-field appearance="outline">
+        <mat-label>Access Profile</mat-label>
+        <mat-select formControlName="accessprofile" name="accessprofile" multiple>
+          <mat-option *ngFor="let accessprofile of accessprofileList" [value]="accessprofile">{{accessprofile}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </p>
+ 
+
+</div>
+    
+</div> 
+<div style="display: flex; justify-content: space-between; ">
       <div style="flex: 1; ">
         <mat-form-field  appearance="outline">
           <mat-label>{{'Emirates ID' | translate}}</mat-label>
-          
           <input matInput  placeholder="123-1234-1234567-1" appPhoneMask maxlength="18"  formControlName="emiratesID" name="emiratesID">
-
-          
         <mat-error *ngIf="form.get('emiratesID')?.hasError('required')"> {{'Emirates ID is required' | translate }} </mat-error>
         <mat-error *ngIf="form.get('emiratesID')?.hasError('invalidEmiratesID')"> {{'Invalid Emirate ID' | translate }} </mat-error>
-
-
-         
         </mat-form-field>
       </div>
-    </div>
- 
+      <div style="flex: 1; "></div>
+</div>
+
   </form>
   <ng-template pTemplate="footer">
     <button pButton pRipple label="{{'Cancel' | translate}}" icon="pi pi-times" class="p-confirm-dialog-reject" (click)="hideDialog()"></button>

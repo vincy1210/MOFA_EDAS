@@ -89,7 +89,7 @@ export class CooPendingComponent implements OnInit {
 
   fields: { label: string; value: any }[] = [];
   paymentcount = environment.appdetails.payment_count;
-  selectedStatus: string = '2'; 
+  selectedStatus: string = '0'; 
   constructor(
     public dialog: MatDialog,
     private modalPopupService: ModalPopupService,
@@ -232,12 +232,13 @@ export class CooPendingComponent implements OnInit {
       Enddate: this.common.formatDateTime_API_payload(
         this.todayModel.toDateString()
       ),
+      statusuno:this.selectedStatus
     };
     this.loading = true;
     this.common.showLoading();
 
     this.apiservice
-      .post(this.consts.getCooRequests, data)
+      .post(this.consts.getMyCOORequestsForAllStatus, data)
       .subscribe((response: any) => {
         this.common.hideLoading();
 
@@ -836,7 +837,7 @@ export class CooPendingComponent implements OnInit {
     this.common.showLoading();
 
     this.apiservice
-      .post(this.consts.getCooRequests, data)
+      .post(this.consts.getMyCOORequestsForAllStatus, data)
       .subscribe((response: any) => {
         this.common.hideLoading();
 
@@ -991,5 +992,15 @@ message=message+'<p>Uploading the COO document is as per the requirements of the
 
   onDropdownChange(event:any){
     console.log(event)
+  
+    const updatedLazyLoadEvent: LazyLoadEvent = {
+      // Modify properties as needed
+      first: 0,
+      rows: 10,
+      // ... other properties
+    };
+    // this.overdue=1;
+    this.InitTable(updatedLazyLoadEvent);
+  
   }
 }

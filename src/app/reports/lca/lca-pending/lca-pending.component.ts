@@ -168,7 +168,7 @@ export class LcaPendingComponent implements OnInit {
     'ATTESTED',
     'COMPLETED',
   ];
-  selectedStatus: string = '2'; 
+  selectedStatus: string = '0'; 
   form: FormGroup;
 
   AddInvoiceDialog: boolean = false;
@@ -429,11 +429,11 @@ export class LcaPendingComponent implements OnInit {
         this.todayModel.toDateString()
       ),
       overdue: this.overdue,
-      status:0
+      statusuno:this.selectedStatus
     };
     this.loading = true;
     this.common.showLoading();
-    this.apicall.post(this.consts.pendingattestation, data).subscribe({
+    this.apicall.post(this.consts.lcaMyAttestListForAllStatus, data).subscribe({
       next: (success: any) => {
         this.common.hideLoading();
         this.loading = false;

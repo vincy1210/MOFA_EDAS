@@ -60,9 +60,9 @@
                       <mat-form-field class="searchboxinput">
                         <mat-label>{{'Status' | translate }}</mat-label>
                         <mat-select name="statusddl"  [(ngModel)]="selectedStatus" (selectionChange)="onDropdownChange($event)">
-                          <mat-option value="0">{{'Pending' | translate}}</mat-option>
-                          <mat-option value="1">{{'Completed'| translate}}</mat-option>
-                          <mat-option value="2">{{'All' | translate}}</mat-option>
+                          <mat-option value="0">{{'All' | translate}}</mat-option>
+                          <mat-option value="1">{{'Pending' | translate}}</mat-option>
+                          <mat-option value="10">{{'Completed'| translate}}</mat-option>
                         </mat-select>
                      
                       </mat-form-field>

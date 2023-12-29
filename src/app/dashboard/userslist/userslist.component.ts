@@ -43,6 +43,9 @@ todayModel:Date=new Date();
   // dialogMode:string='Add';
   radiochosenornot:boolean=false;
   isButtonDisabled = false;
+
+  accessprofileList: string[] = [ 'LCA', 'COO', 'Physical'];
+
   constructor(public common:CommonService, private fb:FormBuilder, private router:Router, private consts:ConstantsService, private apicall:ApiService,
     private messageService: MessageService, private confirmationService: ConfirmationService, private translate:TranslateService, private auth:AuthService) {
       this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
@@ -60,6 +63,7 @@ todayModel:Date=new Date();
       { field: 'edasattestno', header: 'Emirates ID' },
       { field: 'invoicenumber', header: 'User Name' },
       { field: 'declarationumber', header: 'Role' },
+      
       { field: 'attestreqdate', header: 'Email ID' },
       { field: 'mobilenumber', header: 'mobilenumber' },
       { field: 'enteredon', header: 'Created By' },
@@ -74,6 +78,7 @@ todayModel:Date=new Date();
     emailaddress:['',[Validators.required, Validators.email]],
     mobilenumber:['',[Validators.required, Validators.maxLength(9), Validators.minLength(9), Validators.pattern(/^5\d+$/)]],
     role:['',Validators.required],
+    accessprofile:[''],
     gender:['Female', Validators.required],
     useruno:[0]
 

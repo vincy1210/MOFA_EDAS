@@ -66,7 +66,7 @@ payorpayall:string='Pay';
 
 currentrow:any;
 isfilenotfouund:boolean=false;
-selectedStatus: string = '2'; 
+selectedStatus: string = '0'; 
 fields: { label: string, value: any }[] = [];
 isButtonDisabled = false;
 paymentcount=environment.appdetails.payment_count;
@@ -216,18 +216,19 @@ totalfeesamount:any;
   InitTable($event:LazyLoadEvent) {
     //this.currentcompany
     let data = {
-      "Companyuno":this.currentcompany,
+      "companyuno":this.currentcompany,
       "uuid":this.uuid,
       "startnum":$event.first,
       "limit":200 + ($event.first ?? 0),
-      "Startdate":this.common.formatDateTime_API_payload(this.oneMonthAgo.toDateString()),
-      "Enddate":this.common.formatDateTime_API_payload(this.todayModel.toDateString())
+      "startdate":this.common.formatDateTime_API_payload(this.oneMonthAgo.toDateString()),
+      "enddate":this.common.formatDateTime_API_payload(this.todayModel.toDateString()),
+      "statusuno":this.selectedStatus
     };
     this.loading=true;
     this.common.showLoading();
 
     this.apiservice
-      .post(this.consts.getInvoiceAttestations, data)
+      .post(this.consts.getMyInvoiceAttestationsForAllS, data)
       .subscribe((response: any) => {
         this.common.hideLoading();
 
@@ -701,17 +702,18 @@ splitdatetime(datetimeString: any) {
 
 FilterInitTable(){
   let data = {
-    "Companyuno":this.currentcompany,
+    "companyuno":this.currentcompany,
     "uuid":this.uuid,
     "startnum":0,
     "limit":20,
-    "Startdate":this.common.formatDateTime_API_payload(this.oneMonthAgo.toDateString()),
-    "Enddate":this.common.formatDateTime_API_payload(this.todayModel.toDateString())
+    "startdate":this.common.formatDateTime_API_payload(this.oneMonthAgo.toDateString()),
+    "enddate":this.common.formatDateTime_API_payload(this.todayModel.toDateString()),
+    "statusuno":10
   };
   this.common.showLoading();
 
   this.apiservice
-    .post(this.consts.getInvoiceAttestations, data)
+    .post(this.consts.getMyInvoiceAttestationsForAllS, data)
     .subscribe((response: any) => {
       this.common.hideLoading();
 
@@ -881,6 +883,16 @@ getSeverity_(status: string) {
 
 onDropdownChange(event:any){
   console.log(event)
+
+  const updatedLazyLoadEvent: LazyLoadEvent = {
+    // Modify properties as needed
+    first: 0,
+    rows: 10,
+    // ... other properties
+  };
+  // this.overdue=1;
+  this.InitTable(updatedLazyLoadEvent);
+
 }
  
 }

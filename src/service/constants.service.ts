@@ -80,4 +80,12 @@ export class ConstantsService {
   getServerTime='Common/getServerTime';
   getLCAOverdueCount='Admin/getLCAOverdueCount';
   getCOOgroupPaymentDetails='payment/getCOOgroupPaymentDetails';
+  lcaMyAttestListForAllStatus='User/lcaMyAttestListForAllStatus';
+
+
+
+
+  getFinesReportForAllStatus='lca/getFinesReportForAllStatus';
+  getMyInvoiceAttestationsForAllS='User/getMyInvoiceAttestationsForAllStatus';
+  getMyCOORequestsForAllStatus='User/getMyCOORequestsForAllStatus';
 }
