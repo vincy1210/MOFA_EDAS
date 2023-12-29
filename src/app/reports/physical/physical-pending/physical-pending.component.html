@@ -1,215 +1,338 @@
-<div style="font-size: 12px !important; background-color: #ccc!important;">
-    <div class="grid grid-cols-1" color="primary"  class="page-header">
-                 
-      <label style="font-size: 14px; color: white; font-weight: bold;">{{'Report' |translate}} - {{'Physical Attestations' | translate}} </label>
-    </div>
-    
-    <div style="padding:3px; border-radius:2px"  >
-      <div class="grid grid-cols-1">
-    
-          <div class="grid grid-cols-1 lg:grid-cols-3 ">
-            <div   
-              [ngClass]="{'col-span-2': shouldShow, 'col-span-3': !shouldShow }" style="border-radius:5px; padding:5px; background-color: #fff;">
-            
-              <p-table [resizableColumns]="true"
-                [(selection)]="selectedAttestations"
-                dataKey="edasreqno"
-                [scrollable]="true"
-                selectionMode="multiple"
-                #tableref
-                [rowHover]="true"
-                [paginator]="true"
-                currentPageReportTemplate="{{'Showing' | translate}} {first} {{'to' | translate}} {last} {{'of' | translate}} {totalRecords} {{'entries' | translate}}"
-                [filterDelay]="0"
-                [totalRecords]="totalrecords"
-                [value]="invoiceRequestLists"
-                [rows]="10"
-                [columns]="cols"
-                [showCurrentPageReport]="true"
-                [rowsPerPageOptions]="[10, 20, 50]"
-                [loading]="loading"
-                styleClass="p-datatable-customers p-datatable-gridlines"
-                currentPageReportTemplate="{{'Showing' | translate}} {first} {{'to' | translate}} {last} {{'of' | translate}} {totalRecords} {{'entries' | translate}}"
-                [globalFilterFields]="[
-                  'edasreqno',
-                  'entitycode',
-                  'invoiceno',
-                  'invoiceamount',
-                  'invoicecurrency',
-                  'invoicedate',
-                  'status'
-                ]"
-                [lazy]="true" (onLazyLoad)="InitTable($event)" [loading]="loading"
-              >
-              <ng-template pTemplate="caption">
-                <p-toolbar  >
-                  <ng-template pTemplate="left">
-                   
-                      <div style="padding: 5px;" class="col-md-3 col-lg-3 col-sm-6">
-                              <mat-form-field class="searchboxinput" >
-                                <mat-label><mat-icon style="font-size:larger;">search</mat-icon> {{'SearchKeyword' | translate}}</mat-label>
-                                <input  matInput type="text" (input)="tableref.filterGlobal($any($event.target).value, 'contains')" placeholder="{{'SearchKeyword' | translate}}">
-                              </mat-form-field>
-                      </div>
-                   
-                
-                  </ng-template>
-                  <ng-template pTemplate="right">
+<div style="font-size: 12px !important; background-color: #ccc !important">
+  <div class="grid grid-cols-1" color="primary" class="page-header">
+    <label style="font-size: 14px; color: white; font-weight: bold"
+      >{{ "Report" | translate }} - {{ "Physical Attestations" | translate }}
+    </label>
+  </div>
 
-                    <div style="padding: 5px" class="col-md-3 col-lg-3 col-sm-6">
-                      <mat-form-field class="searchboxinput">
-                        <mat-label>{{'Status' | translate }}</mat-label>
-                        <mat-select name="statusddl"  [(ngModel)]="selectedStatus" (selectionChange)="onDropdownChange($event)">
-                          <mat-option value="0">{{'Pending' | translate}}</mat-option>
-                          <mat-option value="1">{{'Completed'| translate}}</mat-option>
-                          <mat-option value="2">{{'All' | translate}}</mat-option>
-                        </mat-select>
-                     
-                      </mat-form-field>
-                    </div>
-    
-                    <div style="padding: 5px;" *ngIf="enableFilters" class="col-md-3 col-lg-3  col-md-6">
-                      <mat-form-field  class="filter_datepicker">
-                        <mat-label>{{'Start Date' | translate}}</mat-label>
-                        <input matInput [matDatepicker]="decDatepicker1" [max]="todayModel" [(ngModel)]="oneMonthAgo" placeholder="{{'From' | translate}}" name="createdatefrom"  />
-                        <mat-datepicker-toggle matSuffix [for]="decDatepicker1"></mat-datepicker-toggle>
-                        <mat-datepicker #decDatepicker1></mat-datepicker>
-                      </mat-form-field>
-              </div>
-              <div style="padding: 5px;" *ngIf="enableFilters" class="col-md-3 col-lg-3  col-sm-6">
-                <mat-form-field  class="filter_datepicker">
-                  <mat-label>{{'End Date' | translate}}</mat-label>
-                  <input matInput [matDatepicker]="decDatepicker2" [min]="oneMonthAgo" [max]="today" placeholder="{{'To' | translate}}" [(ngModel)]="todayModel" name="createdateto"  />
-                  <mat-datepicker-toggle matSuffix [for]="decDatepicker2"></mat-datepicker-toggle>
-                  <mat-datepicker #decDatepicker2></mat-datepicker>
-                </mat-form-field>
-              </div>
-              <div style="padding: 5px;" *ngIf="enableFilters" class="col-md-3 col-lg-3">
-                <button type="button" mat-flat-button color="primary" (click)="FilterInitTable()" >{{'Apply' | translate}}</button>
-              </div>
-    
-              <span style="padding: 10px;"></span>
-                    <button type="button" pButton  pRipple  icon="pi pi-file-excel"  (click)="exportExcel()"  class="mr-2 grid-header-right-icon"  pTooltip="{{'Excel' | translate}}"
-                    tooltipPosition="bottom"  ></button>
-                   <button  type="button"
-                    pButton  pRipple  icon="pi pi-filter"   (click)="clickChips()"  class="mr-2 grid-header-right-icon"
-                    [ngClass]="{ clicked: enableFilters }"  [pTooltip]="'Filter' | translate"  tooltipPosition="bottom" ></button>
-             <!-- <button  type="button"   pButton    pRipple     icon="pi pi-plus"  (click)="openDialogAttest()"    class="mr-2 grid-header-right-icon"  [pTooltip]="
+  <div style="padding: 3px; border-radius: 2px">
+    <div class="grid grid-cols-1">
+      <div class="grid grid-cols-1 lg:grid-cols-3">
+        <div
+          [ngClass]="{ 'col-span-2': shouldShow, 'col-span-3': !shouldShow }"
+          style="border-radius: 5px; padding: 5px; background-color: #fff"
+        >
+          <p-table
+            [resizableColumns]="true"
+            [(selection)]="selectedAttestations"
+            dataKey="edasreqno"
+            [scrollable]="true"
+            selectionMode="multiple"
+            #tableref
+            [rowHover]="true"
+            [paginator]="true"
+            currentPageReportTemplate="{{ 'Showing' | translate }} {first} {{
+              'to' | translate
+            }} {last} {{ 'of' | translate }} {totalRecords} {{
+              'entries' | translate
+            }}"
+            [filterDelay]="0"
+            [totalRecords]="totalrecords"
+            [value]="invoiceRequestLists"
+            [rows]="10"
+            [columns]="cols"
+            [showCurrentPageReport]="true"
+            [rowsPerPageOptions]="[10, 20, 50]"
+            [loading]="loading"
+            styleClass="p-datatable-customers p-datatable-gridlines"
+            currentPageReportTemplate="{{ 'Showing' | translate }} {first} {{
+              'to' | translate
+            }} {last} {{ 'of' | translate }} {totalRecords} {{
+              'entries' | translate
+            }}"
+            [globalFilterFields]="[
+              'edasreqno',
+              'entitycode',
+              'invoiceno',
+              'invoiceamount',
+              'invoicecurrency',
+              'invoicedate',
+              'status'
+            ]"
+            [lazy]="true"
+            (onLazyLoad)="InitTable($event)"
+            [loading]="loading"
+          >
+            <ng-template pTemplate="caption">
+              <p-toolbar>
+                <ng-template pTemplate="left">
+                  <div style="padding: 5px" class="col-md-3 col-lg-3 col-sm-6">
+                    <mat-form-field class="searchboxinput">
+                      <mat-label
+                        ><mat-icon style="font-size: larger">search</mat-icon>
+                        {{ "SearchKeyword" | translate }}</mat-label
+                      >
+                      <input
+                        matInput
+                        type="text"
+                        (input)="
+                          tableref.filterGlobal(
+                            $any($event.target).value,
+                            'contains'
+                          )
+                        "
+                        placeholder="{{ 'SearchKeyword' | translate }}"
+                      />
+                    </mat-form-field>
+                  </div>
+                </ng-template>
+                <ng-template pTemplate="right">
+                  <div style="padding: 5px" class="col-md-3 col-lg-3 col-sm-6">
+                    <mat-form-field class="searchboxinput">
+                      <mat-label>{{ "Status" | translate }}</mat-label>
+                      <mat-select
+                        name="statusddl"
+                        [(ngModel)]="selectedStatus"
+                        (selectionChange)="onDropdownChange($event)"
+                      >
+                        <mat-option value="0">{{
+                          "Pending" | translate
+                        }}</mat-option>
+                        <mat-option value="1">{{
+                          "Completed" | translate
+                        }}</mat-option>
+                        <mat-option value="2">{{
+                          "All" | translate
+                        }}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+                  <div
+                    style="padding: 5px"
+                    *ngIf="enableFilters"
+                    class="col-md-3 col-lg-3 col-md-6"
+                  >
+                    <mat-form-field class="filter_datepicker">
+                      <mat-label>{{ "Start Date" | translate }}</mat-label>
+                      <input
+                        matInput
+                        [matDatepicker]="decDatepicker1"
+                        [max]="todayModel"
+                        [(ngModel)]="oneMonthAgo"
+                        placeholder="{{ 'From' | translate }}"
+                        name="createdatefrom"
+                      />
+                      <mat-datepicker-toggle
+                        matSuffix
+                        [for]="decDatepicker1"
+                      ></mat-datepicker-toggle>
+                      <mat-datepicker #decDatepicker1></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                  <div
+                    style="padding: 5px"
+                    *ngIf="enableFilters"
+                    class="col-md-3 col-lg-3 col-sm-6"
+                  >
+                    <mat-form-field class="filter_datepicker">
+                      <mat-label>{{ "End Date" | translate }}</mat-label>
+                      <input
+                        matInput
+                        [matDatepicker]="decDatepicker2"
+                        [min]="oneMonthAgo"
+                        [max]="today"
+                        placeholder="{{ 'To' | translate }}"
+                        [(ngModel)]="todayModel"
+                        name="createdateto"
+                      />
+                      <mat-datepicker-toggle
+                        matSuffix
+                        [for]="decDatepicker2"
+                      ></mat-datepicker-toggle>
+                      <mat-datepicker #decDatepicker2></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                  <div
+                    style="padding: 5px"
+                    *ngIf="enableFilters"
+                    class="col-md-3 col-lg-3"
+                  >
+                    <button
+                      type="button"
+                      mat-flat-button
+                      color="primary"
+                      (click)="FilterInitTable()"
+                    >
+                      {{ "Apply" | translate }}
+                    </button>
+                  </div>
+
+                  <span style="padding: 10px"></span>
+                  <button
+                    type="button"
+                    pButton
+                    pRipple
+                    icon="pi pi-file-excel"
+                    (click)="exportExcel()"
+                    class="mr-2 grid-header-right-icon"
+                    pTooltip="{{ 'Excel' | translate }}"
+                    tooltipPosition="bottom"
+                  ></button>
+                  <button
+                    type="button"
+                    pButton
+                    pRipple
+                    icon="pi pi-filter"
+                    (click)="clickChips()"
+                    class="mr-2 grid-header-right-icon"
+                    [ngClass]="{ clicked: enableFilters }"
+                    [pTooltip]="'Filter' | translate"
+                    tooltipPosition="bottom"
+                  ></button>
+                  <!-- <button  type="button"   pButton    pRipple     icon="pi pi-plus"  (click)="openDialogAttest()"    class="mr-2 grid-header-right-icon"  [pTooltip]="
                             'addAttest' | translate  "  tooltipPosition="bottom"  ></button> -->
-                  </ng-template>
+                </ng-template>
               </p-toolbar>
-              </ng-template>
-                <ng-template pTemplate="header" let-columns>
-                  <tr>
-                    <!-- <th style="width: 3%">
+              <tr>
+                <td colspan="12">
+                  <div class="alert alert-success flex" role="alert">
+                    <span
+                      class="glyphicon glyphicon-exclamation-sign"
+                      aria-hidden="true"
+                    ></span>
+                    <i class="fas fa-lightbulb light-bulb"></i>
+                    <p>
+                      Physical Request are shown in this list. Physical Request
+                      are shown in this list. Physical Request are shown in this
+                      list. Physical Request are shown in this list. Physical
+                      Request are shown in this list. Physical Request are shown
+                      in this list. Physical Request are shown in this list.
+                    </p>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <!-- <th style="width: 3%">
                       <p-tableHeaderCheckbox (click)="loadsidepanel(invoiceRequestLists)">
                       </p-tableHeaderCheckbox>
                     </th> -->
-                    <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width" >
-                      {{ col.header | translate }}
-                      <p-sortIcon  [field]="col.field" ></p-sortIcon>
-                      <p-columnFilter
-                        type="text"
-                        [field]="col.field"
-                        display="menu"
-                        *ngIf="enableFilters"
-                      ></p-columnFilter>
-                    </th>
-                    <th pFrozenColumn alignFrozen="right" style="width:5%">{{'actions' | translate}}</th>
-                  </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-data>
-                  <tr [ngClass]="{
-                    'highlighted-row': data.isSelected,
-                    'custom-text-color': data.isSelected,
-                    'bold-text': data.isSelected
-                  }">
-                    <!-- <td>
+                <th
+                  *ngFor="let col of columns"
+                  [pSortableColumn]="col.field"
+                  [style.width]="col.width"
+                >
+                  {{ col.header | translate }}
+                  <p-sortIcon [field]="col.field"></p-sortIcon>
+                  <p-columnFilter
+                    type="text"
+                    [field]="col.field"
+                    display="menu"
+                    *ngIf="enableFilters"
+                  ></p-columnFilter>
+                </th>
+                <th pFrozenColumn alignFrozen="right" style="width: 5%">
+                  {{ "actions" | translate }}
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-data>
+              <tr
+                [ngClass]="{
+                  'highlighted-row': data.isSelected,
+                  'custom-text-color': data.isSelected,
+                  'bold-text': data.isSelected
+                }"
+              >
+                <!-- <td>
                       <p-tableCheckbox
                         (click)="loadsidepanel(data)"
                         [value]="data"
                       ></p-tableCheckbox>
                     </td> -->
-                    <td>
-                      <span class="image-text">{{ data.edasreqno }}</span>
-                    </td>
-                    <td>
-                      <span class="image-text">{{ data.entitycode }}</span>
-                    </td>
-                    <td>
-                      <!-- <span class="image-text">{{ data.statusname }}</span> -->
-                      <p-tag [value]="data.statusname" [severity]="getSeverity_(data.statusname)"></p-tag>
-                    </td>
-                    <td>
-                      <span class="image-text">{{ data.invoiceno }}</span>
-                    </td>
-                    <td style="text-align: right;">
-                      <span class="image-text">{{ common.formatAmount(data.invoiceamount)}}</span>
-                    </td>
+                <td>
+                  <span class="image-text">{{ data.edasreqno }}</span>
+                </td>
+                <td>
+                  <span class="image-text">{{ data.entitycode }}</span>
+                </td>
+                <td>
+                  <!-- <span class="image-text">{{ data.statusname }}</span> -->
+                  <p-tag
+                    [value]="data.statusname"
+                    [severity]="getSeverity_(data.statusname)"
+                  ></p-tag>
+                </td>
+                <td>
+                  <span class="image-text">{{ data.invoiceno }}</span>
+                </td>
+                <td style="text-align: right">
+                  <span class="image-text">{{
+                    common.formatAmount(data.invoiceamount)
+                  }}</span>
+                </td>
 
-                    <td style="text-align: right;">
-                        <span class="image-text">{{ common.formatAmount(data.feesamount)}}</span>
-                      </td>
+                <td style="text-align: right">
+                  <span class="image-text">{{
+                    common.formatAmount(data.feesamount)
+                  }}</span>
+                </td>
 
+                <!-- /feesamount -->
+                <td>
+                  <span class="image-text">{{ data.invoicecurrency }}</span>
+                </td>
+                <td>
+                  <span class="image-text">{{
+                    common.splitdatetime(data.enteredon)?.date
+                  }}</span>
+                </td>
+                <td>
+                  <span class="image-text">{{
+                    splitdatetime1(data.invoicedate)?.date
+                  }}</span>
+                </td>
 
+                <td pFrozenColumn alignFrozen="right">
+                  <!-- <span class="image-text"></span> -->
+                  <span
+                    (click)="openNew(data)"
+                    style="padding: 15px; cursor: pointer"
+                    pTooltip="{{ 'Details' | translate }}"
+                    class="image-text viewaction"
+                  >
+                    <!-- <mat-icon>text-size-icon</mat-icon> -->
+                    <mat-icon class="action_eye_icon">visibility</mat-icon>
+                  </span>
+                </td>
+              </tr>
+            </ng-template>
 
-                    <!-- /feesamount -->
-                    <td>
-                      <span class="image-text">{{ data.invoicecurrency }}</span>
-                    </td>
-                    <td>
-                      <span class="image-text">{{ common.splitdatetime(data.enteredon)?.date }}</span>
-                    </td>
-                    <td>
-                      <span class="image-text">{{
-                        splitdatetime1(data.invoicedate)?.date
-                      }}</span>
-                    </td>
-                    
-                    <td pFrozenColumn alignFrozen="right">
-                      <!-- <span class="image-text"></span> -->
-                      <span (click)="openNew(data)" style="padding:15px; cursor: pointer;" pTooltip="{{'Details' | translate}}"  class="image-text viewaction">
-                        <!-- <mat-icon>text-size-icon</mat-icon> -->
-                        <mat-icon class="action_eye_icon" >visibility</mat-icon>
-                          </span>
-                    </td>
-                  </tr>
-                </ng-template>
+            <ng-template pTemplate="footer">
+              <ng-container *ngIf="invoiceRequestLists.length > 0">
+                <tr>
+                  <td colspan="4">
+                    {{ "Total" | translate }}
+                  </td>
+                  <td style="text-align: right">
+                    {{ total_invoiceamount | customCurrency : "AED" }}
+                  </td>
+                  <td style="text-align: right">
+                    {{ totalfeesamount | customCurrency : "AED" }}
+                  </td>
+                  <td class="text-right">
+                    <!-- {{ totals?.totaltotalamount | customCurrency : "AED" }} -->
+                  </td>
+                  <td colspan="100" class="text-right"></td>
+                </tr>
+              </ng-container>
+            </ng-template>
 
-                <ng-template pTemplate="footer" >
-                    <ng-container *ngIf="invoiceRequestLists.length>0">
-                  <tr>
-                    <td colspan="4">
-                      {{ "Total" | translate }}
-                    </td>
-                    <td style="text-align: right;"> 
-                      {{ total_invoiceamount | customCurrency : "AED"}}
-                    </td>
-                    <td style="text-align: right;">
-                      {{ totalfeesamount  | customCurrency : "AED" }}
-                    </td>
-                    <td class="text-right">
-                      <!-- {{ totals?.totaltotalamount | customCurrency : "AED" }} -->
-                    </td>
-                    <td colspan="100" class="text-right"></td>
-                  </tr>
-                </ng-container>
-                </ng-template>
-
-
-                <ng-template pTemplate="emptymessage">
-                  <tr>
-                    <td colspan="10">{{ "noDataFound" | translate }}</td>
-                  </tr>
-                </ng-template>
-              </p-table>
-            </div>
-            <div
-              class="mofa-tab-section show mofa-tab-outer-mask"
-              [ngClass]="{ show: shouldShow, hide: !shouldShow }"
-            >
-              <!-- <app-attestation-workflow [selectedAttestations]="selectedAttestations"></app-attestation-workflow> -->
-              <!-- <div class="ng_show_close_icon">
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="10">{{ "noDataFound" | translate }}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+        <div
+          class="mofa-tab-section show mofa-tab-outer-mask"
+          [ngClass]="{ show: shouldShow, hide: !shouldShow }"
+        >
+          <!-- <app-attestation-workflow [selectedAttestations]="selectedAttestations"></app-attestation-workflow> -->
+          <!-- <div class="ng_show_close_icon">
                 <br>
                 <span (click)="closesidetab()">
                   <mat-icon  class="rounded-icon" style="color: white;" pTooltip="{{'close' | translate}}">chevron_right</mat-icon>
@@ -218,164 +341,206 @@
                 <br>
     
               </div> -->
-    
-              <mat-tab-group>
-                <mat-tab label="{{'Timeline' | translate}}" *ngIf="Timelinevisible">
-                  <div class="grid grid-cols-1">
-                    <div  class="dw-container mt-5">
-                      <div *ngFor="let item of timelineItems; let i = index" class="timeline-block timeline-block-right {{ item.status }}">
-                        <div class="marker"></div>
-                        <div class="timeline-content">
-                          <div class="float-left ml-3">
-                            <div class="grid grid-cols-1">
-                              <div class="w-100">
-                                <mat-chip-list>
-                                  <h6 class="al-title">
-                                    <span>{{item.title}}</span><mat-icon>check</mat-icon>
-                                  </h6>
-                                </mat-chip-list>
-                              </div>
-                              <small
-                                ><strong>{{ item.date }}</strong></small
-                              >
-                              <small>{{ item?.time }}</small>
-                            </div>
+
+          <mat-tab-group>
+            <mat-tab
+              label="{{ 'Timeline' | translate }}"
+              *ngIf="Timelinevisible"
+            >
+              <div class="grid grid-cols-1">
+                <div class="dw-container mt-5">
+                  <div
+                    *ngFor="let item of timelineItems; let i = index"
+                    class="timeline-block timeline-block-right {{
+                      item.status
+                    }}"
+                  >
+                    <div class="marker"></div>
+                    <div class="timeline-content">
+                      <div class="float-left ml-3">
+                        <div class="grid grid-cols-1">
+                          <div class="w-100">
+                            <mat-chip-list>
+                              <h6 class="al-title">
+                                <span>{{ item.title }}</span
+                                ><mat-icon>check</mat-icon>
+                              </h6>
+                            </mat-chip-list>
                           </div>
+                          <small
+                            ><strong>{{ item.date }}</strong></small
+                          >
+                          <small>{{ item?.time }}</small>
                         </div>
                       </div>
-             
-              
-                    
                     </div>
-                  </div>
-                </mat-tab>
-                <mat-tab label="{{'Payment' | translate}}">
-                  <div class="flex grid grid-cols-2 gap-6 p-5 payment-header-label">
-                    <div class="p-1"><mat-label >{{'No. of Physical Attestation(s)' | translate}}</mat-label></div>
-                    <div class="amount_right_align">{{ noOfInvoicesSelected }}</div>
-                    <!-- <div class="p-1"><mat-label >Total Fines(0)</mat-label></div>
-                    <div class="amount_right_align">{{ totalFineAmount }}</div> -->
-                    <div class="p-1"><mat-label >{{'Attestation Fees' | translate}}</mat-label></div>
-                    <div class="amount_right_align">{{'AED' | translate}} {{ common.formatAmount(totalAttestationFee) }}</div>
-                    <!-- nil -->
-                    <div class="p-1"></div>
-                    <div class="payment-total-amount">
-                      <div class="row">
-                        <span><mat-label class="amount_right_align payment-header-label">{{'totalamount' | translate}}</mat-label></span>
-                      </div>
-                      <div class="row" style="padding: 5px;"></div>
-                      <div class="row">
-                        <span
-                          ><mat-label class="payment-total-amount2 amount_right_align">{{'AED' | translate}} {{ common.formatAmount(totalFee) }}</mat-label></span
-                        >
-                      </div>
-                      <div class="row" style="padding: 2px;"></div>
-                      <div class="row">
-                        <span><mat-label class="payment-total-amount3 amount_right_align">{{'incl.VAT' | translate}}</mat-label></span>
-                      </div> 
-                      <!-- {{payment_button_isdisabled}} -->
-                    </div>
-                  
-                    <div class="gap-4 flex items-center justify-center col-span-2">
-                      <button [disabled]="payment_button_isdisabled"
-                        mat-flat-button
-                        color="primary"
-                        (click)="AttestationPay()"
-                        class="pay-btn"
-                      >
-                      {{payorpayall | translate}}
-                      </button>
-                    </div>
-                    <div class="flex items-center justify-center col-span-2">
-                      <a class="powered_by" >{{'Powered by' | translate}}</a> &nbsp;<a class="magnati">{{'magnati' | translate}}</a>
-                    </div>
-                  </div>
-                </mat-tab>
-                <mat-tab *ngIf="previewvisible" label="{{'Preview' | translate}}">
-                  <div class="grid grid-cols-1">
-                    <!-- <p *ngIf="isLoading">Loading...</p> -->
-              
-                    <!-- <div id="pdfContainer"></div> -->
-                    <div id="outerContainer">
-                      <div class="pdf-container">
-                        <pdf-viewer
-                          [src]="src"
-                          [rotation]="0"
-                          [original-size]="false"
-                          [show-all]="true"
-                          [fit-to-page]="false"
-                          [zoom]="1"
-                          [zoom-scale]="'page-width'"
-                          [stick-to-page]="false"
-                          [render-text]="true"
-                          [external-link-target]="'blank'"
-                          [autoresize]="true"
-                          [show-borders]="false"
-                          style="width: 100%; height: 600px"
-                        ></pdf-viewer>
-                      </div>
-                    </div>
-                  </div>
-                </mat-tab>
-              </mat-tab-group>
-              </div>
-    
-            </div>
-          </div>
-          <div
-            class="bg-white rounded-lg p-5 mofa-tab-section show"
-            [ngClass]="{ show: shouldShow, hide: !shouldShow }"
-          >
-            <!-- <app-attestation-workflow [selectedAttestations]="selectedAttestations"></app-attestation-workflow> -->
-          </div>
-        </div>
-    
-    
-      <!-- <p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog> -->
-    
-    
-      <p-dialog [(visible)]="AddInvoiceDialog" [draggable]="false" style="top:20%" [style]="{ width: '750px' }" header="{{'Physical Attestation Details' | translate}}" [modal]="true" styleClass="p-fluid">
-        <div class="viewmore">
-          <div class="more-content-section">
-            <div class="grid grid-cols-2">
-              <ng-container >
-               
-                <div class="more-content" *ngFor="let field of fields">
-                  <mat-label class="title-label">{{ field.label | translate }}</mat-label>
-                  <div class="more-content-body">
-                    <mat-label class="more-content-block">{{ field.value }}</mat-label>
                   </div>
                 </div>
-  
-                <div class="more-content">
-                  <mat-label class="title-label">{{ 'Attestation File' | translate }}</mat-label>
-                  <!-- <div class="more-content-body">
+              </div>
+            </mat-tab>
+            <mat-tab label="{{ 'Payment' | translate }}">
+              <div class="flex grid grid-cols-2 gap-6 p-5 payment-header-label">
+                <div class="p-1">
+                  <mat-label>{{
+                    "No. of Physical Attestation(s)" | translate
+                  }}</mat-label>
+                </div>
+                <div class="amount_right_align">{{ noOfInvoicesSelected }}</div>
+                <!-- <div class="p-1"><mat-label >Total Fines(0)</mat-label></div>
+                    <div class="amount_right_align">{{ totalFineAmount }}</div> -->
+                <div class="p-1">
+                  <mat-label>{{ "Attestation Fees" | translate }}</mat-label>
+                </div>
+                <div class="amount_right_align">
+                  {{ "AED" | translate }}
+                  {{ common.formatAmount(totalAttestationFee) }}
+                </div>
+                <!-- nil -->
+                <div class="p-1"></div>
+                <div class="payment-total-amount">
+                  <div class="row">
+                    <span
+                      ><mat-label
+                        class="amount_right_align payment-header-label"
+                        >{{ "totalamount" | translate }}</mat-label
+                      ></span
+                    >
+                  </div>
+                  <div class="row" style="padding: 5px"></div>
+                  <div class="row">
+                    <span
+                      ><mat-label
+                        class="payment-total-amount2 amount_right_align"
+                        >{{ "AED" | translate }}
+                        {{ common.formatAmount(totalFee) }}</mat-label
+                      ></span
+                    >
+                  </div>
+                  <div class="row" style="padding: 2px"></div>
+                  <div class="row">
+                    <span
+                      ><mat-label
+                        class="payment-total-amount3 amount_right_align"
+                        >{{ "incl.VAT" | translate }}</mat-label
+                      ></span
+                    >
+                  </div>
+                  <!-- {{payment_button_isdisabled}} -->
+                </div>
+
+                <div class="gap-4 flex items-center justify-center col-span-2">
+                  <button
+                    [disabled]="payment_button_isdisabled"
+                    mat-flat-button
+                    color="primary"
+                    (click)="AttestationPay()"
+                    class="pay-btn"
+                  >
+                    {{ payorpayall | translate }}
+                  </button>
+                </div>
+                <div class="flex items-center justify-center col-span-2">
+                  <a class="powered_by">{{ "Powered by" | translate }}</a>
+                  &nbsp;<a class="magnati">{{ "magnati" | translate }}</a>
+                </div>
+              </div>
+            </mat-tab>
+            <mat-tab *ngIf="previewvisible" label="{{ 'Preview' | translate }}">
+              <div class="grid grid-cols-1">
+                <!-- <p *ngIf="isLoading">Loading...</p> -->
+
+                <!-- <div id="pdfContainer"></div> -->
+                <div id="outerContainer">
+                  <div class="pdf-container">
+                    <pdf-viewer
+                      [src]="src"
+                      [rotation]="0"
+                      [original-size]="false"
+                      [show-all]="true"
+                      [fit-to-page]="false"
+                      [zoom]="1"
+                      [zoom-scale]="'page-width'"
+                      [stick-to-page]="false"
+                      [render-text]="true"
+                      [external-link-target]="'blank'"
+                      [autoresize]="true"
+                      [show-borders]="false"
+                      style="width: 100%; height: 600px"
+                    ></pdf-viewer>
+                  </div>
+                </div>
+              </div>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+      </div>
+    </div>
+    <div
+      class="bg-white rounded-lg p-5 mofa-tab-section show"
+      [ngClass]="{ show: shouldShow, hide: !shouldShow }"
+    >
+      <!-- <app-attestation-workflow [selectedAttestations]="selectedAttestations"></app-attestation-workflow> -->
+    </div>
+  </div>
+
+  <!-- <p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog> -->
+
+  <p-dialog
+    [(visible)]="AddInvoiceDialog"
+    [draggable]="false"
+    style="top: 20%"
+    [style]="{ width: '750px' }"
+    header="{{ 'Physical Attestation Details' | translate }}"
+    [modal]="true"
+    styleClass="p-fluid"
+  >
+    <div class="viewmore">
+      <div class="more-content-section">
+        <div class="grid grid-cols-2">
+          <ng-container>
+            <div class="more-content" *ngFor="let field of fields">
+              <mat-label class="title-label">{{
+                field.label | translate
+              }}</mat-label>
+              <div class="more-content-body">
+                <mat-label class="more-content-block">{{
+                  field.value
+                }}</mat-label>
+              </div>
+            </div>
+
+            <div class="more-content">
+              <mat-label class="title-label">{{
+                "Attestation File" | translate
+              }}</mat-label>
+              <!-- <div class="more-content-body">
                     <mat-label class="more-content-block" >{{ 'Attestation.pdf' }} <span (click)="common.getimagebase64(currentrow.attestfilelocation)">  <mat-icon class="action_eye_icon_popup" >download</mat-icon> </span> </mat-label>
                   </div> -->
-                  <div *ngIf="attchemntisthere" class="more-content-body">
-                    <mat-label class="more-content-block" >{{ 'Attestation.pdf' }} <span (click)="common.getimagebase64(currentrow.filepath)">  <mat-icon class="action_eye_icon_popup" >download</mat-icon> </span> </mat-label>
-                  </div>
-                  <div class="more-content-body" *ngIf="!attchemntisthere">
-                    <mat-label class="more-content-block" >{{ 'File is not available' }} </mat-label>
-                  </div>
-                </div>
-  
-              
-  
-                
-              
-                
-              </ng-container>
+              <div *ngIf="attchemntisthere" class="more-content-body">
+                <mat-label class="more-content-block"
+                  >{{ "Attestation.pdf" }}
+                  <span (click)="common.getimagebase64(currentrow.filepath)">
+                    <mat-icon class="action_eye_icon_popup">download</mat-icon>
+                  </span>
+                </mat-label>
+              </div>
+              <div class="more-content-body" *ngIf="!attchemntisthere">
+                <mat-label class="more-content-block"
+                  >{{ "File is not available" }}
+                </mat-label>
+              </div>
             </div>
-          </div>
+          </ng-container>
         </div>
-        <ng-template pTemplate="footer">
-          <p-button icon="pi pi-times" (click)="AddInvoiceDialog = false" label="{{'Cancel' | translate}}" styleClass="p-confirm-dialog-reject"></p-button>
-      </ng-template>
-    
-    </p-dialog>
-    
-      
-      
-    
-    
+      </div>
+    </div>
+    <ng-template pTemplate="footer">
+      <p-button
+        icon="pi pi-times"
+        (click)="AddInvoiceDialog = false"
+        label="{{ 'Cancel' | translate }}"
+        styleClass="p-confirm-dialog-reject"
+      ></p-button>
+    </ng-template>
+  </p-dialog>
+</div>

@@ -1,81 +1,86 @@
 <div style="font-size: 12px !important; background-color: #ccc !important">
-    <div class="grid grid-cols-1" color="primary" class="page-header">
-      <label style="font-size: 13px; color: white; font-weight: bold"
-        >{{ "Report" | translate }} - {{ "LCA" | translate }}
-      </label>
-    </div>
-  
-    <div style="padding: 3px; border-radius: 2px">
-      <div class="grid grid-cols-1">
-        <div class="grid grid-cols-1 lg:grid-cols-3">
-          <div
-            [ngClass]="{ 'col-span-2': shouldShow, 'col-span-3': !shouldShow }"
-            style="border-radius: 5px; padding: 5px; background-color: #fff"
-          >
-            <!-- {{selectedAttestations?.length || ''}} -->
-  
-            <p-table
-              [(selection)]="selectedAttestations"
-              [resizableColumns]="true"
-              dataKey="edasattestno"
-              [scrollable]="true"
-              selectionMode="multiple"
-              #tableref
-              [rowHover]="true"
-              [paginator]="true"
-              currentPageReportTemplate="{{'Showing' | translate}} {first} {{'to' | translate}} {last} {{'of' | translate}} {totalRecords} {{'entries' | translate}}"
-              [filterDelay]="0"
-              [totalRecords]="totalrecords"
-              [value]="list"
-              [rows]="10"
-              [columns]="selectedColumns"
-              [showCurrentPageReport]="true"
-              [rowsPerPageOptions]="[10, 20, 50]"
-              [loading]="loading"
-              styleClass="p-datatable-customers p-datatable-gridlines"
-              currentPageReportTemplate="{{'Showing' | translate}} {first} {{'to' | translate}} {last} {{'of' | translate}} {totalRecords} {{'entries' | translate}}"
-              [globalFilterFields]="[
-                'edasattestno',
-                'invoicenumber',
-                'declarationumber',
-                'declarationdate',
-                'attestreqdate',
-                'Noofdaysleft'
-              ]"
-              [lazy]="true"
-              (onLazyLoad)="InitTable($event)"
-              [rowSelectable]="isRowSelectable"
-              [tableStyle]="{ 'min-width': '50rem' }"
-            >
-              <ng-template *ngIf="true" pTemplate="caption">
-                <p-toolbar>
-                  <ng-template pTemplate="left">
-                    <div style="padding: 5px" class="col-md-3 col-lg-3 col-sm-6">
-                      <mat-form-field class="searchboxinput">
-                        <mat-label
-                          ><mat-icon style="font-size: larger">search</mat-icon
-                          >{{ "SearchKeyword" | translate }}</mat-label
-                        >
-                        <input
-                          matInput
-                          type="text"
-                          (input)="
-                            tableref.filterGlobal(
-                              $any($event.target).value,
-                              'contains'
-                            )
-                          "
-                          placeholder="{{ 'SearchKeyword' | translate }}"
-                        />
-                      </mat-form-field>
+  <div class="grid grid-cols-1" color="primary" class="page-header">
+    <label style="font-size: 13px; color: white; font-weight: bold"
+      >{{ "Report" | translate }} - {{ "LCA" | translate }}
+    </label>
+  </div>
 
-                     
-                    </div>
-                  
-                  </ng-template>
-                  <ng-template pTemplate="right">
-                    <!-- {{totalrecords}}  {{overdue}} -->
-                    <!-- <span
+  <div style="padding: 3px; border-radius: 2px">
+    <div class="grid grid-cols-1">
+      <div class="grid grid-cols-1 lg:grid-cols-3">
+        <div
+          [ngClass]="{ 'col-span-2': shouldShow, 'col-span-3': !shouldShow }"
+          style="border-radius: 5px; padding: 5px; background-color: #fff"
+        >
+          <!-- {{selectedAttestations?.length || ''}} -->
+
+          <p-table
+            [(selection)]="selectedAttestations"
+            [resizableColumns]="true"
+            dataKey="edasattestno"
+            [scrollable]="true"
+            selectionMode="multiple"
+            #tableref
+            [rowHover]="true"
+            [paginator]="true"
+            currentPageReportTemplate="{{ 'Showing' | translate }} {first} {{
+              'to' | translate
+            }} {last} {{ 'of' | translate }} {totalRecords} {{
+              'entries' | translate
+            }}"
+            [filterDelay]="0"
+            [totalRecords]="totalrecords"
+            [value]="list"
+            [rows]="10"
+            [columns]="selectedColumns"
+            [showCurrentPageReport]="true"
+            [rowsPerPageOptions]="[10, 20, 50]"
+            [loading]="loading"
+            styleClass="p-datatable-customers p-datatable-gridlines"
+            currentPageReportTemplate="{{ 'Showing' | translate }} {first} {{
+              'to' | translate
+            }} {last} {{ 'of' | translate }} {totalRecords} {{
+              'entries' | translate
+            }}"
+            [globalFilterFields]="[
+              'edasattestno',
+              'invoicenumber',
+              'declarationumber',
+              'declarationdate',
+              'attestreqdate',
+              'Noofdaysleft'
+            ]"
+            [lazy]="true"
+            (onLazyLoad)="InitTable($event)"
+            [rowSelectable]="isRowSelectable"
+            [tableStyle]="{ 'min-width': '50rem' }"
+          >
+            <ng-template *ngIf="true" pTemplate="caption">
+              <p-toolbar>
+                <ng-template pTemplate="left">
+                  <div style="padding: 5px" class="col-md-3 col-lg-3 col-sm-6">
+                    <mat-form-field class="searchboxinput">
+                      <mat-label
+                        ><mat-icon style="font-size: larger">search</mat-icon
+                        >{{ "SearchKeyword" | translate }}</mat-label
+                      >
+                      <input
+                        matInput
+                        type="text"
+                        (input)="
+                          tableref.filterGlobal(
+                            $any($event.target).value,
+                            'contains'
+                          )
+                        "
+                        placeholder="{{ 'SearchKeyword' | translate }}"
+                      />
+                    </mat-form-field>
+                  </div>
+                </ng-template>
+                <ng-template pTemplate="right">
+                  <!-- {{totalrecords}}  {{overdue}} -->
+                  <!-- <span
                       *ngIf="totalrecords != 0 || overdue == 1 || overdue == 2"
                     >
                       <span *ngIf="overdue_filter"
@@ -113,9 +118,7 @@
                     </span>
    -->
 
-  
-                  
-                    <!-- <p-multiSelect
+                  <!-- <p-multiSelect
                     [options]="cols"
                     [(ngModel)]="selectedColumns"
                     optionLabel="header"
@@ -126,142 +129,207 @@
 
                   <div style="padding: 5px" class="col-md-3 col-lg-3 col-sm-6">
                     <mat-form-field class="searchboxinput">
-                      <mat-label>{{'Status' | translate }}</mat-label>
-                      <mat-select name="statusddl"  [(ngModel)]="selectedStatus" (selectionChange)="onDropdownChange($event)">
-                        <mat-option value="0">{{'Pending' | translate}}</mat-option>
-                        <mat-option value="1">{{'Completed'| translate}}</mat-option>
-                        <mat-option value="2">{{'All' | translate}}</mat-option>
+                      <mat-label>{{ "Status" | translate }}</mat-label>
+                      <mat-select
+                        name="statusddl"
+                        [(ngModel)]="selectedStatus"
+                        (selectionChange)="onDropdownChange($event)"
+                      >
+                        <mat-option value="0">{{
+                          "Pending" | translate
+                        }}</mat-option>
+                        <mat-option value="1">{{
+                          "Completed" | translate
+                        }}</mat-option>
+                        <mat-option value="2">{{
+                          "All" | translate
+                        }}</mat-option>
                       </mat-select>
-                   
                     </mat-form-field>
                   </div>
-  
-                    <div
-                      *ngIf="enableFilters"
-                      style="padding: 5px"
-                      class="col-md-3 col-lg-3 col-md-6"
-                    >
-                      <mat-form-field class="filter_datepicker">
-                        <mat-label>{{ "Start Date" | translate }}</mat-label>
-                        <input
-                          matInput
-                          [matDatepicker]="decDatepicker1"
-                          [max]="todayModel"
-                          [(ngModel)]="oneMonthAgo"
-                          placeholder="{{ 'From' | translate }}"
-                          name="createdatefrom"
-                        />
-                        <mat-datepicker-toggle
-                          matSuffix
-                          [for]="decDatepicker1"
-                        ></mat-datepicker-toggle>
-                        <mat-datepicker #decDatepicker1></mat-datepicker>
-                      </mat-form-field>
-                    </div>
-                    <div
-                      *ngIf="enableFilters"
-                      style="padding: 5px"
-                      class="col-md-3 col-lg-3 col-sm-6"
-                    >
-                      <mat-form-field class="filter_datepicker">
-                        <mat-label>{{ "End Date" | translate }}</mat-label>
-                        <input
-                          matInput
-                          [matDatepicker]="decDatepicker2"
-                          [min]="oneMonthAgo"
-                          [max]="today"
-                          placeholder="{{ 'To' | translate }}"
-                          [(ngModel)]="todayModel"
-                          name="createdateto"
-                        />
-                        <mat-datepicker-toggle
-                          matSuffix
-                          [for]="decDatepicker2"
-                        ></mat-datepicker-toggle>
-                        <mat-datepicker #decDatepicker2></mat-datepicker>
-                      </mat-form-field>
-                    </div>
-                    <div
-                      *ngIf="enableFilters"
-                      class="col-md-3 col-lg-3 caption_apply_button"
-                    >
-                      <button
-                        type="button"
-                        mat-flat-button
-                        color="primary"
-                        (click)="filterInittable()"
-                      >
-                        {{ "Apply" | translate }}
-                      </button>
-                    </div>
-                    <span style="padding: 10px"></span>
-  
+
+                  <div
+                    *ngIf="enableFilters"
+                    style="padding: 5px"
+                    class="col-md-3 col-lg-3 col-md-6"
+                  >
+                    <mat-form-field class="filter_datepicker">
+                      <mat-label>{{ "Start Date" | translate }}</mat-label>
+                      <input
+                        matInput
+                        [matDatepicker]="decDatepicker1"
+                        [max]="todayModel"
+                        [(ngModel)]="oneMonthAgo"
+                        placeholder="{{ 'From' | translate }}"
+                        name="createdatefrom"
+                      />
+                      <mat-datepicker-toggle
+                        matSuffix
+                        [for]="decDatepicker1"
+                      ></mat-datepicker-toggle>
+                      <mat-datepicker #decDatepicker1></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                  <div
+                    *ngIf="enableFilters"
+                    style="padding: 5px"
+                    class="col-md-3 col-lg-3 col-sm-6"
+                  >
+                    <mat-form-field class="filter_datepicker">
+                      <mat-label>{{ "End Date" | translate }}</mat-label>
+                      <input
+                        matInput
+                        [matDatepicker]="decDatepicker2"
+                        [min]="oneMonthAgo"
+                        [max]="today"
+                        placeholder="{{ 'To' | translate }}"
+                        [(ngModel)]="todayModel"
+                        name="createdateto"
+                      />
+                      <mat-datepicker-toggle
+                        matSuffix
+                        [for]="decDatepicker2"
+                      ></mat-datepicker-toggle>
+                      <mat-datepicker #decDatepicker2></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                  <div
+                    *ngIf="enableFilters"
+                    class="col-md-3 col-lg-3 caption_apply_button"
+                  >
                     <button
                       type="button"
-                      pButton
-                      pRipple
-                      icon="pi pi-file-excel"
-                      (click)="exportExcel()"
-                      class="mr-2 grid-header-right-icon"
-                      pTooltip="{{ 'Excel' | translate }}"
-                      tooltipPosition="bottom"
-                    ></button>
-                    <button
-                      type="button"
-                      pButton
-                      pRipple
-                      icon="pi pi-filter"
-                      (click)="clickChips()"
-                      class="mr-2 grid-header-right-icon"
-                      [ngClass]="{ clicked: enableFilters }"
-                      [pTooltip]="'Filter' | translate"
-                      tooltipPosition="bottom"
-                    ></button>
-                  </ng-template>
-                </p-toolbar>
-  
-              </ng-template>
-  
-              <ng-template pTemplate="header" let-columns>
-                <tr>
-                  <!-- <th [style.width]="'3%'">
+                      mat-flat-button
+                      color="primary"
+                      (click)="filterInittable()"
+                    >
+                      {{ "Apply" | translate }}
+                    </button>
+                  </div>
+                  <span style="padding: 10px"></span>
+
+                  <button
+                    type="button"
+                    pButton
+                    pRipple
+                    icon="pi pi-file-excel"
+                    (click)="exportExcel()"
+                    class="mr-2 grid-header-right-icon"
+                    pTooltip="{{ 'Excel' | translate }}"
+                    tooltipPosition="bottom"
+                  ></button>
+                  <button
+                    type="button"
+                    pButton
+                    pRipple
+                    icon="pi pi-filter"
+                    (click)="clickChips()"
+                    class="mr-2 grid-header-right-icon"
+                    [ngClass]="{ clicked: enableFilters }"
+                    [pTooltip]="'Filter' | translate"
+                    tooltipPosition="bottom"
+                  ></button>
+                </ng-template>
+              </p-toolbar>
+              <tr>
+                <td colspan="12">
+                  <div class="alert alert-success flex" role="alert">
+                    <span
+                      class="glyphicon glyphicon-exclamation-sign"
+                      aria-hidden="true"
+                    ></span>
+                    <i class="fas fa-lightbulb light-bulb"></i>
+                    <p>
+                      LCA Request are shown in this list. LCA Request are shown
+                      in this list. LCA Request are shown in this list. LCA
+                      Request are shown in this list. LCA Request are shown in
+                      this list. LCA Request are shown in this list. LCA Request
+                      are shown in this list.
+                    </p>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <!-- <th [style.width]="'3%'">
                     <p-tableHeaderCheckbox (click)="loadsidepanel(list)">
                     </p-tableHeaderCheckbox>
                 </th> -->
-                <th pSortableColumn="edasattestno" >{{'edasattestno' | translate}}  <p-sortIcon field="edasattestno"></p-sortIcon> </th>
-                <th pSortableColumn="currencycode">{{'invoiceCurrency' | translate}}  <p-sortIcon field="currencycode"></p-sortIcon></th>
-                <th pSortableColumn="canpay">{{'status' | translate}}  <p-sortIcon field="canpay"></p-sortIcon></th>
-                <th pSortableColumn="noofdaysoverdue">{{'Age'| translate}}  <p-sortIcon field="noofdaysoverdue"></p-sortIcon></th>
-                <th pSortableColumn="invoiceamount">{{'invoiceamount' | translate}}  <p-sortIcon field="invoiceamount"></p-sortIcon></th>
-                <th pSortableColumn="feesamount">{{'Fees' | translate}}  <p-sortIcon field="feesamount"></p-sortIcon></th>
-                <th pSortableColumn="invoiceid">{{'invoiceId' | translate}}  <p-sortIcon field="invoiceid"></p-sortIcon></th>
-                <th pSortableColumn="declarationumber">{{'declarationumber' | translate}} <p-sortIcon field="declarationumber"></p-sortIcon></th>
-                <th pSortableColumn="declarationdate">{{'declarationdate' | translate}}  <p-sortIcon field="declarationdate"></p-sortIcon></th>
-                <th pSortableColumn="attestreqdate">{{'attestreqdate' | translate}}  <p-sortIcon field="attestreqdate"></p-sortIcon> </th>
-                <th pSortableColumn="lcaname">{{'Channel' | translate}}  <p-sortIcon field="attestreqdate"></p-sortIcon> </th>
-  
-                <th *ngFor="let col of columns" pResizableColumn [pSortableColumn]="col.field" [style.width]="col.width" >
-                    {{col.header | translate}} <p-sortIcon [field]="col.field"  ></p-sortIcon>
-                    <p-columnFilter
-                      type="text"
-                      [field]="col.field"
-                      *ngIf="enableFilters"
-                      display="menu"
-                    ></p-columnFilter>
-                  </th>
-                  <th pFrozenColumn alignFrozen="right">
-                    {{ "actions" | translate }}
-                  </th>
-                </tr>
-              </ng-template>
-              <ng-template pTemplate="body" let-customer let-columns="columns">
-                <tr
-                  [ngClass]="{
-                    'highlighted-row custom-text-color bold-text':
-                      customer.isSelected
-                  }"
+                <th pSortableColumn="edasattestno">
+                  {{ "edasattestno" | translate }}
+                  <p-sortIcon field="edasattestno"></p-sortIcon>
+                </th>
+                <th pSortableColumn="currencycode">
+                  {{ "invoiceCurrency" | translate }}
+                  <p-sortIcon field="currencycode"></p-sortIcon>
+                </th>
+                <th pSortableColumn="canpay">
+                  {{ "status" | translate }}
+                  <p-sortIcon field="canpay"></p-sortIcon>
+                </th>
+                <th pSortableColumn="noofdaysoverdue">
+                  {{ "Age" | translate }}
+                  <p-sortIcon field="noofdaysoverdue"></p-sortIcon>
+                </th>
+                <th pSortableColumn="invoiceamount">
+                  {{ "invoiceamount" | translate }}
+                  <p-sortIcon field="invoiceamount"></p-sortIcon>
+                </th>
+                <th pSortableColumn="feesamount">
+                  {{ "Fees" | translate }}
+                  <p-sortIcon field="feesamount"></p-sortIcon>
+                </th>
+                <th pSortableColumn="invoiceid">
+                  {{ "invoiceId" | translate }}
+                  <p-sortIcon field="invoiceid"></p-sortIcon>
+                </th>
+                <th pSortableColumn="declarationumber">
+                  {{ "declarationumber" | translate }}
+                  <p-sortIcon field="declarationumber"></p-sortIcon>
+                </th>
+                <th pSortableColumn="declarationdate">
+                  {{ "declarationdate" | translate }}
+                  <p-sortIcon field="declarationdate"></p-sortIcon>
+                </th>
+                <th pSortableColumn="attestreqdate">
+                  {{ "attestreqdate" | translate }}
+                  <p-sortIcon field="attestreqdate"></p-sortIcon>
+                </th>
+                <th pSortableColumn="lcaname">
+                  {{ "Channel" | translate }}
+                  <p-sortIcon field="attestreqdate"></p-sortIcon>
+                </th>
+
+                <th
+                  *ngFor="let col of columns"
+                  pResizableColumn
+                  [pSortableColumn]="col.field"
+                  [style.width]="col.width"
                 >
-                  <!-- <td>
+                  {{ col.header | translate }}
+                  <p-sortIcon [field]="col.field"></p-sortIcon>
+                  <p-columnFilter
+                    type="text"
+                    [field]="col.field"
+                    *ngIf="enableFilters"
+                    display="menu"
+                  ></p-columnFilter>
+                </th>
+                <th pFrozenColumn alignFrozen="right">
+                  {{ "actions" | translate }}
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-customer let-columns="columns">
+              <tr
+                [ngClass]="{
+                  'highlighted-row custom-text-color bold-text':
+                    customer.isSelected
+                }"
+              >
+                <!-- <td>
                     <p-tableCheckbox
                       pTooltip="{{
                         isCOONotPaid(customer)
@@ -273,427 +341,232 @@
                       [value]="customer"
                     ></p-tableCheckbox>
                   </td> -->
-                  <td class="hyperlink">
-                    <button pButton type="button" (click)="openNew_(customer)">
-                      {{ customer.edasattestno }}
-                    </button>
-                  </td>
-                  <!-- <td>
+                <td class="hyperlink">
+                  <button pButton type="button" (click)="openNew_(customer)">
+                    {{ customer.edasattestno }}
+                  </button>
+                </td>
+                <!-- <td>
                     <span class="image-text">{{ customer.edasattestno }}</span>
                   </td> -->
-                  <td>
-                    <span class="image-text">{{ customer.currencycode }}</span>
-                  </td>
-  
-                  <td>
-                    <p-tag
-                      
-                      [severity]="getSeverity(customer.canpay)"  (click)="openNew_(customer)"
-                    >
-                    {{customer.canpay === 1 ? 'COO paid' : '  &nbsp; COO unpaid '}} &nbsp;
+                <td>
+                  <span class="image-text">{{ customer.currencycode }}</span>
+                </td>
+
+                <td>
+                  <p-tag
+                    [severity]="getSeverity(customer.canpay)"
+                    (click)="openNew_(customer)"
+                  >
+                    {{
+                      customer.canpay === 1
+                        ? "COO paid"
+                        : "  &nbsp; COO unpaid "
+                    }}
+                    &nbsp;
                     <i
-                    class="fa fa-arrow-right"
-                    *ngIf="customer.canpay != 1"
-                    style="cursor: pointer"
-                  ></i>
-                     
-                    </p-tag>
-                  
-  
-                  </td>
-                  <td style="text-align: center" [ngClass]="{
+                      class="fa fa-arrow-right"
+                      *ngIf="customer.canpay != 1"
+                      style="cursor: pointer"
+                    ></i>
+                  </p-tag>
+                </td>
+                <td
+                  style="text-align: center"
+                  [ngClass]="{
                     '': customer.noofdaysoverdue < 10,
                     outofstock: customer.noofdaysoverdue > 14,
-                    lowstock: customer.noofdaysoverdue > 9 && customer.noofdaysoverdue < 15
-                  }">
-                    <div *ngIf="customer.noofdaysoverdue > 14" pTooltip="Exceeded 14 days of grace period for the LCA Invoice Attestation payment.">
-                      {{ customer.noofdaysoverdue }}
-                    </div>
-                    <div *ngIf="customer.noofdaysoverdue < 10">
-                      {{ customer.noofdaysoverdue }}
-                    </div>
-                    <div *ngIf="customer.noofdaysoverdue > 9 && customer.noofdaysoverdue < 15" pTooltip="Exceeded {{customer.noofdaysoverdue}} days and nearing grace period of 14 days for the LCA Invoice Attestation payment. ">
-                      {{ customer.noofdaysoverdue }}
-                    </div>
-                  </td>
-                  
-  
-                  <td style="text-align: right">
-                    <span class="image-text">{{
-                      common.formatAmount(customer.invoiceamount)
-                    }}</span>
-                  </td>
-                  <td style="text-align: right">
-                    <span class="image-text">{{
-                      common.formatAmount(customer.feesamount)
-                    }}</span>
-                  </td>
-  
-                  <td>
-                    <span class="image-text">{{ customer.invoiceid }}</span>
-                  </td>
-                  <td>
-                    <span class="image-text">{{
-                      customer.declarationumber
-                    }}</span>
-                  </td>
-                  <td>
-                    <span class="image-text">{{
-                      common.splitdatetime(customer.declarationdate)?.date
-                    }}</span>
-                  </td>
-                  <td>
-                    <span class="image-text">{{
-                      common.splitdatetimeforstring(customer.attestreqdate)?.date
-                    }}</span>
-                  </td>
-                  <td>
-                    <span class="image-text">{{
-                      customer.lcaname
-                    }}</span>
-                  </td>
-  
-                  <!-- lcaname -->
-                  <td *ngFor="let col of columns">
-                    {{ customer[col.field] }}
-                  </td>
-  
-                  <td pFrozenColumn alignFrozen="right">
-                    <span
-                      (click)="openNew(customer)"
-                      style="padding: 15px; cursor: pointer"
-                      pTooltip="{{ 'Details' | translate }}"
-                      class="image-text viewaction"
-                    >
-                      <mat-icon class="action_eye_icon">visibility</mat-icon>
-                    </span>
-                  </td>
-                </tr>
-              </ng-template>
+                    lowstock:
+                      customer.noofdaysoverdue > 9 &&
+                      customer.noofdaysoverdue < 15
+                  }"
+                >
+                  <div
+                    *ngIf="customer.noofdaysoverdue > 14"
+                    pTooltip="Exceeded 14 days of grace period for the LCA Invoice Attestation payment."
+                  >
+                    {{ customer.noofdaysoverdue }}
+                  </div>
+                  <div *ngIf="customer.noofdaysoverdue < 10">
+                    {{ customer.noofdaysoverdue }}
+                  </div>
+                  <div
+                    *ngIf="
+                      customer.noofdaysoverdue > 9 &&
+                      customer.noofdaysoverdue < 15
+                    "
+                    pTooltip="Exceeded {{
+                      customer.noofdaysoverdue
+                    }} days and nearing grace period of 14 days for the LCA Invoice Attestation payment. "
+                  >
+                    {{ customer.noofdaysoverdue }}
+                  </div>
+                </td>
 
+                <td style="text-align: right">
+                  <span class="image-text">{{
+                    common.formatAmount(customer.invoiceamount)
+                  }}</span>
+                </td>
+                <td style="text-align: right">
+                  <span class="image-text">{{
+                    common.formatAmount(customer.feesamount)
+                  }}</span>
+                </td>
 
-              <ng-template pTemplate="footer" >
-                <ng-container *ngIf="list.length>0">
+                <td>
+                  <span class="image-text">{{ customer.invoiceid }}</span>
+                </td>
+                <td>
+                  <span class="image-text">{{
+                    customer.declarationumber
+                  }}</span>
+                </td>
+                <td>
+                  <span class="image-text">{{
+                    common.splitdatetime(customer.declarationdate)?.date
+                  }}</span>
+                </td>
+                <td>
+                  <span class="image-text">{{
+                    common.splitdatetimeforstring(customer.attestreqdate)?.date
+                  }}</span>
+                </td>
+                <td>
+                  <span class="image-text">{{ customer.lcaname }}</span>
+                </td>
+
+                <!-- lcaname -->
+                <td *ngFor="let col of columns">
+                  {{ customer[col.field] }}
+                </td>
+
+                <td pFrozenColumn alignFrozen="right">
+                  <span
+                    (click)="openNew(customer)"
+                    style="padding: 15px; cursor: pointer"
+                    pTooltip="{{ 'Details' | translate }}"
+                    class="image-text viewaction"
+                  >
+                    <mat-icon class="action_eye_icon">visibility</mat-icon>
+                  </span>
+                </td>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+              <ng-container *ngIf="list.length > 0">
                 <tr>
                   <td colspan="4">
                     {{ "Total" | translate }}
                   </td>
-                  <td class="text-align"> AED
+                  <td class="text-align">
+                    AED
                     {{ common.formatAmount(total_invoiceamount) }}
                   </td>
-                  <td class="text-align">AED
+                  <td class="text-align">
+                    AED
                     {{ common.formatAmount(total_feesamount) }}
                   </td>
-                  <td class="text-align">
-                  </td>
+                  <td class="text-align"></td>
                   <td colspan="100" class="text-align"></td>
                 </tr>
               </ng-container>
-              </ng-template>
-   
-              
+            </ng-template>
 
-  
-              <ng-template pTemplate="emptymessage">
-                <tr>
-                  <td colspan="14">{{ "No data found." | translate }}</td>
-                </tr>
-              </ng-template>
-            </p-table>
-          </div>
-  
-          <div
-            class="mofa-tab-section show mofa-tab-outer-mask"
-            [ngClass]="{ show: shouldShow, hide: !shouldShow }"
-          >
-            <!-- hello here -->
-           
-            <!-- <app-attestation-workflow [invoiceamt]="totalAttestationFee" [fineamount]="totalFineAmount" [totalamount]="totalFineAmount" [selectedAttestations]="selectedAttestations"></app-attestation-workflow> -->
-            <mat-tab-group>
-              <mat-tab label="{{'Timeline' | translate}}" *ngIf="Timelinevisible">
-                <div class="grid grid-cols-1">
-                  <div class="dw-container mt-5">
-                    <div
-                      *ngFor="let item of timelineItems; let i = index"
-                      class="timeline-block timeline-block-right {{
-                        item.status
-                      }}"
-                    >
-                      <div class="marker"></div>
-                      <div class="timeline-content">
-                        <div class="grid grid-cols-1">
-                          <div class="w-100">
-                            <mat-chip-list>
-                              <h6 class="al-title">
-                                <span>{{ item.title | translate }}</span
-                                ><mat-icon>check</mat-icon>
-                              </h6>
-                            </mat-chip-list>
-                          </div>
-                          <small
-                            ><strong>{{ item.date }}</strong></small
-                          >
-                          <small>{{ item?.time }}</small>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="14">{{ "No data found." | translate }}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+
+        <div
+          class="mofa-tab-section show mofa-tab-outer-mask"
+          [ngClass]="{ show: shouldShow, hide: !shouldShow }"
+        >
+          <!-- hello here -->
+
+          <!-- <app-attestation-workflow [invoiceamt]="totalAttestationFee" [fineamount]="totalFineAmount" [totalamount]="totalFineAmount" [selectedAttestations]="selectedAttestations"></app-attestation-workflow> -->
+          <mat-tab-group>
+            <mat-tab
+              label="{{ 'Timeline' | translate }}"
+              *ngIf="Timelinevisible"
+            >
+              <div class="grid grid-cols-1">
+                <div class="dw-container mt-5">
+                  <div
+                    *ngFor="let item of timelineItems; let i = index"
+                    class="timeline-block timeline-block-right {{
+                      item.status
+                    }}"
+                  >
+                    <div class="marker"></div>
+                    <div class="timeline-content">
+                      <div class="grid grid-cols-1">
+                        <div class="w-100">
+                          <mat-chip-list>
+                            <h6 class="al-title">
+                              <span>{{ item.title | translate }}</span
+                              ><mat-icon>check</mat-icon>
+                            </h6>
+                          </mat-chip-list>
                         </div>
+                        <small
+                          ><strong>{{ item.date }}</strong></small
+                        >
+                        <small>{{ item?.time }}</small>
                       </div>
                     </div>
                   </div>
                 </div>
-              </mat-tab>
-              <mat-tab label="{{'Payment' | translate}}">
-                <div class="flex grid grid-cols-2 gap-6 p-5 payment-header-label">
-                  <div class="p-1">
-                    <mat-label class="payment-header-label">{{
-                      "No. of Invoices" | translate
-                    }}</mat-label>
-                  </div>
-                  <div class="amount_right_align">{{ noOfInvoicesSelected }}</div>
-                  <div *ngIf="totalFineAmount" class="p-1">
-                    <mat-label class="payment-header-label">{{
-                      "Total Fines" | translate
-                    }}</mat-label>
-                  </div>
-                  <div *ngIf="totalFineAmount" class="amount_right_align">{{ totalFineAmount }}</div>
-                  <div class="p-1">
-                    <mat-label class="payment-header-label">{{
-                      "Attestation Fees" | translate
-                    }}</mat-label>
-                  </div>
-                  <div class="amount_right_align">
-                    {{ "AED" | translate }}
-                    {{ common.formatAmount(totalAttestationFee) }}
-                  </div>
-                  <!-- nil -->
-                  <div class="p-1"></div>
-                  <div class="payment-total-amount">
-                    <div class="row">
-                      <span
-                        ><mat-label
-                          class="amount_right_align payment-header-label"
-                          >{{ "totalamount" | translate }}</mat-label
-                        ></span
-                      >
-                    </div>
-                    <div class="row" style="padding: 5px"></div>
-  
-                    <div class="row">
-                      <span
-                        ><mat-label
-                          class="payment-total-amount2 amount_right_align"
-                          >{{ "AED" | translate }}
-                          {{ common.formatAmount(totalFee) }}</mat-label
-                        ></span
-                      >
-                    </div>
-                    <div class="row" style="padding: 2px"></div>
-                    <div class="row">
-                      <span
-                        ><mat-label
-                          class="payment-total-amount3 amount_right_align"
-                          >{{ "incl.VAT" | translate }}</mat-label
-                        ></span
-                      >
-                    </div>
-                    <!-- {{payment_button_isdisabled}} -->
-                  </div>
-                  <div class="gap-4 flex items-center justify-center col-span-2">
-                    <button
-                      [disabled]="payment_button_isdisabled"
-                      mat-flat-button
-                      color="primary"
-                      (click)="AttestationPay()"
-                      class="pay-btn"
-                    >
-                      {{ payorpayall | translate }}
-                    </button>
-                  </div>
-                  <div class="flex items-center justify-center col-span-2">
-                    <a class="powered_by">{{ "Powered by" | translate }}</a>
-                    &nbsp;<a class="magnati">{{ "magnati" | translate }}</a>
-                  </div>
-                </div>
-              </mat-tab>
-              <mat-tab *ngIf="previewvisible" label="{{ 'Preview' | translate }}">
-                <div class="grid grid-cols-1">
-                  <div id="outerContainer">
-                    <div class="pdf-container">
-                      <pdf-viewer
-                        [src]="src"
-                        [rotation]="0"
-                        [original-size]="false"
-                        [show-all]="true"
-                        [fit-to-page]="false"
-                        [zoom]="1"
-                        [zoom-scale]="'page-width'"
-                        [stick-to-page]="false"
-                        [render-text]="true"
-                        [external-link-target]="'blank'"
-                        [autoresize]="true"
-                        [show-borders]="false"
-                        style="width: 100%; height: 600px"
-                      ></pdf-viewer>
-                    </div>
-                  </div>
-                </div>
-              </mat-tab>
-            </mat-tab-group>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <br />
-  
-  <!-- modal -->
-  
-  <!-- <p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog> -->
-  
-  <!-- modal 1 end -->
-  
-  <!-- modal 2 -->
-  
-  <!-- modal details popup -->
-  <p-dialog
-    [(visible)]="AddInvoiceDialog"
-    style="top: 20%; height: 80%"
-    [draggable]="false"
-    [dismissableMask]="false"
-    [style]="{ width: '750px' }"
-    header="{{ 'Attestation Details' | translate }}"
-    [modal]="true"
-    styleClass="p-fluid"
-  >
-    <div class="viewmore">
-      <div class="more-content-section">
-        <div class="grid grid-cols-2">
-          <ng-container>
-            <div class="more-content" *ngFor="let field of fields">
-              <mat-label class="title-label">{{
-                field.label | translate
-              }}</mat-label>
-              <div class="more-content-body">
-                <mat-label class="more-content-block">{{
-                  field.value
-                }}</mat-label>
-              </div>
-            </div>
-            <div class="more-content">
-              <mat-label class="title-label">{{
-                "Attestation File" | translate
-              }}</mat-label>
-              <div class="more-content-body">
-                <mat-label class="more-content-block"
-                  >{{ popupDownloadfilename }}{{'.pdf'}}
-                  <span
-                    (click)="common.getimagebase64(currentrow.attestfilelocation, popupDownloadfilename)"
-                  >
-                    <mat-icon class="action_eye_icon_popup">download</mat-icon>
-                  </span>
-                </mat-label>
-              </div>
-            </div>
-          </ng-container>
-        </div>
-      </div>
-    </div>
-  
-    <ng-template pTemplate="footer">
-      <p-button
-        icon="pi pi-times"
-        (click)="AddInvoiceDialog = false"
-        label="{{ 'Cancel' | translate }}"
-        styleClass="p-confirm-dialog-reject"
-      ></p-button>
-    </ng-template>
-  </p-dialog>
-  <!-- modal 2 end -->
-  
-      <p-dialog [(visible)]="AddInvoiceDialog_"  [style]="{ width: '750px', height:'550px' }" header="{{header | translate}}" [modal]="true" styleClass="p-fluid ui-dialog">
-           <br>
-           <ng-template pTemplate="body">
-            <!-- hello -->
-            <div
-            class="mofa-tab-section show mofa-tab-outer-mask">
-           <mat-tab-group [selectedIndex]="selectedTabIndex" (selectedIndexChange)="onTabChange($event)">
-            <mat-tab label="{{'Details' | translate}}"   >
-              <div class="grid grid-cols-1">
-                <br>
-                                          <div class="viewmore">
-                                            <div class="more-content-section">
-                                              <div class="grid grid-cols-2">
-                                                <ng-container>
-                                                  <div class="more-content" *ngFor="let field of fields_coo">
-                                                    <mat-label class="title-label">{{
-                                                      field.label | translate
-                                                    }}</mat-label>
-                                                    <div class="more-content-body">
-                                                      <mat-label class="more-content-block">{{
-                                                        field.value
-                                                      }}</mat-label>
-                                                    </div>
-                                                  </div>
-                                                </ng-container>
-                                              </div>
-                                            </div>
-                                          </div>
-                
               </div>
             </mat-tab>
-            <mat-tab label="{{'Payment' | translate}}" *ngIf="isPaymentTabVisible">
-              <div *ngIf="!popup_iscooOnlyPayment" class="flex grid grid-cols-2 gap-6 p-5 payment-header-label">
-                <!--  -->
-                <!-- <div > -->
-                <div *ngIf="noOfInvoicesSelected_coo" class="p-1">
+            <mat-tab label="{{ 'Payment' | translate }}">
+              <div class="flex grid grid-cols-2 gap-6 p-5 payment-header-label">
+                <div class="p-1">
                   <mat-label class="payment-header-label">{{
                     "No. of Invoices" | translate
                   }}</mat-label>
                 </div>
-                <div *ngIf="noOfInvoicesSelected_coo"   class="amount_right_align">{{ noOfInvoicesSelected_coo }}</div>
-                <!--  -->
-               <!--  -->
-               <div *ngIf="noOfInvoicesSelected_coo"  class="p-1">
-                <mat-label class="payment-header-label">{{
-                  "Attestation Fees" | translate
-                }}</mat-label>
-              </div>
-              <div *ngIf="noOfInvoicesSelected_coo" class="amount_right_align">
-                {{ "AED" | translate }}
-                {{ common.formatAmount(invoicefeesamount) }}
-              </div>
-              <!-- nil -->
-                <!--  -->
-                <div *ngIf="noOfInvoicesSelected_coo" class="p-1">
-                  <mat-label class="payment-header-label">{{
-                    "COO Fee" | translate
-                  }}</mat-label>
-                </div>
-                <div *ngIf="noOfInvoicesSelected_coo" class="amount_right_align">{{ "AED" | translate }} {{  common.formatAmount(cooamount) }}</div>
-  
-                <!--  -->
-                <div *ngIf="totalFineAmount_coo" class="p-1">
+                <div class="amount_right_align">{{ noOfInvoicesSelected }}</div>
+                <div *ngIf="totalFineAmount" class="p-1">
                   <mat-label class="payment-header-label">{{
                     "Total Fines" | translate
                   }}</mat-label>
                 </div>
-                <div *ngIf="totalFineAmount_coo" class="amount_right_align">{{ totalFineAmount_coo }}</div>
+                <div *ngIf="totalFineAmount" class="amount_right_align">
+                  {{ totalFineAmount }}
+                </div>
+                <div class="p-1">
+                  <mat-label class="payment-header-label">{{
+                    "Attestation Fees" | translate
+                  }}</mat-label>
+                </div>
+                <div class="amount_right_align">
+                  {{ "AED" | translate }}
+                  {{ common.formatAmount(totalAttestationFee) }}
+                </div>
+                <!-- nil -->
                 <div class="p-1"></div>
                 <div class="payment-total-amount">
                   <div class="row">
                     <span
                       ><mat-label
                         class="amount_right_align payment-header-label"
-                        >{{ "Total Amount" | translate }}</mat-label
+                        >{{ "totalamount" | translate }}</mat-label
                       ></span
                     >
                   </div>
                   <div class="row" style="padding: 5px"></div>
-  
+
                   <div class="row">
                     <span
                       ><mat-label
                         class="payment-total-amount2 amount_right_align"
                         >{{ "AED" | translate }}
-                        {{ common.formatAmount(totalFee_coo) }}</mat-label
+                        {{ common.formatAmount(totalFee) }}</mat-label
                       ></span
                     >
                   </div>
@@ -706,127 +579,367 @@
                       ></span
                     >
                   </div>
-                </div>
-  
                   <!-- {{payment_button_isdisabled}} -->
+                </div>
                 <div class="gap-4 flex items-center justify-center col-span-2">
                   <button
+                    [disabled]="payment_button_isdisabled"
                     mat-flat-button
                     color="primary"
-                    (click)="processname='COO';processname_set='COOLCA'; AttestationPay()"
+                    (click)="AttestationPay()"
                     class="pay-btn"
                   >
                     {{ payorpayall | translate }}
                   </button>
                 </div>
-               </div>
-  <!-- if ends here -->
-  <div *ngIf="popup_iscooOnlyPayment" class="flex grid grid-cols-2 gap-6 p-5 payment-header-label">
-    <!--  -->
-    <!-- <div > -->
-    <div  class="p-1">
-      <mat-label class="payment-header-label">{{
-        "No. of COO" | translate
-      }}</mat-label>
-    </div>
-    <div   class="amount_right_align">{{ noofcoo }}</div>
-  
-    <div class="p-1">
-      <mat-label class="payment-header-label">{{
-        "COO Fees" | translate
-      }}</mat-label>
-    </div>
-    <div  class="amount_right_align">{{ "AED" | translate }} {{  common.formatAmount(cooamount) }}</div>
-    <div class="p-1"></div>
-    <div class="payment-total-amount">
-      <div class="row">
-        <span
-          ><mat-label
-            class="amount_right_align payment-header-label"
-            >{{ "Total Amount" | translate }}</mat-label
-          ></span
-        >
-      </div>
-      <div class="row" style="padding: 5px"></div>
-  
-      <div class="row">
-        <span
-          ><mat-label
-            class="payment-total-amount2 amount_right_align"
-            >{{ "AED" | translate }}
-            {{ common.formatAmount(totalAttestationFee) }}</mat-label
-          ></span
-        >
-      </div>
-      <div class="row" style="padding: 2px"></div>
-      <div class="row">
-        <span
-          ><mat-label
-            class="payment-total-amount3 amount_right_align"
-            >{{ "incl.VAT" | translate }}</mat-label
-          ></span
-        >
-      </div>
-    </div>
-  
-    <!-- pay button start -->
-  
-          <div class="gap-4 flex items-center justify-center col-span-2">
-            <button
-              mat-flat-button
-              color="primary"
-              (click)="processname='COO';processname_set='COO'; AttestationPay()"
-              class="pay-btn"
-            >
-              {{ payorpayall | translate }}
-            </button>
-          </div>
-  
-    <!-- pay button end -->
-  
-  
-  </div>
-  
-  
-  
-  <!--  -->
-  
-  
-  
-  
                 <div class="flex items-center justify-center col-span-2">
                   <a class="powered_by">{{ "Powered by" | translate }}</a>
                   &nbsp;<a class="magnati">{{ "magnati" | translate }}</a>
                 </div>
-              <!-- </div> -->
+              </div>
+            </mat-tab>
+            <mat-tab *ngIf="previewvisible" label="{{ 'Preview' | translate }}">
+              <div class="grid grid-cols-1">
+                <div id="outerContainer">
+                  <div class="pdf-container">
+                    <pdf-viewer
+                      [src]="src"
+                      [rotation]="0"
+                      [original-size]="false"
+                      [show-all]="true"
+                      [fit-to-page]="false"
+                      [zoom]="1"
+                      [zoom-scale]="'page-width'"
+                      [stick-to-page]="false"
+                      [render-text]="true"
+                      [external-link-target]="'blank'"
+                      [autoresize]="true"
+                      [show-borders]="false"
+                      style="width: 100%; height: 600px"
+                    ></pdf-viewer>
+                  </div>
+                </div>
+              </div>
             </mat-tab>
           </mat-tab-group>
         </div>
-           </ng-template>
-           
-                 <ng-template pTemplate="footer">
-  
-                  <button  *ngIf="showcoopaybutton && !selectedTabIndex"
-                  mat-flat-button 
-                  color="primary"
-                  (click)="cooonlypayment(cooAttestationLists)"
-                  class="pay-btn"
+      </div>
+    </div>
+  </div>
+</div>
+<br />
+
+<!-- modal -->
+
+<!-- <p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog> -->
+
+<!-- modal 1 end -->
+
+<!-- modal 2 -->
+
+<!-- modal details popup -->
+<p-dialog
+  [(visible)]="AddInvoiceDialog"
+  style="top: 20%; height: 80%"
+  [draggable]="false"
+  [dismissableMask]="false"
+  [style]="{ width: '750px' }"
+  header="{{ 'Attestation Details' | translate }}"
+  [modal]="true"
+  styleClass="p-fluid"
+>
+  <div class="viewmore">
+    <div class="more-content-section">
+      <div class="grid grid-cols-2">
+        <ng-container>
+          <div class="more-content" *ngFor="let field of fields">
+            <mat-label class="title-label">{{
+              field.label | translate
+            }}</mat-label>
+            <div class="more-content-body">
+              <mat-label class="more-content-block">{{
+                field.value
+              }}</mat-label>
+            </div>
+          </div>
+          <div class="more-content">
+            <mat-label class="title-label">{{
+              "Attestation File" | translate
+            }}</mat-label>
+            <div class="more-content-body">
+              <mat-label class="more-content-block"
+                >{{ popupDownloadfilename }}{{ ".pdf" }}
+                <span
+                  (click)="
+                    common.getimagebase64(
+                      currentrow.attestfilelocation,
+                      popupDownloadfilename
+                    )
+                  "
                 >
-                  {{ 'Pay' | translate }}
-                </button>
-                <button  *ngIf="showcoopaybutton  && !selectedTabIndex"
-                mat-flat-button 
+                  <mat-icon class="action_eye_icon_popup">download</mat-icon>
+                </span>
+              </mat-label>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      icon="pi pi-times"
+      (click)="AddInvoiceDialog = false"
+      label="{{ 'Cancel' | translate }}"
+      styleClass="p-confirm-dialog-reject"
+    ></p-button>
+  </ng-template>
+</p-dialog>
+<!-- modal 2 end -->
+
+<p-dialog
+  [(visible)]="AddInvoiceDialog_"
+  [style]="{ width: '750px', height: '550px' }"
+  header="{{ header | translate }}"
+  [modal]="true"
+  styleClass="p-fluid ui-dialog"
+>
+  <br />
+  <ng-template pTemplate="body">
+    <!-- hello -->
+    <div class="mofa-tab-section show mofa-tab-outer-mask">
+      <mat-tab-group
+        [selectedIndex]="selectedTabIndex"
+        (selectedIndexChange)="onTabChange($event)"
+      >
+        <mat-tab label="{{ 'Details' | translate }}">
+          <div class="grid grid-cols-1">
+            <br />
+            <div class="viewmore">
+              <div class="more-content-section">
+                <div class="grid grid-cols-2">
+                  <ng-container>
+                    <div class="more-content" *ngFor="let field of fields_coo">
+                      <mat-label class="title-label">{{
+                        field.label | translate
+                      }}</mat-label>
+                      <div class="more-content-body">
+                        <mat-label class="more-content-block">{{
+                          field.value
+                        }}</mat-label>
+                      </div>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab
+          label="{{ 'Payment' | translate }}"
+          *ngIf="isPaymentTabVisible"
+        >
+          <div
+            *ngIf="!popup_iscooOnlyPayment"
+            class="flex grid grid-cols-2 gap-6 p-5 payment-header-label"
+          >
+            <!--  -->
+            <!-- <div > -->
+            <div *ngIf="noOfInvoicesSelected_coo" class="p-1">
+              <mat-label class="payment-header-label">{{
+                "No. of Invoices" | translate
+              }}</mat-label>
+            </div>
+            <div *ngIf="noOfInvoicesSelected_coo" class="amount_right_align">
+              {{ noOfInvoicesSelected_coo }}
+            </div>
+            <!--  -->
+            <!--  -->
+            <div *ngIf="noOfInvoicesSelected_coo" class="p-1">
+              <mat-label class="payment-header-label">{{
+                "Attestation Fees" | translate
+              }}</mat-label>
+            </div>
+            <div *ngIf="noOfInvoicesSelected_coo" class="amount_right_align">
+              {{ "AED" | translate }}
+              {{ common.formatAmount(invoicefeesamount) }}
+            </div>
+            <!-- nil -->
+            <!--  -->
+            <div *ngIf="noOfInvoicesSelected_coo" class="p-1">
+              <mat-label class="payment-header-label">{{
+                "COO Fee" | translate
+              }}</mat-label>
+            </div>
+            <div *ngIf="noOfInvoicesSelected_coo" class="amount_right_align">
+              {{ "AED" | translate }} {{ common.formatAmount(cooamount) }}
+            </div>
+
+            <!--  -->
+            <div *ngIf="totalFineAmount_coo" class="p-1">
+              <mat-label class="payment-header-label">{{
+                "Total Fines" | translate
+              }}</mat-label>
+            </div>
+            <div *ngIf="totalFineAmount_coo" class="amount_right_align">
+              {{ totalFineAmount_coo }}
+            </div>
+            <div class="p-1"></div>
+            <div class="payment-total-amount">
+              <div class="row">
+                <span
+                  ><mat-label class="amount_right_align payment-header-label">{{
+                    "Total Amount" | translate
+                  }}</mat-label></span
+                >
+              </div>
+              <div class="row" style="padding: 5px"></div>
+
+              <div class="row">
+                <span
+                  ><mat-label class="payment-total-amount2 amount_right_align"
+                    >{{ "AED" | translate }}
+                    {{ common.formatAmount(totalFee_coo) }}</mat-label
+                  ></span
+                >
+              </div>
+              <div class="row" style="padding: 2px"></div>
+              <div class="row">
+                <span
+                  ><mat-label
+                    class="payment-total-amount3 amount_right_align"
+                    >{{ "incl.VAT" | translate }}</mat-label
+                  ></span
+                >
+              </div>
+            </div>
+
+            <!-- {{payment_button_isdisabled}} -->
+            <div class="gap-4 flex items-center justify-center col-span-2">
+              <button
+                mat-flat-button
                 color="primary"
-                (click)="cooAndInvoicetogether(cooAttestationLists)"
+                (click)="
+                  processname = 'COO';
+                  processname_set = 'COOLCA';
+                  AttestationPay()
+                "
                 class="pay-btn"
               >
-                {{ 'Pay COO & Invoice' | translate }}
+                {{ payorpayall | translate }}
               </button>
-  
-                   <p-button icon="pi pi-times" (click)="AddInvoiceDialog_ = false" label="{{'Cancel' | translate}}" styleClass="p-confirm-dialog-reject"></p-button>
-               </ng-template>
-            
-           </p-dialog>
-  
-  <!-- modal 2 end -->
-  
+            </div>
+          </div>
+          <!-- if ends here -->
+          <div
+            *ngIf="popup_iscooOnlyPayment"
+            class="flex grid grid-cols-2 gap-6 p-5 payment-header-label"
+          >
+            <!--  -->
+            <!-- <div > -->
+            <div class="p-1">
+              <mat-label class="payment-header-label">{{
+                "No. of COO" | translate
+              }}</mat-label>
+            </div>
+            <div class="amount_right_align">{{ noofcoo }}</div>
+
+            <div class="p-1">
+              <mat-label class="payment-header-label">{{
+                "COO Fees" | translate
+              }}</mat-label>
+            </div>
+            <div class="amount_right_align">
+              {{ "AED" | translate }} {{ common.formatAmount(cooamount) }}
+            </div>
+            <div class="p-1"></div>
+            <div class="payment-total-amount">
+              <div class="row">
+                <span
+                  ><mat-label class="amount_right_align payment-header-label">{{
+                    "Total Amount" | translate
+                  }}</mat-label></span
+                >
+              </div>
+              <div class="row" style="padding: 5px"></div>
+
+              <div class="row">
+                <span
+                  ><mat-label class="payment-total-amount2 amount_right_align"
+                    >{{ "AED" | translate }}
+                    {{ common.formatAmount(totalAttestationFee) }}</mat-label
+                  ></span
+                >
+              </div>
+              <div class="row" style="padding: 2px"></div>
+              <div class="row">
+                <span
+                  ><mat-label
+                    class="payment-total-amount3 amount_right_align"
+                    >{{ "incl.VAT" | translate }}</mat-label
+                  ></span
+                >
+              </div>
+            </div>
+
+            <!-- pay button start -->
+
+            <div class="gap-4 flex items-center justify-center col-span-2">
+              <button
+                mat-flat-button
+                color="primary"
+                (click)="
+                  processname = 'COO'; processname_set = 'COO'; AttestationPay()
+                "
+                class="pay-btn"
+              >
+                {{ payorpayall | translate }}
+              </button>
+            </div>
+
+            <!-- pay button end -->
+          </div>
+
+          <!--  -->
+
+          <div class="flex items-center justify-center col-span-2">
+            <a class="powered_by">{{ "Powered by" | translate }}</a>
+            &nbsp;<a class="magnati">{{ "magnati" | translate }}</a>
+          </div>
+          <!-- </div> -->
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button
+      *ngIf="showcoopaybutton && !selectedTabIndex"
+      mat-flat-button
+      color="primary"
+      (click)="cooonlypayment(cooAttestationLists)"
+      class="pay-btn"
+    >
+      {{ "Pay" | translate }}
+    </button>
+    <button
+      *ngIf="showcoopaybutton && !selectedTabIndex"
+      mat-flat-button
+      color="primary"
+      (click)="cooAndInvoicetogether(cooAttestationLists)"
+      class="pay-btn"
+    >
+      {{ "Pay COO & Invoice" | translate }}
+    </button>
+
+    <p-button
+      icon="pi pi-times"
+      (click)="AddInvoiceDialog_ = false"
+      label="{{ 'Cancel' | translate }}"
+      styleClass="p-confirm-dialog-reject"
+    ></p-button>
+  </ng-template>
+</p-dialog>
+
+<!-- modal 2 end -->
