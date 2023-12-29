@@ -1,7 +1,7 @@
 <div style="font-size: 12px !important; background-color: #ccc !important">
     <div class="grid grid-cols-1" color="primary" class="page-header">
       <label style="font-size: 14px; color: white; font-weight: bold"
-        >{{ "COO Attestation(s)" | translate }} - {{ "Pending" | translate }}
+        >{{ "Report" | translate }} - {{ "COO Attestation(s)" | translate }}
       </label>
     </div>
   
@@ -71,8 +71,24 @@
                     </div>
                     <!-- <mat-icon (click)="showInfo()" class="info">info</mat-icon> -->
                   </ng-template>
+
+                 
   
                   <ng-template pTemplate="right">
+
+                    <div style="padding: 5px" class="col-md-3 col-lg-3 col-sm-6">
+                      <mat-form-field class="searchboxinput">
+                        <mat-label>{{'Status' | translate }}</mat-label>
+                        <mat-select name="statusddl"  [(ngModel)]="selectedStatus" (selectionChange)="onDropdownChange($event)">
+                          <mat-option value="0">{{'Pending' | translate}}</mat-option>
+                          <mat-option value="1">{{'Completed'| translate}}</mat-option>
+                          <mat-option value="2">{{'All' | translate}}</mat-option>
+                        </mat-select>
+                     
+                      </mat-form-field>
+                    </div>
+
+
                     <div
                       *ngIf="enableFilters"
                       style="padding: 5px"

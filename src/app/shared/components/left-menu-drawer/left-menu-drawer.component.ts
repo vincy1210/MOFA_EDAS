@@ -260,13 +260,13 @@ export class LeftMenuDrawerComponent implements OnInit {
           hasubMenu: true,
           icon: 'feed',
           subMenus: [
-            { id: 1, menu: 'LCA - Pending', icon: 'play_arrow', link: '/reports/rptpendinglca' },
-            { id: 2, menu: 'LCA - Completed', icon: 'play_arrow', link: '/reports/rptlca' },
-            { id: 3, menu: 'COO - Pending', icon: 'play_arrow', link: '/reports/rptpendingcoo' },
-            { id: 3, menu: 'COO - Completed', icon: 'play_arrow', link: '/reports/rptcoo' },
-            { id: 4, menu: 'Physical - Pending',icon: 'play_arrow', link: '/reports/rptpendingphysical' },
+            { id: 1, menu: 'LCA', icon: 'play_arrow', link: '/reports/rptpendinglca' },
+            // { id: 2, menu: 'LCA - Completed', icon: 'play_arrow', link: '/reports/rptlca' },
+            { id: 3, menu: 'COO', icon: 'play_arrow', link: '/reports/rptpendingcoo' },
+            // { id: 3, menu: 'COO - Completed', icon: 'play_arrow', link: '/reports/rptcoo' },
+            { id: 4, menu: 'Physical',icon: 'play_arrow', link: '/reports/rptpendingphysical' },
 
-            { id: 4, menu: 'Physical - Completed',icon: 'play_arrow', link: '/reports/rptphysical' },
+            // { id: 4, menu: 'Physical - Completed',icon: 'play_arrow', link: '/reports/rptphysical' },
             { id: 5, menu: 'Fines', icon: 'play_arrow',link: '/reports/rptfines',},
           ],
         }

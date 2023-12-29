@@ -89,7 +89,7 @@ export class CooPendingComponent implements OnInit {
 
   fields: { label: string; value: any }[] = [];
   paymentcount = environment.appdetails.payment_count;
-
+  selectedStatus: string = '2'; 
   constructor(
     public dialog: MatDialog,
     private modalPopupService: ModalPopupService,
@@ -987,5 +987,9 @@ message=message+'<p>Uploading the COO document is as per the requirements of the
 
     this.common.showSweetAlert('Info', 'Policy sample message', message,'top-end');
     // this.common.showSweetAlert('Info', 'Policy sample message');
+  }
+
+  onDropdownChange(event:any){
+    console.log(event)
   }
 }

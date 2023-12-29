@@ -168,6 +168,7 @@ export class LcaPendingComponent implements OnInit {
     'ATTESTED',
     'COMPLETED',
   ];
+  selectedStatus: string = '2'; 
   form: FormGroup;
 
   AddInvoiceDialog: boolean = false;
@@ -198,6 +199,7 @@ export class LcaPendingComponent implements OnInit {
   popup_iscooOnlyPayment:boolean=false
   total_invoiceamount:any;
   total_feesamount:any;
+  status:number=2;
   constructor(
     private translate: TranslateService,
     private fb: FormBuilder,
@@ -399,16 +401,16 @@ export class LcaPendingComponent implements OnInit {
     });
   }
 
-  onfilterclick() {
-    const updatedLazyLoadEvent: LazyLoadEvent = {
-      // Modify properties as needed
-      first: 0,
-      rows: 10,
-      // ... other properties
-    };
-    // this.overdue=1;
-    this.InitTable(updatedLazyLoadEvent);
-  }
+  // onfilterclick() {
+  //   const updatedLazyLoadEvent: LazyLoadEvent = {
+  //     // Modify properties as needed
+  //     first: 0,
+  //     rows: 10,
+  //     // ... other properties
+  //   };
+  //   // this.overdue=1;
+  //   this.InitTable(updatedLazyLoadEvent);
+  // }
 
   InitTable($event: LazyLoadEvent) {
     console.log($event);
@@ -427,6 +429,7 @@ export class LcaPendingComponent implements OnInit {
         this.todayModel.toDateString()
       ),
       overdue: this.overdue,
+      status:0
     };
     this.loading = true;
     this.common.showLoading();
@@ -1380,6 +1383,20 @@ cooonlyPaymentDetailsCall(coorequestno:any){
       }
     },
   });
+}
+
+onDropdownChange(event:any){
+  console.log(event)
+
+  const updatedLazyLoadEvent: LazyLoadEvent = {
+    // Modify properties as needed
+    first: 0,
+    rows: 10,
+    // ... other properties
+  };
+  // this.overdue=1;
+  this.InitTable(updatedLazyLoadEvent);
+
 }
 
 }

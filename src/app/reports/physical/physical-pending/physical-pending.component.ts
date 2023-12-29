@@ -66,7 +66,7 @@ payorpayall:string='Pay';
 
 currentrow:any;
 isfilenotfouund:boolean=false;
-
+selectedStatus: string = '2'; 
 fields: { label: string, value: any }[] = [];
 isButtonDisabled = false;
 paymentcount=environment.appdetails.payment_count;
@@ -877,6 +877,10 @@ getSeverity_(status: string) {
     default:
       return 'danger';
   }
+}
+
+onDropdownChange(event:any){
+  console.log(event)
 }
  
 }

@@ -1,7 +1,7 @@
 <div style="font-size: 12px !important; background-color: #ccc !important">
     <div class="grid grid-cols-1" color="primary" class="page-header">
       <label style="font-size: 13px; color: white; font-weight: bold"
-        >{{ "Report" | translate }} - {{ "Draft" | translate }}
+        >{{ "Report" | translate }} - {{ "LCA" | translate }}
       </label>
     </div>
   
@@ -68,12 +68,14 @@
                           placeholder="{{ 'SearchKeyword' | translate }}"
                         />
                       </mat-form-field>
+
+                     
                     </div>
                   
                   </ng-template>
                   <ng-template pTemplate="right">
                     <!-- {{totalrecords}}  {{overdue}} -->
-                    <span
+                    <!-- <span
                       *ngIf="totalrecords != 0 || overdue == 1 || overdue == 2"
                     >
                       <span *ngIf="overdue_filter"
@@ -109,6 +111,8 @@
                         ></i>
                       </span>
                     </span>
+   -->
+
   
                   
                     <!-- <p-multiSelect
@@ -119,6 +123,18 @@
                     [style]="{ 'min-width': '200px' }"
                     placeholder="{{'Choose Columns' |translate}}"
                   ></p-multiSelect> -->
+
+                  <div style="padding: 5px" class="col-md-3 col-lg-3 col-sm-6">
+                    <mat-form-field class="searchboxinput">
+                      <mat-label>{{'Status' | translate }}</mat-label>
+                      <mat-select name="statusddl"  [(ngModel)]="selectedStatus" (selectionChange)="onDropdownChange($event)">
+                        <mat-option value="0">{{'Pending' | translate}}</mat-option>
+                        <mat-option value="1">{{'Completed'| translate}}</mat-option>
+                        <mat-option value="2">{{'All' | translate}}</mat-option>
+                      </mat-select>
+                   
+                    </mat-form-field>
+                  </div>
   
                     <div
                       *ngIf="enableFilters"

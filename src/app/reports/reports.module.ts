@@ -29,6 +29,7 @@ import { CooPendingComponent } from './coo/coo-pending/coo-pending.component';
 import { PhysicalPendingComponent } from './physical/physical-pending/physical-pending.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatButton, MatButtonModule } from '@angular/material/button';
 
 const routes: Routes = [
   {
@@ -111,7 +112,7 @@ const routes: Routes = [
     ToolbarModule,
     PdfViewerModule,
     TabViewModule,
-    MatSelectModule,MatTabsModule, MatChipsModule
+    MatSelectModule,MatTabsModule, MatChipsModule, MatButtonModule
   ],
 })
 export class ReportsModule {}
