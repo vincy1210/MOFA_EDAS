@@ -950,6 +950,14 @@ button.white-icon-button.mat-menu-item {
   transform: rotate(90deg) !important;
 }
 
+[dir="rtl"]
+.copyrights{
+  text-align: right;
+}
+.copyrights{
+  text-align: left;
+}
+
 .edit_footer {
   padding: 5px;
   text-align: left;
@@ -1673,6 +1681,7 @@ button.white-icon-button.mat-menu-item {
   .mat-list-item-content.active:before {
   left: auto;
   right: 0px;
+  padding: 5px;
 }
 
 .mat-list-base .mat-list-item .mat-list-item-content,
@@ -2440,6 +2449,9 @@ mat-toolbar.main-header {
 
 .mat-option-text {
   font-size: inherit !important;
+}
+.mat-list-item-content{
+
 }
 
 .cursor{

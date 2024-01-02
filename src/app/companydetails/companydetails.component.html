@@ -190,15 +190,24 @@
         <p class="mt-0 page-title-para">{{'These provided details will serve as the credentials for accessing the company profile once it has been approved.' | translate }}
         </p>
       </div>
-      <div class="grid grid-cols-1">
-
-        <mat-form-field appearance="outline">
-          <mat-label>{{'fullname' | translate }}</mat-label>
-          <input matInput  autocomplete="off" formControlName="companyrep_fullname" name="companyrep_fullname" placeholder="MOHAMMED ALI">
-          <mat-error *ngIf="companyDetailsForm.get('companyrep_fullname')?.hasError('required')">{{'Full name is required' | translate }} </mat-error>
-          <mat-error *ngIf="companyDetailsForm.get('companyrep_fullname')?.hasError('pattern')">{{'Full name is required' | translate }} </mat-error>
-
-        </mat-form-field>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <mat-form-field appearance="outline">
+            <mat-label>{{'fullname' | translate }}</mat-label>
+            <input matInput  autocomplete="off" formControlName="companyrep_fullname" name="companyrep_fullname" placeholder="MOHAMMED ALI">
+            <mat-error *ngIf="companyDetailsForm.get('companyrep_fullname')?.hasError('required')">{{'Full name is required' | translate }} </mat-error>
+            <mat-error *ngIf="companyDetailsForm.get('companyrep_fullname')?.hasError('pattern')">{{'Full name is required' | translate }} </mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="outline">
+            <mat-label>{{'Designation' | translate }}</mat-label>
+            <input matInput  autocomplete="off" formControlName="companyrep_designation" name="companyrep_designation" placeholder="">
+            <mat-error *ngIf="companyDetailsForm.get('companyrep_designation')?.hasError('required')">{{'Designation is required' | translate }} </mat-error>
+            <mat-error *ngIf="companyDetailsForm.get('companyrep_designation')?.hasError('pattern')">{{'Designation is required' | translate }} </mat-error>
+          </mat-form-field>
+        </div>
+        
 
       </div>
       <div class="grid grid-cols-2 gap-4">

@@ -199,6 +199,15 @@ editDialog(currentrow:any){
 
   console.log(currentrow);
   this.AddUserDialog=true;
+
+  let parsedValues=currentrow.accessprofiles;
+  if(parsedValues){
+    parsedValues  = JSON.parse(currentrow.accessprofiles.replace(/[\r\n]/g, ''));
+  }
+  else{
+    parsedValues=[];
+  }
+
   this.form.patchValue({
     company:this.currentcompany_name,
     username: currentrow.fullnameen,
@@ -207,7 +216,8 @@ editDialog(currentrow:any){
     mobilenumber:this.common.formatmobilenumber(currentrow.mobilenumber),
     role:currentrow.usertype,
     emiratesID:currentrow.eid,
-    useruno:currentrow.useruno
+    useruno:currentrow.useruno,
+     accessprofile:parsedValues
     // ... other form fields
   });
   this.createdtime=this.common.splitdatetime(currentrow.enteredon) || '';
@@ -270,7 +280,8 @@ onSubmitDialogModal(){
       "p_hasmultiplecompanyaccess":0,
       "p_useruno":0,
       "p_roleuno":roleuno,
-      "p_action":"ADD"
+      "p_accessprofiles":formdata.accessprofile,
+      "p_action":"ADD",
       }
 
       if(this.dialogActionButtonLabel==="Save"){
@@ -373,7 +384,8 @@ deleteuser(currentrow:any){
       "p_hasmultiplecompanyaccess":0,
       "p_useruno":currentrow.useruno,
       "p_roleuno":roleuno,
-      "p_action":"DELETE"
+      "p_accessprofiles":currentrow.accessprofiles,
+      "p_action":"DELETE",
       }
       this.common.showLoading();
 

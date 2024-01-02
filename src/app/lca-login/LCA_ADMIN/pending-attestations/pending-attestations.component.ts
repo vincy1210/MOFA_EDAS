@@ -150,12 +150,12 @@ export class PendingAttestationsComponent
       },
       {
         field: 'ExpPortCode',
-        header: 'Export port Code',
+        header: 'Export Port Code',
         errorrs: [],
       },
       {
         field: 'ExpPortName',
-        header: 'Export port Name',
+        header: 'Export Port Name',
         errorrs: [],
       },
       {

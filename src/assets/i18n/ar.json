@@ -226,14 +226,14 @@
   "couldnotsubmit": "لا يمكن الإرسال! بعض الصفوف غير صحيحة",
   "nothingtosubmit": "Kindly select invoice data to import",
   "deleterecord": "هل أنت متأكد من أنك تريد حذف المستخدم المحدد",
+  "Pending Attestation(s)": "تصديقات معلَقة",
+  "Completed Attestation(s)": "التصديقات المستكملة",
   "lcadetails": {
-    "Import Invoice(s)": "Import LCA Invoice(s)",
-    "Pending Attestation(s)": "تصديقات معلَقة",
-    "Completed Attestation(s)": "التصديقات المستكملة",
-    "Attestations - In Risk": "Attestations - In Risk",
-    "page.approvetitle": "LCA import",
+   
     "page.pendinglcatitle": "اسم LCA",
     "page.Risk": "في خطر",
+    
+   
 
     "page.completedlcatitle": "اسم LCA",
     "submitbtn": "أرسال/ تقديم",
@@ -421,5 +421,32 @@
   "Consignee Name": "اسم المستلم",
   "Email Address": "عنوان البريد الإلكتروني",
   "Contact No": "رقم الاتصال",
-  "Remarks": "ملاحظات"
+  "Remarks": "ملاحظات",
+
+  "Total Pending Attestations": "إجمالي الشهادات التي لم يتم توثيقها بعد",
+  "Pending LCA Attestations": "الشهادات LCA التي لم يتم توثيقها بعد",
+  "Requests": "الطلبات",
+  "Read Excel": "قراءة ملف Excel",
+  "Read Valid Excel Record": "قراءة سجل Excel صالح",
+  "Upload": "رفع",
+
+  "Settlement No": "رقم التسوية",
+  "No of Invoices": "عدد الفواتير",
+  "Total Amount": "المبلغ الإجمالي",
+  "Adjustment Amount": "مبلغ التعديل",
+  "Settlement Amount": "مبلغ التسوية",
+  "Settlement Cycle": "دورة التسوية",
+  "Payment Ref No": "رقم المرجع للدفع",
+  "Entered By": "تم إدخاله بواسطة",
+  "Actions": "الإجراءات",
+  "Settlements": "التسويات",
+  "Settlement": "التسويات",
+
+  "Import Invoice(s)": "استيراد الفاتورة(ات)",
+  "Import LCA Invoice(s)": "استيراد فاتورة(ات) LCA",
+  "Attestations - In Risk": "التوثيق - في خطر",
+  "page.approvetitle": "استيراد LCA",
+
+  "Designation": "المسمى الوظيفي",
+  "Designation is required": "المسمى الوظيفي مطلوب"
 }

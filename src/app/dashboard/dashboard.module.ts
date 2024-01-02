@@ -26,26 +26,59 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { PhoneMaskDirective } from './userslist/phone-mask.directive';
 import { EidFormatterPipe } from '../eid-formatter.pipe';
 import { TooltipModule } from 'primeng/tooltip';
+import { PayallComponent } from './payall/payall.component';
+import { MatTabsModule } from '@angular/material/tabs';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { MatChipsModule } from '@angular/material/chips';
+import { TagModule } from 'primeng/tag';
+import { CompanyProfileComponent } from './company-profile/company-profile.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { AuthGuard } from '../auth.guard';
+import { MatButtonModule } from '@angular/material/button';
+
+
 
 const routes: Routes = [
   {
-    path: 'Dashboard',
+    path: '',
     component: DashboardComponent,
+    data: { role: ['Admin', 'User'], name: 'dashboard' },
+    canActivate: [AuthGuard],
   },
   {
     path: 'userslist',
     component: UserslistComponent,
+    data: { role: ['Admin', 'User'], name: 'userslist' },
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'payall',
+    component: PayallComponent,
+  },
+  {
+    path: 'companyprofile',
+    component: CompanyProfileComponent,
   },
 ];
 
 @NgModule({
   declarations: [
+    PayallComponent,
     DashboardComponent,
     UserslistComponent,
     PhoneMaskDirective,
-    EidFormatterPipe
+    EidFormatterPipe,
+    CompanyProfileComponent
+    
   ],
   imports: [
+    MatButtonModule,
+    RouterModule.forChild(routes),
+    MatProgressSpinnerModule,
+    TagModule,
+    MatChipsModule,
+    PdfViewerModule,
+    MatTabsModule,
     RouterModule,
     TableModule,
     ToolbarModule,

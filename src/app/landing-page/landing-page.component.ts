@@ -136,6 +136,8 @@ export class LandingPageComponent implements OnInit {
       return;
     }
 
+    this.auth.setmycompanyprofile(this.selectedCompany);
+
     this.setfavourites(this.selectedCompany.companyuno);
     let companyuno = this.selectedCompany.companyuno;
     let business_name = this.selectedCompany.nameofbusiness;

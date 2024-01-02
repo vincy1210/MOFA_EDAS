@@ -120,63 +120,52 @@ export class LcaSettlementsReportsComponent
     this.cols = [
       {
         field: 'lcauno',
-        header: 'settlementdetails.settlementList.lcauno',
+        header: 'Channel Code',
       },
       {
         field: 'settlementuno',
-        header: 'settlementdetails.settlementList.settlementuno',
+        header: 'Settlement No',
       },
       {
         field: 'noofinvoices',
-        header: 'settlementdetails.settlementList.noofinvoices',
+        header: 'No of Invoices',
       },
       {
         field: 'totalamount',
-        header: 'settlementdetails.settlementList.totalamount',
+        header: 'Total Amount',
       },
       {
         field: 'invoiceamount',
-        header: 'settlementdetails.settlementList.invoiceamount',
+        header: 'Invoice Amount',
       },
       {
         field: 'adjustmentamount',
-        header: 'settlementdetails.settlementList.adjustmentamount',
+        header: 'Adjustment Amount',
       },
       {
         field: 'settlementamount',
-        header: 'settlementdetails.settlementList.settlementamount',
+        header: 'Settlement Amount',
       },
       {
         field: 'settlementcycle',
-        header: 'settlementdetails.settlementList.settlementcycle',
+        header: 'Settlement Cycle',
       },
       {
         field: 'paymentref',
-        header: 'settlementdetails.settlementList.paymentref',
+        header: 'Payment Ref No',
       },
-      // {
-      //   field: "paymentremarks",
-      //   header: "settlementdetails.settlementList.paymentremarks",
-      // },
-      // {
-      //   field: "settlementremarks",
-      //   header: "settlementdetails.settlementList.settlementremarks",
-      // },
-      // {
-      //   field: "settlementstatus",
-      //   header: "settlementdetails.settlementList.settlementstatus",
-      // },
+      
       {
         field: 'enteredon',
-        header: 'settlementdetails.settlementList.enteredon',
+        header: 'Entered On',
       },
       {
         field: 'enteredby',
-        header: 'settlementdetails.settlementList.enteredby',
+        header: 'Entered By',
       },
       {
         field: 'action',
-        header: 'companydetails.companyList.action',
+        header: 'actions',
       },
     ];
     //
@@ -435,42 +424,42 @@ export class LcaSettlementsReportsComponent
 
   exportExcel() {
     const jsonData = {
-      lcauno: this.translate.instant('settlementdetails.settlementList.lcauno'),
+      lcauno: this.translate.instant('lcauno'),
       settlementuno: this.translate.instant(
-        'settlementdetails.settlementList.settlementuno'
+        'settlementuno'
       ),
       noofinvoices: this.translate.instant(
-        'settlementdetails.settlementList.noofinvoices'
+        'noofinvoices'
       ),
       totalamount: this.translate.instant(
-        'settlementdetails.settlementList.totalamount'
+        'totalamount'
       ),
       invoiceamount: this.translate.instant(
-        'settlementdetails.settlementList.invoiceamount'
+        'invoiceamount'
       ),
       adjustmentamount: this.translate.instant(
-        'settlementdetails.settlementList.adjustmentamount'
+        'adjustmentamount'
       ),
       settlementamount: this.translate.instant(
-        'settlementdetails.settlementList.settlementamount'
+        'settlementamount'
       ),
       settlementcycle: this.translate.instant(
-        'settlementdetails.settlementList.settlementcycle'
+        'settlementcycle'
       ),
       paymentref: this.translate.instant(
-        'settlementdetails.settlementList.paymentref'
+        'paymentref'
       ),
       // paymentremarks: this.translate.instant(
-      //   "settlementdetails.settlementList.paymentremarks"
+      //   "paymentremarks"
       // ),
       // settlementremarks: this.translate.instant(
-      //   "settlementdetails.settlementList.settlementremarks"
+      //   "settlementremarks"
       // ),
       // settlementstatus: this.translate.instant(
-      //   "settlementdetails.settlementList.settlementstatus"
+      //   "settlementstatus"
       // ),
       enteredon: this.translate.instant(
-        'settlementdetails.settlementList.enteredon'
+        'enteredon'
       ),
       enteredby: this.translate.instant('companydetails.companyList.enteredby'),
     };

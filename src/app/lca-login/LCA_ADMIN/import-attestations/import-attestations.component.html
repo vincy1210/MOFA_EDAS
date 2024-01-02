@@ -110,7 +110,7 @@
                               class="mr-2 grid-header-right-btn"
                               tooltipPosition="bottom"
                             >
-                              Read valid excel record
+                             {{' Read Valid Excel Record' | translate}}
                             </button>
                             <button
                               type="button"
@@ -121,7 +121,7 @@
                               class="mr-2 grid-header-right-btn"
                               tooltipPosition="bottom"
                             >
-                              Read Excel
+                              {{'Read Excel' | translate}}
                             </button>
                             <button
                               type="button"
@@ -141,7 +141,7 @@
                               (click)="clickChips()"
                               class="mr-2 grid-header-right-icon"
                               [ngClass]="{ clicked: enableFilters }"
-                              [pTooltip]="'filter' | translate"
+                              [pTooltip]="'Filter' | translate"
                               tooltipPosition="bottom"
                             ></button>
            <!-- </ng-template> -->
@@ -153,10 +153,10 @@
                               icon="pi pi-plus"
                               (click)="openDialogAdd()"
                               class="mr-2 grid-header-right-btn"
-                              [pTooltip]="'upload' | translate"
+                              [pTooltip]="'Upload' | translate"
                               tooltipPosition="bottom"
                             >
-                              &nbsp;Upload
+                              &nbsp;{{'Upload' | translate}}
                             </button>
                           </div>
                         <!-- </div> -->
@@ -214,7 +214,7 @@
                   }"
                 >
                   <span class="p-column-title">{{
-                    "lcadetails.lcadetailList.LCACode" | translate
+                    "Channel Code" | translate
                   }}</span>
                   <span class="image-text">{{ data.LCACode }}</span>
                 </td>
@@ -226,7 +226,7 @@
                   }"
                 >
                   <span class="p-column-title">{{
-                    "lcadetails.lcadetailList.RequestNo" | translate
+                    "Request No" | translate
                   }}</span>
                   <span class="image-text">{{ data.RequestNo }}</span>
                 </td>
@@ -238,7 +238,7 @@
                   }"
                 >
                   <span class="p-column-title">{{
-                    "lcadetails.lcadetailList.RequestDate" | translate
+                    "Request Date" | translate
                   }}</span>
                   <span class="image-text">{{ data.RequestDate }}</span>
                 </td>
@@ -250,7 +250,7 @@
                   }"
                 >
                   <span class="p-column-title">{{
-                    "lcadetails.lcadetailList.DeclarationNo" | translate
+                    "Declaration No" | translate
                   }}</span>
                   <span class="image-text">{{ data.DeclarationNo }}</span>
                 </td>
@@ -262,7 +262,7 @@
                   }"
                 >
                   <span class="p-column-title">{{
-                    "lcadetails.lcadetailList.DeclarationDate" | translate
+                    "Declaration Date" | translate
                   }}</span>
                   <span class="image-text">{{common.splitdatetime(data.DeclarationDate)?.date  }}</span>
                 </td>
@@ -274,7 +274,7 @@
                   }"
                 >
                   <span class="p-column-title">{{
-                    "lcadetails.lcadetailList.TradelicenceNo" | translate
+                    "Tradelicence No" | translate
                   }}</span>
                   <span class="image-text">{{ data.TradelicenceNo }}</span>
                 </td>
@@ -286,7 +286,7 @@
                   }"
                 >
                   <span class="p-column-title">{{
-                    "lcadetails.lcadetailList.ConsigneeName" | translate
+                    "Consignee Name" | translate
                   }}</span>
                   <span class="image-text">{{ data.ConsigneeName }}</span>
                 </td>
@@ -298,7 +298,7 @@
                   }"
                 >
                   <span class="p-column-title">{{
-                    "lcadetails.lcadetailList.EmailAddress" | translate
+                    "Email Address" | translate
                   }}</span>
                   <span class="image-text">{{ data.EmailAddress }}</span>
                 </td>
@@ -310,7 +310,7 @@
                   }"
                 >
                   <span class="p-column-title">{{
-                    "lcadetails.lcadetailList.ContactNo" | translate
+                    "Contact No" | translate
                   }}</span>
                   <span class="image-text">{{ data.ContactNo }}</span>
                 </td>
@@ -322,7 +322,7 @@
                   }"
                 >
                   <span class="p-column-title">{{
-                    "lcadetails.lcadetailList.DocType" | translate
+                    "Document Type" | translate
                   }}</span>
                   <span class="image-text">{{ data.DocType }}</span>
                 </td>
@@ -334,7 +334,7 @@
                   }"
                 >
                   <span class="p-column-title">{{
-                    "lcadetails.lcadetailList.ExpPortCode" | translate
+                    "Export Port Code" | translate
                   }}</span>
                   <span class="image-text">{{ data.ExpPortCode }}</span>
                 </td>
@@ -346,7 +346,7 @@
                   }"
                 >
                   <span class="p-column-title">{{
-                    "lcadetails.lcadetailList.ExpPortName" | translate
+                    "Export Port Name" | translate
                   }}</span>
                   <span class="image-text">{{ data.ExpPortName }}</span>
                 </td>
@@ -358,7 +358,7 @@
                   }"
                 >
                   <span class="p-column-title">{{
-                    "lcadetails.lcadetailList.Mode" | translate
+                    "Mode" | translate
                   }}</span>
                   <span class="image-text">{{ data.Mode }}</span>
                 </td>
@@ -370,7 +370,7 @@
                   }"
                 >
                   <span class="p-column-title">{{
-                    "lcadetails.lcadetailList.AttestationNo" | translate
+                    "Attestation No" | translate
                   }}</span>
                   <span class="image-text">{{ data.AttestationNo }}</span>
                 </td>
@@ -382,7 +382,7 @@
                   }"
                 >
                   <span class="p-column-title">{{
-                    "lcadetails.lcadetailList.InvoiceDate" | translate
+                    "Invoice Date" | translate
                   }}</span>
                   <span class="image-text">{{ data.InvoiceDate }}</span>
                 </td>
@@ -394,7 +394,7 @@
                   }"
                 >
                   <span class="p-column-title">{{
-                    "lcadetails.lcadetailList.InvoiceAmount" | translate
+                    "Invoice Amount" | translate
                   }}</span>
                   <span class="image-text">{{ data.InvoiceAmount }}</span>
                 </td>
@@ -406,7 +406,7 @@
                   }"
                 >
                   <span class="p-column-title">{{
-                    "lcadetails.lcadetailList.InvoiceNo" | translate
+                    "Invoice No" | translate
                   }}</span>
                   <span class="image-text">{{ data.InvoiceNo }}</span>
                 </td>
@@ -418,7 +418,7 @@
                   }"
                 >
                   <span class="p-column-title">{{
-                    "lcadetails.lcadetailList.InvoiceCurrency" | translate
+                    "Invoice Currency" | translate
                   }}</span>
                   <span class="image-text">{{ data.InvoiceCurrency }}</span>
                 </td>
@@ -430,7 +430,7 @@
                   }"
                 >
                   <span class="p-column-title">{{
-                    "lcadetails.lcadetailList.InvoiceId" | translate
+                    "Invoice ID" | translate
                   }}</span>
                   <span class="image-text">{{ data.InvoiceId }}</span>
                 </td>
@@ -442,7 +442,7 @@
                   }"
                 >
                   <span class="p-column-title">{{
-                    "lcadetails.lcadetailList.CompanyName" | translate
+                    "Company Name" | translate
                   }}</span>
                   <span class="image-text">{{ data.CompanyName }}</span>
                 </td>
@@ -454,7 +454,7 @@
                   }"
                 >
                   <span class="p-column-title">{{
-                    "lcadetails.lcadetailList.Remarks" | translate
+                    "Remarks" | translate
                   }}</span>
                   <span class="image-text">{{ data.Remarks }}</span>
                 </td>
@@ -466,7 +466,7 @@
                   }"
                 >
                   <span class="p-column-title">{{
-                    "lcadetails.lcadetailList.Status" | translate
+                    "Status" | translate
                   }}</span>
                   <span class="image-text">
                     <p-tag
@@ -500,7 +500,7 @@
             </ng-template>
             <ng-template pTemplate="emptymessage">
               <tr>
-                <td colspan="100">{{ "noDataFound" | translate }}</td>
+                <td colspan="100">{{ "No data found" | translate }}</td>
               </tr>
             </ng-template>
           </p-table>

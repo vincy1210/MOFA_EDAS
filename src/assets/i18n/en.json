@@ -324,5 +324,9 @@
     }
   },
   "pay": "Pay",
-  "Pay All": "Pay All"
+  "Pay All": "Pay All",
+
+  
+  "Designation": "Designation",
+  "Designation is required": "Designation is required"
 }

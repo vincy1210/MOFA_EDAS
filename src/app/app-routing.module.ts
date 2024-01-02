@@ -4,16 +4,14 @@ import { CompanydetailsComponent } from './companydetails/companydetails.compone
 import { RegistrationComponent } from './registration/registration.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { AttestationWorkflowComponent } from './shared/components/attestation-workflow/attestation-workflow.component';
-import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
-// import { ESealTestComponent } from './e-seal-test/e-seal-test.component';
 import { LoginComponent } from './login/login.component';
 import { PaymentinfoComponent } from './paymentinfo/paymentinfo.component';
-import { UserslistComponent } from './dashboard/userslist/userslist.component';
 import { ErrorComponent } from './error/error.component';
 import { AuthGuard } from './auth.guard';
 import { RoleGuard } from './role.guard';
 import { UnauthorizedComponent } from './error/unauthorized/unauthorized.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { FinedetailsComponent } from './finedetails/finedetails.component';
 
 const routes: Routes = [
   {
@@ -22,6 +20,7 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   { path: 'registration', component: RegistrationComponent },
+  {path:'Finedetails', component:FinedetailsComponent},
   {
     path: 'companydetails',
     component: CompanydetailsComponent,
@@ -39,21 +38,17 @@ const routes: Routes = [
     component: AttestationWorkflowComponent,
     data: { role: ['Admin', 'User'] },
   },
-  {
-    path: 'dashboard',
-    component: DashboardComponent,
-    data: { role: ['Admin', 'User'], name: 'dashboard' },
-    canActivate: [AuthGuard],
-  },
+  
+  // {
+  //   path: 'payall',
+  //   component: PayallComponent,
+  //   // data: { role: ['Admin', 'User'], name: 'payall' },
+  //   // canActivate: [AuthGuard],
+  // },
   // {path:'ESealTest', component:ESealTestComponent},
   { path: 'login', component: LoginComponent },
   { path: 'paymentdetails', component: PaymentinfoComponent },
-  {
-    path: 'userslist',
-    component: UserslistComponent,
-    data: { role: ['Admin', 'User'], name: 'userslist' },
-    canActivate: [AuthGuard],
-  },
+ 
   { path: 'logout', component: ErrorComponent },
 
   {
@@ -78,7 +73,14 @@ const routes: Routes = [
     path: 'lca-login',
     loadChildren: () =>
       import('./lca-login/lca-login.module').then((m) => m.LcaLoginModule),
-  },
+  }
+  ,
+  {
+    path: 'shared',
+    loadChildren: () =>
+      import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
+  }
+  ,
   { path: 'unauthorized', component: UnauthorizedComponent },
   { path: '**', component: PageNotFoundComponent },
 ];

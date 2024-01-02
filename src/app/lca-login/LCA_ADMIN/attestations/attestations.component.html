@@ -3,25 +3,25 @@
   <div class="container mx-auto px-32 registration-window">
     <div class="grid grid-cols-4 gap-6 px-5 py-3">
       <div class="grid grid-cols-1 dashboard-card p-5">
-        <p>Requests</p>
+        <p>{{'Requests' | translate}}</p>
         <h1 class="font-bold dashboard-scores">
           {{ totalTile.noofrequestsubmitted }}
         </h1>
       </div>
       <div class="grid grid-cols-1 dashboard-card p-5">
-        <p>Pending</p>
+        <p>{{'Pending' | translate}}</p>
         <h1 class="font-bold dashboard-scores">
           {{ totalTile.noofrequestpending }}
         </h1>
       </div>
       <div class="grid grid-cols-1 dashboard-card p-5">
-        <p>Completed</p>
+        <p>{{'Completed' | translate}}</p>
         <h1 class="font-bold dashboard-scores">
           {{ totalTile.noofrequestcompleted }}
         </h1>
       </div>
       <div class="grid grid-cols-1 dashboard-card p-5">
-        <p>In Risk</p>
+        <p>{{'In Risk' | translate}}</p>
         <h1 class="font-bold dashboard-scores">
           {{ totalTile.noofrequestinrisk }}
         </h1>
@@ -32,7 +32,7 @@
       <div class="grid grid-cols-1 bg-white-r p-5">
         <div class="grid grid-cols-3">
           <div>
-            <h1 class="font-bold float-left mr-3">LCA Attestation Requests</h1>
+            <h1 class="font-bold float-left mr-3">{{'LCA Attestation Requests' | translate}}</h1>
             <div style="width: 100px" class="float-left">
               <!-- <mat-form-field appearance="outline">
                 <mat-label>Select</mat-label>
@@ -53,12 +53,12 @@
                 <mat-list-item role="listitem">
                   <mat-icon class="mr-1 kd-dot kdl-chart-color-brown"
                     >circle</mat-icon
-                  >Completed
+                  >{{'Completed' | translate}}
                 </mat-list-item>
                 <mat-list-item role="listitem">
                   <mat-icon class="mr-1 kd-dot kdl-chart-color-black"
                     >circle</mat-icon
-                  >Pending
+                  >{{'Pending' | translate}}
                 </mat-list-item>
               </mat-list>
             </div>

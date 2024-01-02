@@ -3,10 +3,10 @@
   <div class="grid grid-cols-1" color="primary" class="page-header">
     <h3>
       <ng-container *ngIf="routesname === 'pending'">{{
-        "settlementdetails.page.approvetitle" | translate
+        "Settlements" | translate
       }}</ng-container>
       <ng-container *ngIf="routesname === 'approve'">{{
-        "settlementdetails.page.approvetitle" | translate
+        "Settlements" | translate
       }}</ng-container>
     </h3>
   </div>
@@ -60,14 +60,15 @@
             ]"
           >
             <ng-template pTemplate="caption">
-              <div class="p-d-flex grid-header">
-                <div class="grid-header-left">
+              <!-- <div class="p-d-flex grid-header"> -->
+                <p-toolbar>
+                <!-- <div class="grid-header-left"> -->
+                  <ng-template pTemplate="left">
                   <div style="padding: 5px" class="col-md-3 col-lg-3 col-sm-6">
                     <mat-form-field class="searchboxinput">
                       <mat-label
                         ><mat-icon style="font-size: larger">search</mat-icon>
-                        {{ "SearchKeyword" | translate }}</mat-label
-                      >
+                        {{ "SearchKeyword" | translate }}</mat-label >
                       <input
                         matInput
                         type="text"
@@ -81,33 +82,18 @@
                       />
                     </mat-form-field>
                   </div>
-                </div>
+                </ng-template>
+                <!-- </div> -->
                 <!-- *ngIf="routesname === 'pending'" -->
-                <div class="grid-header-center">
-                  <div class="grid grid-cols-1">
-                    <mat-form-field
-                      appearance="outline"
-                      style="visibility: hidden"
-                    >
-                      <mat-label>{{ "lcauno" | translate }}</mat-label>
-                      <mat-select
-                        name="lcauno"
-                        [(ngModel)]="lcauno"
-                        (selectionChange)="onDropdownChange($event, 'lcauno')"
-                      >
-                        <mat-option
-                          *ngFor="let data of lcaList"
-                          [value]="data.itemno"
-                          >{{ data.itemname }}</mat-option
-                        >
-                      </mat-select>
-                    </mat-form-field>
-                  </div>
+                <!-- <div class="grid-header-center"> -->
+                 
+                <!-- </div> -->
+                <ng-template pTemplate="right">
+                <!-- <div > -->
                   <!-- month selection -->
-                  <div class="custom-container1">
-                    <mat-form-field
-                      class="example-form-field custom-mat-form-field"
-                    >
+                  <!-- <div > -->
+                    <div class="col-md-3 col-lg-3  col-md-6">
+                    <mat-form-field   class="filter_datepicker">
                       <mat-label>{{ "Month" | translate }}</mat-label>
                       <input
                         matInput
@@ -116,9 +102,7 @@
                         name="selectmonth"
                         [(ngModel)]="monthname"
                         (dateInput)="addEvent('input', $event)"
-                        appDisableKeyboardInput
-                        
-                      />
+                        appDisableKeyboardInput />
                       <mat-datepicker-toggle
                         matSuffix
                         [for]="selectmonth"
@@ -128,9 +112,7 @@
                         startView="multi-year"
                         (yearSelected)="chosenYearHandler($event)"
                         (monthSelected)="
-                          chosenMonthHandler($event, selectmonth)
-                        "
-                      >
+                          chosenMonthHandler($event, selectmonth) " >
                         <mat-datepicker-actions>
                           <button mat-button matDatepickerCancel>
                             {{ "cancelbtn" | translate }}
@@ -147,91 +129,8 @@
                       </mat-datepicker>
                     </mat-form-field>
                   </div>
-                </div>
-                <div class="grid-header-right">
-                  <ng-container *ngIf="enableFilters">
-                    <div
-                      class="hidden lg:flex gap-2 full-content"
-                      *ngIf="false"
-                    >
-                      <!-- fromdate -->
-                      <div class="custom-container">
-                        <mat-form-field
-                          class="example-form-field custom-mat-form-field"
-                        >
-                          <mat-label>{{
-                            "completedCooRequests.fromdate" | translate
-                          }}</mat-label>
-                          <input
-                            matInput
-                            [matDatepicker]="fromdate"
-                            placeholder="DD-MMM-YYYY"
-                            name="fromdate"
-                            [(ngModel)]="selectedFilterOption.Startdate"
-                            appDisableKeyboardInput
-                            
-                          />
-                          <mat-datepicker-toggle
-                            matSuffix
-                            [for]="fromdate"
-                          ></mat-datepicker-toggle>
-                          <mat-datepicker #fromdate>
-                            <mat-datepicker-actions>
-                              <button mat-button matDatepickerCancel>
-                                {{ "cancelbtn" | translate }}
-                              </button>
-                              <button
-                                mat-raised-button
-                                color="primary"
-                                matDatepickerApply
-                                (click)="onClickFilterOptionDate(true)"
-                              >
-                                {{ "applybtn" | translate }}
-                              </button>
-                            </mat-datepicker-actions>
-                          </mat-datepicker>
-                        </mat-form-field>
-                      </div>
-                      <!-- todate -->
-                      <div class="custom-container">
-                        <mat-form-field
-                          class="example-form-field custom-mat-form-field"
-                        >
-                          <mat-label>{{
-                            "completedCooRequests.todate" | translate
-                          }}</mat-label>
-                          <input
-                            matInput
-                            [matDatepicker]="todate"
-                            placeholder="DD-MMM-YYYY"
-                            name="todate"
-                            [(ngModel)]="selectedFilterOption.Enddate"
-                            appDisableKeyboardInput
-                            
-                          />
-                          <mat-datepicker-toggle
-                            matSuffix
-                            [for]="todate"
-                          ></mat-datepicker-toggle>
-                          <mat-datepicker #todate>
-                            <mat-datepicker-actions>
-                              <button mat-button matDatepickerCancel>
-                                {{ "cancelbtn" | translate }}
-                              </button>
-                              <button
-                                mat-raised-button
-                                color="primary"
-                                matDatepickerApply
-                                (click)="onClickFilterOptionDate(true)"
-                              >
-                                {{ "applybtn" | translate }}
-                              </button>
-                            </mat-datepicker-actions>
-                          </mat-datepicker>
-                        </mat-form-field>
-                      </div>
-                    </div>
-                  </ng-container>
+                  <!-- </div> -->
+                  <span style="padding: 10px"></span>
                   <button
                     type="button"
                     pButton
@@ -250,22 +149,13 @@
                     (click)="clickChips()"
                     class="mr-2 grid-header-right-icon"
                     [ngClass]="{ clicked: enableFilters }"
-                    [pTooltip]="'filter' | translate"
+                    [pTooltip]="'Filter' | translate"
                     tooltipPosition="bottom"
                   ></button>
-                  <!-- <button
-                    type="button"
-                    pButton
-                    pRipple
-                    icon="pi pi-plus"
-                    (click)="openDialogAdd()"
-                    *ngIf="routesname === 'pending' && permission.add"
-                    class="mr-2 grid-header-right-icon"
-                    [pTooltip]="'companydetails.add' | translate"
-                    tooltipPosition="bottom"
-                  ></button> -->
-                </div>
-              </div>
+                <!-- </div> -->
+              </ng-template>
+              <!-- </div> -->
+             </p-toolbar>
             </ng-template>
             <ng-template pTemplate="header" let-columns>
               <tr>
@@ -314,25 +204,25 @@
               >
                 <td class="lg:noaction-width-header">
                   <span class="p-column-title">{{
-                    "settlementdetails.settlementList.lcauno" | translate
+                    "lcauno" | translate
                   }}</span>
                   <span class="image-text">{{ data.lcaname }}</span>
                 </td>
                 <td class="lg:noaction-width-header">
                   <span class="p-column-title">{{
-                    "settlementdetails.settlementList.settlementuno" | translate
+                    "settlementuno" | translate
                   }}</span>
                   <span class="image-text">{{ data.settlementuno }}</span>
                 </td>
                 <td class="">
                   <span class="p-column-title">{{
-                    "settlementdetails.settlementList.noofinvoices" | translate
+                    "noofinvoices" | translate
                   }}</span>
                   <span class="image-text">{{ data.noofinvoices }}</span>
                 </td>
                 <td class="lg:noaction-width-header">
                   <span class="p-column-title">{{
-                    "settlementdetails.settlementList.totalamount" | translate
+                    "totalamount" | translate
                   }}</span>
                   <span class="image-text amount-text">{{
                     data.totalamount | customCurrency
@@ -340,7 +230,7 @@
                 </td>
                 <td class="lg:noaction-width-header">
                   <span class="p-column-title">{{
-                    "settlementdetails.settlementList.invoiceamount" | translate
+                    "invoiceamount" | translate
                   }}</span>
                   <span class="image-text amount-text">{{
                     data.invoiceamount | customCurrency
@@ -348,7 +238,7 @@
                 </td>
                 <td class="lg:noaction-width-header">
                   <span class="p-column-title">{{
-                    "settlementdetails.settlementList.adjustmentamount"
+                    "adjustmentamount"
                       | translate
                   }}</span>
                   <span class="image-text amount-text">{{
@@ -357,7 +247,7 @@
                 </td>
                 <td class="lg:noaction-width-header">
                   <span class="p-column-title">{{
-                    "settlementdetails.settlementList.settlementamount"
+                    "settlementamount"
                       | translate
                   }}</span>
                   <span class="image-text amount-text">{{
@@ -366,34 +256,34 @@
                 </td>
                 <td class="lg:noaction-width-header">
                   <span class="p-column-title">{{
-                    "settlementdetails.settlementList.settlementcycle"
+                    "settlementcycle"
                       | translate
                   }}</span>
                   <span class="image-text">{{ data.settlementcycle }}</span>
                 </td>
                 <td class="lg:noaction-width-header">
                   <span class="p-column-title">{{
-                    "settlementdetails.settlementList.paymentref" | translate
+                    "paymentref" | translate
                   }}</span>
                   <span class="image-text">{{ data.paymentref }}</span>
                 </td>
                 <!-- <td class="lg:noaction-width-header">
                   <span class="p-column-title">{{
-                    "settlementdetails.settlementList.paymentremarks"
+                    "paymentremarks"
                       | translate
                   }}</span>
                   <span class="image-text">{{ data.paymentremarks }}</span>
                 </td>
                 <td class="lg:noaction-width-header">
                   <span class="p-column-title">{{
-                    "settlementdetails.settlementList.settlementremarks"
+                    "settlementremarks"
                       | translate
                   }}</span>
                   <span class="image-text">{{ data.settlementremarks }}</span>
                 </td> -->
                 <!-- <td class="lg:noaction-width-header">
                   <span class="p-column-title">{{
-                    "settlementdetails.settlementList.settlementstatus"
+                    "settlementstatus"
                       | translate
                   }}</span>
                   <span class="image-text">

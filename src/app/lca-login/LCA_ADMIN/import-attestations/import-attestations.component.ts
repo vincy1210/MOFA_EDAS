@@ -138,7 +138,7 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
       },
       {
         field: 'TradelicenceNo',
-        header: 'Tradelicence No',
+        header: 'Trade Licence No',
         errorrs: [],
       },
       {
@@ -168,7 +168,7 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
       },
       {
         field: 'ExpPortName',
-        header: 'Export port Name',
+        header: 'Export Port Name',
         errorrs: [],
       },
       {

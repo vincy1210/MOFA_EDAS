@@ -138,6 +138,7 @@ if(this.reg_form_data==undefined){
       Comp_contact_number:['', [Validators.required, Validators.maxLength(9), Validators.minLength(9), Validators.pattern(/^5\d+$/)]],
       Upload_trade_license:['', Validators.required],
       companyrep_fullname:['',[Validators.required, Validators.pattern('^(?=.*\\S).+$')]],
+      companyrep_designation:['',[Validators.required, Validators.pattern('^(?=.*\\S).+$')]],
       companyrep_EmailAddress:['',[Validators.required, Validators.email]],
       companyrep_MobileNumber:['',[Validators.required, Validators.maxLength(9), Validators.minLength(9), Validators.pattern(/^5\d+$/)]],
       isbroker: ['2', Validators.required],
@@ -346,6 +347,7 @@ if(this.reg_form_data==undefined){
       "IssuingAuthorityType":this.reg_form_data.expressType,
       "captchakey":this.captcha_token,
       "isbroker":form.isbroker,
+      "repdesignation":form.companyrep_designation
 
     }
   

@@ -315,7 +315,7 @@ this.reset();
   }
 
   goToHome() {
-    this.router.navigate(['/dashboard']); // Replace '/home' with the desired URL
+    this.router.navigate(['/shared/']); // Replace '/home' with the desired URL
   }
   closeDrawer(drawer: MatDrawer) {
     console.log('in app component after drawer change');

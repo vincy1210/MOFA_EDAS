@@ -156,7 +156,7 @@ export class CompletedAttestationsComponent
       },
       {
         field: 'ExpPortName',
-        header: 'Export port Name',
+        header: 'Export Port Name',
         errorrs: [],
       },
       {

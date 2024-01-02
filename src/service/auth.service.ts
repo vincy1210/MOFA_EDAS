@@ -171,6 +171,16 @@ export class AuthService {
     }
   }
 
+  setmycompanyprofile(data:any){
+    sessionStorage.setItem('companyprofile', JSON.stringify(data));
+  }
+
+
+  getmycompanyprofile(){
+    let abc=sessionStorage.getItem('companyprofile');
+    return abc;
+  }
+
   isAuthenticated(): boolean {
     const userProfile = this.getUserProfile();
     const selectedCompany = this.getSelectedCompany();

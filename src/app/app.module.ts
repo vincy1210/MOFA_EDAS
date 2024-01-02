@@ -75,7 +75,6 @@ import {
 } from 'ng-recaptcha';
 
 import { LandingPageComponent } from './landing-page/landing-page.component';
-import { DashboardModule } from './dashboard/dashboard.module';
 
 import { DialogModule } from 'primeng/dialog';
 
@@ -99,6 +98,7 @@ import { AuthGuard } from './auth.guard';
 import { UnauthorizedComponent } from './error/unauthorized/unauthorized.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { FinedetailsComponent } from './finedetails/finedetails.component';
 
 // Define the custom date format
 const customDateFormats: MatDateFormats = {
@@ -126,6 +126,7 @@ const customDateFormats: MatDateFormats = {
     PaymentinfoComponent,
     UnauthorizedComponent,
     PageNotFoundComponent,
+    FinedetailsComponent,
   ],
 
   imports: [
@@ -174,7 +175,6 @@ const customDateFormats: MatDateFormats = {
     FormsModule,
     ReactiveFormsModule,
     ToastrModule.forRoot(),
-    DashboardModule,
     PdfViewerModule,
     RecaptchaFormsModule,
     RecaptchaV3Module,

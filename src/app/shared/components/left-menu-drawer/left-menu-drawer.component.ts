@@ -49,15 +49,37 @@ export class LeftMenuDrawerComponent implements OnInit {
 
   ngOnInit(): void {
     this.common.getData().subscribe((data) => {
-      if (data && data != '') {
-        const dataObj: { key: string; value: object } = JSON.parse(data);
-        if (dataObj.key === 'drawer_scrolltoactive') {
-          setTimeout(() => {
-            // this.scrollToTarget();
-            this.stylingMenus();
-          }, 1000);
+      // if (data && data != '') {
+      //   const dataObj: { key: string; value: object } = JSON.parse(data);
+      //   if (dataObj.key === 'drawer_scrolltoactive') {
+      //     setTimeout(() => {
+      //       // this.scrollToTarget();
+      //       this.stylingMenus();
+      //     }, 1000);
+      //   }
+      // }
+
+      if (data && typeof data === 'string') {
+        try {
+            const dataObj: { key: string; value: object } = JSON.parse(data);
+    
+            if (dataObj.key === 'drawer_scrolltoactive') {
+                setTimeout(() => {
+                    // this.scrollToTarget();
+                    this.stylingMenus();
+                }, 1000);
+            }
+        } catch (error) {
+            console.error('Error parsing JSON data:', error);
+            console.error('Invalid JSON format. Unable to parse the data:', data);
+    
+            // You might want to consider providing a default value for dataObj or any other appropriate fallback
+            // const dataObj: { key: string; value: object } = { key: 'defaultKey', value: {} };
         }
-      }
+    }
+
+    
+
     });
     //start of LCA user user flow
     this.userRoleSubscription = this.auth.userRole$.subscribe(() => {
@@ -89,6 +111,13 @@ export class LeftMenuDrawerComponent implements OnInit {
       this.companyname = companyname1?.business_name || '';
 
       this.auth.isAdmin$.subscribe((isAdmin_) => {
+
+      console.log('company switched!!')
+
+
+
+
+
         this.isAdmin = isAdmin_;
         if (this.usertype == '11' || this.usertype == '12') {
         } else {
@@ -177,7 +206,7 @@ export class LeftMenuDrawerComponent implements OnInit {
           id: 1,
           menu: 'Dashboard',
           icon: 'dashboard',
-          link: '/dashboard',
+          link: '/shared',
           hasubMenu: false,
         },
         {
@@ -273,13 +302,22 @@ export class LeftMenuDrawerComponent implements OnInit {
       );
 
       if (this.isAdmin) {
-        this.menuList.push({
+        this.menuList.push(
+          {
           id: 3,
           menu: 'My Team',
           icon: 'supervisor_account',
-          link: '/userslist',
+          link: 'shared/userslist',
           hasubMenu: false,
-        });
+        },
+        {
+          id: 4,
+          menu: 'Company Profile',
+          icon: 'settings',
+          link: 'shared/companyprofile',
+          hasubMenu: false,
+        }
+        );
       } else {
         const switchCompanyIndex = this.menuList.findIndex(
           (item) => item.id === 3

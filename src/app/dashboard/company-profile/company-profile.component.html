@@ -1,0 +1,218 @@
+
+<div id="loading" style="display: none;"></div>
+<div>
+<div class="grid grid-cols-1" color="primary" class="page-header">
+
+  <h3 >{{'Company Details' | translate }} </h3>
+</div>
+<div class="company-bg registration-page">
+  <div class="registration-progress">
+  </div>
+
+
+
+
+<div class="container mx-auto px-32 registration-window">
+    <div class="grid grid-cols-1">
+      <form  [formGroup]="companyDetailsForm">
+      <div class="grid grid-cols-1">
+        <div class="back pr-2  cursor-pointer" routerLink="/registration">
+          <!-- <mat-icon>arrow_back</mat-icon><span>{{'backbtn' | translate }}</span> -->
+        </div>
+        <h1 class="mt-0 mb-0 page-title-01"> {{'Company Details' | translate }}</h1>
+        <!-- <p class="mt-0 page-title-para">{{'Ensuring data accuracy and security is our top priority. Kindly verify your details first and then the company contact number through OTP to complete the submission with confidence.' | translate }}
+        </p> -->
+      </div>
+      <div class="grid grid-cols-1">
+
+        <!-- <mat-form-field appearance="outline">
+          <mat-label>{{'nameofthebusinessaspertradelicense' | translate }}</mat-label>
+          <input class="amount-input" autocomplete="off" readonly formControlName="name_of_Business" name="name_of_Business" maxlength="100"  matInput placeholder="{{'Example Technologies L.L.C' | translate}}">
+          <mat-error *ngIf="companyDetailsForm.get('name_of_Business')?.hasError('required')">{{'Name of the Business is required' | translate }} </mat-error>
+          <mat-error *ngIf="companyDetailsForm.get('name_of_Business')?.hasError('pattern')">{{'Name of the Business is required' | translate }} </mat-error>
+          
+        </mat-form-field> -->
+        <mat-form-field appearance="outline">
+            <mat-label>{{'Company' | translate}}</mat-label>
+            <input  matInput formControlName="name_of_Business" readonly [disabled]="true" name="name_of_Business" >
+          </mat-form-field>
+
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+            <mat-form-field appearance="outline">
+                <mat-label>{{'tradelicensenumber' | translate }}</mat-label>
+                <input readonly [disabled]="true"  autocomplete="off" formControlName="trade_Licence" name="trade_Licence" matInput placeholder="123456">
+              <mat-error *ngIf="companyDetailsForm.get('trade_Licence')?.hasError('required')">{{'Trade License number is required' | translate }} </mat-error>
+              <mat-error *ngIf="companyDetailsForm.get('trade_Licence')?.hasError('pattern')">{{'Trade License number is required' | translate }} </mat-error>
+      
+              </mat-form-field>
+        </div>
+        <div>
+            <!-- <mat-form-field appearance="outline">
+                <mat-label>{{'tradelicensenumber' | translate }}</mat-label>
+                <input type="password"  autocomplete="off" formControlName="auth_code" name="auth_code" >
+              <mat-error *ngIf="companyDetailsForm.get('auth_code')?.hasError('required')">{{'Auth code is required' | translate }} </mat-error>
+              <mat-error *ngIf="companyDetailsForm.get('auth_code')?.hasError('pattern')">{{'Auth code is required' | translate }} </mat-error>
+      
+              </mat-form-field> -->
+
+              <mat-form-field appearance="outline">
+                <mat-label>{{'Auth Code'}}</mat-label>
+                <input matInput [type]="hide ? 'password' : 'text'">
+                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                  <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+
+                <mat-error *ngIf="companyDetailsForm.get('auth_code')?.hasError('required')">{{'Auth code is required' | translate }} </mat-error>
+                <mat-error *ngIf="companyDetailsForm.get('auth_code')?.hasError('pattern')">{{'Auth code is required' | translate }} </mat-error>
+              </mat-form-field>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+
+        <div>
+          <mat-form-field class="example-form-field">
+            <mat-label>{{'tradelicenseissuedate' | translate }}</mat-label>
+            <input matInput readonly  [max]="today"  autocomplete="off" [disabled]="true" formControlName="trade_Licence_Issue_Date" name="trade_Licence_Issue_Date" [matDatepicker]="tlissuedate" placeholder="19/02/1972">
+
+            <mat-datepicker-toggle matSuffix [for]="tlissuedate"></mat-datepicker-toggle>
+            <mat-datepicker #tlissuedate>
+              <mat-datepicker-actions>
+                <button mat-button matDatepickerCancel>{{'cancelbtn' | translate }}</button>
+                <button mat-raised-button color="primary" matDatepickerApply>{{'applybtn' | translate
+                  }}</button>
+              </mat-datepicker-actions>
+            </mat-datepicker>
+            <mat-error *ngIf="companyDetailsForm.get('trade_Licence_Issue_Date')?.hasError('required')">{{'Trade License issue Date is required' | translate }}</mat-error>
+
+          </mat-form-field>
+        </div>
+
+        <div>
+          <mat-form-field class="example-form-field">
+            <mat-label>{{'tradelicenseexpirydate' | translate }}</mat-label>
+            <input matInput  autocomplete="off" [min]="today" formControlName="trade_Licence_Expiry_Date" name="trade_Licence_Expiry_Date" [matDatepicker]="tlexpirydate" placeholder="19/10/2025">
+            <mat-datepicker-toggle matSuffix [for]="tlexpirydate"></mat-datepicker-toggle>
+            <!-- <span matSuffix >&nbsp;{{'EDIT' | translate }}</span> -->
+            <mat-datepicker #tlexpirydate>
+              <mat-datepicker-actions>
+                <button mat-button matDatepickerCancel>{{'cancelbtn' | translate }}</button>
+                <button mat-raised-button color="primary" matDatepickerApply>{{'applybtn' | translate
+                  }}</button>
+              </mat-datepicker-actions>
+            </mat-datepicker>
+            <mat-error *ngIf="companyDetailsForm.get('trade_Licence_Expiry_Date')?.hasError('required')">{{'Trade License Expiry Date is required' | translate }} </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+<div>
+    <mat-form-field appearance="outline">
+        <mat-label>{{'licenseissuingauthority' | translate }}</mat-label>
+        <input matInput readonly [disabled]="true"  autocomplete="off" formControlName="Licence_issuing_auth" name="Licence_issuing_auth" placeholder="Free zone">
+        <mat-error *ngIf="companyDetailsForm.get('Licence_issuing_auth')?.hasError('required')">{{'License issuing authority is required' | translate }} </mat-error>
+        <mat-error *ngIf="companyDetailsForm.get('Licence_issuing_auth')?.hasError('pattern')">{{'License issuing authority is required' | translate }} </mat-error>
+      
+      </mat-form-field>
+</div>
+       <div>
+        <div class="grid grid-cols-1">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'legaltype' | translate }}</mat-label>
+              <mat-select name="legal_Type" formControlName="legal_Type">
+                <mat-option *ngFor="let option of legalTypeOptions" [value]="option.typeuno">
+                  {{ option.typename }}
+                </mat-option>
+              </mat-select>
+              <mat-error class="error" *ngIf="companyDetailsForm.get('legal_Type')?.hasError('required')">{{'Legal Type is required' | translate }}</mat-error>
+            </mat-form-field>
+          </div>
+          
+       </div>
+
+
+      </div>
+
+    
+
+      <div class="grid grid-cols-2 gap-4">
+
+        <div>
+          <mat-form-field appearance="outline">
+            <mat-label>{{'companyregisteredemailaddress' | translate }} </mat-label>
+            <input matInput  autocomplete="off" formControlName="Comp_Reg_Email_Address" name="Comp_Reg_Email_Address" placeholder="example@etech.com">
+            <span matSuffix>&nbsp;{{'EDIT' | translate }}</span>
+            <mat-error *ngIf="companyDetailsForm.get('Comp_Reg_Email_Address')?.hasError('required')">{{'Company Registered Email Address is required' | translate }} </mat-error>
+            <mat-error *ngIf="companyDetailsForm.get('Comp_Reg_Email_Address')?.hasError('email')">{{ 'Invalid Email format' | translate }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div>
+          <mat-form-field appearance="outline" floatLabel="always">
+            <mat-label>{{'companycontactnumber' | translate }}   </mat-label>
+            <input matInput type="tel"  autocomplete="off" maxlength="9" formControlName="Comp_contact_number" name="Comp_contact_number"    placeholder="55 1234 567">
+            <span matPrefix>+971&nbsp;</span>
+            <span matSuffix>&nbsp;{{'EDIT' | translate }}</span>
+            <mat-error *ngIf="!(companyDetailsForm.get('Comp_contact_number')?.hasError('minlength')|| companyDetailsForm.get('Comp_contact_number')?.hasError('maxlength'))&&companyDetailsForm.get('Comp_contact_number')?.hasError('pattern')">{{'Invalid Company Contact Number' | translate }} </mat-error>
+            <mat-error *ngIf="companyDetailsForm.get('Comp_contact_number')?.hasError('minlength')|| companyDetailsForm.get('Comp_contact_number')?.hasError('maxlength')">{{'Company Contact Number must be 9 characters long' | translate }}</mat-error>
+            <mat-error *ngIf="companyDetailsForm.get('Comp_contact_number')?.hasError('required')">{{'Company Contact Number is required' | translate }} </mat-error>
+          </mat-form-field>
+        </div>
+
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+
+        <div class="cd-upload">
+          
+
+          <!-- {{companyDetailsForm.get('Upload_trade_license')?.value}}  {{companyDetailsForm.get('Upload_trade_license')?.value!=''}}   &nbsp; &nbsp; &nbsp; -->
+          <mat-form-field appearance="outline" floatLabel="always">
+            <mat-label>{{'uploadtradelicense' | translate }}</mat-label>
+            <a mat-button color="primary" (click)="fileInput.click()" class="float-right"><span *ngIf="!isLoading">
+              {{ companyDetailsForm.get('Upload_trade_license')?.value === '' ? ('UPLOAD' | translate) : ('Re-upload' | translate ) }}
+            </span>
+            <span  *ngIf="isLoading">
+              <mat-spinner diameter="35"></mat-spinner>
+            </span>
+          </a>
+            <input type="text" formControlName="Upload_trade_license" name="Upload_trade_license" readonly matInput />
+
+            <input accept=".pdf" style="display: none" formControlName="Upload_trade_license" name="Upload_trade_license" #attachments type="file" (change)="onFileChanged($event)" #fileInput
+              />
+            <div *ngFor="let selected of listOfFiles; let index = index" class="cd-file-list">
+             <span class="doc_selected" >{{ selected }}</span> &nbsp; &nbsp; &nbsp;<mat-icon>check_circle_outline</mat-icon>
+              <small (click)="removeSelectedFile(index)">{{'Remove' | translate }}</small>
+            </div>
+        <mat-error *ngIf="companyDetailsForm.get('Upload_trade_license')?.hasError('required')"> {{'Trade License is required' | translate }} </mat-error>
+
+          </mat-form-field>
+
+         
+<!--  style="width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" -->
+          
+          <!-- <p *ngIf="isLoading">Loading.....</p> -->
+        </div>
+        <span
+        
+        style="padding: 15px; cursor: pointer"
+       
+        class="image-text viewaction">
+        <mat-icon  pTooltip="{{ 'Download Trade Licence' | translate }}" (click)="this.common.getimagebase64(attestfilelocation)" class="action_eye_icon">download</mat-icon>
+      </span>
+      </div>
+  </form>
+  <!-- form end    uncomment -->
+  <!-- Thanks form starts   *ngIf="!form1_Vis" -->
+ 
+
+  <!-- Thanks form ends -->
+
+
+</div>
+  </div>
+
+  </div>

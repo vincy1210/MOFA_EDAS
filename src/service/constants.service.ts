@@ -88,4 +88,16 @@ export class ConstantsService {
   getFinesReportForAllStatus='lca/getFinesReportForAllStatus';
   getMyInvoiceAttestationsForAllS='User/getMyInvoiceAttestationsForAllStatus';
   getMyCOORequestsForAllStatus='User/getMyCOORequestsForAllStatus';
+
+
+
+  //pay all
+  
+  getCOOgroupPayallPaymentDetails='payment/getCOOgroupPayallPaymentDetails';
+  getpendingcntlcaforcompany='payment/getpendingcntlcaforcompany'
+
+//   {
+//     "companyuno": "626",
+//     "uuid": "bbbb11121nnn1"
+// }
 }
