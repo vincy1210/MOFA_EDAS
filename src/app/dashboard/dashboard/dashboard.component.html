@@ -4,61 +4,150 @@
     <!-- <div class="grid grid-cols-4 gap-6 px-5 py-3">
     </div> -->
     <div class="grid grid-cols-4 gap-6 px-5 py-3">
-      <div class="grid grid-cols-1 dashboard-card p-5">
-        <p>{{ "Total Requests" | translate }}</p>
-        <h1 class="font-bold dashboard-scores">{{ totalTile.noofrequests }}</h1>
+      <div class="grid grid-cols-1 bg-green-db p-5">
+        <div class="grid grid-cols-3">
+          <div>
+            <i class="fa fa-home fa-3x text-white"></i>
+          </div>
+          <div class="col-span-2">
+            <div class="text-right">
+              <p class="text-white">{{ "Total Requests" | translate }}</p>
+              <h1 class="font-bold dashboard-scores text-white">
+                {{ totalTile.noofrequests }}
+              </h1>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="grid grid-cols-1 dashboard-card p-5">
-        <p>{{ "LCA Attestations" | translate }}</p>
-        <h1 class="font-bold dashboard-scores">
-          {{ totalTile.nooflcarequestapproved }}
-        </h1>
+      <div
+        class="grid grid-cols-1 bg-green-db p-5 cursror"
+        [routerLink]="'/companydetailspending'"
+      >
+        <div class="grid grid-cols-3">
+          <div>
+            <i class="fa fa-building fa-3x text-white"></i>
+          </div>
+          <div class="col-span-2">
+            <div class="text-right">
+              <p class="text-white">{{ "LCA Attestations" | translate }}</p>
+              <h1 class="font-bold dashboard-scores text-white">
+                {{ totalTile.nooflcarequestapproved }}
+              </h1>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="grid grid-cols-1 dashboard-card p-5">
-        <p>{{ "COO Attestations" | translate }}</p>
-        <h1 class="font-bold dashboard-scores">
-          {{ totalTile.noofcoorequestapproved }}
-        </h1>
+      <div class="grid grid-cols-1 bg-green-db p-5">
+        <div class="grid grid-cols-3">
+          <div>
+            <i class="fa fa-check-circle fa-3x text-white"></i>
+          </div>
+          <div class="col-span-2">
+            <div class="text-right">
+              <p class="text-white">{{ "COO Attestations" | translate }}</p>
+              <h1 class="font-bold dashboard-scores text-white">
+                {{ totalTile.noofcoorequestapproved }}
+              </h1>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="grid grid-cols-1 dashboard-card p-5">
-        <p>{{ "Physical Attestations" | translate }}</p>
-        <h1 class="font-bold dashboard-scores">
-          {{ totalTile.noofphysicalrequestapproved }}
-        </h1>
+      <div class="grid grid-cols-1 bg-green-db p-5">
+        <div class="grid grid-cols-3">
+          <div>
+            <i class="fa fa-thumbs-up fa-3x text-white"></i>
+          </div>
+          <div class="col-span-2">
+            <div class="text-right">
+              <p class="text-white">
+                {{ "Physical Attestations" | translate }}
+              </p>
+              <h1 class="font-bold dashboard-scores text-white">
+                {{ totalTile.noofphysicalrequestapproved }}
+              </h1>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <!-- pending tile dashboard  -->
     <div class="grid grid-cols-4 gap-6 px-5 py-3">
-      <div class="grid grid-cols-1 dashboard-card p-5">
-        <p>{{ "Total Pending Attestations" | translate }}</p>
-        <h1 class="font-bold dashboard-scores">{{ totalTile.noofpendings }}</h1>
+      <div class="grid grid-cols-1 bg-red-db p-5">
+        <div class="grid grid-cols-3">
+          <div>
+            <i class="fa fa-home fa-3x text-white"></i>
+          </div>
+          <div class="col-span-2">
+            <div class="text-right">
+              <p class="text-white">
+                {{ "Total Pending Attestations" | translate }}
+              </p>
+              <h1 class="font-bold dashboard-scores text-white">
+                {{ totalTile.noofpendings }}
+              </h1>
+            </div>
+          </div>
+        </div>
       </div>
       <div
-        class="grid grid-cols-1 dashboard-card p-5 cursror"
+        class="grid grid-cols-1 bg-red-db p-5 cursror"
         [routerLink]="'/lca/attestation'"
       >
-        <p>{{ "Pending LCA Attestations" | translate }}</p>
-        <h1 class="font-bold dashboard-scores">
-          {{ totalTile.nooflcapendings }}
-        </h1>
+        <div class="grid grid-cols-3">
+          <div>
+            <i class="fa fa-building fa-3x text-white"></i>
+          </div>
+          <div class="col-span-2">
+            <div class="text-right">
+              <p class="text-white">
+                {{ "Pending LCA Attestations" | translate }}
+              </p>
+              <h1 class="font-bold dashboard-scores text-white">
+                {{ totalTile.nooflcapendings }}
+              </h1>
+            </div>
+          </div>
+        </div>
       </div>
       <div
-        class="grid grid-cols-1 dashboard-card p-5 cursror"
+        class="grid grid-cols-1 bg-red-db p-5 cursror"
         [routerLink]="'/coo/cooattestation'"
       >
-        <p>{{ "Pending COO Attestations" | translate }}</p>
-        <h1 class="font-bold dashboard-scores">
-          {{ totalTile.noofcoopendings }}
-        </h1>
+        <div class="grid grid-cols-3">
+          <div>
+            <i class="fa fa-check-circle fa-3x text-white"></i>
+          </div>
+          <div class="col-span-2">
+            <div class="text-right">
+              <p class="text-white">
+                {{ "Pending COO Attestations" | translate }}
+              </p>
+              <h1 class="font-bold dashboard-scores text-white">
+                {{ totalTile.noofcoopendings }}
+              </h1>
+            </div>
+          </div>
+        </div>
       </div>
       <div
-        class="grid grid-cols-1 dashboard-card p-5 cursror"
+        class="grid grid-cols-1 bg-red-db p-5 cursror"
         [routerLink]="'/physical/physicalattestation'"
       >
-        <p>{{ "Pending Physical Attestations" | translate }}</p>
-        <h1 class="font-bold dashboard-scores">
-          {{ totalTile.noofphysicalpendings }}
-        </h1>
+        <div class="grid grid-cols-3">
+          <div>
+            <i class="fa fa-thumbs-up fa-3x text-white"></i>
+          </div>
+          <div class="col-span-2">
+            <div class="text-right">
+              <p class="text-white">
+                {{ "Pending Physical Attestations" | translate }}
+              </p>
+              <h1 class="font-bold dashboard-scores text-white">
+                {{ totalTile.noofphysicalpendings }}
+              </h1>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <!-- attestation request -->

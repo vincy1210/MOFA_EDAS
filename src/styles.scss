@@ -2454,7 +2454,33 @@ mat-toolbar.main-header {
 
 }
 
-.cursor{
+.cursor {
   cursor: pointer;
 }
 
+.bg-green-db {
+  background-color: #fff;
+  border: 1px solid #27ae61;
+  border-radius: 10px;
+}
+.bg-red-db {
+  background-color: #fff;
+  border: 1px solid #fd6a63;
+  border-radius: 10px;
+}
+.dash-db p {
+  height: 37px;
+  overflow: hidden;
+}
+.bg-red-db p,
+.bg-green-db p,
+.bg-red-db h1,
+.bg-green-db h1 {
+  color: #000;
+}
+.bg-green-db i {
+  color: #27ae61;
+}
+.bg-red-db i {
+  color: #fd6a63;
+}
