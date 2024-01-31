@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, TemplateRef, VERSION, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, VERSION, ElementRef, LOCALE_ID } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormControl, MinLengthValidator, ValidatorFn, AbstractControl } from '@angular/forms';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { NgxOtpInputConfig } from 'ngx-otp-input';
@@ -14,6 +14,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { formatDate } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-companydetails',
@@ -66,10 +67,19 @@ export class CompanydetailsComponent implements OnInit {
   already_reg_companyemail:string='';
   isButtonDisabled = false;
   alreadyregisteredcompanydetails:any;
+  currentLanguagecode: string='1033';
   constructor(private recaptchaV3Service:ReCaptchaV3Service,private common:CommonService ,private _activatedRoute: ActivatedRoute,private formBuilder:FormBuilder, public dialog: MatDialog, private Common:CommonService, public apiservice:ApiService, public consts:ConstantsService, public router:Router) {
 
+    let selectedlanguage = sessionStorage.getItem('language') || 'en';
 
-    //this.common.SetAlreadyregisteredcompanydetails
+    if(selectedlanguage==='ar'){
+        this.currentLanguagecode='14337'
+    }
+    else{
+      this.currentLanguagecode='1033'
+
+    }
+   console.log(this.currentLanguagecode);
 
     this.Common.GetAlreadyregisteredcompanydetails().subscribe(data => {
       this.alreadyregisteredcompanydetails = data;
@@ -138,7 +148,7 @@ if(this.reg_form_data==undefined){
       Comp_contact_number:['', [Validators.required, Validators.maxLength(9), Validators.minLength(9), Validators.pattern(/^5\d+$/)]],
       Upload_trade_license:['', Validators.required],
       companyrep_fullname:['',[Validators.required, Validators.pattern('^(?=.*\\S).+$')]],
-      companyrep_designation:['',[Validators.required, Validators.pattern('^(?=.*\\S).+$')]],
+      companyrep_designation:[''],
       companyrep_EmailAddress:['',[Validators.required, Validators.email]],
       companyrep_MobileNumber:['',[Validators.required, Validators.maxLength(9), Validators.minLength(9), Validators.pattern(/^5\d+$/)]],
       isbroker: ['2', Validators.required],
@@ -173,7 +183,7 @@ if(this.reg_form_data==undefined){
     let response;
     let data={
       "useruno":"1",
-      "languagecode":0
+      "languagecode":this.currentLanguagecode
     }
     this.common.showLoading();
 
@@ -347,7 +357,7 @@ if(this.reg_form_data==undefined){
       "IssuingAuthorityType":this.reg_form_data.expressType,
       "captchakey":this.captcha_token,
       "isbroker":form.isbroker,
-      "repdesignation":form.companyrep_designation
+      "repdesignation":form.companyrep_designation ||''
 
     }
   

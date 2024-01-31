@@ -35,6 +35,10 @@ export const ConstAccessDenied: string = 'access-denied';
   providedIn: 'root',
 })
 export class CommonService {
+
+  private languageSubject = new BehaviorSubject<string>(sessionStorage.getItem('language') || 'en');
+  languageChange = this.languageSubject.asObservable();
+  
   favink1: string = '';
   favink2: string = '';
   private mycopyrightyear: string = '';
@@ -60,18 +64,25 @@ export class CommonService {
   // userRole$ = this.userRoleSubject.asObservable();
   // userRole: string=''; // You might want to initialize this with a default value if needed
 
+
+  private payallcountSubject = new BehaviorSubject<number>(0);
+  payallcount$ = this.payallcountSubject.asObservable();
+
+  
+
   private inactivityTimer: any;
   private readonly INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minutes in milliseconds
   isSidebar: boolean = false;
 
   // private sidebarOpen = false;
   private isDrawerOpenSubject = new BehaviorSubject<boolean>(false);
-
+  currentcompany:string='';
   uuid: string = '';
   src: any;
   base64PdfString: any;
   usertypedata: string = '';
   publicKey!: string;
+  analyticsData: any[] = [];
   constructor(
     private translate: TranslateService,
     private Toastr: ToastrService,
@@ -222,7 +233,6 @@ export class CommonService {
   //     if(dat!=undefined ||dat!=null )
   //     {
   //       console.log("to landing page from common service line 284")
-  //       this.Router.navigateByUrl('/landingpage');
   //     }
   //    }
   //    //return null;
@@ -270,52 +280,41 @@ export class CommonService {
     return window.btoa(rsa.encrypt(valueToEncrypt.toString()));
   }
 
+
   // splitdatetime(datetimeString: any) {
   //   if (datetimeString && typeof datetimeString === 'string') {
   //     const dateTimeParts = datetimeString.split('T'); // Splitting the string at 'T'
   //     if (dateTimeParts.length === 2) {
   //       return {
-  //         date: dateTimeParts[0],
+  //         date: this.datePipe.transform(dateTimeParts[0], 'dd-MMM-yyyy'),
   //         time: dateTimeParts[1],
+  //       };
+  //     } else {
+  //       return {
+  //         date: this.datePipe.transform(dateTimeParts[0], 'dd-MMM-yyyy'),
+  //         time: '',
   //       };
   //     }
   //   }
   //   return null; // Invalid or null datetime string
   // }
-  splitdatetime(datetimeString: any) {
-    if (datetimeString && typeof datetimeString === 'string') {
-      const dateTimeParts = datetimeString.split('T'); // Splitting the string at 'T'
-      if (dateTimeParts.length === 2) {
-        return {
-          date: this.datePipe.transform(dateTimeParts[0], 'dd-MMM-yyyy'),
-          time: dateTimeParts[1],
-        };
-      } else {
-        return {
-          date: this.datePipe.transform(dateTimeParts[0], 'dd-MMM-yyyy'),
-          time: '',
-        };
-      }
-    }
-    return null; // Invalid or null datetime string
-  }
 
-  splitdatetime1(datetimeString: any) {
-    if (datetimeString && typeof datetimeString === 'string') {
-      const dateTimeParts = datetimeString;
-      if (dateTimeParts.length === 8) {
-        const parsedDate = new Date(
-          Number(dateTimeParts.substr(4, 4)),
-          Number(dateTimeParts.substr(2, 2)) - 1,
-          Number(dateTimeParts.substr(0, 2))
-        );
-        return {
-          date: this.datePipe.transform(parsedDate, 'dd-MMM-yyyy'),
-        };
-      }
-    }
-    return null; // Invalid or null datetime string
-  }
+  // splitdatetime1(datetimeString: any) {
+  //   if (datetimeString && typeof datetimeString === 'string') {
+  //     const dateTimeParts = datetimeString;
+  //     if (dateTimeParts.length === 8) {
+  //       const parsedDate = new Date(
+  //         Number(dateTimeParts.substr(4, 4)),
+  //         Number(dateTimeParts.substr(2, 2)) - 1,
+  //         Number(dateTimeParts.substr(0, 2))
+  //       );
+  //       return {
+  //         date: this.datePipe.transform(parsedDate, 'dd-MMM-yyyy'),
+  //       };
+  //     }
+  //   }
+  //   return null; // Invalid or null datetime string
+  // }
 
   setUserProfile(userProfile: any) {
     console.log(userProfile);
@@ -460,7 +459,6 @@ export class CommonService {
   async getPaymentReceiptbase64(invoiceuno: any): Promise<any> {
     return new Promise((resolve, reject) => {
       let data2 = sessionStorage.getItem('userProfile');
-
       if (data2 != undefined || data2 != null) {
         let abc = JSON.parse(data2);
         let bcd = JSON.parse(abc);
@@ -469,30 +467,24 @@ export class CommonService {
         reject('User profile not found');
         return;
       }
-
       let data = {
         uuid: this.uuid,
         invoiceuno: invoiceuno.toString(),
       };
-
       this.showLoading();
-
       this.apicall.post(this.consts.getPaymentReceipt, data).subscribe({
         next: (success: any) => {
           this.hideLoading();
           const resp = success;
-
           if (resp.responsecode == 1) {
             this.base64PdfString = resp.data;
             var binary_string = this.base64PdfString.replace(/\\n/g, '');
             binary_string = window.atob(this.base64PdfString);
             var len = binary_string.length;
             var bytes = new Uint8Array(len);
-
             for (var i = 0; i < len; i++) {
               bytes[i] = binary_string.charCodeAt(i);
             }
-
             this.src = bytes.buffer;
             console.log('payment receipt is success');
             resolve(this.src);
@@ -527,17 +519,13 @@ export class CommonService {
           this.base64PdfString = resp.data;
 
           const base64 = this.base64PdfString.replace(
-            'data:application/pdf;base64,',
-            ''
-          );
-
+            'data:application/pdf;base64,',  '');
           // Convert base64 to a byte array
           const byteArray = new Uint8Array(
             atob(base64)
               .split('')
               .map((char) => char.charCodeAt(0))
           );
-
           // Create a Blob and download the file
           const file = new Blob([byteArray], { type: 'application/pdf' });
           const fileUrl = URL.createObjectURL(file);
@@ -560,6 +548,20 @@ export class CommonService {
       },
     });
     return this.base64PdfString;
+  }
+
+  givefilename(filetype:any){
+    const currentDate = new Date();
+
+    // Format the date as DDMMYYYY
+                const formattedDate = currentDate.toLocaleDateString('en-GB', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                }).replace(/\//g, ''); // Remove slashes
+
+let filename=filetype+'_'+formattedDate;
+return filename;
   }
 
   filterColumnsClientDataTrim(filters: any) {
@@ -723,6 +725,72 @@ export class CommonService {
         ],
       },
       {
+        name: 'companyprofile',
+        menu: 'companyprofile',
+        menufull: 'shared/companyprofile',
+        requiredRoles: [RoleEnums.Admin, RoleEnums.User],
+        permissionRoles: [
+          { role: RoleEnums.Admin, permission: [PermissionEnums.All] },
+          {
+            role: RoleEnums.User,
+            permission: [PermissionEnums.Add, PermissionEnums.Edit],
+          },
+        ],
+      },
+      {
+        name: 'glossary',
+        menu: 'glossary',
+        menufull: 'shared/glossary',
+        requiredRoles: [RoleEnums.Admin, RoleEnums.User],
+        permissionRoles: [
+          { role: RoleEnums.Admin, permission: [PermissionEnums.All] },
+          {
+            role: RoleEnums.User,
+            permission: [PermissionEnums.Add, PermissionEnums.Edit],
+          },
+        ],
+      },
+      {
+        name: 'userprofile',
+        menu: 'userprofile',
+        menufull: 'shared/userprofile',
+        requiredRoles: [RoleEnums.Admin, RoleEnums.User],
+        permissionRoles: [
+          { role: RoleEnums.Admin, permission: [PermissionEnums.All] },
+          {
+            role: RoleEnums.User,
+            permission: [PermissionEnums.Add, PermissionEnums.Edit],
+          },
+        ],
+      },
+      {
+        name: 'rptanalytics',
+        menu: 'rptanalytics',
+        menufull: 'shared/rptanalytics',
+        requiredRoles: [RoleEnums.Admin, RoleEnums.User],
+        permissionRoles: [
+          { role: RoleEnums.Admin, permission: [PermissionEnums.All] },
+          {
+            role: RoleEnums.User,
+            permission: [PermissionEnums.Add, PermissionEnums.Edit],
+          },
+        ],
+      },
+      {
+        name: 'payall',
+        menu: 'payall',
+        menufull: 'shared/payall',
+        requiredRoles: [RoleEnums.Admin, RoleEnums.User],
+        permissionRoles: [
+          { role: RoleEnums.Admin, permission: [PermissionEnums.All] },
+          {
+            role: RoleEnums.User,
+            permission: [PermissionEnums.Add, PermissionEnums.Edit],
+          },
+        ],
+      },
+
+      {
         name: 'companydetails',
         menu: 'companydetails',
         menufull: 'companydetails',
@@ -830,6 +898,31 @@ export class CommonService {
         name: 'lcacompletedattestation',
         menu: 'lcacompletedattestation',
         menufull: 'lcacompletedattestation',
+        requiredRoles: [RoleEnums.Admin, RoleEnums.User],
+        permissionRoles: [
+          { role: RoleEnums.Admin, permission: [PermissionEnums.All] },
+          {
+            role: RoleEnums.User,
+            permission: [PermissionEnums.Add, PermissionEnums.Edit],
+          },
+        ],
+      },
+      {
+        name: 'lcainprocess',
+        menu: 'lcainprocess',
+        menufull: 'lcainprocess',
+        requiredRoles: [RoleEnums.Admin, RoleEnums.User],
+        permissionRoles: [
+          { role: RoleEnums.Admin, permission: [PermissionEnums.All] },
+          {
+            role: RoleEnums.User,
+            permission: [PermissionEnums.Add, PermissionEnums.Edit],
+          },
+        ],
+      }, {
+        name: 'lcainhold',
+        menu: 'lcainhold',
+        menufull: 'lcainhold',
         requiredRoles: [RoleEnums.Admin, RoleEnums.User],
         permissionRoles: [
           { role: RoleEnums.Admin, permission: [PermissionEnums.All] },
@@ -1166,7 +1259,7 @@ export class CommonService {
   //   return this.datePipe.transform(date, 'yyyy-MM-dd') || 'Invalid Date'; // Handle invalid date format
   // }
 
-  splitdatetimeforstring(datetimeString: any) {
+  splitdatetime(datetimeString: any) {
     if (datetimeString && typeof datetimeString === 'string') {
       const dateTimeParts = datetimeString.split('T'); // Splitting the string at 'T'
       if (dateTimeParts.length === 2) {
@@ -1254,4 +1347,192 @@ export class CommonService {
       return '971' + number;
     }
   }
+
+
+  
+  setpayallcount(data:any){
+    sessionStorage.setItem('payallcount', JSON.stringify(data));
+    this.payallcountSubject.next(data)
+  }
+
+
+  getpayallcount(){
+    let abc=sessionStorage.getItem('payallcount');
+    return abc;
+  }
+
+
+  
+  async getPaymentReceiptDownload(invoiceuno: any, filename?:any): Promise<any> {
+    return new Promise((resolve, reject) => {
+      let data2 = sessionStorage.getItem('userProfile');
+      if (data2 != undefined || data2 != null) {
+        let abc = JSON.parse(data2);
+        let bcd = JSON.parse(abc);
+        this.uuid = bcd.Data?.uuid;
+      } else {
+        reject('User profile not found');
+        return;
+      }
+      let data = {
+        uuid: this.uuid,
+        invoiceuno: invoiceuno.toString(),
+      };
+      this.showLoading();
+      this.apicall.post(this.consts.getPaymentReceipt, data).subscribe({
+        next: (success: any) => {
+          this.hideLoading();
+          const resp = success;
+          if (resp.responsecode == 1) {
+            this.base64PdfString = resp.data;
+           //download process starts here
+           if(this.base64PdfString){
+                        const base64 = this.base64PdfString.replace(
+                          'data:application/pdf;base64,',  '');
+                        // Convert base64 to a byte array
+                        const byteArray = new Uint8Array(
+                          atob(base64)
+                            .split('')
+                            .map((char) => char.charCodeAt(0))
+                        );
+                        // Create a Blob and download the file
+                        const file = new Blob([byteArray], { type: 'application/pdf' });
+                        const fileUrl = URL.createObjectURL(file);
+
+                        const link = document.createElement('a');
+                        link.href = fileUrl;
+                        if (filename) {
+                          link.download = filename;
+                        } else {
+                          link.download = 'Invoice.pdf'; // You can customize the file name here
+                        }
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                      } else {
+                        this.showErrorMessage('Attachment load failed');
+                      }
+
+
+           //ends here
+          } else {
+            this.showErrorMessage('Attachment load failed');
+            reject('Attachment load failed');
+          }
+        },
+        error: (error: any) => {
+          this.hideLoading();
+          console.error('Error fetching payment receipt:', error);
+          reject(error);
+        },
+      });
+    });
+  }
+  
+  setmymap(data: any[]) {
+    sessionStorage.setItem('regionwiseimport', JSON.stringify(data));
+  }
+  
+  getmymap(): any[] | null {
+    let storedData = sessionStorage.getItem('regionwiseimport');
+    return storedData ? JSON.parse(storedData) : null;
+  }
+
+  //localstorage
+
+   
+  setDefaultInputsforLCAReports(data: any) {
+    sessionStorage.setItem('defaultLCAReport', JSON.stringify(data));
+  }
+  
+  getDefaultInputsforLCAReports(): any | null {
+    let storedData = sessionStorage.getItem('defaultLCAReport');
+    return storedData ? JSON.parse(storedData) : null;
+  }
+ 
+  setDefaultInputsforCOOReports(data: any) {
+    sessionStorage.setItem('defaultCOOReport', JSON.stringify(data));
+  }
+  
+  getDefaultInputsforCOOReports(): any | null {
+    let storedData = sessionStorage.getItem('defaultCOOReport');
+    return storedData ? JSON.parse(storedData) : null;
+  }
+ 
+  setDefaultInputsforPHYSICALReports(data: any) {
+    sessionStorage.setItem('defaultPHYSICAlReport', JSON.stringify(data));
+  }
+  
+  getDefaultInputsforPHYSICALReports(): any | null {
+    let storedData = sessionStorage.getItem('defaultPHYSICAlReport');
+    return storedData ? JSON.parse(storedData) : null;
+  }
+
+
+
+  // AddAnalyticsAPIcall(){
+
+  //   console.log("calling getselected company")
+  //   let currcompany=this.auth.getSelectedCompany();
+  //   if(currcompany){
+  //     this.currentcompany=currcompany.companyuno || '';
+  //     if(this.currentcompany==null || this.currentcompany==undefined || this.currentcompany===''){
+  //     }
+  //   }
+  //   else{
+  //     // this.redirecttologin();
+  //     return;
+  //   }
+  //   let data11=this.getUserProfile();
+  //   let uuid;
+  //   if(data11!=null || data11!=undefined){
+  //     data11=JSON.parse(data11)
+  //     console.log(data11.Data)
+  //     uuid=data11.Data.uuid;
+  //     this.uuid=uuid;
+
+  //   }
+  //   else{
+  //      this.setlogoutreason("session");
+  //     this.auth.logout();
+  //   }
+  //   let json=this.getAnalyticsData();
+
+  //   let data={
+  //     "uuid":this.uuid,
+  //     "companyuno":this.currentcompany,
+  //     "json":json
+  //   }
+  //   this.showLoading();
+  //   this.apicall.post(this.consts.saveSiteAnalytics, data).subscribe((response: any) => {
+  //     this.hideLoading();
+  //     console.log(response)
+  //   });
+
+  // }
+
+  addAnalyticsData(data: any) {
+    this.analyticsData.push(data);
+  }
+
+  getAnalyticsData() {
+    return this.analyticsData || [];
+  }
+
+  clearAnalyticsData() {
+    this.analyticsData = [];
+  }
+getmypalette(){
+  let theme=sessionStorage.getItem('Palette');
+  if(theme===''){
+    theme='theme-default';
+  }
+  return theme;
+}
+
+setLanguage(language: string) {
+  sessionStorage.setItem('language', language);
+  this.languageSubject.next(language);
+}
+
 }

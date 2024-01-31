@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LCAComponent } from './lca.component';
+import { GlossaryComponent } from './glossary.component';
 
-describe('LCAComponent', () => {
-  let component: LCAComponent;
-  let fixture: ComponentFixture<LCAComponent>;
+describe('GlossaryComponent', () => {
+  let component: GlossaryComponent;
+  let fixture: ComponentFixture<GlossaryComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ LCAComponent ]
+      declarations: [ GlossaryComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(LCAComponent);
+    fixture = TestBed.createComponent(GlossaryComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

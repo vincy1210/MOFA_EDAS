@@ -80,14 +80,19 @@ paymentstatus:string=''
      let paymentidinfo=this.common.getpaymentdetails();
      this.paymenttype=paymentidinfo.processname;
      
+let generalpayorpayall;
+     if(paymentidinfo.processname=='COOLCA' && paymentidinfo.ispayall){
+      generalpayorpayall=this.consts.mpayinquiryTransactionForPayAll;
+     }
+     else{
+      generalpayorpayall=this.consts.LCAmpayinquiryTransaction;
+     }
 
 
      let  invoiceuno=paymentidinfo.invoiceID.toString();
      let data={
       "action": "8",
-      "id": "",
       "inqType": "LAST_APPROVED",
-      "password": "",
       "transid": paymentidinfo.paymentID,
       "udf5": "PaymentID",
       "version": "1.0.1",
@@ -95,11 +100,8 @@ paymentstatus:string=''
       "uuid":this.uuid,
       "processname":paymentidinfo.processname
   }
-  // const headers = new HttpHeaders({
-  //   'uuid': this.uuid,
-  //   'processname': 'LCA'
-  // });
-     this.apicall.post(this.consts.LCAmpayinquiryTransaction,data).subscribe({next:(success:any)=>{
+ 
+     this.apicall.post(generalpayorpayall,data).subscribe({next:(success:any)=>{
       this.common.hideLoading();
         
       resp=success;
@@ -173,10 +175,10 @@ redirect(){
   this.router.navigateByUrl('/lca/lcacompletedattestation')
   }
   else if(paymentidinfo.processname==='COO'){
-    this.router.navigateByUrl('/coo/cooinreview')
+    this.router.navigateByUrl('/coo/cooattestation')
     }
    else if(paymentidinfo.processname==='PHYSICAL'){
-      this.router.navigateByUrl('/physical/physicalinreview')
+      this.router.navigateByUrl('/physical/physicalattestation')
       }
       // else if('COOLCA'){
 

@@ -349,54 +349,25 @@ export class AttestationsComponent extends LayoutModel implements OnInit {
           data: seriesDataRequest,
         },
       ];
+
+      this.lcaChartOptionattestation.title= {
+        show: xAxis.length === 0,
+        textStyle: {
+            color: "grey",
+            fontSize: 20
+        },
+        text: this.translate.instant("No data"),
+        left: "center",
+        top: "center"
+    }
+
+
     } else if (type === 'coo') {
-      // this.cooChartOptionattestation.xAxis = {
-      //   type: 'category',
-      //   boundaryGap: false,
-      //   data: xAxis,
-      // };
-      // this.cooChartOptionattestation.series = [
-      //   {
-      //     name: 'Completed',
-      //     type: 'line',
-      //     smooth: true,
-      //     stack: 'Total',
-      //     data: seriesDataCompleted,
-      //   },
-      //   {
-      //     name: 'Pending',
-      //     type: 'line',
-      //     smooth: true,
-      //     stack: 'Total',
-      //     data: seriesDataRequest,
-      //   },
-      // ];
+     
     } else if (type === 'physical') {
-      // this.physicalChartOptionattestation.xAxis = {
-      //   type: 'category',
-      //   boundaryGap: false,
-      //   data: xAxis,
-      // };
-      // this.physicalChartOptionattestation.series = [
-      //   {
-      //     name: 'Completed',
-      //     type: 'line',
-      //     smooth: true,
-      //     stack: 'Total',
-      //     data: seriesDataCompleted,
-      //   },
-      //   {
-      //     name: 'Pending',
-      //     type: 'line',
-      //     smooth: true,
-      //     stack: 'Total',
-      //     data: seriesDataRequest,
-      //   },
-      // ];
+    
     }
   }
 
-  // splitdatetime1(date: any) {
-  //   return this.common.splitdatetime1(date);
-  // }
+ 
 }

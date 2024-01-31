@@ -15,6 +15,7 @@
         >
           <p-table
             [resizableColumns]="true"
+            [rowSelectable]="isRowSelectable"
             [(selection)]="selectedAttestations"
             dataKey="edasreqno"
             [scrollable]="true"
@@ -81,13 +82,13 @@
                   <div
                     style="padding: 5px"
                     *ngIf="enableFilters"
-                    class="col-md-3 col-lg-3 col-md-6"
+                    class="test col-md-3 col-lg-3 col-md-6"
                   >
                     <mat-form-field class="filter_datepicker">
                       <mat-label>{{ "Start Date" | translate }}</mat-label>
                       <input
                         matInput
-                        [matDatepicker]="decDatepicker1"
+                        [matDatepicker]="decDatepicker1" (dateChange)="handleDateChange($event, 'from')"
                         [max]="todayModel"
                         [(ngModel)]="oneMonthAgo"
                         placeholder="{{ 'From' | translate }}"
@@ -109,7 +110,7 @@
                       <mat-label>{{ "End Date" | translate }}</mat-label>
                       <input
                         matInput
-                        [matDatepicker]="decDatepicker2"
+                        [matDatepicker]="decDatepicker2" (dateChange)="handleDateChange($event, 'to')"
                         [min]="oneMonthAgo"
                         [max]="today"
                         placeholder="{{ 'To' | translate }}"
@@ -123,23 +124,10 @@
                       <mat-datepicker #decDatepicker2></mat-datepicker>
                     </mat-form-field>
                   </div>
-                  <div
-                    style="padding: 5px"
-                    *ngIf="enableFilters"
-                    class="col-md-3 col-lg-3"
-                  >
-                    <button
-                      type="button"
-                      mat-flat-button
-                      color="primary"
-                      (click)="FilterInitTable()"
-                    >
-                      {{ "Apply" | translate }}
-                    </button>
-                  </div>
+                  
 
                   <span style="padding: 10px"></span>
-                  <button
+                  <!-- <button
                     type="button"
                     pButton
                     pRipple
@@ -148,7 +136,38 @@
                     class="mr-2 grid-header-right-icon"
                     pTooltip="{{ 'Excel' | translate }}"
                     tooltipPosition="bottom"
+                  ></button> -->
+
+                  
+                  <button
+                    type="button"
+                    pButton
+                    pRipple
+                    [matMenuTriggerFor]="menu"
+                    icon="fas fa-download"
+                    class="mr-2 grid-header-right-icon"
+                    [pTooltip]="'Export' | translate"
+                    tooltipPosition="left"
+                    [disabled]="invoiceRequestLists && invoiceRequestLists.length === 0" [matMenuTriggerFor]="menu"
                   ></button>
+                  <mat-menu #menu="matMenu" class="exportmenu"  xPosition="before">
+                    <button mat-menu-item (click)="exportExcel()" [ngClass]="common.getmypalette()">
+                      <span class="mat-menu-share">
+                        <i class="pi pi-file-excel pr-2"></i>
+                        {{ "Excel Export" | translate }}</span
+                      >
+                    </button>
+                    <button mat-menu-item (click)="exportTableToPDF()" [ngClass]="common.getmypalette()">
+                      <span class="mat-menu-share">
+                        <i class="pi pi-file-pdf pr-2"></i>
+                        {{ "PDF Export" | translate }}</span
+                      >
+                    </button>
+                  </mat-menu>
+
+
+
+                  <!-- end -->
                   <button
                     type="button"
                     pButton
@@ -172,24 +191,27 @@
                   ></button>
                 </ng-template>
               </p-toolbar>
-              <tr>
-                <td colspan="12">
-                  <div class="alert alert-success flex" role="alert">
-                    <span
-                      class="glyphicon glyphicon-exclamation-sign"
-                      aria-hidden="true"
-                    ></span>
-                    <i class="fas fa-lightbulb light-bulb"></i>
-                    <p>
+              <!-- <tr>
+                <td colspan="12"> -->
+                  <div style="padding-top: 10px;">
+                    <div class="alert alert-info" role="alert">
+                      <span
+                        class="glyphicon glyphicon-exclamation-sign"
+                        aria-hidden="true"
+                      ></span>
+                      <i class="fas fa-lightbulb light-bulb"></i>
                       Physical Attestation Pending Request are shown in this
                       list. Physical Attestation Pending Request are shown in
                       this list. Physical Attestation Pending Request are shown
                       in this list. Physical Attestation Pending Request are
+                      shown in this list.  Physical Attestation Pending Request are
+                      shown in this list. Physical Attestation Pending Request are
                       shown in this list.
-                    </p>
+  
+                    </div>
                   </div>
-                </td>
-              </tr>
+                <!-- </td>
+              </tr> -->
             </ng-template>
             <ng-template pTemplate="header" let-columns>
               <tr>
@@ -228,7 +250,8 @@
               >
                 <td>
                   <p-tableCheckbox
-                    (click)="loadsidepanel(data)"
+                  (click)="!isPaid(data) ? loadsidepanel(data) : null"
+                    [disabled]="isPaid(data)"
                     [value]="data"
                   ></p-tableCheckbox>
                 </td>
@@ -263,7 +286,7 @@
                 </td>
                 <td>
                   <span class="image-text">{{
-                    splitdatetime1(data.invoicedate)?.date
+                    common.splitdatetime(data.invoicedate)?.date
                   }}</span>
                 </td>
 
@@ -400,7 +423,8 @@
                     (click)="AttestationPay()"
                     class="pay-btn"
                   >
-                    {{ payorpayall | translate }}
+                  {{ noOfInvoicesSelected > 1 ? ('Pay All' | translate) : ('Pay' | translate) }}
+
                   </button>
                 </div>
                 <div class="flex items-center justify-center col-span-2">
@@ -482,8 +506,8 @@
                 </div> -->
               <div *ngIf="attchemntisthere" class="more-content-body">
                 <mat-label class="more-content-block"
-                  >{{ "Attestation.pdf" }}
-                  <span (click)="common.getimagebase64(currentrow.filepath)">
+                  >{{ common.givefilename('PhysicalPending') }}
+                  <span (click)="common.getimagebase64(currentrow.filepath, common.givefilename('PhysicalPending'))">
                     <mat-icon class="action_eye_icon_popup">download</mat-icon>
                   </span>
                 </mat-label>
@@ -507,4 +531,8 @@
       ></p-button>
     </ng-template>
   </p-dialog>
+</div>
+
+<div>
+  <app-pdf-export [pdfPayload]="pdfPayload"></app-pdf-export>
 </div>

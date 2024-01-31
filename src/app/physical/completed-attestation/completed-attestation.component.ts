@@ -8,6 +8,8 @@ import { ModalPopupService } from 'src/service/modal-popup.service';
 import { CommonService } from 'src/service/common.service';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/service/auth.service';
+import { LazyLoadEvent } from 'primeng/api';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-completed-attestation',
@@ -39,6 +41,7 @@ isfilenotfouund:boolean=false;
 attchemntisthere:boolean=false;
 fields: { label: string, value: any }[] = [];
 isButtonDisabled = false;
+datasource:any;
   constructor(
     private modalPopupService: ModalPopupService,
     public translate: TranslateService,
@@ -108,16 +111,38 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
 
       //statusname
     ];
-    this.InitTable();
+    // this.InitTable();
   }
 
-  InitTable() {
+  globalFilter(row: any, globalFilterValue: string): boolean {
+    for (const key in row) {
+      if (row[key] && row[key].toString().toLowerCase().includes(globalFilterValue.toLowerCase())) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  sortData(data: any[], field: string, order: number): any[] {
+    return data.sort((a, b) => {
+      const valueA = a[field];
+      const valueB = b[field];
+      if (valueA < valueB) {
+        return order === 1 ? -1 : 1;
+      } else if (valueA > valueB) {
+        return order === 1 ? 1 : -1;
+      }
+      return 0;
+    });
+  }
+
+  InitTable($event: LazyLoadEvent) {
     let data = {
       "companyuno":this.currentcompany,
       "uuid":this.uuid,
       "status":0, 
-      "startnum":0,
-      "limit":10,
+      "startnum":$event.first,
+      "limit":200 + ($event.first ?? 0),
       "startdate":this.common.formatDateTime_API_payload(this.oneMonthAgo.toDateString()),
       "enddate":this.common.formatDateTime_API_payload(this.todayModel.toDateString())
     };
@@ -131,6 +156,23 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
         if (`${response.responsecode}` === '1') {
           const dataArray = response.data;
           this.invoiceRequestLists = dataArray;
+
+
+          this.datasource=this.invoiceRequestLists;
+          if ($event.globalFilter) {
+            this.datasource = this.datasource.filter((row: any) => this.globalFilter(row, $event.globalFilter));
+            this.invoiceRequestLists=this.datasource;
+            this.totalrecords=this.invoiceRequestLists.length;
+          }
+          if ($event.sortField) {
+            let sortorder=$event.sortOrder || 1;
+            this.datasource = this.sortData(this.datasource, $event.sortField, sortorder);
+            this.invoiceRequestLists=this.datasource;
+            this.totalrecords=this.invoiceRequestLists .length;
+          }
+          console.log(this.datasource);
+
+
         }
       });
   }
@@ -177,8 +219,11 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
       entitycode: this.translate.instant(
         'entitycode'
       ),
+      status: this.translate.instant(
+        'status'
+      ),
       invoiceno: this.translate.instant(
-        'invoiceno'
+        'Invoice ID'
       ),
       invoiceamount: this.translate.instant(
         'invoiceamount'
@@ -195,16 +240,18 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
       const dataItem: any = {};
       dataItem[jsonData.edasreqno] = item.edasreqno;
       dataItem[jsonData.entitycode] = item.entitycode;
+      dataItem[jsonData.status] = item.statusname;
+
       dataItem[jsonData.invoiceno] = item.invoiceno;
       dataItem[jsonData.invoiceamount] = item.invoiceamount;
       dataItem[jsonData.invoicecurrency] = item.invoicecurrency;
-      dataItem[jsonData.invoicedate] = this.splitdatetime1(item.invoicedate)?.date;
+      dataItem[jsonData.invoicedate] = this.common.splitdatetime(item.invoicedate)?.date;
       dataList.push(dataItem);
     });
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataList);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Physical Attestations-Completed');
-    XLSX.writeFile(wb, 'Physical_Attestations_Completed.xlsx');
+    XLSX.utils.book_append_sheet(wb, ws, this.common.givefilename('Physical_Completed'));
+    XLSX.writeFile(wb, this.common.givefilename('Physical_Completed')+'.xlsx');
   }
 
 
@@ -268,5 +315,123 @@ openNew(data:any) {
   
 
 }
+
+
+// invoiceRequestListsFilter:any;
+pdfPayload:any;
+
+exportTableToPDF() {
+    // header2Data
+    const jsonData1 = {
+      edasattestno: this.translate.instant(
+        "edasattestno"
+      ),
+      noofdaysleft: this.translate.instant(
+        "noofdaysleft"
+      ),
+      status: this.translate.instant("status"),
+      invoiceamount: this.translate.instant(
+        "invoiceamount"
+      ),
+    };
+    let dataList1: any = {};
+    this.invoiceRequestLists.map((item: any) => {
+      const dataItem: any = {};
+      dataItem[jsonData1.edasattestno] = item.edasattestno
+        ? item.edasattestno
+        : "";
+      dataItem[jsonData1.noofdaysleft] = item.noofdaysleft
+        ? item.noofdaysleft
+        : "";
+      dataItem[jsonData1.status] = item.statusname ? item.statusname : "";
+      dataItem[jsonData1.invoiceamount] = item.invoiceamount
+        ? item.invoiceamount
+        : "";
+      dataList1 = dataItem;
+    });
+    // bodyData
+    const jsonData2 = {
+      edasreqno: this.translate.instant('edasreqno'),
+      entitycode: this.translate.instant('Channel'),
+      status: this.translate.instant('status'),
+      invoiceno: this.translate.instant('Invoice ID'),
+      invoiceamount: this.translate.instant('Invoice Amount'),
+      invoicecurrency: this.translate.instant('Currency'),
+      invoicedate: this.translate.instant('invoicedate'),
+      enteredon: this.translate.instant('Entered On'),
+    };
+    
+    const dataList2: any = [];
+    this.invoiceRequestLists.map((item: any) => {
+      const dataItem: any = {};
+      dataItem[jsonData2.edasreqno] = item.edasreqno;
+      dataItem[jsonData2.entitycode] = item.entitycode;
+      dataItem[jsonData2.status] = item.status;
+      dataItem[jsonData2.invoiceno] = item.invoiceno;
+      dataItem[jsonData2.invoiceamount] = item.invoiceamount;
+      dataItem[jsonData2.invoicecurrency] = item.invoicecurrency;
+      dataItem[jsonData2.invoicedate] = item.invoicedate;
+      dataItem[jsonData2.enteredon] = item.enteredon;
+      dataList2.push(dataItem);
+    });
+    dataList2.forEach((dataItem: any) => {
+      dataItem[jsonData2.enteredon] = this.splitdatetime(dataItem[jsonData2.enteredon])?.date;
+      dataItem[jsonData2.invoicedate] = this.splitdatetime(dataItem[jsonData2.invoicedate])?.date;
+    });
+    let header2DataList = this.bindVisibleMoreDatasCommon(dataList1);
+    let bodyDataList: any[] = dataList2;
+    this.pdfPayload = {
+      header1Data: { header: "INVOICE", content: "Invoice ID# 1112024" },
+      header2Data: header2DataList, // [],
+      bodyHeaderData: "Invoice Details",
+      bodyData: bodyDataList, // [],
+      // footerData: {},
+    };  
+}
+
+viewcreateddatas:any;
+
+bindVisibleMoreDatasCommon(dataItem: any) {
+  this.viewcreateddatas = [];
+  for (const key in dataItem) {
+    if (dataItem.hasOwnProperty(key)) {
+      const value = dataItem[key];
+      this.viewcreateddatas.push({ label: key, value: value });
+    }
+  }
+}
+
+handleDateChange(event: any, dateType: string): void {
+  const momentObject = event.value || moment();
+  let date=new Date(momentObject.toDate())
+console.log(date)
+console.log(date.toISOString())
+
+ if (dateType === 'from') {
+   this.oneMonthAgo = date ;
+  } 
+  else if (dateType === 'to') {
+    this.todayModel =date;
+  }
+
+  console.log(this.oneMonthAgo)
+  console.log(this.todayModel)
+
+  this.onfilterclick()
+
+}
+
+
+
+ onfilterclick() {
+    const updatedLazyLoadEvent: LazyLoadEvent = {
+      // Modify properties as needed
+      first: 0,
+      rows: 10,
+      // ... other properties
+    };
+    // this.overdue=1;
+    this.InitTable(updatedLazyLoadEvent);
+  }
 
 }

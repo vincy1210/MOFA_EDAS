@@ -12,6 +12,7 @@ import { HttpClient } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 import { MatToolbar } from '@angular/material/toolbar';
 import { saveAs } from 'file-saver';
+import { TranslateService } from '@ngx-translate/core';
 
 import { AuthService } from 'src/service/auth.service';
 interface Column {
@@ -20,6 +21,7 @@ interface Column {
   customExportHeader?: string;
 }
 import { Router } from '@angular/router';
+import * as moment from 'moment';
 
 interface ExportColumn {
   title: string;
@@ -99,7 +101,7 @@ isfilenotfouund:boolean=false;
 
 fields: { label: string, value: any }[] = [];
 isButtonDisabled = false;
-  constructor(private datePipe: DatePipe, private http:HttpClient,private _liveAnnouncer: LiveAnnouncer, private api:ApiService,
+  constructor(private translate:TranslateService,private datePipe: DatePipe, private http:HttpClient,private _liveAnnouncer: LiveAnnouncer, private api:ApiService,
      public common:CommonService, private consts:ConstantsService, private auth:AuthService, private router:Router) {
     this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
    }
@@ -154,12 +156,12 @@ isButtonDisabled = false;
     this.cols = [
       { field: 'edasattestno', header: 'edasreqno', width:'25%' },
       { field: 'declarationumber', header: 'Declaration No', width:'20%' },
-      { field: 'noofdaysoverdue', header: 'Age', width:'20%' },
+      { field: 'noofdaysoverdue', header: 'Day(s)', width:'20%' },
       { field: 'invoicenumber', header: 'Invoice No', width:'20%' },
       { field: 'invoicedate', header: 'Invoice Date' , width:'25%'},
       { field: 'invoiceamount', header: 'Invoice Amount', width:'25%' },
       { field: 'feesamount', header: 'Fees Amount', width:'15%' },
-      { field: 'fineamount', header: 'Fine Amount' , width:'15%'},
+      { field: 'fineamount', header: 'FineAmount' , width:'15%'},
       { field: 'lcaname', header: 'Channel', width:'20%' },
       
   
@@ -366,8 +368,8 @@ exportExcel() {
   
   const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataList);
       const wb: XLSX.WorkBook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, 'Attestation-Completed');
-      XLSX.writeFile(wb, 'Attestation_Completed.xlsx');
+      XLSX.utils.book_append_sheet(wb, ws, this.common.givefilename('Fines'));
+      XLSX.writeFile(wb, this.common.givefilename('Fines')+'.xlsx');
 }
 
 saveAsExcelFile(buffer: any, fileName: string): void {
@@ -450,50 +452,50 @@ loadsidepanel(event:any){
 clickChips() {
   this.enableFilters = !this.enableFilters;
 }
-FilterInitTable(){
+// FilterInitTable(){
   
-  this.common.showLoading();
+//   this.common.showLoading();
 
-  let resp;
-  let data;
+//   let resp;
+//   let data;
 
-data={
-  "uuid": this.uuid,
-  "companyuno": this.currentcompany,
-  "startnum": 0,
-  "limit": 10,
-  "startdate": this.common.formatDateTime_API_payload(this.oneMonthAgo.toDateString()),
-  "enddate": this.common.formatDateTime_API_payload(this.todayModel.toDateString()),
-  "statusuno":10
-}
-this.common.showLoading();
+// data={
+//   "uuid": this.uuid,
+//   "companyuno": this.currentcompany,
+//   "startnum": 0,
+//   "limit": 10,
+//   "startdate": this.common.formatDateTime_API_payload(this.oneMonthAgo.toDateString()),
+//   "enddate": this.common.formatDateTime_API_payload(this.todayModel.toDateString()),
+//   "statusuno":10
+// }
+// this.common.showLoading();
 
-  this.api.post(this.consts.getFinesReportForAllStatus,data).subscribe({next:(success:any)=>{
-    this.common.hideLoading();
+//   this.api.post(this.consts.getFinesReportForAllStatus,data).subscribe({next:(success:any)=>{
+//     this.common.hideLoading();
 
-    resp=success;
-    if(resp.responsecode==1){
-      this.list=resp.data
-      this.datasource=resp.data;
-      this.totalrecords=resp.data.length;
-      this.loading = false;
-      this.Reduce();
-      console.log('Data retrived'); // Show the verification alert
+//     resp=success;
+//     if(resp.responsecode==1){
+//       this.list=resp.data
+//       this.datasource=resp.data;
+//       this.totalrecords=resp.data.length;
+//       this.loading = false;
+//       this.Reduce();
+//       console.log('Data retrived'); // Show the verification alert
 
-    }
-    else{
-      this.common.showErrorMessage('Something went wrong')
-      this.loading=false;
-    }
-  }
-})
-setTimeout(() => {
-  this.common.hideLoading(); // Assuming you have a hideLoading method to hide the loading indicator
-}, 500);
+//     }
+//     else{
+//       this.common.showErrorMessage('Something went wrong')
+//       this.loading=false;
+//     }
+//   }
+// })
+// setTimeout(() => {
+//   this.common.hideLoading(); // Assuming you have a hideLoading method to hide the loading indicator
+// }, 500);
 
 
 
-}
+// }
 
 
 openNew(data:any) {
@@ -580,5 +582,120 @@ onDropdownChange(event:any){
   this.InitTable(updatedLazyLoadEvent);
 
 }
+
+// invoiceRequestListsFilter:any;
+pdfPayload:any;
+
+exportTableToPDF() {
+    // header2Data
+    const jsonData1 = {
+      edasattestno: this.translate.instant(
+        "edasattestno"
+      ),
+      noofdaysleft: this.translate.instant(
+        "noofdaysleft"
+      ),
+      status: this.translate.instant("status"),
+      invoiceamount: this.translate.instant(
+        "invoiceamount"
+      ),
+    };
+    let dataList1: any = {};
+    this.list.map((item: any) => {
+      const dataItem: any = {};
+      dataItem[jsonData1.edasattestno] = item.edasattestno
+        ? item.edasattestno
+        : "";
+      dataItem[jsonData1.noofdaysleft] = item.noofdaysleft
+        ? item.noofdaysleft
+        : "";
+      dataItem[jsonData1.status] = item.statusname ? item.statusname : "";
+      dataItem[jsonData1.invoiceamount] = item.invoiceamount
+        ? item.invoiceamount
+        : "";
+      dataList1 = dataItem;
+    });
+    // bodyData
+    const jsonData2 = {
+      edasattestno: this.translate.instant(
+        "edasattestno"
+      ),
+      noofdaysleft: this.translate.instant(
+        "noofdaysleft"
+      ),
+      status: this.translate.instant("status"),
+      invoiceamount: this.translate.instant(
+        "invoiceamount"
+      ),
+    };
+    const dataList2: any = [];
+    this.list.map((item: any) => {
+      const dataItem: any = {};
+      dataItem[jsonData2.edasattestno] = item.edasattestno
+        ? item.edasattestno
+        : "";
+      dataItem[jsonData2.noofdaysleft] = item.noofdaysleft
+        ? item.noofdaysleft
+        : "";
+      dataItem[jsonData2.status] = item.statusname ? item.statusname : "";
+      dataItem[jsonData2.invoiceamount] = item.invoiceamount
+        ? item.invoiceamount
+        : "";
+      dataList2.push(dataItem);
+    });
+    let header2DataList = this.bindVisibleMoreDatasCommon(dataList1);
+    let bodyDataList: any[] = dataList2;
+    this.pdfPayload = {
+      header1Data: { header: "INVOICE", content: "Invoice ID# 1112024" },
+      header2Data: header2DataList, // [],
+      bodyHeaderData: "Invoice Details",
+      bodyData: bodyDataList, // [],
+      // footerData: {},
+    };  
+}
+
+viewcreateddatas:any;
+
+bindVisibleMoreDatasCommon(dataItem: any) {
+  this.viewcreateddatas = [];
+  for (const key in dataItem) {
+    if (dataItem.hasOwnProperty(key)) {
+      const value = dataItem[key];
+      this.viewcreateddatas.push({ label: key, value: value });
+    }
+  }
+}
+handleDateChange(event: any, dateType: string): void {
+  const momentObject = event.value || moment();
+  let date=new Date(momentObject.toDate())
+console.log(date)
+console.log(date.toISOString())
+
+ if (dateType === 'from') {
+   this.oneMonthAgo = date ;
+  } 
+  else if (dateType === 'to') {
+    this.todayModel =date;
+  }
+
+  console.log(this.oneMonthAgo)
+  console.log(this.todayModel)
+
+  this.onfilterclick()
+
+}
+
+
+
+ onfilterclick() {
+    const updatedLazyLoadEvent: LazyLoadEvent = {
+      // Modify properties as needed
+      first: 0,
+      rows: 10,
+      // ... other properties
+    };
+    // this.overdue=1;
+    this.InitTable(updatedLazyLoadEvent);
+  }
 
 }

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PhysicalComponent } from './physical.component';
+import { PdfExportComponent } from './pdf-export.component';
 
-describe('PhysicalComponent', () => {
-  let component: PhysicalComponent;
-  let fixture: ComponentFixture<PhysicalComponent>;
+describe('PdfExportComponent', () => {
+  let component: PdfExportComponent;
+  let fixture: ComponentFixture<PdfExportComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PhysicalComponent ]
+      declarations: [ PdfExportComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(PhysicalComponent);
+    fixture = TestBed.createComponent(PdfExportComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

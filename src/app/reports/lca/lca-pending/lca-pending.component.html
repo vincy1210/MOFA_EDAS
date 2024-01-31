@@ -1,8 +1,19 @@
 <div style="font-size: 12px !important; background-color: #ccc !important">
   <div class="grid grid-cols-1" color="primary" class="page-header">
-    <label style="font-size: 13px; color: white; font-weight: bold"
-      >{{ "Report" | translate }} - {{ "LCA Invoice(s)" | translate }}
-    </label>
+  
+
+
+    <h3>
+      <button *ngIf="showBackButton" mat-icon-button (click)="goBackToAnalytics()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <ng-container><label style="font-size: 13px; color: white; font-weight: bold"
+        >{{ "Report" | translate }} - {{ "LCA Invoice(s)" | translate }} 
+      </label></ng-container>
+    </h3>
+
+
+
   </div>
 
   <div style="padding: 3px; border-radius: 2px">
@@ -48,7 +59,7 @@
               'declarationumber',
               'declarationdate',
               'attestreqdate',
-              'Noofdaysleft'
+              'noofdaysoverdue'
             ]"
             [lazy]="true"
             (onLazyLoad)="InitTable($event)"
@@ -85,7 +96,7 @@
                       <mat-label>{{'Status' | translate }}</mat-label>
                       <mat-select name="statusddl"  [(ngModel)]="selectedStatus" (selectionChange)="onDropdownChange($event)">
                         <mat-option value="0">{{'All' | translate}}</mat-option>
-                        <mat-option value="1">{{'Pending' | translate}}</mat-option>
+                        <mat-option value="1">{{'Draft' | translate}}</mat-option>
                         <mat-option value="10">{{'Completed'| translate}}</mat-option>
 
                       </mat-select>
@@ -101,7 +112,7 @@
                       <mat-label>{{ "Start Date" | translate }}</mat-label>
                       <input
                         matInput
-                        [matDatepicker]="decDatepicker1"
+                        [matDatepicker]="decDatepicker1" (dateChange)="handleDateChange($event, 'from')"
                         [max]="todayModel"
                         [(ngModel)]="oneMonthAgo"
                         placeholder="{{ 'From' | translate }}"
@@ -123,7 +134,7 @@
                       <mat-label>{{ "End Date" | translate }}</mat-label>
                       <input
                         matInput
-                        [matDatepicker]="decDatepicker2"
+                        [matDatepicker]="decDatepicker2" (dateChange)="handleDateChange($event, 'to')"
                         [min]="oneMonthAgo"
                         [max]="today"
                         placeholder="{{ 'To' | translate }}"
@@ -137,22 +148,10 @@
                       <mat-datepicker #decDatepicker2></mat-datepicker>
                     </mat-form-field>
                   </div>
-                  <div
-                    *ngIf="enableFilters"
-                    class="col-md-3 col-lg-3 caption_apply_button"
-                  >
-                    <button
-                      type="button"
-                      mat-flat-button
-                      color="primary"
-                      (click)="filterInittable()"
-                    >
-                      {{ "Apply" | translate }}
-                    </button>
-                  </div>
+                 
                   <span style="padding: 10px"></span>
 
-                  <button
+                  <!-- <button
                     type="button"
                     pButton
                     pRipple
@@ -161,7 +160,37 @@
                     class="mr-2 grid-header-right-icon"
                     pTooltip="{{ 'Excel' | translate }}"
                     tooltipPosition="bottom"
+                  ></button> -->
+
+
+                  <button
+                    type="button"
+                    pButton
+                    pRipple
+                    [matMenuTriggerFor]="menu"
+                    icon="fas fa-download"
+                    class="mr-2 grid-header-right-icon"
+                    [pTooltip]="'Export' | translate"
+                    tooltipPosition="left"
+                    [disabled]="list && list.length === 0" [matMenuTriggerFor]="menu"
                   ></button>
+                  <mat-menu #menu="matMenu" class="exportmenu"  xPosition="before">
+                    <button mat-menu-item (click)="exportExcel()" [ngClass]="common.getmypalette()">
+                      <span class="mat-menu-share">
+                        <i class="pi pi-file-excel pr-2"></i>
+                        {{ "Excel Export" | translate }}</span
+                      >
+                    </button>
+                    <button mat-menu-item (click)="exportTableToPDF()" [ngClass]="common.getmypalette()">
+                      <span class="mat-menu-share">
+                        <i class="pi pi-file-pdf pr-2"></i>
+                        {{ "PDF Export" | translate }}</span
+                      >
+                    </button>
+                  </mat-menu>
+
+
+                  <!-- end -->
                   <button
                     type="button"
                     pButton
@@ -175,8 +204,8 @@
                   ></button>
                 </ng-template>
               </p-toolbar>
-              <tr>
-                <td colspan="12">
+              <div style="padding-top: 10px;">
+
                   <div class="alert alert-success flex" role="alert">
                     <span
                       class="glyphicon glyphicon-exclamation-sign"
@@ -192,8 +221,9 @@
                       are shown in this list.
                     </p>
                   </div>
-                </td>
-              </tr>
+                  </div>
+                <!-- </td>
+              </tr> -->
             </ng-template>
 
             <ng-template pTemplate="header" let-columns>
@@ -215,7 +245,7 @@
                   <p-sortIcon field="canpay"></p-sortIcon>
                 </th>
                 <th pSortableColumn="noofdaysoverdue">
-                  {{ "Age" | translate }}
+                  {{ "Day(s)" | translate }}
                   <p-sortIcon field="noofdaysoverdue"></p-sortIcon>
                 </th>
                 <th pSortableColumn="invoiceamount">
@@ -286,10 +316,11 @@
                       [value]="customer"
                     ></p-tableCheckbox>
                   </td> -->
-                <td class="hyperlink">
-                  <button pButton type="button" (click)="openNew_(customer)">
-                    {{ customer.edasattestno }}
-                  </button>
+                <td >
+                  <!-- <button pButton type="button" (click)="openNew_(customer)">
+                   
+                  </button> -->
+                  {{ customer.edasattestno }}
                 </td>
                 <!-- <td>
                     <span class="image-text">{{ customer.edasattestno }}</span>
@@ -308,12 +339,12 @@
                         ? "COO paid"
                         : "  &nbsp; COO unpaid "
                     }}
-                    &nbsp;
+                    <!-- &nbsp;
                     <i
                       class="fa fa-arrow-right"
                       *ngIf="customer.canpay != 1"
                       style="cursor: pointer"
-                    ></i>
+                    ></i> -->
                   </p-tag>
                 </td>
                 <td
@@ -374,7 +405,7 @@
                 </td>
                 <td>
                   <span class="image-text">{{
-                    common.splitdatetimeforstring(customer.attestreqdate)?.date
+                    common.splitdatetime(customer.attestreqdate)?.date
                   }}</span>
                 </td>
                 <td>
@@ -400,7 +431,7 @@
             </ng-template>
 
             <ng-template pTemplate="footer">
-              <ng-container *ngIf="list.length > 0">
+              <ng-container *ngIf="list && list.length > 0">
                 <tr>
                   <td colspan="4">
                     {{ "Total" | translate }}
@@ -613,15 +644,10 @@
             }}</mat-label>
             <div class="more-content-body">
               <mat-label class="more-content-block"
-                >{{ popupDownloadfilename }}{{ ".pdf" }}
+                >{{ common.givefilename(popupDownloadfilename) }}
                 <span
                   (click)="
-                    common.getimagebase64(
-                      currentrow.attestfilelocation,
-                      popupDownloadfilename
-                    )
-                  "
-                >
+                    common.getimagebase64( currentrow.attestfilelocation, common.givefilename(popupDownloadfilename) ) " >
                   <mat-icon class="action_eye_icon_popup">download</mat-icon>
                 </span>
               </mat-label>
@@ -888,3 +914,6 @@
 </p-dialog>
 
 <!-- modal 2 end -->
+<div>
+  <app-pdf-export [pdfPayload]="pdfPayload"></app-pdf-export>
+</div>

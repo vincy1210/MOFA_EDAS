@@ -40,7 +40,7 @@
               'declarationumber',
               'declarationdate',
               'attestreqdate',
-              'Noofdaysleft'
+              'noofdaysoverdue'
             ]"
             [lazy]="true"
             (onLazyLoad)="InitTable($event)"
@@ -56,8 +56,7 @@
                         ><mat-icon style="font-size: larger">search</mat-icon
                         >{{ "SearchKeyword" | translate }}</mat-label
                       >
-                      <input matInput type="text" (input)="
-                          tableref.filterGlobal( $any($event.target).value,'contains')" placeholder="{{ 'SearchKeyword' | translate }}"/>
+                      <input appTrimInput matInput type="text"  (input)=" tableref.filterGlobal( $any($event.target).value,'contains')" placeholder="{{ 'SearchKeyword' | translate }}"/>
                     </mat-form-field>
                   </div>
                 
@@ -101,16 +100,6 @@
                     </span>
                   </span>
 
-                
-                  <!-- <p-multiSelect
-                  [options]="cols"
-                  [(ngModel)]="selectedColumns"
-                  optionLabel="header"
-                  selectedItemsLabel="{0} {{'columns selected' | translate}}"
-                  [style]="{ 'min-width': '200px' }"
-                  placeholder="{{'Choose Columns' |translate}}"
-                ></p-multiSelect> -->
-
                   <div
                     *ngIf="enableFilters"
                     style="padding: 5px"
@@ -118,9 +107,9 @@
                   >
                     <mat-form-field class="filter_datepicker">
                       <mat-label>{{ "Start Date" | translate }}</mat-label>
-                      <input
+                      <input appTrimInput
                         matInput
-                        [matDatepicker]="decDatepicker1"
+                        [matDatepicker]="decDatepicker1" (dateChange)="handleDateChange($event, 'from')"
                         [max]="todayModel"
                         [(ngModel)]="oneMonthAgo"
                         placeholder="{{ 'From' | translate }}"
@@ -140,12 +129,12 @@
                   >
                     <mat-form-field class="filter_datepicker">
                       <mat-label>{{ "End Date" | translate }}</mat-label>
-                      <input
+                      <input appTrimInput
                         matInput
-                        [matDatepicker]="decDatepicker2"
+                        [matDatepicker]="decDatepicker2" (dateChange)="handleDateChange($event, 'to')"
                         [min]="oneMonthAgo"
                         [max]="today"
-                        placeholder="{{ 'To' | translate }}"
+                        placeholder="{{ 'To' | translate }}" 
                         [(ngModel)]="todayModel"
                         name="createdateto"
                       />
@@ -156,31 +145,39 @@
                       <mat-datepicker #decDatepicker2></mat-datepicker>
                     </mat-form-field>
                   </div>
-                  <div
-                    *ngIf="enableFilters"
-                    class="col-md-3 col-lg-3 caption_apply_button"
-                  >
-                    <button
-                      type="button"
-                      mat-flat-button
-                      color="primary"
-                      (click)="filterInittable()"
-                    >
-                      {{ "Apply" | translate }}
-                    </button>
-                  </div>
+                 
                   <span style="padding: 10px"></span>
+
+              
 
                   <button
                     type="button"
                     pButton
                     pRipple
-                    icon="pi pi-file-excel"
-                    (click)="exportExcel()"
+                    [matMenuTriggerFor]="menu"
+                    icon="fas fa-download"
                     class="mr-2 grid-header-right-icon"
-                    pTooltip="{{ 'Excel' | translate }}"
-                    tooltipPosition="bottom"
+                    [pTooltip]="'Export' | translate"
+                    tooltipPosition="left"
+                    [disabled]="list && list.length === 0" [matMenuTriggerFor]="menu"
                   ></button>
+                  <mat-menu #menu="matMenu" class="exportmenu"  xPosition="before">
+                    <button mat-menu-item (click)="exportExcel()" [ngClass]="common.getmypalette()">
+                      <span class="mat-menu-share">
+                        <i class="pi pi-file-excel pr-2"></i>
+                        {{ "Excel Export" | translate }}</span
+                      >
+                    </button>
+                    <button mat-menu-item (click)="exportTableToPDF()" [ngClass]="common.getmypalette()">
+                      <span class="mat-menu-share">
+                        <i class="pi pi-file-pdf pr-2"></i>
+                        {{ "PDF Export" | translate }}</span
+                      >
+                    </button>
+                  </mat-menu>
+
+
+<!-- end  -->
                   <button
                     type="button"
                     pButton
@@ -194,8 +191,10 @@
                   ></button>
                 </ng-template>
               </p-toolbar>
- <tr>
-                <td colspan="12">
+ <!-- <tr>
+                <td colspan="12"> -->
+                <div style="padding-top: 10px;">
+
                   <div class="alert alert-info" role="alert">
                     <span
                       class="glyphicon glyphicon-exclamation-sign"
@@ -210,8 +209,9 @@
                     the Invoice Attestation request. Fine amount has to be paid
                     along with the Invoice Attestation fees amount
                   </div>
-                </td>
-              </tr>
+                  </div>
+                <!-- </td>
+              </tr> -->
             </ng-template>
 
             <ng-template pTemplate="header" let-columns>
@@ -223,7 +223,7 @@
               <th pSortableColumn="edasattestno" >{{'edasattestno' | translate}}  <p-sortIcon field="edasattestno"></p-sortIcon> </th>
               <th pSortableColumn="currencycode">{{'invoiceCurrency' | translate}}  <p-sortIcon field="currencycode"></p-sortIcon></th>
               <th pSortableColumn="canpay">{{'status' | translate}}  <p-sortIcon field="canpay"></p-sortIcon></th>
-              <th pSortableColumn="noofdaysoverdue">{{'Age'| translate}}  <p-sortIcon field="noofdaysoverdue"></p-sortIcon></th>
+              <th pSortableColumn="noofdaysoverdue">{{'Day(s)'| translate}}  <p-sortIcon field="noofdaysoverdue"></p-sortIcon></th>
               <th pSortableColumn="invoiceamount">{{'invoiceamount' | translate}}  <p-sortIcon field="invoiceamount"></p-sortIcon></th>
               <th pSortableColumn="feesamount">{{'Fees' | translate}}  <p-sortIcon field="feesamount"></p-sortIcon></th>
               <th pSortableColumn="invoiceid">{{'invoiceId' | translate}}  <p-sortIcon field="invoiceid"></p-sortIcon></th>
@@ -336,7 +336,7 @@
                 </td>
                 <td>
                   <span class="image-text">{{
-                    common.splitdatetimeforstring(customer.attestreqdate)?.date
+                    common.splitdatetime(customer.attestreqdate)?.date
                   }}</span>
                 </td>
                 <td>
@@ -484,7 +484,7 @@
                     (click)="AttestationPay()"
                     class="pay-btn"
                   >
-                    {{ payorpayall | translate }}
+                  {{ noOfInvoicesSelected > 1 ? ('Pay All' | translate) : ('Pay' | translate) }}
                   </button>
                 </div>
                 <div class="flex items-center justify-center col-span-2">
@@ -563,9 +563,9 @@
             }}</mat-label>
             <div class="more-content-body">
               <mat-label class="more-content-block"
-                >{{ popupDownloadfilename }}{{'.pdf'}}
+                >{{ common.givefilename('draft') }}{{'.pdf'}}
                 <span
-                  (click)="common.getimagebase64(currentrow.attestfilelocation, popupDownloadfilename)"
+                  (click)="common.getimagebase64(currentrow.attestfilelocation, common.givefilename('draft'))"
                 >
                   <mat-icon class="action_eye_icon_popup">download</mat-icon>
                 </span>
@@ -689,14 +689,14 @@
               </div>
 
                 <!-- {{payment_button_isdisabled}} -->
-              <div class="gap-4 flex items-center justify-center col-span-2">
+              <div *ngIf="totalFee_coo" class="gap-4 flex items-center justify-center col-span-2">
                 <button
                   mat-flat-button
                   color="primary"
                   (click)="processname='COO';processname_set='COOLCA'; AttestationPay()"
                   class="pay-btn"
                 >
-                  {{ payorpayall | translate }}
+                {{ noOfInvoicesSelected_coo > 1 ? ('Pay All' | translate) : ('Pay' | translate) }}
                 </button>
               </div>
              </div>
@@ -751,7 +751,7 @@
 
   <!-- pay button start -->
 
-        <div class="gap-4 flex items-center justify-center col-span-2">
+        <div *ngIf="totalAttestationFee" class="gap-4 flex items-center justify-center col-span-2">
           <button
             mat-flat-button
             color="primary"
@@ -807,5 +807,9 @@
              </ng-template>
           
          </p-dialog>
+
+         <div >
+          <app-pdf-export [pdfPayload]="pdfPayload"></app-pdf-export>
+        </div>
 
 <!-- modal 2 end -->

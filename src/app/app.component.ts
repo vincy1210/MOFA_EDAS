@@ -17,6 +17,7 @@ import { Keepalive } from '@ng-idle/keepalive';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/service/auth.service';
 import { MatDialog } from '@angular/material/dialog';
+import { GlossaryService } from 'src/service/glossary.service';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +25,7 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  idleState = 'NOT_STARTED'; //vincy
+  idleState = 'NOT_STARTED'; //
   countdown?: number;
   lastPing?: Date;
   userwasIdle: boolean = false;
@@ -140,7 +141,7 @@ export class AppComponent {
     private sanitizer: DomSanitizer,
     public common: CommonService,
     private idle: Idle,
-    keepalive: Keepalive,
+    keepalive: Keepalive, private gloss:GlossaryService,
     cd: ChangeDetectorRef //vincy
   ) {
     let role2 = this.auth.getLCAUser();
@@ -160,8 +161,8 @@ export class AppComponent {
       this.userrole = role;
     }
     // if (this.userloggedin || this.lcauserloggedin) {
-    idle.setIdle(3000); // how long can they be inactive before considered idle, in seconds 1200
-    idle.setTimeout(3000); // how long can they be idle before considered timed out, in seconds 600
+    idle.setIdle(30000); // how long can they be inactive before considered idle, in seconds 1200
+    idle.setTimeout(30000); // how long can they be idle before considered timed out, in seconds 600
     idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
 
     idle.onIdleStart.subscribe(() => {
@@ -305,6 +306,7 @@ this.reset();
     sessionStorage.setItem('language', language);
     this.selectedlanguage = language;
     this.translate.use(language);
+    this.common.setLanguage(language)
   }
 
   usePalette(palette: string) {

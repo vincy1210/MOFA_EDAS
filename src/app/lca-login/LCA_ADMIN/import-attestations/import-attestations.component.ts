@@ -63,7 +63,8 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
   responsiveLayout: 'scroll' | 'stack' = 'scroll';
   issubmitvalid: boolean = false;
   LCACode: string = '';
-
+uuid:any;
+currentLanguagecode: string='1033';
   constructor(
     public override router: Router,
     public override consts: ConstantsService,
@@ -84,15 +85,27 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
     if (this.routesname === 'pending' || this.routesname === 'approve') {
       // this.checkPermissionAllPage("excel-import");
     }
+
+    let selectedlanguage = sessionStorage.getItem('language') || 'en';
+
+    if(selectedlanguage==='ar'){
+        this.currentLanguagecode='14337'
+    }
+    else{
+      this.currentLanguagecode='1033'
+
+    }
+   console.log(this.currentLanguagecode);
+
+   
   }
 
   ngOnInit(): void {
     let data11 = this.common.getUserProfile();
-    let uuid;
     if (data11 != null || data11 != undefined) {
       data11 = JSON.parse(data11);
       console.log(data11.Data);
-      uuid = data11.Data.uuid;
+      this.uuid = data11.Data.uuid;
     } else {
       this.common.setlogoutreason('session');
       this.auth.logout();
@@ -293,10 +306,10 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
   }
 
   lcaDataList() {
-    this.selectedFilterOption.uuid = '1111';
+    this.selectedFilterOption.uuid = this.uuid;
     let data = {
       uuid: this.selectedFilterOption.uuid,
-      languagecode: '1033',
+      languagecode: this.currentLanguagecode,
       processname: 'LCAMASTER',
     };
     this.getListOfValues(data);
@@ -838,12 +851,12 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataList);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Risk Profile');
-    XLSX.writeFile(wb, 'lca-details.xlsx');
+    XLSX.writeFile(wb,  this.common.givefilename('lca-details') +'.xlsx');
   }
 
-  splitdatetime1(date: any) {
-    return this.common.splitdatetime1(date);
-  }
+  // splitdatetime1(date: any) {
+  //   return this.common.splitdatetime(date);
+  // }
 
   splitdatetime(date: any) {
     return this.common.splitdatetime(date);

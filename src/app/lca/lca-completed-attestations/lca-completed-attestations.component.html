@@ -56,7 +56,7 @@
                       ><mat-icon style="font-size: larger">search</mat-icon>
                       {{ "SearchKeyword" | translate }}</mat-label
                     >
-                    <input
+                    <input appTrimInput
                       matInput
                       type="text"
                       (input)="
@@ -78,9 +78,9 @@
                 >
                   <mat-form-field class="filter_datepicker">
                     <mat-label>{{ "Start Date" | translate }}</mat-label>
-                    <input
+                    <input appTrimInput
                       matInput
-                      [matDatepicker]="decDatepicker1"
+                      [matDatepicker]="decDatepicker1" (dateChange)="handleDateChange($event, 'from')"
                       [max]="todayModel"
                       [(ngModel)]="oneMonthAgo"
                       placeholder="From"
@@ -100,9 +100,9 @@
                 >
                   <mat-form-field class="filter_datepicker">
                     <mat-label>{{ "End Date" | translate }}</mat-label>
-                    <input
+                    <input appTrimInput 
                       matInput
-                      [matDatepicker]="decDatepicker2"
+                      [matDatepicker]="decDatepicker2" (dateChange)="handleDateChange($event, 'to')"
                       [min]="oneMonthAgo"
                       [max]="today"
                       placeholder="To"
@@ -116,25 +116,12 @@
                     <mat-datepicker #decDatepicker2></mat-datepicker>
                   </mat-form-field>
                 </div>
-                <div
-                  *ngIf="enableFilters"
-                  style="padding: 5px"
-                  class="col-md-3 col-lg-3"
-                >
-                  <button
-                    type="button"
-                    mat-flat-button
-                    color="primary"
-                    (click)="FilterInitTable()"
-                  >
-                    {{ "Apply" | translate }}
-                  </button>
-                </div>
+                
                 <!-- <p-multiSelect [options]="cols" [(ngModel)]="selectedColumns" optionLabel="header"
         selectedItemsLabel="{0} columns selected" [style]="{'min-width': '200px'}" placeholder="{{'Choose Columns' | translate}}"></p-multiSelect> -->
 
                 <span style="padding: 10px"></span>
-                <button
+                <!-- <button
                   type="button"
                   pButton
                   pRipple
@@ -143,7 +130,37 @@
                   class="mr-2 grid-header-right-icon"
                   pTooltip="Excel"
                   tooltipPosition="bottom"
-                ></button>
+                ></button> -->
+
+                <button
+                    type="button"
+                    pButton
+                    pRipple
+                    [matMenuTriggerFor]="menu"
+                    icon="fas fa-download"
+                    class="mr-2 grid-header-right-icon"
+                    [pTooltip]="'Export' | translate"
+                    tooltipPosition="left"
+                    [disabled]="list && list.length === 0" [matMenuTriggerFor]="menu"
+                  ></button>
+                  <mat-menu #menu="matMenu" class="exportmenu"  xPosition="before">
+                    <button mat-menu-item (click)="exportExcel()" [ngClass]="common.getmypalette()">
+                      <span class="mat-menu-share">
+                        <i class="pi pi-file-excel pr-2"></i>
+                        {{ "Excel Export" | translate }}</span
+                      >
+                    </button>
+                    <button mat-menu-item (click)="exportTableToPDF()" [ngClass]="common.getmypalette()">
+                      <span class="mat-menu-share">
+                        <i class="pi pi-file-pdf pr-2"></i>
+                        {{ "PDF Export" | translate }}</span
+                      >
+                    </button>
+                  </mat-menu>
+
+
+
+                <!-- end -->
                 <button
                   type="button"
                   pButton
@@ -157,8 +174,10 @@
                 ></button>
               </ng-template>
             </p-toolbar>
-            <tr>
-              <td colspan="12">
+            <!-- <tr>
+              <td colspan="12"> -->
+                <div style="padding-top: 10px;">
+
                 <div class="alert alert-success flex" role="alert">
                   <span
                     class="glyphicon glyphicon-exclamation-sign"
@@ -172,8 +191,9 @@
                     list. LCA Completed Request are shown in this list. LCA Completed Request are shown in this list.
                   </p>
                 </div>
-              </td>
-            </tr>
+                </div>
+              <!-- </td>
+            </tr> -->
           </ng-template>
           <ng-template pTemplate="header" let-columns>
             <tr>
@@ -304,7 +324,7 @@
                 </span>
                 <span
                   (click)="
-                    this.common.getimagebase64(customer.attestfilelocation)
+                    this.common.getimagebase64(customer.attestfilelocation , common.givefilename('lcacompleted'))
                   "
                   style="padding: 15px; cursor: pointer"
                   tooltipPosition="bottom"
@@ -318,7 +338,7 @@
           </ng-template>
           <ng-template pTemplate="emptymessage">
             <tr>
-              <td colspan="12">No data found.</td>
+              <td colspan="12">{{'No data found.' | translate}}</td>
             </tr>
           </ng-template>
         </p-table>
@@ -344,8 +364,9 @@
   [modal]="true"
   styleClass="p-fluid"
 >
-  <p-tabView>
-    <p-tabPanel header="{{ 'Details' | translate }}">
+<br>
+  <!-- <p-tabView>
+    <p-tabPanel header="{{ 'Details' | translate }}"> -->
       <div class="viewmore">
         <div class="more-content-section">
           <div class="grid grid-cols-2">
@@ -361,54 +382,39 @@
                 </div>
               </div>
               <div class="more-content">
-                <mat-label class="title-label">{{
-                  "Attestation File" | translate
-                }}</mat-label>
+                <mat-label class="title-label">{{  "Attestation File" | translate }}</mat-label>
                 <div class="more-content-body">
                   <mat-label class="more-content-block"
-                    >{{ "Attestation.pdf" }}
-                    <span
-                      (click)="
-                        common.getimagebase64(currentrow.attestfilelocation)
-                      "
-                    >
-                      <mat-icon class="action_eye_icon_popup"
-                        >download</mat-icon
-                      >
+                    >{{ common.givefilename('lcacompleted') }}
+                    <span (click)=" common.getimagebase64(currentrow.attestfilelocation, common.givefilename('lcacompleted')) " >
+                      <mat-icon class="action_eye_icon_popup" >download</mat-icon>
                     </span>
                   </mat-label>
                 </div>
               </div>
+              <!--  -->
+              <div class="more-content">
+                <mat-label class="title-label">{{  "Invoice" | translate }}</mat-label>
+                <div class="more-content-body">
+                  <mat-label class="more-content-block"
+                    >{{ common.givefilename('Invoice') }}
+                    <span (click)=" common.getPaymentReceiptDownload(currentrow.invoiceuno, common.givefilename('Invoice')) " >
+                      <mat-icon class="action_eye_icon_popup" >download</mat-icon>
+                    </span>
+                  </mat-label>
+                </div>
+              </div>
+              <!--  -->
             </ng-container>
           </div>
         </div>
       </div>
-    </p-tabPanel>
-    <p-tabPanel header="{{ 'Receipt' | translate }}">
+    <!-- </p-tabPanel>
+    <p-tabPanel header="{{ 'Receipt' | translate }}"> -->
       <!-- {{this.src}} -->
-      <div class="grid grid-cols-1">
-        <div id="outerContainer">
-          <div class="pdf-container">
-            <pdf-viewer
-              [src]="src"
-              [rotation]="0"
-              [original-size]="false"
-              [show-all]="true"
-              [fit-to-page]="false"
-              [zoom]="1"
-              [zoom-scale]="'page-width'"
-              [stick-to-page]="false"
-              [render-text]="true"
-              [external-link-target]="'blank'"
-              [autoresize]="true"
-              [show-borders]="false"
-              style="width: 100%; height: 600px"
-            ></pdf-viewer>
-          </div>
-        </div>
-      </div>
-    </p-tabPanel>
-  </p-tabView>
+      
+    <!-- </p-tabPanel>
+  </p-tabView> -->
   <ng-template pTemplate="footer">
     <p-button
       icon="pi pi-times"
@@ -462,7 +468,7 @@
                       </div>
                     </div>
                     <!--  -->
-                    <div class="more-content">
+                    <!-- <div class="more-content">
                       <mat-label class="title-label">{{
                         "Attestation Fees" | translate
                       }}</mat-label>
@@ -471,9 +477,9 @@
                           invoicefeesamount
                         }}</mat-label>
                       </div>
-                    </div>
+                    </div> -->
                     <!--  -->
-                    <div class="more-content">
+                    <!-- <div class="more-content">
                       <mat-label class="title-label">{{
                         "No Of COO" | translate
                       }}</mat-label>
@@ -482,7 +488,7 @@
                           noofcoo
                         }}</mat-label>
                       </div>
-                    </div>
+                    </div> -->
                     <!--  -->
                     <div class="more-content">
                       <mat-label class="title-label">{{
@@ -496,7 +502,7 @@
                     </div>
                     <!--  -->
 
-                    <div class="more-content">
+                    <!-- <div class="more-content">
                       <mat-label class="title-label">{{
                         "No Of Fine(s)" | translate
                       }}</mat-label>
@@ -505,9 +511,9 @@
                           nooffines
                         }}</mat-label>
                       </div>
-                    </div>
+                    </div> -->
                     <!--  -->
-                    <div class="more-content">
+                    <!-- <div class="more-content">
                       <mat-label class="title-label">{{
                         "Fine Amount" | translate
                       }}</mat-label>
@@ -516,9 +522,9 @@
                           totalFineAmount_coo
                         }}</mat-label>
                       </div>
-                    </div>
+                    </div> -->
                     <!--  -->
-                    <div class="more-content">
+                    <!-- <div class="more-content">
                       <mat-label class="title-label">{{
                         "Total Amount" | translate
                       }}</mat-label>
@@ -527,7 +533,7 @@
                           totalFee_coo
                         }}</mat-label>
                       </div>
-                    </div>
+                    </div> -->
                   </ng-container>
                 </div>
               </div>
@@ -548,3 +554,7 @@
   </ng-template>
 </p-dialog>
 <!-- dialog2 end -->
+
+<div>
+  <app-pdf-export [pdfPayload]="pdfPayload"></app-pdf-export>
+</div>

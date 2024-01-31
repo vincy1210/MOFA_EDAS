@@ -49,9 +49,7 @@ export class PhysicalAttestationCreateComponent implements OnInit {
   currentcompany:any;
   isButtonDisabled = false;
 
-  // myControl = new FormControl('');
-  // options: string[] = ['One', 'Two', 'Three'];
-  // filteredOptions: Observable<string[]> ='';
+  currentLanguagecode: string='1033';
 
   constructor(
     public dialogRef: MatDialogRef<PhysicalAttestationCreateComponent>,
@@ -61,7 +59,18 @@ export class PhysicalAttestationCreateComponent implements OnInit {
     public consts: ConstantsService,
     private common: CommonService,
     private datePipe: DatePipe, private auth:AuthService
-  ) {}
+  ) {
+    let selectedlanguage = sessionStorage.getItem('language') || 'en';
+
+    if(selectedlanguage==='ar'){
+        this.currentLanguagecode='14337'
+    }
+    else{
+      this.currentLanguagecode='1033'
+
+    }
+   console.log(this.currentLanguagecode);
+  }
 
   ngOnInit(): void {
 
@@ -93,7 +102,7 @@ export class PhysicalAttestationCreateComponent implements OnInit {
       invoiceDate: [, Validators.required],
       invoiceCurrency: ['AED', [Validators.required,Validators.pattern('^(?=.*\\S).+$')]],
       invoiceAmount: [, [Validators.required, this.validateNumericInput,Validators.pattern(/^[1-9]\d*(\.\d{1,2})?$/)]],
-      issuingAuthority: [, Validators.required],
+      // issuingAuthority: [, Validators.required],
       uploadInvoiceFile: [, Validators.required],
     });
 
@@ -104,7 +113,7 @@ export class PhysicalAttestationCreateComponent implements OnInit {
   getIssuingAuthorities() {
     let data = {
       useruno: '1',
-      languagecode:0
+      languagecode:this.currentLanguagecode
     };
     this.common.showLoading();
 
@@ -124,7 +133,7 @@ export class PhysicalAttestationCreateComponent implements OnInit {
   getAvailableCurrencies() {
     let data = {
       uuid: this.uuid,
-      languagecode: 0, 
+      languagecode: this.currentLanguagecode, 
       processname: "CURRENCYMST"
     };
     this.common.showLoading();
@@ -210,9 +219,13 @@ export class PhysicalAttestationCreateComponent implements OnInit {
         invoiceId,
         invoiceCurrency,
         invoiceAmount,
-        issuingAuthority,
+        // issuingAuthority,
         invoiceDate,
       } = this.registrationForm.getRawValue();
+
+      // this.datePipe
+      //         .transform(invoiceDate, 'ddMMyyyy')
+      //         ?.toString(),
 
       let attest_file_name=invoiceId +'_'+timestamp+ '.pdf'; 
       this.convertToBase64(this.listOfFiles[0])
@@ -224,10 +237,8 @@ export class PhysicalAttestationCreateComponent implements OnInit {
             invoiceno: invoiceId,
             invoicecurrency: invoiceCurrency,
             invoiceamount: invoiceAmount,
-            invoicedate: this.datePipe
-              .transform(invoiceDate, 'ddMMyyyy')
-              ?.toString(),
-            issuingauthorityuno: issuingAuthority,
+            invoicedate: invoiceDate,
+            issuingauthorityuno: 0,
             attestDocName: attest_file_name,
             processname: 'invoice',
             qrCodeRequired: 0,
@@ -241,7 +252,8 @@ export class PhysicalAttestationCreateComponent implements OnInit {
         });
     } else {
       // alert
-      this.common.showErrorMessage('Kindly Fill the mandatory fields');
+      let message=this.translate.instant('Please fill the mandatory Fields');
+      this.common.showErrorMessage(message);
     }
   }
 

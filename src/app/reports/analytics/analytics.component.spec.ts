@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { COOComponent } from './coo.component';
+import { AnalyticsComponent } from './analytics.component';
 
-describe('COOComponent', () => {
-  let component: COOComponent;
-  let fixture: ComponentFixture<COOComponent>;
+describe('AnalyticsComponent', () => {
+  let component: AnalyticsComponent;
+  let fixture: ComponentFixture<AnalyticsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ COOComponent ]
+      declarations: [ AnalyticsComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(COOComponent);
+    fixture = TestBed.createComponent(AnalyticsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

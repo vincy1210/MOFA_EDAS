@@ -8,6 +8,8 @@ import { ModalPopupService } from 'src/service/modal-popup.service';
 import { CommonService } from 'src/service/common.service';
 import { AuthService } from 'src/service/auth.service';
 import { Router } from '@angular/router';
+import { LazyLoadEvent } from 'primeng/api';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-completed-coo-requests',
@@ -38,6 +40,7 @@ isfilenotfouund:boolean=false;
 attchemntisthere:boolean=false;
 fields: { label: string, value: any }[] = [];
 cooAttestationLists_LCA: any;
+datasource:any;
 isButtonDisabled = false;
 totalrecords_LCA: number = 0;
 AddInvoiceDialog_:boolean=false;
@@ -95,12 +98,12 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
     }
    
     this.cols = [
-      { field: 'declarationumber', header: 'Declaration Number', width: '20%' },
-      { field: 'edasattestno', header: 'EDAS Attestation Number', width: '20%' },
+      { field: 'declarationumber', header: 'Declaration No', width: '20%' },
+      { field: 'edasattestno', header: 'edasattestno', width: '15%' },
       { field: 'statusname', header: 'Status', width: '10%' },
-      { field: 'totalamount', header: 'Total Amount', width: '15%' },
+      { field: 'totalamount', header: 'totalamount', width: '15%' },
       { field: 'declarationdate', header: 'Declaration Date', width: '13%' },
-      { field: 'attestreqdate', header: 'Attestation Request Date', width: '13%' }
+      { field: 'attestreqdate', header: 'Created', width: '13%' }
     ];
     
 
@@ -108,7 +111,7 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
   this.cols_ = [
     { field: 'edasattestno', header: 'edasattestno', width: '20%' },
     { field: 'canpay', header: 'Status', width: '20%' },
-    { field: 'Noofdaysleft', header: 'Age', width: '5%' },
+    { field: 'Noofdaysleft', header: 'Day(s)', width: '5%' },
     { field: 'invoiceamount', header: 'Invoice Amount', width: '20%' },
     { field: 'feesamount', header: 'Fees Amount', width: '20%' },
     { field: 'invoicenumber', header: 'Invoice ID', width: '20%' },
@@ -119,16 +122,16 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
     { field: 'companyname', header: 'Company', width: '20%' },
   ];
 
-    this.InitTable();
+    // this.InitTable();
   }
 
-  InitTable() {
+  InitTable($event: LazyLoadEvent) {
     let data = {
       "Companyuno":this.currentcompany,
       "uuid":this.uuid,
-      "startnum":0,
+      "startnum":$event.first,
       "status":0,
-      "limit":10,
+      "limit":200 + ($event.first ?? 0),
       "Startdate":this.common.formatDateTime_API_payload(this.oneMonthAgo.toDateString()),
       "Enddate":this.common.formatDateTime_API_payload(this.todayModel.toDateString())
     };
@@ -143,9 +146,59 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
           const dataArray = response.dictionary?.data;
           if (dataArray) {
             this.cooAttestationLists = dataArray;
+            this.totalrecords = this.cooAttestationLists.length;
+            this.datasource= this.cooAttestationLists;
           }
+         
+
+          if ($event.globalFilter) {
+            this.datasource = this.datasource.filter((row: any) =>
+              this.globalFilter(row, $event.globalFilter)
+            );
+            this.cooAttestationLists = this.datasource;
+            this.totalrecords = this.cooAttestationLists.length;
+          }
+          if ($event.sortField) {
+            let sortorder = $event.sortOrder || 1;
+            this.datasource = this.sortData(
+              this.datasource,
+              $event.sortField,
+              sortorder
+            );
+            this.cooAttestationLists = this.datasource;
+            this.totalrecords = this.cooAttestationLists.length;
+          }
+
         }
       });
+  }
+
+  globalFilter(row: any, globalFilterValue: string): boolean {
+    for (const key in row) {
+      if (
+        row[key] &&
+        row[key]
+          .toString()
+          .toLowerCase()
+          .includes(globalFilterValue.toLowerCase())
+      ) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  sortData(data: any[], field: string, order: number): any[] {
+    return data.sort((a, b) => {
+      const valueA = a[field];
+      const valueB = b[field];
+      if (valueA < valueB) {
+        return order === 1 ? -1 : 1;
+      } else if (valueA > valueB) {
+        return order === 1 ? 1 : -1;
+      }
+      return 0;
+    });
   }
 
   splitdatetime(datetimeString: any) {
@@ -184,41 +237,29 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
 
   exportExcel() {
     const jsonData = {
-      declarationumber: this.translate.instant(
-        'declarationumber',
-      ),
-      edasattestno: this.translate.instant(
-        'edasattestno'
-      ),
-      totalamount: this.translate.instant(
-        'totalamount'
-      ),
-      declarationdate: this.translate.instant(
-        'declarationdate'
-      ),
-      attestreqdate: this.translate.instant(
-        'attestreqdate'
-      ),
-      status: this.translate.instant(
-        'status'
-      )
+      declarationumber: this.translate.instant('declarationumber'),
+      edasattestno: this.translate.instant('edasattestno'),
+      status: this.translate.instant('status'),
+      totalamount: this.translate.instant('totalamount'),
+      declarationdate: this.translate.instant('declarationdate'),
+      attestreqdate: this.translate.instant('attestreqdate'),
     };
     const dataList: any = [];
     this.cooAttestationLists.map((item: any) => {
       const dataItem: any = {};
       dataItem[jsonData.declarationumber] = item.declarationumber;
       dataItem[jsonData.edasattestno] = item.edasattestno;
-      // dataItem[jsonData.entityshareamount] = item.entityshareamount;
+      dataItem[jsonData.status] = item.statusname;
+
       dataItem[jsonData.totalamount] = item.totalamount;
       dataItem[jsonData.declarationdate] = this.common.splitdatetime(item.declarationdate)?.date;
       dataItem[jsonData.attestreqdate] = this.common.splitdatetime(item.attestreqdate)?.date;
-      dataItem[jsonData.status] = item.status;
       dataList.push(dataItem);
     });
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataList);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'COO Attestation-Completed');
-    XLSX.writeFile(wb, 'COO-attestation-Completed.xlsx');
+    XLSX.utils.book_append_sheet(wb, ws, this.common.givefilename('COOCompleted'));
+    XLSX.writeFile(wb, this.common.givefilename('COOCompleted')+'.xlsx');
   }
 
 
@@ -340,5 +381,115 @@ getSeverity_(canpay: number) {
       return 'danger';
   }
 }
+
+// invoiceRequestListsFilter:any;
+pdfPayload:any;
+
+exportTableToPDF() {
+    // header2Data
+    const jsonData1 = {
+      edasattestno: this.translate.instant(
+        "edasattestno"
+      ),
+      noofdaysleft: this.translate.instant(
+        "noofdaysleft"
+      ),
+      status: this.translate.instant("status"),
+      invoiceamount: this.translate.instant(
+        "invoiceamount"
+      ),
+    };
+    let dataList1: any = {};
+    this.cooAttestationLists.map((item: any) => {
+      const dataItem: any = {};
+      dataItem[jsonData1.edasattestno] = item.edasattestno
+        ? item.edasattestno
+        : "";
+      dataItem[jsonData1.noofdaysleft] = item.noofdaysleft
+        ? item.noofdaysleft
+        : "";
+      dataItem[jsonData1.status] = item.statusname ? item.statusname : "";
+      dataItem[jsonData1.invoiceamount] = item.invoiceamount
+        ? item.invoiceamount
+        : "";
+      dataList1 = dataItem;
+    });
+    // bodyData
+    const jsonData2 = {
+      declarationumber: this.translate.instant('declarationumber'),
+      edasattestno: this.translate.instant('edasattestno'),
+      feespaid: this.translate.instant('Payment Status'),
+      status: this.translate.instant('status'),
+      totalamount: this.translate.instant('totalamount'),
+      declarationdate: this.translate.instant('declarationdate'),
+      attestreqdate: this.translate.instant('attestreqdate'),
+    };
+    const dataList2: any = [];
+    this.cooAttestationLists.map((item: any) => {
+      const dataItem: any = {};
+      dataItem[jsonData2.declarationumber] = item.declarationumber;
+      dataItem[jsonData2.edasattestno] = item.edasattestno;
+      dataItem[jsonData2.feespaid] = item.feespaid;
+      dataItem[jsonData2.status] = item.status;
+      dataItem[jsonData2.totalamount] = item.totalamount;
+      dataItem[jsonData2.declarationdate] = this.common.splitdatetime(item.declarationdate)?.date
+      dataItem[jsonData2.attestreqdate] = this.common.splitdatetime( item.attestreqdate)?.date;
+      dataList2.push(dataItem);
+    });
+    let header2DataList = this.bindVisibleMoreDatasCommon(dataList1);
+    let bodyDataList: any[] = dataList2;
+    this.pdfPayload = {
+      header1Data: { header: "INVOICE", content: "Invoice ID# 1112024" },
+      header2Data: header2DataList, // [],
+      bodyHeaderData: "Invoice Details",
+      bodyData: bodyDataList, // [],
+      // footerData: {},
+    };  
+}
+
+viewcreateddatas:any;
+
+bindVisibleMoreDatasCommon(dataItem: any) {
+  this.viewcreateddatas = [];
+  for (const key in dataItem) {
+    if (dataItem.hasOwnProperty(key)) {
+      const value = dataItem[key];
+      this.viewcreateddatas.push({ label: key, value: value });
+    }
+  }
+}
+handleDateChange(event: any, dateType: string): void {
+  const momentObject = event.value || moment();
+  let date=new Date(momentObject.toDate())
+console.log(date)
+console.log(date.toISOString())
+
+ if (dateType === 'from') {
+   this.oneMonthAgo = date ;
+  } 
+  else if (dateType === 'to') {
+    this.todayModel =date;
+  }
+
+  console.log(this.oneMonthAgo)
+  console.log(this.todayModel)
+
+  this.onfilterclick()
+
+}
+
+
+
+ onfilterclick() {
+    const updatedLazyLoadEvent: LazyLoadEvent = {
+      // Modify properties as needed
+      first: 0,
+      rows: 10,
+      // ... other properties
+    };
+    // this.overdue=1;
+    this.InitTable(updatedLazyLoadEvent);
+  }
+  
   
 }

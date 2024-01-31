@@ -463,10 +463,10 @@ export class CompletedAttestationsComponent
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataList);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Risk Profile');
-    XLSX.writeFile(wb, 'lca-details.xlsx');
+    XLSX.writeFile(wb,  this.common.givefilename('lca-details')+'.xlsx');
   }
 
-  // splitdatetime1(date: any) {
+  // splitdatetime1(date: any) {   this.common.givefilename('PhysicalCompleted')+'.xlsx'
   //   return this.common.splitdatetime1(date);
   // }
 

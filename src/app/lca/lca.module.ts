@@ -27,8 +27,17 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { AuthGuard } from '../auth.guard';
+import { MatMenuModule } from '@angular/material/menu';
+//  
+// import { AppModule } from '../app.module';
+// import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { AppModule } from '../app.module';
+import { PdfExportComponent } from './pdf-export/pdf-export.component';
+import { LcaInProcessComponent } from './lca-in-process/lca-in-process.component';
+// import { LcaInHoldComponent } from './lca-in-risk/lca-in-hold.component';
 
-
+// import { TrimInputDirective } from '../trim-input.directive';
+import { LcaInHoldComponent } from './lca-in-hold/lca-in-hold.component';
 const routes = [
   {
     path: 'attestation',
@@ -42,11 +51,33 @@ const routes = [
     data: { role: ['Admin', 'User'], name: 'lcacompletedattestation' },
     canActivate: [AuthGuard],
   },
+  {
+    path: 'PdfExportComponent',
+    component: PdfExportComponent,
+    data: { role: ['Admin', 'User'], name: 'PdfExportComponent' },
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'lcainprocess',
+    component: LcaInProcessComponent,
+    data: { role: ['Admin', 'User'], name: 'lcainprocess' },
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'lcainhold',
+    component: LcaInHoldComponent,
+    data: { role: ['Admin', 'User'], name: 'lcainhold' },
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({
-  declarations: [AttestationComponent, LcaCompletedAttestationsComponent],
+  declarations: [AttestationComponent, LcaCompletedAttestationsComponent, PdfExportComponent, LcaInProcessComponent, LcaInHoldComponent],
+  // schemas: [NO_ERRORS_SCHEMA],
   imports: [
+    // PdfExportComponent,
+    // AppModule,
+    // TrimInputDirective,
     CommonModule,
     RouterModule.forChild(routes),
     TranslateModule,
@@ -70,6 +101,7 @@ const routes = [
     MatDialogModule,
     MatButtonModule,
     MatButtonToggleModule,
+    MatMenuModule
   ],
 })
 export class LcaModule {}

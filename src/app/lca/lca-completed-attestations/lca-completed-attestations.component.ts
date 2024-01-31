@@ -14,8 +14,11 @@ import { MatToolbar } from '@angular/material/toolbar';
 import { saveAs } from 'file-saver';
 import { AuthService } from 'src/service/auth.service';
 import { Router } from '@angular/router';
+import * as moment from 'moment';
 
 import { TranslateService } from '@ngx-translate/core';
+// import { PdfExportComponent } from 'src/app/shared/components/pdf-export/pdf-export.component';
+// import 
 
 interface Column {
   field: string;
@@ -170,21 +173,16 @@ noOfInvoicesSelected_coo: any;
   ];
 
     this.cols_xl = [
-     /////
-     { field: 'edasattestno', header: 'Attestation No', width:'20%' },
+     { field: 'edasattestno', header: 'EDAS Attest No', width:'20%' },
      { field: 'statusname', header: 'Status', width:'20%' },
      { field: 'currencycode', header: 'Currency', width:'20%' },
-
      { field: 'invoiceamount', header: 'Invoice Amount', width:'20%' },
      { field: 'feesamount', header: 'Fees Amount', width:'20%' },
-
      { field: 'invoicenumber', header: 'Invoice ID', width:'20%' },
      { field: 'declarationumber', header: 'Declaration No' , width:'20%' },
-
      { field: 'declarationdate', header: 'Declaration Date' , width:'200px' },
      { field: 'attestreqdate', header: 'Created' , width:'200px' },
      { field: 'lcaname', header: 'Channel', width:'15%' },
-     { field: 'companyname', header: 'Company', width:'20%' },
   
   ];
 
@@ -316,7 +314,7 @@ Reduce(){
 
 exportExcel() {
   const jsonData: { [key: string]: string } = {};
-  this.cols.forEach((col:any) => {
+  this.cols_xl.forEach((col:any) => {
     jsonData[col.field] = col.header;
   });
   
@@ -325,13 +323,16 @@ exportExcel() {
   const dataList: any[] = this.list.map((item: any) => {
     const dataItem: any = {};
   
-    this.cols.forEach((col:any) => {
+    this.cols_xl.forEach((col:any) => {
       if (col.header === 'Declaration Date' || col.header === 'Created') {
         dataItem[col.header] = this.common.splitdatetime(item[col.field])?.date;
       } 
-      // else if (col.header === 'Age') {
-      //   dataItem[col.header] = this.common.calculateDifference(item.attestreqdate);
+
+      // else if(col.header === 'Status'){
+      //   dataItem[col.header] = item[col.field] === 1 ? 'COO paid' : 'COO unpaid ';
+      //   //customer.canpay === 1 ? 'COO paid' : '  &nbsp; COO unpaid '
       // }
+    
        else {
         dataItem[col.header] = item[col.field];
       }
@@ -342,8 +343,8 @@ exportExcel() {
   
   const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataList);
       const wb: XLSX.WorkBook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, 'Attestation-Completed');
-      XLSX.writeFile(wb, 'Attestation_Completed.xlsx');
+      XLSX.utils.book_append_sheet(wb, ws, this.common.givefilename('LCACompleted'));
+      XLSX.writeFile(wb, this.common.givefilename('LCACompleted')+'.xlsx');
 }
 
 saveAsExcelFile(buffer: any, fileName: string): void {
@@ -426,49 +427,49 @@ loadsidepanel(event:any){
 clickChips() {
   this.enableFilters = !this.enableFilters;
 }
-FilterInitTable(){
+// FilterInitTable(){
   
-  this.common.showLoading();
+//   this.common.showLoading();
 
-  let resp;
-  let data;
-  data={
-    "Companyuno":this.currentcompany,
-    "uuid":this.uuid,
-    "startnum":0,
-    "limit":10,
-    "status":0,
-    "Startdate":this.common.formatDateTime_API_payload(this.oneMonthAgo.toDateString()),
-    "Enddate":this.common.formatDateTime_API_payload(this.todayModel.toDateString())
-}
-this.common.showLoading();
+//   let resp;
+//   let data;
+//   data={
+//     "Companyuno":this.currentcompany,
+//     "uuid":this.uuid,
+//     "startnum":0,
+//     "limit":10,
+//     "status":0,
+//     "Startdate":this.common.formatDateTime_API_payload(this.oneMonthAgo.toDateString()),
+//     "Enddate":this.common.formatDateTime_API_payload(this.todayModel.toDateString())
+// }
+// this.common.showLoading();
 
-  this.api.post(this.consts.lcaCompletedAttestList,data).subscribe({next:(success:any)=>{
-    this.common.hideLoading();
+//   this.api.post(this.consts.lcaCompletedAttestList,data).subscribe({next:(success:any)=>{
+//     this.common.hideLoading();
 
-    resp=success;
-    if(resp.dictionary.responsecode==1){
-      this.list=resp.dictionary.data
-      this.datasource=resp.dictionary.data;
-      this.totalrecords=resp.dictionary.data.length;
-      this.loading = false;
-      this.Reduce();
-      console.log('Data retrived'); // Show the verification alert
+//     resp=success;
+//     if(resp.dictionary.responsecode==1){
+//       this.list=resp.dictionary.data
+//       this.datasource=resp.dictionary.data;
+//       this.totalrecords=resp.dictionary.data.length;
+//       this.loading = false;
+//       this.Reduce();
+//       console.log('Data retrived'); // Show the verification alert
 
-    }
-    else{
-      this.common.showErrorMessage('Something went wrong')
-      this.loading=false;
-    }
-  }
-})
-setTimeout(() => {
-  this.common.hideLoading(); // Assuming you have a hideLoading method to hide the loading indicator
-}, 500);
+//     }
+//     else{
+//       this.common.showErrorMessage('Something went wrong')
+//       this.loading=false;
+//     }
+//   }
+// })
+// setTimeout(() => {
+//   this.common.hideLoading(); // Assuming you have a hideLoading method to hide the loading indicator
+// }, 500);
 
 
 
-}
+// }
 
 
  openNew(data:any) {
@@ -476,16 +477,16 @@ setTimeout(() => {
   this.currentrow=data;
   // this.src=  this.common.getPaymentReceiptbase64(this.currentrow.invoiceuno)
 
-  this.common.getPaymentReceiptbase64(this.currentrow.invoiceuno)
-  .then((result) => {
-    this.src = result;
-    console.log(this.src);
+  // this.common.getPaymentReceiptbase64(this.currentrow.invoiceuno)
+  // .then((result) => {
+  //   this.src = result;
+  //   console.log(this.src);
 
-  })
-  .catch((error) => {
-    console.error("Error fetching payment receipt:", error);
-  });
-  console.log(this.src)
+  // })
+  // .catch((error) => {
+  //   console.error("Error fetching payment receipt:", error);
+  // });
+  // console.log(this.src)
   this.AddInvoiceDialog=true
   const fieldMappings: { [key: string]: string } = {
     "edasattestno": this.translate.instant('edasattestno'),
@@ -621,18 +622,14 @@ getCooForMyLCAInvoice(currentrow: any) {
       resp=success;
      console.log(success);
     
-          this.noOfInvoicesSelected_coo=resp.invoicecount;
+          // this.noOfInvoicesSelected_coo=resp.invoicecount;
           this.totalFineAmount_coo = resp.fineamount;
           this.invoicefeesamount = resp.invoicefeesamount;
           this.totalFee_coo = resp.totalamount;
           this.invoiceunoresponse = resp.invoiceuno;
-          this.cooamount=resp.coofeesamount;
+          // this.cooamount=resp.coofeesamount;
           this.noofcoo=resp.coocount;
           this.nooffines=resp.nooffines;
-
-          
-
-
 
           this.totalAttestationFee=resp.totalamount;
     },
@@ -645,7 +642,7 @@ openNew_(data: any) {
       let data_ = {
         uuid: this.uuid,
         lcaattestno: data.coorequestno,
-      };
+      };             
       this.loading = true;
       this.common.showLoading();
       this.api.post(this.consts.getcoolistforlcaattestno, data_).subscribe({
@@ -653,7 +650,11 @@ openNew_(data: any) {
           this.common.hideLoading();
           this.loading = false;
           resp = success;
+          console.log(resp.data[0])
           if (resp.responsecode == 1) {
+            this.noOfInvoicesSelected_coo=resp.data[0].invoicecount;
+            this.cooamount=resp.data[0].feesamount;
+            // this.cooamount=resp.coofeesamount;
             // this.cooAttestationLists = resp.data;
             // console.log(this.cooAttestationLists);
             // this.datasource_ = resp.data;
@@ -671,5 +672,127 @@ openNew_(data: any) {
   
       this.getCooForMyLCAInvoice(data);
     }
+
+
+    // invoiceRequestListsFilter:any;
+pdfPayload:any;
+
+exportTableToPDF() {
+    // header2Data
+    const jsonData1 = {
+      edasattestno: this.translate.instant(
+        "edasattestno"
+      ),
+      noofdaysleft: this.translate.instant(
+        "noofdaysleft"
+      ),
+      status: this.translate.instant("status"),
+      invoiceamount: this.translate.instant(
+        "invoiceamount"
+      ),
+    };
+    let dataList1: any = {};
+    this.list.map((item: any) => {
+      const dataItem: any = {};
+      dataItem[jsonData1.edasattestno] = item.edasattestno
+        ? item.edasattestno
+        : "";
+      dataItem[jsonData1.noofdaysleft] = item.noofdaysleft
+        ? item.noofdaysleft
+        : "";
+      dataItem[jsonData1.status] = item.statusname ? item.statusname : "";
+      dataItem[jsonData1.invoiceamount] = item.invoiceamount
+        ? item.invoiceamount
+        : "";
+      dataList1 = dataItem;
+    });
+    // bodyData
+    const jsonData2 = 
+    {
+      edasattestno: this.translate.instant("edasattestno"),
+      currencycode: this.translate.instant("Currency"),
+      canpay: this.translate.instant("Status"),
+      noofdaysoverdue: this.translate.instant("Day(s)"),
+      invoiceamount: this.translate.instant("Invoice Amount"),
+      feesamount: this.translate.instant("Fees"),
+      invoicenumber: this.translate.instant("Invoice ID"),
+      declarationumber: this.translate.instant("Declaration No"),
+      declarationdate: this.translate.instant("Declaration Date"),
+      attestreqdate: this.translate.instant("Created"),
+      lcaname: this.translate.instant("Channel"),
+    };
+    const dataList2: any = [];
+    this.list.map((item: any) => {
+      const dataItem: any = {};
+      dataItem[jsonData2.edasattestno] = item.edasattestno? item.edasattestno : "";
+      dataItem[jsonData2.currencycode] = item.currencycode ? item.currencycode : "";
+      dataItem[jsonData2.canpay] = item.canpay === 1 ? 'COO paid' : 'COO unpaid ';
+      dataItem[jsonData2.noofdaysoverdue] = item.noofdaysoverdue;
+      dataItem[jsonData2.invoiceamount] = item.invoiceamount ? item.invoiceamount : "";
+      dataItem[jsonData2.feesamount] = item.feesamount ? item.feesamount : "";
+      dataItem[jsonData2.invoicenumber] = item.invoicenumber ? item.invoicenumber : "";
+      dataItem[jsonData2.declarationumber] = item.declarationumber ? item.declarationumber : "";
+      dataItem[jsonData2.declarationdate] = item.declarationdate ? item.declarationdate : "";
+      dataItem[jsonData2.attestreqdate] = item.attestreqdate ? item.attestreqdate : "";
+      dataItem[jsonData2.lcaname] = item.lcaname ? item.lcaname : "";
+
+      dataList2.push(dataItem);
+    });
+    let header2DataList = this.bindVisibleMoreDatasCommon(dataList1);
+    let bodyDataList: any[] = dataList2;
+    this.pdfPayload = {
+      header1Data: { header: "INVOICE", content: "Invoice ID# 1112024" },
+      header2Data: header2DataList, // [],
+      bodyHeaderData: "Invoice Details",
+      bodyData: bodyDataList, // [],
+      // footerData: {},
+    };      
+    }
+
+
+    viewcreateddatas:any;
+
+bindVisibleMoreDatasCommon(dataItem: any) {
+  this.viewcreateddatas = [];
+  for (const key in dataItem) {
+    if (dataItem.hasOwnProperty(key)) {
+      const value = dataItem[key];
+      this.viewcreateddatas.push({ label: key, value: value });
+    }
+  }
+}
+handleDateChange(event: any, dateType: string): void {
+  const momentObject = event.value || moment();
+  let date=new Date(momentObject.toDate())
+console.log(date)
+console.log(date.toISOString())
+
+ if (dateType === 'from') {
+   this.oneMonthAgo = date ;
+  } 
+  else if (dateType === 'to') {
+    this.todayModel =date;
+  }
+
+  console.log(this.oneMonthAgo)
+  console.log(this.todayModel)
+
+  this.onfilterclick()
+
+}
+
+
+
+ onfilterclick() {
+    const updatedLazyLoadEvent: LazyLoadEvent = {
+      // Modify properties as needed
+      first: 0,
+      rows: 10,
+      // ... other properties
+    };
+    // this.overdue=1;
+    this.InitTable(updatedLazyLoadEvent);
+  }
+  
 
 }

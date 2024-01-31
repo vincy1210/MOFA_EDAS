@@ -82,6 +82,8 @@ export class LcaSettlementsReportsComponent
   lcauno: number | undefined = 0;
   monthname: moment.Moment | null = moment().startOf('month');
   totals: any = {};
+  uuid:any;
+  currentLanguagecode: string='1033';
 
   constructor(
     public override router: Router,
@@ -105,6 +107,29 @@ export class LcaSettlementsReportsComponent
   }
 
   ngOnInit(): void {
+
+    let data11=this.common.getUserProfile();
+    let uuid;
+    if(data11!=null || data11!=undefined){
+      data11=JSON.parse(data11)
+      console.log(data11.Data)
+      uuid=data11.Data.uuid;
+      this.uuid=uuid;
+    }
+
+
+    let selectedlanguage = sessionStorage.getItem('language') || 'en';
+
+    if(selectedlanguage==='ar'){
+        this.currentLanguagecode='14337'
+    }
+    else{
+      this.currentLanguagecode='1033'
+
+    }
+   console.log(this.currentLanguagecode);
+
+
     if (this.routesname === 'pending') {
       this.selectedFilterOption = {
         id: 1,
@@ -221,7 +246,7 @@ export class LcaSettlementsReportsComponent
     const rows = event?.rows ? event?.rows : 0;
     this.selectedFilterOption.startnum = startnum;
     this.selectedFilterOption.rows = rows;
-    this.selectedFilterOption.uuid = '12223';
+    this.selectedFilterOption.uuid = this.uuid;
     // event.globalFilter = "";
     this.globalFilter = event.globalFilter;
     this.sortFilter = {
@@ -338,10 +363,10 @@ export class LcaSettlementsReportsComponent
   }
 
   lcaDataList() {
-    this.selectedFilterOption.uuid = '1111';
+    this.selectedFilterOption.uuid = this.uuid;
     let data = {
       uuid: this.selectedFilterOption.uuid,
-      languagecode: '1033',
+      languagecode: this.currentLanguagecode,
       processname: 'LCAMASTER',
     };
     this.getListOfValues(data);
@@ -486,13 +511,13 @@ export class LcaSettlementsReportsComponent
     });
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataList);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Company Details');
-    XLSX.writeFile(wb, 'company-details.xlsx');
+    XLSX.utils.book_append_sheet(wb, ws, this.common.givefilename('LCA_Settlement'));
+    XLSX.writeFile(wb, this.common.givefilename('LCA_Settlement')+'.xlsx');
   }
 
-  splitdatetime1(date: any) {
-    return this.common.splitdatetime1(date);
-  }
+  // splitdatetime1(date: any) {
+  //   return this.common.splitdatetime1(date);
+  // }
 
   splitdatetime(date: any) {
     return this.common.splitdatetime(date);
@@ -544,4 +569,88 @@ export class LcaSettlementsReportsComponent
     datepicker.close();
     this.onClickFilterOptionDate(true);
   }
+
+  // invoiceRequestListsFilter:any;
+pdfPayload:any;
+
+exportTableToPDF() {
+    // header2Data
+    const jsonData1 = {
+      edasattestno: this.translate.instant(
+        "edasattestno"
+      ),
+      noofdaysleft: this.translate.instant(
+        "noofdaysleft"
+      ),
+      status: this.translate.instant("status"),
+      invoiceamount: this.translate.instant(
+        "invoiceamount"
+      ),
+    };
+    let dataList1: any = {};
+    this.lcaList.map((item: any) => {
+      const dataItem: any = {};
+      dataItem[jsonData1.edasattestno] = item.edasattestno
+        ? item.edasattestno
+        : "";
+      dataItem[jsonData1.noofdaysleft] = item.noofdaysleft
+        ? item.noofdaysleft
+        : "";
+      dataItem[jsonData1.status] = item.statusname ? item.statusname : "";
+      dataItem[jsonData1.invoiceamount] = item.invoiceamount
+        ? item.invoiceamount
+        : "";
+      dataList1 = dataItem;
+    });
+    // bodyData
+    const jsonData2 = {
+      edasattestno: this.translate.instant(
+        "edasattestno"
+      ),
+      noofdaysleft: this.translate.instant(
+        "noofdaysleft"
+      ),
+      status: this.translate.instant("status"),
+      invoiceamount: this.translate.instant(
+        "invoiceamount"
+      ),
+    };
+    const dataList2: any = [];
+    this.lcaList.map((item: any) => {
+      const dataItem: any = {};
+      dataItem[jsonData2.edasattestno] = item.edasattestno
+        ? item.edasattestno
+        : "";
+      dataItem[jsonData2.noofdaysleft] = item.noofdaysleft
+        ? item.noofdaysleft
+        : "";
+      dataItem[jsonData2.status] = item.statusname ? item.statusname : "";
+      dataItem[jsonData2.invoiceamount] = item.invoiceamount
+        ? item.invoiceamount
+        : "";
+      dataList2.push(dataItem);
+    });
+    let header2DataList = this.bindVisibleMoreDatasCommon(dataList1);
+    let bodyDataList: any[] = dataList2;
+    this.pdfPayload = {
+      header1Data: { header: "INVOICE", content: "Invoice ID# 1112024" },
+      header2Data: header2DataList, // [],
+      bodyHeaderData: "Invoice Details",
+      bodyData: bodyDataList, // [],
+      // footerData: {},
+    };  
+  }
+
+  viewcreateddatas:any;
+
+bindVisibleMoreDatasCommon(dataItem: any) {
+  this.viewcreateddatas = [];
+  for (const key in dataItem) {
+    if (dataItem.hasOwnProperty(key)) {
+      const value = dataItem[key];
+      this.viewcreateddatas.push({ label: key, value: value });
+    }
+  }
+}
+
 }

@@ -18,6 +18,9 @@ import { ConstantsService } from 'src/service/constants.service';
 import { AuthService } from 'src/service/auth.service';
 import { environment } from '../../environments/environment';
 
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
@@ -46,8 +49,9 @@ export class RegistrationComponent {
   reg_form_data: any;
   captcha: string = '';
   email: string = '';
-
-  //testvar vincy
+bearer_token:string='';
+  //testvar 
+  currentLanguagecode: string='1033';
 
   userinfo: any;
   captcha_token: any;
@@ -56,6 +60,8 @@ export class RegistrationComponent {
   freezone1: any;
   isButtonDisabled = false;
   UserHavingCompany: boolean = false;
+  // private ngUnsubscribe = new Subject();
+  private ngUnsubscribe = new Subject<void>();
   constructor(
     private auth: AuthService,
     private consts: ConstantsService,
@@ -68,7 +74,7 @@ export class RegistrationComponent {
     private apiservice: ApiService
   ) {
 
-    this.getcopyrightyear();
+    // this.getcopyrightyear();
     this.common.getData().subscribe((data) => {
       this.reg_form_data = data;
       console.log(this.reg_form_data);
@@ -209,6 +215,18 @@ export class RegistrationComponent {
     }
   }
   ngOnInit() {
+
+    let selectedlanguage = sessionStorage.getItem('language') || 'en';
+
+    if(selectedlanguage==='ar'){
+        this.currentLanguagecode='14337'
+    }
+    else{
+      this.currentLanguagecode='1033'
+
+    }
+   console.log(this.currentLanguagecode);
+
     this.common.showLoading();
 
     // try{
@@ -216,7 +234,7 @@ export class RegistrationComponent {
     console.log('---------');
     this._activatedRoute.queryParams.subscribe((params: Params) => {
       // Access and capture the parameters here
-      this.param1 = params['AuthenticationCode'];
+      this.param1 = params['code'];
       this.param2 = params['lang'];
       this.param3 = params['email'];
 
@@ -228,15 +246,12 @@ export class RegistrationComponent {
     });
     //for cancel button checking whether any company already there
     this.reg_form_data = this.common.getUserProfile();
-    const userProfilejson = JSON.parse(this.reg_form_data);
-    if (userProfilejson) {
-      this.checkcompanyuserforcancel(userProfilejson.Data);
-    }
+   
 
     console.log(this.reg_form_data);
     let data = {
       useruno: '1',
-      languagecode: 0,
+      languagecode: this.currentLanguagecode,
     };
     // this.common.showLoading();
 
@@ -261,6 +276,12 @@ export class RegistrationComponent {
       this.param1 == undefined ||
       this.param2 == undefined
     ) {
+
+      const userProfilejson = JSON.parse(this.reg_form_data);
+      if (userProfilejson) {
+        this.checkcompanyuserforcancel(userProfilejson.Data);
+      }
+      
       if (this.reg_form_data != null || this.reg_form_data != undefined) {
         this.userinfo = JSON.parse(this.reg_form_data);
         this.common.setUserIfoData(this.reg_form_data);
@@ -337,19 +358,18 @@ export class RegistrationComponent {
   //Redirection from MOFA start
 
   addItem() {
+
+      //  const email = encodeURIComponent(this.param3.trim());
+    let email2 = encodeURIComponent(this.param3.trim());
+
     const objTxData = {
-      AuthenticationCode: this.param1,
-      email: this.param3,
+      Code: this.param1,
+      Email: email2,
     };
-    this.sRetriveUserProfile();
-  }
-  //commented for testing
-  sRetriveUserProfile() {
-    // Show the loader before making the API request
-    this.apiservice
-      .sPassAuthGetUserprofile(this.param1, this.param3)
-      .toPromise()
-      .then((response: any) => {
+ 
+    this.apiservice.post(this.consts.CheckUAEPassLogin, objTxData).subscribe({
+      next: (response: any) => {
+        console.log(response)
         if (typeof response === 'string' && !response.includes('/')) {
           // response = response.slice(1, -1);
           response = JSON.parse(response);
@@ -386,14 +406,14 @@ export class RegistrationComponent {
         }
 
         this.common.setUserIfoData(response.Data);
-      })
-      .catch(console.log);
+      },});
+     
   }
 
-  ngOnDestroy() {
-    console.log('--Stop--');
-    this.alive = false;
-  }
+  // ngOnDestroy() {
+  //   console.log('--Stop--');
+  //   this.alive = false;
+  // }
 
   // resolved(captchaResponse: string) {
   //   console.log(`Resolved captcha with response: ${captchaResponse}`);
@@ -480,15 +500,30 @@ export class RegistrationComponent {
     };
     this.common.showLoading();
 
-    this.apiservice.post(this.consts.checkCompanyUser, data).subscribe({
+
+    //start
+
+  //   this.apiservice.post(this.consts.checkCompanyUser, data)
+  // .pipe(takeUntil(this.ngUnsubscribe))
+  // .subscribe({
+
+    //end
+
+    this.apiservice.post(this.consts.checkCompanyUser, data)
+  .pipe(takeUntil(this.ngUnsubscribe))
+  .subscribe({
       next: (success: any) => {
         this.common.hideLoading();
         response = success;
         this.common.hideLoading();
         if (response.responsecode == 1) {
+          this.bearer_token=response.token;
+          console.log(this.bearer_token)
+          this.auth.setToken(this.bearer_token);
           if (response.data === 'User not available') {
             return;
-          } else {
+          } 
+          else {
             let lcauser: boolean = false;
 
             // Iterate through the JSON data
@@ -551,19 +586,10 @@ export class RegistrationComponent {
     //vincy
   }
 
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
 
-  getcopyrightyear(){
-  this.apiservice
-  .get(this.consts.getServerTime)
-  .subscribe((response: any) => {
-    this.common.hideLoading();
-    if (response) {
-      const serverTime = new Date(response);
-      const year = serverTime.getFullYear();
-      this.common.setMyCopyrightYear(year?.toString());
-      console.log('Server Time:', serverTime);
-    }
-  });
-}
 
 }

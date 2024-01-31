@@ -264,7 +264,7 @@
   },
   "Company": "اسم الشركة",
   "Fees Amount": "مبلغ الرسوم",
-  "Age": "عمر",
+  "Day(s)": "عمر",
   "Draft": "مسودة",
   "LCA Attestations": "التصديقات LCA",
   "COO Attestations": "شهادات COO",
@@ -412,6 +412,8 @@
   "Request No": "رقم الطلب",
   "Request Date": "تاريخ الطلب",
   "Trade Licence No": "رقم الترخيص التجاري",
+  "TL Number": "رقم الترخيص التجاري",
+
   "Document Type": "نوع المستند",
   "Export Port Code": "رمز ميناء التصدير",
   "Attestation No": "رقم التوثيق",

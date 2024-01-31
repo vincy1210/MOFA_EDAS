@@ -14,6 +14,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/service/auth.service';
 import { Router } from '@angular/router';
+import * as moment from 'moment';
 
 
 
@@ -33,7 +34,7 @@ export class PhysicalAttestationComponent implements OnInit {
   enableFilters: boolean = false;
   // for workflow
   public shouldShow = false;
-  noOfInvoicesSelected: any[] = [];
+  noOfInvoicesSelected: number=0;
   totalFineAmount: any;
   totalAttestationFee: any;
   totalFee: any;
@@ -83,6 +84,9 @@ paymentcount=environment.appdetails.payment_count;
     public common: CommonService,private datePipe: DatePipe, private fb:FormBuilder, private auth:AuthService, private router:Router
  
   ) {
+    this.isRowSelectable = this.isRowSelectable.bind(this);
+    console.log(this.isRowSelectable);
+
     this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
 
     this.form = this.fb.group({
@@ -278,54 +282,51 @@ paymentcount=environment.appdetails.payment_count;
         null
       );
     dialogRef.afterClosed().subscribe((result) => {
-      this.FilterInitTable();
+      // this.FilterInitTable();
+      this.onfilterclick();
     });
   }
 
   exportExcel() {
     const jsonData = {
-      edasreqno: this.translate.instant(
-        'edasreqno'
-      ),
-      entitycode: this.translate.instant(
-        'Channel'
-      ),
-      invoiceno: this.translate.instant(
-        'Invoice ID'
-      ),
-      invoiceamount: this.translate.instant(
-        'invoiceamount'
-      ),
-      invoicecurrency: this.translate.instant(
-        'invoicecurrency'
-      ),
-      invoicedate: this.translate.instant(
-        'invoicedate'
-      ),
-      status: this.translate.instant(
-        'status'
-      )
+      edasreqno: this.translate.instant('edasreqno'),
+      entitycode: this.translate.instant('Channel'),
+      status: this.translate.instant('status'),
+      invoiceno: this.translate.instant('Invoice ID'),
+      invoiceamount: this.translate.instant('Invoice Amount'),
+      invoicecurrency: this.translate.instant('Currency'),
+      invoicedate: this.translate.instant('invoicedate'),
+      enteredon: this.translate.instant('Entered On'),
     };
+    
     const dataList: any = [];
     this.invoiceRequestLists.map((item: any) => {
       const dataItem: any = {};
       dataItem[jsonData.edasreqno] = item.edasreqno;
       dataItem[jsonData.entitycode] = item.entitycode;
+      dataItem[jsonData.status] = item.status;
       dataItem[jsonData.invoiceno] = item.invoiceno;
       dataItem[jsonData.invoiceamount] = item.invoiceamount;
       dataItem[jsonData.invoicecurrency] = item.invoicecurrency;
-      dataItem[jsonData.invoicedate] = this.splitdatetime1(item.invoicedate)?.date;
-      dataItem[jsonData.status] = item.status;
+      dataItem[jsonData.invoicedate] = item.invoicedate;
+      dataItem[jsonData.enteredon] = item.enteredon;
       dataList.push(dataItem);
     });
+    dataList.forEach((dataItem: any) => {
+      dataItem[jsonData.enteredon] = this.splitdatetime(dataItem[jsonData.enteredon])?.date;
+      dataItem[jsonData.invoicedate] = this.splitdatetime(dataItem[jsonData.invoicedate])?.date;
+    });
+
+    // /splitdatetime
+
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataList);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Physical Attestation-Pending');
-    XLSX.writeFile(wb, 'Physical_Attestation_Pending.xlsx');
+    XLSX.utils.book_append_sheet(wb, ws, this.common.givefilename('Physical_Pending'));
+    XLSX.writeFile(wb,  this.common.givefilename('Physical_Pending')+'.xlsx');
   }
 
   splitdatetime1(date: any) {
-    return this.common.splitdatetime1(date);
+    return this.common.splitdatetime(date);
   }
 loadsidepanel(event:any){
 
@@ -382,11 +383,11 @@ loadsidepanel(event:any){
   this.getimagebase64(this.selectedAttestations[0]?.filepath);
  }
  
-  let createddate=this.splitdatetime(this.selectedAttestations[0]?.attestreqdate);
-     let approveddate=this.splitdatetime(this.selectedAttestations[0]?.approvedon);
+  let createddate=this.splitdatetime(this.selectedAttestations[0]?.enteredon);
+    //  let approveddate=this.splitdatetime(this.selectedAttestations[0]?.approvedon);
      let paymentdate=this.splitdatetime(this.selectedAttestations[0]?.paidon);
-     let attestationdate=this.splitdatetime(this.selectedAttestations[0]?.attestedon);
-     let completedDate=this.splitdatetime(this.selectedAttestations[0]?.completedon);
+    //  let attestationdate=this.splitdatetime(this.selectedAttestations[0]?.attestedon);
+    //  let completedDate=this.splitdatetime(this.selectedAttestations[0]?.completedon);
  
  console.log(this.timelineItems);
  this.timelineItems.forEach(item => (item.status = ''));
@@ -395,33 +396,30 @@ loadsidepanel(event:any){
  
  if (statusuno >= 0 && statusuno <= 10) {
    for (let i = 0; i < statusuno; i++) {
-     this.timelineItems[i].status = 'active';
      if(statusuno==1 && createddate!=null){
-       this.timelineItems[i].date=createddate?.date || '';
-       this.timelineItems[i].time=createddate.time;
+       this.timelineItems[0].date=createddate?.date || '';
+       this.timelineItems[0].time=createddate.time;
+     this.timelineItems[0].status = 'active';
+     this.timelineItems[1].date='';
+     this.timelineItems[1].time='';
+       this.timelineItems[1].status = 'current';
+
      }
-     else if(statusuno==6 && approveddate!=null){
-       this.timelineItems[i].date=approveddate.date || '';
-       this.timelineItems[i].time=approveddate.time;
+     else if(statusuno==4 && paymentdate!=null && createddate!=null){
+      this.timelineItems[0].date=createddate?.date || '';
+      this.timelineItems[0].time=createddate.time;
+      this.timelineItems[0].status = 'active';
+      this.timelineItems[1].status = 'active';
+       this.timelineItems[1].date=paymentdate.date || '';
+       this.timelineItems[1].time=paymentdate.time;
+       this.timelineItems[2].status = 'current';
      }
-     else if(statusuno==3 && paymentdate!=null){
-       this.timelineItems[i].date=paymentdate.date || '';
-       this.timelineItems[i].time=paymentdate.time;
-     }
-     else if(statusuno==9 && attestationdate!=null){
-       this.timelineItems[i].date=attestationdate.date || '';
-       this.timelineItems[i].time=attestationdate.time;
-     }
-     else if(statusuno==10 && completedDate!=null){
-       this.timelineItems[i].date=completedDate.date || '';
-       this.timelineItems[i].time=completedDate.time;
-     }
+   
      else{
        this.timelineItems[i].date=''
        this.timelineItems[i].time=''
      }
    }
-   this.timelineItems[statusuno-1].status = 'current';
  } else {
    this.common.showErrorMessage("Something went wrong" + statusuno);
  }
@@ -574,38 +572,9 @@ getimagebase64(attestfilelocation:any){
 })
 }
 AttestationPay(){
-//   let data={
-//     "id": "00331953",
-//     "password": "",
-//     "udf6": "905550",
-//     "udf10": "",
-//     "udf9": "",
-//     "servicedata": [        
-//         {
-//             "noOfTransactions": "1",
-//             "merchantId": "111792000",
-//             "serviceId": "1054109963",
-//             "amount": this.totalAttestationFee.toString()
-//         }
-//     ],
-//   "responseURL":"",
-//   "errorURL":"",
-//     "udf3": "UDF3",
-//     "udf4": "RRNTEST123",
-//     "udf1": "udf1",
-//     "udf2": "kuzhanthai.packiam@bankfab.com",
-//     "udf7": "MagnatiPay",
-//     "udf8": "",
-//     "action": 1,
-//     "correlationid": this.invoiceunoresponse,
-//     "udf5": "03022020",
-//     "langid": "EN",
-//     "currencyCode": "784",
-//     "version": "1.0.1"
-// }
+
 let data={
-  "id": "",
-  "password": "",
+ 
   "servicedata": [        
       {
           "noOfTransactions": "1",
@@ -624,8 +593,8 @@ let data={
   "udf6":"",
   "udf7":"",
   "udf8":"",
-  "udf9":"",
-  "udf10":"",
+  "udf9":this.uuid,
+  "udf10":"PHYSICAL",
   "action": 1,
   "correlationid": this.invoiceunoresponse.toString(),
   "langid": "EN",
@@ -684,45 +653,45 @@ splitdatetime(datetimeString: any) {
 
 
 
-FilterInitTable(){
-  let data = {
-    "Companyuno":this.currentcompany,
-    "uuid":this.uuid,
-    "startnum":0,
-    "limit":20,
-    "Startdate":this.common.formatDateTime_API_payload(this.oneMonthAgo.toDateString()),
-    "Enddate":this.common.formatDateTime_API_payload(this.todayModel.toDateString())
-  };
-  this.common.showLoading();
+// FilterInitTable(){
+//   let data = {
+//     "Companyuno":this.currentcompany,
+//     "uuid":this.uuid,
+//     "startnum":0,
+//     "limit":20,
+//     "Startdate":this.common.formatDateTime_API_payload(this.oneMonthAgo.toDateString()),
+//     "Enddate":this.common.formatDateTime_API_payload(this.todayModel.toDateString())
+//   };
+//   this.common.showLoading();
 
-  this.apiservice
-    .post(this.consts.getInvoiceAttestations, data)
-    .subscribe((response: any) => {
-      this.common.hideLoading();
+//   this.apiservice
+//     .post(this.consts.getInvoiceAttestations, data)
+//     .subscribe((response: any) => {
+//       this.common.hideLoading();
 
-      if (`${response.responsecode}` === '1') {
-        const dataArray = response.data;
-        this.invoiceRequestLists = dataArray;
-        this.totalrecords=response.recordcount;
-        this.invoiceRequestLists.map((row: any) => {
-          if (row.statusuno === AttestationStatusEnum.Status0) {
-            row.status = 'Created';
-          } else if (row.statusuno === AttestationStatusEnum.Status1) {
-            row.status = 'Approved';
-          } else if (row.statusuno === AttestationStatusEnum.Status2) {
-            row.status = 'Payment';
-          } else if (row.statusuno === AttestationStatusEnum.Status3) {
-            row.status = 'Attestation';
-          } else if (row.statusuno === AttestationStatusEnum.Status4) {
-            row.status = 'Completed';
-          } else {
-            row.status = '';
-          }
-        });
-      }
-    });
+//       if (`${response.responsecode}` === '1') {
+//         const dataArray = response.data;
+//         this.invoiceRequestLists = dataArray;
+//         this.totalrecords=response.recordcount;
+//         this.invoiceRequestLists.map((row: any) => {
+//           if (row.statusuno === AttestationStatusEnum.Status0) {
+//             row.status = 'Created';
+//           } else if (row.statusuno === AttestationStatusEnum.Status1) {
+//             row.status = 'Approved';
+//           } else if (row.statusuno === AttestationStatusEnum.Status2) {
+//             row.status = 'Payment';
+//           } else if (row.statusuno === AttestationStatusEnum.Status3) {
+//             row.status = 'Attestation';
+//           } else if (row.statusuno === AttestationStatusEnum.Status4) {
+//             row.status = 'Completed';
+//           } else {
+//             row.status = '';
+//           }
+//         });
+//       }
+//     });
 
-}
+// }
 
 closesidetab(){
   this.confirmationService.confirm({
@@ -863,5 +832,133 @@ getSeverity_(status: string) {
       return 'danger';
   }
 }
+
+
+// invoiceRequestListsFilter:any;
+pdfPayload:any;
+
+exportTableToPDF() {
+    // header2Data
+    const jsonData1 = {
+      edasattestno: this.translate.instant(
+        "edasattestno"
+      ),
+      noofdaysleft: this.translate.instant(
+        "noofdaysleft"
+      ),
+      status: this.translate.instant("status"),
+      invoiceamount: this.translate.instant(
+        "invoiceamount"
+      ),
+    };
+    let dataList1: any = {};
+    this.invoiceRequestLists.map((item: any) => {
+      const dataItem: any = {};
+      dataItem[jsonData1.edasattestno] = item.edasattestno
+        ? item.edasattestno
+        : "";
+      dataItem[jsonData1.noofdaysleft] = item.noofdaysleft
+        ? item.noofdaysleft
+        : "";
+      dataItem[jsonData1.status] = item.statusname ? item.statusname : "";
+      dataItem[jsonData1.invoiceamount] = item.invoiceamount
+        ? item.invoiceamount
+        : "";
+      dataList1 = dataItem;
+    });
+    // bodyData
+    const jsonData2 = {
+      edasreqno: this.translate.instant('edasreqno'),
+      entitycode: this.translate.instant('Channel'),
+      status: this.translate.instant('status'),
+      invoiceno: this.translate.instant('Invoice ID'),
+      invoiceamount: this.translate.instant('Invoice Amount'),
+      invoicecurrency: this.translate.instant('Currency'),
+      invoicedate: this.translate.instant('invoicedate'),
+      enteredon: this.translate.instant('Entered On'),
+    };
+    
+    const dataList2: any = [];
+    this.invoiceRequestLists.map((item: any) => {
+      const dataItem: any = {};
+      dataItem[jsonData2.edasreqno] = item.edasreqno;
+      dataItem[jsonData2.entitycode] = item.entitycode;
+      dataItem[jsonData2.status] = item.status;
+      dataItem[jsonData2.invoiceno] = item.invoiceno;
+      dataItem[jsonData2.invoiceamount] = item.invoiceamount;
+      dataItem[jsonData2.invoicecurrency] = item.invoicecurrency;
+      dataItem[jsonData2.invoicedate] = item.invoicedate;
+      dataItem[jsonData2.enteredon] = item.enteredon;
+      dataList2.push(dataItem);
+    });
+    dataList2.forEach((dataItem: any) => {
+      dataItem[jsonData2.enteredon] = this.splitdatetime(dataItem[jsonData2.enteredon])?.date;
+      dataItem[jsonData2.invoicedate] = this.splitdatetime(dataItem[jsonData2.invoicedate])?.date;
+    });
+    let header2DataList = this.bindVisibleMoreDatasCommon(dataList1);
+    let bodyDataList: any[] = dataList2;
+    this.pdfPayload = {
+      header1Data: { header: "INVOICE", content: "Invoice ID# 1112024" },
+      header2Data: header2DataList, // [],
+      bodyHeaderData: "Invoice Details",
+      bodyData: bodyDataList, // [],
+      // footerData: {},
+    };
+}
  
+
+viewcreateddatas:any;
+
+bindVisibleMoreDatasCommon(dataItem: any) {
+  this.viewcreateddatas = [];
+  for (const key in dataItem) {
+    if (dataItem.hasOwnProperty(key)) {
+      const value = dataItem[key];
+      this.viewcreateddatas.push({ label: key, value: value });
+    }
+  }
+}
+
+isPaid(data: any) {
+   
+  return data.isfeespaid;
+}
+
+isRowSelectable(event: any) {
+  return !this.isPaid(event.data);
+}
+
+handleDateChange(event: any, dateType: string): void {
+  const momentObject = event.value || moment();
+  let date=new Date(momentObject.toDate())
+console.log(date)
+console.log(date.toISOString())
+
+ if (dateType === 'from') {
+   this.oneMonthAgo = date ;
+  } 
+  else if (dateType === 'to') {
+    this.todayModel =date;
+  }
+
+  console.log(this.oneMonthAgo)
+  console.log(this.todayModel)
+
+  this.onfilterclick()
+
+}
+
+
+
+ onfilterclick() {
+    const updatedLazyLoadEvent: LazyLoadEvent = {
+      // Modify properties as needed
+      first: 0,
+      rows: 10,
+      // ... other properties
+    };
+    // this.overdue=1;
+    this.InitTable(updatedLazyLoadEvent);
+  }
+
 }

@@ -203,7 +203,7 @@ this.form = this.fb.group({
   this.cols_ = [
     { field: 'edasattestno', header: 'edasattestno', width: '20%' },
     { field: 'canpay', header: 'Status', width: '20%' },
-    { field: 'Noofdaysleft', header: 'Age', width: '5%' },
+    { field: 'Noofdaysleft', header: 'Day(s)', width: '5%' },
 
     { field: 'invoiceamount', header: 'Invoice Amount', width: '20%' },
     { field: 'feesamount', header: 'Fees Amount', width: '20%' },
@@ -302,16 +302,16 @@ this.form = this.fb.group({
     });
   }
 
-  uploadDeclaration(data: any) {
-    const dialogRef =
-      this.modalPopupService.openPopup<CooAttestationCreateComponent>(
-        CooAttestationCreateComponent,
-        data
-      );
-    dialogRef.afterClosed().subscribe((result) => {
-      this.FilterInittable();
-    });
-  }
+  // uploadDeclaration(data: any) {
+  //   const dialogRef =
+  //     this.modalPopupService.openPopup<CooAttestationCreateComponent>(
+  //       CooAttestationCreateComponent,
+  //       data
+  //     );
+  //   dialogRef.afterClosed().subscribe((result) => {
+  //     this.FilterInittable();
+  //   });
+  // }
 
   // splitdatetime(datetimeString: any) {
   //   if (datetimeString && typeof datetimeString === 'string') {
@@ -591,8 +591,7 @@ else{
 AttestationPay(){
 
 let data={
-  "id": "",
-  "password": "",
+ 
   "servicedata": [        
       {
           "noOfTransactions": "1",
@@ -611,8 +610,8 @@ let data={
   "udf6":"",
   "udf7":"",
   "udf8":"",
-  "udf9":"",
-  "udf10":"",
+  "udf9":this.uuid,
+  "udf10":"COO",
   "action": 1,
   "correlationid": this.invoiceunoresponse.toString(),
   "langid": "EN",
@@ -734,43 +733,43 @@ openNew(data:any) {
 
 }
 
-FilterInittable(){
-  let data = {
-    "Companyuno":this.currentcompany,
-    "uuid":this.uuid,
-    "startnum":0,
-    "limit":10,
-    "Startdate":this.common.formatDateTime_API_payload(this.oneMonthAgo.toDateString()),
-    "Enddate":this.common.formatDateTime_API_payload(this.todayModel.toDateString())
-  };
-  this.common.showLoading();
+// FilterInittable(){
+//   let data = {
+//     "Companyuno":this.currentcompany,
+//     "uuid":this.uuid,
+//     "startnum":0,
+//     "limit":10,
+//     "Startdate":this.common.formatDateTime_API_payload(this.oneMonthAgo.toDateString()),
+//     "Enddate":this.common.formatDateTime_API_payload(this.todayModel.toDateString())
+//   };
+//   this.common.showLoading();
 
-  this.apiservice
-    .post(this.consts.getInReviewCOOReq, data)
-    .subscribe((response: any) => {
-      this.common.hideLoading();
+//   this.apiservice
+//     .post(this.consts.getInReviewCOOReq, data)
+//     .subscribe((response: any) => {
+//       this.common.hideLoading();
 
-      if (`${response.responsecode}` === '1') {
-        const dataArray = response.data;
-        this.cooAttestationLists = dataArray;
-        this.cooAttestationLists.map((row: any) => {
-          if (row.statusuno === AttestationStatusEnum.Status0) {
-            row.status = 'Created';
-          } else if (row.statusuno === AttestationStatusEnum.Status1) {
-            row.status = 'Pending';
-          } else if (row.statusuno === AttestationStatusEnum.Status2) {
-            row.status = 'Payment';
-          } else if (row.statusuno === AttestationStatusEnum.Status3) {
-            row.status = 'Attestation';
-          } else if (row.statusuno === AttestationStatusEnum.Status4) {
-            row.status = 'Approved';
-          } else {
-            row.status = '';
-          }
-        });
-      }
-    });
-}
+//       if (`${response.responsecode}` === '1') {
+//         const dataArray = response.data;
+//         this.cooAttestationLists = dataArray;
+//         this.cooAttestationLists.map((row: any) => {
+//           if (row.statusuno === AttestationStatusEnum.Status0) {
+//             row.status = 'Created';
+//           } else if (row.statusuno === AttestationStatusEnum.Status1) {
+//             row.status = 'Pending';
+//           } else if (row.statusuno === AttestationStatusEnum.Status2) {
+//             row.status = 'Payment';
+//           } else if (row.statusuno === AttestationStatusEnum.Status3) {
+//             row.status = 'Attestation';
+//           } else if (row.statusuno === AttestationStatusEnum.Status4) {
+//             row.status = 'Approved';
+//           } else {
+//             row.status = '';
+//           }
+//         });
+//       }
+//     });
+// }
 
 closesidetab(){
   this.shouldShow=false;

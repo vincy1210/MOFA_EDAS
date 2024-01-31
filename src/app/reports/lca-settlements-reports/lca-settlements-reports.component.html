@@ -131,7 +131,7 @@
                   </div>
                   <!-- </div> -->
                   <span style="padding: 10px"></span>
-                  <button
+                  <!-- <button
                     type="button"
                     pButton
                     pRipple
@@ -140,7 +140,38 @@
                     class="mr-2 grid-header-right-icon"
                     [pTooltip]="'excelExport' | translate"
                     tooltipPosition="bottom"
+                  ></button> -->
+
+                  
+
+                  <button
+                    type="button"
+                    pButton
+                    pRipple
+                    [matMenuTriggerFor]="menu"
+                    icon="fas fa-download"
+                    class="mr-2 grid-header-right-icon"
+                    [pTooltip]="'Export' | translate"
+                    tooltipPosition="left"
+                    [disabled]="lcaDataList.length === 0" [matMenuTriggerFor]="menu"
                   ></button>
+                  <mat-menu #menu="matMenu" class="exportmenu"  xPosition="before">
+                    <button mat-menu-item (click)="exportExcel()" [ngClass]="common.getmypalette()">
+                      <span class="mat-menu-share">
+                        <i class="pi pi-file-excel pr-2"></i>
+                        {{ "Excel Export" | translate }}</span
+                      >
+                    </button>
+                    <button mat-menu-item (click)="exportTableToPDF()" [ngClass]="common.getmypalette()">
+                      <span class="mat-menu-share">
+                        <i class="pi pi-file-pdf pr-2"></i>
+                        {{ "PDF Export" | translate }}</span
+                      >
+                    </button>
+                  </mat-menu>
+
+
+
                   <button
                     type="button"
                     pButton

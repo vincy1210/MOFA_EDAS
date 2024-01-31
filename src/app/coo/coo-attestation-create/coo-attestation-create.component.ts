@@ -146,21 +146,23 @@ export class CooAttestationCreateComponent implements OnInit {
 
   submitDeclarationAttestations(data: FormData) {
     this.common.showLoading();
-
+    this.onClose(true);
     this.apiservice
       .post(this.consts.updateCOORequests, data)
       .subscribe((response: any) => {
-        this.common.hideLoading();
+       
 
         const dataArray = response;
         if (`${response.responsecode}` === '1') {
           //alert
           this.common.showSuccessMessage(`COO Request Send for Approval`);
           this.clearDatas();
-          this.onClose(true);
+          this.common.hideLoading();
+          
         } else {
           //alert
           this.common.showErrorMessage(`${dataArray.message}`);
+          this.common.hideLoading();
         }
       });
   }

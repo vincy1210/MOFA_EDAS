@@ -21,14 +21,6 @@
     transition: top 0.3s; /* Add a smooth transition effect */
   }
 
-  .companyname{
-    text-align: center;
-    font-weight: 600;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    padding: 5px;
-    word-wrap: break-word;
-  }
-
+ 
 
   

@@ -66,3 +66,15 @@ export type FilterTypeGeneric = {
   uuid?: string;
   companyuno?: number;
 }
+
+export interface GlossaryEntry {
+  title: string;
+  content: GlossaryContentElement[];
+  title_ar?: string;  // Arabic title
+  content_ar?: GlossaryContentElement[];  // Arabic content
+}
+
+export type GlossaryContentElement = {
+  type: 'paragraph' | 'list' | 'steps';
+  value: string | string[];
+};

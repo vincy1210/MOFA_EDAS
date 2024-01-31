@@ -54,6 +54,9 @@ import { formatDate } from '@angular/common';
 import { saveAs } from 'file-saver';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { environment } from 'src/environments/environment';
+import * as moment from 'moment';
+
+// import { PdfExportComponent } from 'src/app/shared/components/pdf-export/pdf-export.component';
 
 interface Column {
   field: string;
@@ -94,6 +97,7 @@ export class AttestationComponent implements OnInit {
   cols_xl: any;
   totalrecords: number = 0;
   totalrecords_coo: number = 0;
+  pdfPayload:any;
 
   isLoading = false;
 
@@ -181,7 +185,7 @@ export class AttestationComponent implements OnInit {
   paymentcount = environment.appdetails.payment_count;
   fields: { label: string; value: any }[] = [];
   fields_coo:{ label: string; value: any }[] = [];
-  popupDownloadfilename:string='Attestation';
+  // popupDownloadfilename:string='Attestation';
   isButtonDisabled = false;
 
   highlightColor: string = 'red';
@@ -267,22 +271,17 @@ export class AttestationComponent implements OnInit {
 
     }
     this.cols_xl = [
-      { field: 'Noofdaysleft', header: 'Age', width: '5%' },
-      { field: 'edasattestno', header: 'Attestation No', width: '20%' },
+      { field: 'edasattestno', header: 'EDAS Attestation No', width: '20%' },
       { field: 'currencycode', header: 'Currency', width: '20%' },
-
       { field: 'canpay', header: 'Status', width: '20%' },
-
+      { field: 'noofdaysoverdue', header: 'Day(s)', width: '5%' },
       { field: 'invoiceamount', header: 'Invoice Amount', width: '20%' },
       { field: 'feesamount', header: 'Fees', width: '20%' },
-
       { field: 'invoicenumber', header: 'Invoice ID', width: '20%' },
       { field: 'declarationumber', header: 'Declaration No', width: '20%' },
-
       { field: 'declarationdate', header: 'Declaration Date', width: '200px' },
       { field: 'attestreqdate', header: 'Created', width: '200px' },
       { field: 'lcaname', header: 'Channel', width: '15%' },
-      { field: 'Company', header: 'Company', width: '20%' },
     ];
     this.cols = [
       { field: 'companyname', header: this.translate.instant('Company'), width: '20%' },
@@ -402,16 +401,7 @@ export class AttestationComponent implements OnInit {
     });
   }
 
-  onfilterclick() {
-    const updatedLazyLoadEvent: LazyLoadEvent = {
-      // Modify properties as needed
-      first: 0,
-      rows: 10,
-      // ... other properties
-    };
-    // this.overdue=1;
-    this.InitTable(updatedLazyLoadEvent);
-  }
+ 
 
   InitTable($event: LazyLoadEvent) {
     console.log($event);
@@ -474,43 +464,43 @@ export class AttestationComponent implements OnInit {
       },
     });
   }
-  filterInittable() {
-    let resp;
-    let data = {
-      Companyuno: this.currentcompany,
-      uuid: this.uuid,
-      startnum: 0,
-      limit: 200,
-      Startdate: this.common.formatDateTime_API_payload(
-        this.oneMonthAgo.toDateString()
-      ),
-      Enddate: this.common.formatDateTime_API_payload(
-        this.todayModel.toDateString()
-      ),
-    };
-    this.loading = true;
-    this.common.showLoading();
+ 
+  //   let resp;
+  //   let data = {
+  //     Companyuno: this.currentcompany,
+  //     uuid: this.uuid,
+  //     startnum: 0,
+  //     limit: 200,
+  //     Startdate: this.common.formatDateTime_API_payload(
+  //       this.oneMonthAgo.toDateString()
+  //     ),
+  //     Enddate: this.common.formatDateTime_API_payload(
+  //       this.todayModel.toDateString()
+  //     ),
+  //   };
+  //   this.loading = true;
+  //   this.common.showLoading();
 
-    this.apicall.post(this.consts.pendingattestation, data).subscribe({
-      next: (success: any) => {
-        this.common.hideLoading();
+  //   this.apicall.post(this.consts.pendingattestation, data).subscribe({
+  //     next: (success: any) => {
+  //       this.common.hideLoading();
 
-        this.loading = false;
-        resp = success;
-        if (resp.dictionary.responsecode == 1) {
-          this.list = resp.dictionary.data;
-          this.datasource = resp.dictionary.data;
-          this.totalrecords = resp.dictionary.data.length;
-          this.loading = false;
-          this.Reduce();
-          // this.common.showSuccessMessage('Data retrived'); // Show the verification alert
-        } else {
-          this.common.showErrorMessage('Something went wrong');
-          this.loading = false;
-        }
-      },
-    });
-  }
+  //       this.loading = false;
+  //       resp = success;
+  //       if (resp.dictionary.responsecode == 1) {
+  //         this.list = resp.dictionary.data;
+  //         this.datasource = resp.dictionary.data;
+  //         this.totalrecords = resp.dictionary.data.length;
+  //         this.loading = false;
+  //         this.Reduce();
+  //         // this.common.showSuccessMessage('Data retrived'); // Show the verification alert
+  //       } else {
+  //         this.common.showErrorMessage('Something went wrong');
+  //         this.loading = false;
+  //       }
+  //     },
+  //   });
+  // }
 
   // response:any
 
@@ -715,19 +705,19 @@ export class AttestationComponent implements OnInit {
         this.getimagebase64(this.selectedAttestations[0]?.attestfilelocation);
       }
 
-      let createddate = this.common.splitdatetimeforstring(
+      let createddate = this.common.splitdatetime(
         this.selectedAttestations[0]?.enteredon
       );
-      let approveddate = this.common.splitdatetimeforstring(
+      let approveddate = this.common.splitdatetime(
         this.selectedAttestations[0]?.approvedon
       );
-      let paymentdate = this.common.splitdatetimeforstring(
+      let paymentdate = this.common.splitdatetime(
         this.selectedAttestations[0]?.paidon
       );
-      let attestationdate = this.common.splitdatetimeforstring(
+      let attestationdate = this.common.splitdatetime(
         this.selectedAttestations[0]?.attestedon
       );
-      let completedDate = this.common.splitdatetimeforstring(
+      let completedDate = this.common.splitdatetime(
         this.selectedAttestations[0]?.completedon
       );
 
@@ -738,28 +728,20 @@ export class AttestationComponent implements OnInit {
 
       if (statusuno >= 0 && statusuno <= 10) {
         for (let i = 0; i < statusuno; i++) {
-          this.timelineItems[i].status = 'active';
-          if (statusuno == 1 && createddate != null) {
-            this.timelineItems[i].date = createddate?.date || '';
-            this.timelineItems[i].time = createddate?.time || '';
-          } else if (statusuno == 6 && approveddate != null) {
-            this.timelineItems[i].date = approveddate?.date || '';
-            this.timelineItems[i].time = approveddate?.time || '';
-          } else if (statusuno == 3 && paymentdate != null) {
-            this.timelineItems[i].date = paymentdate?.date || '';
-            this.timelineItems[i].time = paymentdate?.time || '';
-          } else if (statusuno == 9 && attestationdate != null) {
-            this.timelineItems[i].date = attestationdate?.date || '';
-            this.timelineItems[i].time = attestationdate?.time || '';
-          } else if (statusuno == 10 && completedDate != null) {
-            this.timelineItems[i].date = completedDate?.date || '';
-            this.timelineItems[i].time = completedDate?.time || '';
-          } else {
+          if (statusuno == 8 || statusuno == 1 && createddate != null) {
+            this.timelineItems[0].date = createddate?.date || '';
+            this.timelineItems[0].time = createddate?.time || '';
+          this.timelineItems[0].status = 'active';
+        this.timelineItems[1].status = 'current';
+
+
+          } 
+        
+          else {
             this.timelineItems[i].date = '';
             this.timelineItems[i].time = '';
           }
         }
-        this.timelineItems[statusuno - 1].status = 'current';
       } else {
         this.common.showErrorMessage('Something went wrong' + statusuno);
       }
@@ -783,8 +765,6 @@ export class AttestationComponent implements OnInit {
 
   AttestationPay() {
     let data = {
-      id: '',
-      password: '',
       servicedata: [
         {
           noOfTransactions: '1',
@@ -803,8 +783,8 @@ export class AttestationComponent implements OnInit {
       udf6: '',
       udf7: '',
       udf8: '',
-      udf9: '',
-      udf10: '',
+      udf9: this.uuid,
+      udf10: this.processname,
       action: 1,
       correlationid: this.invoiceunoresponse.toString(),
       langid: 'EN',
@@ -835,6 +815,7 @@ export class AttestationComponent implements OnInit {
               invoiceID: this.invoiceunoresponse,
               paymentID: code,
               processname: this.processname_set,
+              ispayall:0
             };
             this.common.setpaymentdetails(data);
 
@@ -856,25 +837,21 @@ export class AttestationComponent implements OnInit {
       jsonData[col.field] = col.header;
     });
 
-    // const dataList1: any = [];
-
     const dataList: any[] = this.list.map((item: any) => {
       const dataItem: any = {};
-
       this.cols_xl.forEach((col: any) => {
         if (col.header === 'Declaration Date' || col.header === 'Created') {
           dataItem[col.header] = this.common.splitdatetime(
-            item[col.field]
-          )?.date;
+            item[col.field])?.date;
         }
-        // else if (col.header === 'Age') {
-        //   dataItem[col.header] = this.common.calculateDifference(item.attestreqdate);
-        // }
+        else if(col.header === 'Status'){
+          dataItem[col.header] = item[col.field] === 1 ? 'COO paid' : 'COO unpaid ';
+          //customer.canpay === 1 ? 'COO paid' : '  &nbsp; COO unpaid '
+        }
         else {
           dataItem[col.header] = item[col.field];
         }
       });
-
       return dataItem;
     });
 
@@ -883,9 +860,9 @@ export class AttestationComponent implements OnInit {
     XLSX.utils.book_append_sheet(
       wb,
       ws,
-      this.translate.instant('Draft Attestation')
+      (this.common.givefilename('Draft'))
     );
-    XLSX.writeFile(wb, 'Draft_Attestation.xlsx');
+    XLSX.writeFile(wb, this.common.givefilename('Draft')+'.xlsx');
   }
 
   saveAsExcelFile(buffer: any, fileName: string): void {
@@ -914,7 +891,7 @@ export class AttestationComponent implements OnInit {
       'declarationumber',
       'declarationdate',
       'attestreqdate',
-      'Noofdaysleft', // Make sure this property name matches your actual data
+      'noofdaysoverdue', // Make sure this property name matches your actual data
     ];
 
     const selectedData = this.list.map((customer: any) => {
@@ -1023,7 +1000,7 @@ this.onTabChange(0);
     let resp;
     let data_ = {
       uuid: this.uuid,
-      lcaattestno: data.coorequestno,
+      lcaattestno: data.coorequestno.toString(),
     };
     this.loading = true;
     this.common.showLoading();
@@ -1129,7 +1106,7 @@ this.AddInvoiceDialog_ = true;
       // Add more fields as needed
     };
 
-    this.popupDownloadfilename='Attest_'+this.currentrow.edasattestno;
+    // this.popupDownloadfilename='Attest_'+this.currentrow.edasattestno;
 
     if (data) {
       this.fields = Object.keys(fieldMappings).map((key) => {
@@ -1396,6 +1373,116 @@ cooonlyPaymentDetailsCall(coorequestno:any){
       }
     },
   });
+}
+// invoiceRequestListsFilter:any;
+
+exportTableToPDF() {
+    const jsonData1: { [key: string]: string } = {};
+    this.cols_xl.forEach((col: any) => {
+      jsonData1[col.field] = col.header;
+    });
+    const dataList1: any[] = this.list.map((item: any) => {
+      const dataItem: any = {};
+      this.cols_xl.forEach((col: any) => {
+        if (col.header === 'Declaration Date' || col.header === 'Created') {
+          dataItem[col.header] = this.common.splitdatetime(
+            item[col.field])?.date;
+        }
+        else if(col.header === 'Status'){
+          dataItem[col.header] = item[col.field] === 1 ? 'COO paid' : 'COO unpaid ';
+          //customer.canpay === 1 ? 'COO paid' : '  &nbsp; COO unpaid '
+        }
+        else {
+          dataItem[col.header] = item[col.field];
+        }
+      });
+      return dataItem;
+    });
+    // bodyData
+    const jsonData2 = 
+    {
+      edasattestno: this.translate.instant("edasattestno"),
+      currencycode: this.translate.instant("Currency"),
+      canpay: this.translate.instant("Status"),
+      noofdaysoverdue: this.translate.instant("Day(s)"),
+      invoiceamount: this.translate.instant("Invoice Amount"),
+      feesamount: this.translate.instant("Fees"),
+      invoicenumber: this.translate.instant("Invoice ID"),
+      declarationumber: this.translate.instant("Declaration No"),
+      declarationdate: this.translate.instant("Declaration Date"),
+      attestreqdate: this.translate.instant("Created"),
+      lcaname: this.translate.instant("Channel"),
+    };
+    const dataList2: any = [];
+    this.list.map((item: any) => {
+      const dataItem: any = {};
+      dataItem[jsonData2.edasattestno] = item.edasattestno? item.edasattestno : "";
+      dataItem[jsonData2.currencycode] = item.currencycode ? item.currencycode : "";
+      dataItem[jsonData2.canpay] = item.canpay === 1 ? 'COO paid' : 'COO unpaid ';
+      dataItem[jsonData2.noofdaysoverdue] = item.noofdaysoverdue;
+      dataItem[jsonData2.invoiceamount] = item.invoiceamount ? item.invoiceamount : "";
+      dataItem[jsonData2.feesamount] = item.feesamount ? item.feesamount : "";
+      dataItem[jsonData2.invoicenumber] = item.invoicenumber ? item.invoicenumber : "";
+      dataItem[jsonData2.declarationumber] = item.declarationumber ? item.declarationumber : "";
+      dataItem[jsonData2.declarationdate] = item.declarationdate ? item.declarationdate : "";
+      dataItem[jsonData2.attestreqdate] = item.attestreqdate ? item.attestreqdate : "";
+      dataItem[jsonData2.lcaname] = item.lcaname ? item.lcaname : "";
+
+      dataList2.push(dataItem);
+    });
+    let header2DataList = this.bindVisibleMoreDatasCommon(dataList1);
+    let bodyDataList: any[] = dataList2;
+    this.pdfPayload = {
+      header1Data: { header: "INVOICE", content: "Invoice ID# 1112024" },
+      header2Data: header2DataList, // [],
+      bodyHeaderData: "Invoice Details",
+      bodyData: bodyDataList, // [],
+      // footerData: {},
+    };
+}
+
+viewcreateddatas:any;
+
+bindVisibleMoreDatasCommon(dataItem: any) {
+  this.viewcreateddatas = [];
+  for (const key in dataItem) {
+    if (dataItem.hasOwnProperty(key)) {
+      const value = dataItem[key];
+      this.viewcreateddatas.push({ label: key, value: value });
+    }
+  }
+}
+
+
+handleDateChange(event: any, dateType: string): void {
+  const momentObject = event.value || moment();
+  let date=new Date(momentObject.toDate())
+console.log(date)
+console.log(date.toISOString())
+
+ if (dateType === 'from') {
+   this.oneMonthAgo = date ;
+  } 
+  else if (dateType === 'to') {
+    this.todayModel =date;
+  }
+
+  console.log(this.oneMonthAgo)
+  console.log(this.todayModel)
+
+  this.onfilterclick()
+
+}
+
+onfilterclick() {
+  const updatedLazyLoadEvent: LazyLoadEvent = {
+    // Modify properties as needed
+    first: 0,
+    rows: 10,
+    // ... other properties
+  };
+  // this.overdue=1;
+  this.InitTable(updatedLazyLoadEvent);
 }
 
 }

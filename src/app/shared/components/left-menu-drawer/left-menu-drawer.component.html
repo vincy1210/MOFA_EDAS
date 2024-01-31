@@ -14,15 +14,17 @@
     <br />
     <br />
     <div
-      style="display: flex; justify-content: center; font-size: 50px; zoom: 2"
-    >
-      <mat-icon color="primary">person</mat-icon>
+      style="display: flex; justify-content: center; font-size: 50px; zoom: 2; cursor: pointer;" > 
+        <mat-icon (click)="redirectuserprofile()" color="primary">person</mat-icon>
+
     </div>
     <div style="text-align: center; font-weight: 600">
       {{ username }}
       <!-- {{companyname}}   width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;-->
     </div>
     <div class="companyname">{{ companyname }}</div>
+    <div class="companyname">{{ rolename }}</div>
+    
   </div>
   <mat-divider></mat-divider>
   <div class="grid grid-cols-1 mofa-side-menus">

@@ -65,7 +65,7 @@ export class RisklcaComponent
   currentDate: Date = new Date();
   responsiveLayout: 'scroll' | 'stack' = 'scroll';
   filterOptions: Array<any> = [];
-
+uuid:any
   constructor(
     public override router: Router,
     public override consts: ConstantsService,
@@ -94,6 +94,7 @@ export class RisklcaComponent
       data11=JSON.parse(data11)
       console.log(data11.Data)
       uuid=data11.Data.uuid;
+      this.uuid=uuid;
     }
     else{
        this.common.setlogoutreason("session");
@@ -277,7 +278,7 @@ export class RisklcaComponent
     const rows = event?.rows ? event?.rows : 0;
     this.selectedFilterOption.startnum = startnum;
     this.selectedFilterOption.rows = rows;
-    this.selectedFilterOption.uuid = '12223';
+    this.selectedFilterOption.uuid = this.uuid;
     // event.globalFilter = "";
     this.globalFilter = event.globalFilter;
     this.sortFilter = {
@@ -290,13 +291,14 @@ export class RisklcaComponent
 
   onClickFilterOptionCommon() {
     let payload = {
-      useruno: "111",
+      useruno: this.uuid,
       lcauno: 0, // should change based on loggedinuser
       companyuno: this.selectedFilterOption.id,
       startnum: this.selectedFilterOption.startnum,
       limit: this.selectedFilterOption.rows,
       startdate: this.selectedFilterOption.Startdate,
       enddate: this.selectedFilterOption.Enddate,
+      statusuno:2
     };
     this.getLcaDetailList(payload);
   }
@@ -462,12 +464,12 @@ export class RisklcaComponent
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataList);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Risk Profile');
-    XLSX.writeFile(wb, 'lca-details.xlsx');
+    XLSX.writeFile(wb,  this.common.givefilename('lca-details')+'.xlsx');
   }
 
-  splitdatetime1(date: any) {
-    return this.common.splitdatetime1(date);
-  }
+  // splitdatetime1(date: any) {
+  //   return this.common.splitdatetime(date);
+  // }
 
   splitdatetime(date: any) {
     return this.common.splitdatetime(date);

@@ -11,15 +11,25 @@
 
  
   
-
   .column {
     /* Style for each column within the company-info div */
     flex: 1; /* Each column takes equal space */
     padding: 5px; /* Adjust as needed */
   }
  .CompanyName{
-    font-weight: bolder;
+    /* font-weight: bolder;
     padding-top: 20px;
+    margin-top: -40px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden; */
+    font-weight: bolder;
+    width: 90%;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
  }
 
  mat-card{
@@ -56,22 +66,6 @@
     margin: 0 auto; /* Center the mat-card horizontally */
     font-size: 7px;
   }
-}
-
-/* Add this in your existing CSS file or style section in the component */
-.search-container {
-  margin-top: 20px;
-  text-align: center;
-}
-
-/* Style the search input and button as needed */
-.search-container input {
-  padding: 10px;
-  margin-right: 5px;
-}
-
-.search-container button {
-  padding: 10px;
 }
 
 

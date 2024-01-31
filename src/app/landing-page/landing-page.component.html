@@ -19,15 +19,12 @@
                       <h1 class="pageTitle"> {{'ChooseCompany'|translate}} </h1>
                       <p class="greytitle"> {{'LoginProfile'|translate}} 
                       </p>
-                      <!-- Add this within your existing HTML structure -->
-<!-- <div class="search-container">
-  <input type="text" placeholder="Search for a company..." [(ngModel)]="searchKeyword"  (input)="searchCompanies()"  />
-</div> -->
+              
 <br>
 <!-- <ng-template pTemplate="left"> -->
   <div style="padding: 5px;" class="col-md-3 col-lg-3 col-sm-6">
           <mat-form-field class="searchboxinput" floatLabel="always"  >
-            <input  matInput type="text" [(ngModel)]="searchKeyword" (input)="searchCompanies()" placeholder="{{'SearchKeyword' | translate}}">
+            <input appTrimInput  matInput type="text" [(ngModel)]="searchKeyword" (input)="searchCompanies()" placeholder="{{'SearchKeyword' | translate}}">
           </mat-form-field>
   </div>
 
@@ -36,12 +33,11 @@
 
                       <div class=" mt-3 grid grid-cols-1 rtl-form">
                           <mat-grid-list  cols="2"  rowHeight="3:1">
-                            <mat-grid-tile  *ngFor="let list of CompanyListforAdmin">
+                            <mat-grid-tile  *ngFor="let list of paginatedCompanyList">
                                 <div  style=" overflow: hidden; padding: 10px;"  class="company-info"  (click)="toggleSelected(list)" [class.selected]="list.isSelected" >
                                     <div style="height:10%;" class="row">
-                                        <mat-icon style="margin-left: 90%; color: #b68a35;" *ngIf="list.isSelected">check_circle_outline</mat-icon>
+                                        <mat-icon class="check_circle_outline"  *ngIf="list.isSelected">check_circle_outline</mat-icon>
                                     </div>
-                                    
                                     <div class="row">
                                         <div class="col-6">
                                             <span class="CompanyName">{{list.nameofbusiness}}</span>
@@ -49,9 +45,9 @@
                                         <div class="col-6"></div>
                                     </div>
                                     <div class="row">
-                                        <div class="col">
-                                            <label style="font-weight:bold;">{{'TradeLicenseNo'|translate}}   </label> &nbsp;
-                                            <span>{{list.tradelicenseno}}</span>
+                                        <div class="col CompanyName">
+                                            <label >{{'TradeLicenseNo'|translate}}   </label> &nbsp;
+                                            <span style="font-weight:normal;">{{list.tradelicenseno}}</span>
                                         </div>
                                     </div>
                                     <br>
@@ -65,10 +61,19 @@
                       <button (click)="selectedCompanyProceed()" mat-flat-button color="primary" >{{'proceedbtn' | translate }}</button>
                     </div>
                     </div>
+                    <mat-paginator *ngIf="totalcount>4"
+  [length]="totalcount"
+  [pageSize]="pageSize"
+  [pageSizeOptions]="[2, 4, 6]"
+  (page)="onPageChange($event)"
+></mat-paginator>
+
+
+
                     </div>
                     <div *ngIf="!isanycompanyavailable">
                       <p>
-                        {{'Norecordsavailable'|translate}}
+                        {{displaytext|translate}}
                        
                       </p>
 

@@ -165,7 +165,7 @@ export class ImportAttestationsCreateComponent implements OnInit {
       Sheets: { LCA: worksheet },
       SheetNames: ['LCA'],
     };
-    XLSX.writeFile(workbook, 'lca-template.xlsx');
+    XLSX.writeFile(workbook,  this.common.givefilename('lca-template')+'.xlsx');
   }
 
   onFileChanged(event: any) {
@@ -210,9 +210,9 @@ export class ImportAttestationsCreateComponent implements OnInit {
     this.dialogRef.close(data);
   }
 
-  splitdatetime1(date: any) {
-    return this.common.splitdatetime1(date);
-  }
+  // splitdatetime1(date: any) {
+  //   return this.common.splitdatetime1(date);
+  // }
 
   splitdatetime(date: any) {
     const dateVal = `${date}`;

@@ -26,7 +26,7 @@
 
         <mat-form-field appearance="outline">
           <mat-label>{{'nameofthebusinessaspertradelicense' | translate }}</mat-label>
-          <input class="amount-input" autocomplete="off" readonly formControlName="name_of_Business" name="name_of_Business" maxlength="100"  matInput placeholder="{{'Example Technologies L.L.C' | translate}}">
+          <input appTrimInput  class="amount-input" autocomplete="off" readonly formControlName="name_of_Business" name="name_of_Business" maxlength="100"  matInput placeholder="{{'Example Technologies L.L.C' | translate}}">
           <mat-error *ngIf="companyDetailsForm.get('name_of_Business')?.hasError('required')">{{'Name of the Business is required' | translate }} </mat-error>
           <mat-error *ngIf="companyDetailsForm.get('name_of_Business')?.hasError('pattern')">{{'Name of the Business is required' | translate }} </mat-error>
           
@@ -37,7 +37,7 @@
 
         <mat-form-field appearance="outline">
           <mat-label>{{'tradelicensenumber' | translate }}</mat-label>
-          <input readonly [disabled]="true"  autocomplete="off" formControlName="trade_Licence" name="trade_Licence" matInput placeholder="123456">
+          <input appTrimInput readonly [disabled]="true"  autocomplete="off" formControlName="trade_Licence" name="trade_Licence" matInput placeholder="123456">
         <mat-error *ngIf="companyDetailsForm.get('trade_Licence')?.hasError('required')">{{'Trade License number is required' | translate }} </mat-error>
         <mat-error *ngIf="companyDetailsForm.get('trade_Licence')?.hasError('pattern')">{{'Trade License number is required' | translate }} </mat-error>
 
@@ -51,7 +51,7 @@
         <div>
           <mat-form-field class="example-form-field">
             <mat-label>{{'tradelicenseissuedate' | translate }}</mat-label>
-            <input matInput readonly  [max]="today"  autocomplete="off" [disabled]="true" formControlName="trade_Licence_Issue_Date" name="trade_Licence_Issue_Date" [matDatepicker]="tlissuedate" placeholder="19/02/1972">
+            <input appTrimInput matInput readonly  [max]="today"  autocomplete="off" [disabled]="true" formControlName="trade_Licence_Issue_Date" name="trade_Licence_Issue_Date" [matDatepicker]="tlissuedate" placeholder="19/02/1972">
 
             <mat-datepicker-toggle matSuffix [for]="tlissuedate"></mat-datepicker-toggle>
             <mat-datepicker #tlissuedate>
@@ -69,7 +69,7 @@
         <div>
           <mat-form-field class="example-form-field">
             <mat-label>{{'tradelicenseexpirydate' | translate }}</mat-label>
-            <input matInput  autocomplete="off" [min]="today" formControlName="trade_Licence_Expiry_Date" name="trade_Licence_Expiry_Date" [matDatepicker]="tlexpirydate" placeholder="19/10/2025">
+            <input appTrimInput matInput  autocomplete="off" [min]="today" formControlName="trade_Licence_Expiry_Date" name="trade_Licence_Expiry_Date" [matDatepicker]="tlexpirydate" placeholder="19/10/2025">
             <mat-datepicker-toggle matSuffix [for]="tlexpirydate"></mat-datepicker-toggle>
             <!-- <span matSuffix >&nbsp;{{'EDIT' | translate }}</span> -->
             <mat-datepicker #tlexpirydate>
@@ -88,7 +88,7 @@
 
         <mat-form-field appearance="outline">
           <mat-label>{{'licenseissuingauthority' | translate }}</mat-label>
-          <input matInput readonly [disabled]="true"  autocomplete="off" formControlName="Licence_issuing_auth" name="Licence_issuing_auth" placeholder="Free zone">
+          <input appTrimInput matInput readonly [disabled]="true"  autocomplete="off" formControlName="Licence_issuing_auth" name="Licence_issuing_auth" placeholder="Free zone">
           <mat-error *ngIf="companyDetailsForm.get('Licence_issuing_auth')?.hasError('required')">{{'License issuing authority is required' | translate }} </mat-error>
           <mat-error *ngIf="companyDetailsForm.get('Licence_issuing_auth')?.hasError('pattern')">{{'License issuing authority is required' | translate }} </mat-error>
         
@@ -114,7 +114,7 @@
         <div>
           <mat-form-field appearance="outline">
             <mat-label>{{'companyregisteredemailaddress' | translate }} </mat-label>
-            <input matInput  autocomplete="off" formControlName="Comp_Reg_Email_Address" name="Comp_Reg_Email_Address" placeholder="example@etech.com">
+            <input appTrimInput matInput  autocomplete="off" formControlName="Comp_Reg_Email_Address" name="Comp_Reg_Email_Address" placeholder="example@etech.com">
             <span matSuffix>&nbsp;{{'EDIT' | translate }}</span>
             <mat-error *ngIf="companyDetailsForm.get('Comp_Reg_Email_Address')?.hasError('required')">{{'Company Registered Email Address is required' | translate }} </mat-error>
             <mat-error *ngIf="companyDetailsForm.get('Comp_Reg_Email_Address')?.hasError('email')">{{ 'Invalid Email format' | translate }}
@@ -125,7 +125,7 @@
         <div>
           <mat-form-field appearance="outline" floatLabel="always">
             <mat-label>{{'companycontactnumber' | translate }}   </mat-label>
-            <input matInput type="tel"  autocomplete="off" maxlength="9" formControlName="Comp_contact_number" name="Comp_contact_number"    placeholder="55 1234 567">
+            <input appTrimInput matInput type="tel"  autocomplete="off" maxlength="9" formControlName="Comp_contact_number" name="Comp_contact_number"    placeholder="55 1234 567">
             <span matPrefix>+971&nbsp;</span>
             <span matSuffix>&nbsp;{{'EDIT' | translate }}</span>
             <mat-error *ngIf="!(companyDetailsForm.get('Comp_contact_number')?.hasError('minlength')|| companyDetailsForm.get('Comp_contact_number')?.hasError('maxlength'))&&companyDetailsForm.get('Comp_contact_number')?.hasError('pattern')">{{'Invalid Company Contact Number' | translate }} </mat-error>
@@ -138,9 +138,6 @@
       <div class="grid grid-cols-2 gap-4">
 
         <div class="cd-upload">
-          
-
-          <!-- {{companyDetailsForm.get('Upload_trade_license')?.value}}  {{companyDetailsForm.get('Upload_trade_license')?.value!=''}}   &nbsp; &nbsp; &nbsp; -->
           <mat-form-field appearance="outline" floatLabel="always">
             <mat-label>{{'uploadtradelicense' | translate }}</mat-label>
             <a mat-button color="primary" (click)="fileInput.click()" class="float-right"><span *ngIf="!isLoading">
@@ -150,8 +147,7 @@
               <mat-spinner diameter="35"></mat-spinner>
             </span>
           </a>
-            <input type="text" formControlName="Upload_trade_license" name="Upload_trade_license" readonly matInput />
-
+            <input appTrimInput type="text" formControlName="Upload_trade_license" name="Upload_trade_license" readonly matInput />
             <input accept=".pdf" style="display: none" formControlName="Upload_trade_license" name="Upload_trade_license" #attachments type="file" (change)="onFileChanged($event)" #fileInput
               />
             <div *ngFor="let selected of listOfFiles; let index = index" class="cd-file-list">
@@ -159,11 +155,7 @@
               <small (click)="removeSelectedFile(index)">{{'Remove' | translate }}</small>
             </div>
         <mat-error *ngIf="companyDetailsForm.get('Upload_trade_license')?.hasError('required')"> {{'Trade License is required' | translate }} </mat-error>
-
           </mat-form-field>
-<!--  style="width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" -->
-          
-          <!-- <p *ngIf="isLoading">Loading.....</p> -->
         </div>
         <div class="grid grid-cols-2 mt-4" style="margin-top: 10px; display: block;">
          
@@ -194,7 +186,7 @@
         <div>
           <mat-form-field appearance="outline">
             <mat-label>{{'fullname' | translate }}</mat-label>
-            <input matInput  autocomplete="off" formControlName="companyrep_fullname" name="companyrep_fullname" placeholder="MOHAMMED ALI">
+            <input appTrimInput matInput  autocomplete="off" formControlName="companyrep_fullname" name="companyrep_fullname" placeholder="MOHAMMED ALI">
             <mat-error *ngIf="companyDetailsForm.get('companyrep_fullname')?.hasError('required')">{{'Full name is required' | translate }} </mat-error>
             <mat-error *ngIf="companyDetailsForm.get('companyrep_fullname')?.hasError('pattern')">{{'Full name is required' | translate }} </mat-error>
           </mat-form-field>
@@ -202,9 +194,10 @@
         <div>
           <mat-form-field appearance="outline">
             <mat-label>{{'Designation' | translate }}</mat-label>
-            <input matInput  autocomplete="off" formControlName="companyrep_designation" name="companyrep_designation" placeholder="">
-            <mat-error *ngIf="companyDetailsForm.get('companyrep_designation')?.hasError('required')">{{'Designation is required' | translate }} </mat-error>
+            <input appTrimInput matInput  autocomplete="off" formControlName="companyrep_designation" name="companyrep_designation" placeholder="">
+            <!-- <mat-error *ngIf="companyDetailsForm.get('companyrep_designation')?.hasError('required')">{{'Designation is required' | translate }} </mat-error>
             <mat-error *ngIf="companyDetailsForm.get('companyrep_designation')?.hasError('pattern')">{{'Designation is required' | translate }} </mat-error>
+       -->
           </mat-form-field>
         </div>
         
@@ -215,7 +208,7 @@
         <div>
           <mat-form-field appearance="outline">
             <mat-label>{{'representativeemailaddress' | translate }}</mat-label>
-            <input matInput  autocomplete="off" formControlName="companyrep_EmailAddress" name="companyrep_EmailAddress" placeholder="Mohammed@etech.com">
+            <input appTrimInput matInput  autocomplete="off" formControlName="companyrep_EmailAddress" name="companyrep_EmailAddress" placeholder="Mohammed@etech.com">
             <mat-error *ngIf="companyDetailsForm.get('companyrep_EmailAddress')?.hasError('required')">{{'Representative Email address is required' | translate }} </mat-error>
             <mat-error *ngIf="companyDetailsForm.get('companyrep_EmailAddress')?.hasError('email')">{{ 'Invalid Email format' | translate }}</mat-error>
           </mat-form-field>
@@ -224,7 +217,7 @@
         <div>
           <mat-form-field appearance="outline" floatLabel="always">
             <mat-label>{{'mobilenumber' | translate }} </mat-label>
-            <input matInput  autocomplete="off" maxlength="9" formControlName="companyrep_MobileNumber" name="companyrep_MobileNumber" type="tel" placeholder="55 1234 567">
+            <input appTrimInput matInput  autocomplete="off" maxlength="9" formControlName="companyrep_MobileNumber" name="companyrep_MobileNumber" type="tel" placeholder="55 1234 567">
             <span matPrefix>+971&nbsp;</span>
 
             <mat-error *ngIf="!(companyDetailsForm.get('companyrep_MobileNumber')?.hasError('minlength')|| companyDetailsForm.get('companyrep_MobileNumber')?.hasError('maxlength'))&&companyDetailsForm.get('companyrep_MobileNumber')?.hasError('pattern')"> {{'Invalid Mobile Number' | translate }} </mat-error>

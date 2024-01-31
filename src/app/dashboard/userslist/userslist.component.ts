@@ -41,7 +41,7 @@ todayModel:Date=new Date();
   dialogTitle: string = 'Add User'; // Default title for adding a new user
   dialogActionButtonLabel: string = 'Save'; 
   // dialogMode:string='Add';
-  radiochosenornot:boolean=false;
+  // radiochosenornot:boolean=false;
   isButtonDisabled = false;
 
   accessprofileList: string[] = [ 'LCA', 'COO', 'Physical'];
@@ -60,26 +60,26 @@ todayModel:Date=new Date();
     }
 
     this.cols = [
-      { field: 'edasattestno', header: 'Emirates ID' },
-      { field: 'invoicenumber', header: 'User Name' },
-      { field: 'declarationumber', header: 'Role' },
+      { field: 'eid', header: 'Emirates ID' },
+      { field: 'fullnameen', header: 'User Name' },
+      { field: 'usertype', header: 'Role' },
       
-      { field: 'attestreqdate', header: 'Email ID' },
+      { field: 'emailid', header: 'Email ID' },
       { field: 'mobilenumber', header: 'mobilenumber' },
-      { field: 'enteredon', header: 'Created By' },
-      { field: 'enteredby', header: 'Created' }
+      { field: 'enteredby', header: 'Created By' },
+      { field: 'enteredon', header: 'Created' }
 
   ];
 
   this.form=this.fb.group({
-    company:[this.currentcompany_name,Validators.required, ],
+    company:[this.currentcompany_name ],
     username:['',[Validators.required, Validators.pattern('^(?=.*\\S).+$')]],
     emiratesID:['',[Validators.required,this.emiratesIDValidator()]],
     emailaddress:['',[Validators.required, Validators.email]],
     mobilenumber:['',[Validators.required, Validators.maxLength(9), Validators.minLength(9), Validators.pattern(/^5\d+$/)]],
     role:['',Validators.required],
-    accessprofile:[''],
-    gender:['Female', Validators.required],
+    accessprofile:['',Validators.required],
+    gender:[''],
     useruno:[0]
 
   })
@@ -100,11 +100,6 @@ todayModel:Date=new Date();
     this.common.redirecttologin();
     return;
   }
-
-
-
-
-
     let data11=this.common.getUserProfile();
     let uuid;
     if(data11!=null || data11!=undefined){
@@ -166,7 +161,7 @@ todayModel:Date=new Date();
   openDialog() {
 
     this.isButtonDisabled = false;
-    this.radiochosenornot=false;
+    // this.radiochosenornot=false;
     this.form.reset();
     // this.form.clearValidators();
     // this.form.updateValueAndValidity();
@@ -187,12 +182,12 @@ editDialog(currentrow:any){
 
   this.isButtonDisabled = false;
 
-  if(this.form.get('gender')?.value==="" || this.form.get('gender')?.value==null || this.form.get('gender')?.value==undefined){
-    this.radiochosenornot=true;
-  }
-  else{
-    this.radiochosenornot=false;
-  }
+  // if(this.form.get('gender')?.value==="" || this.form.get('gender')?.value==null || this.form.get('gender')?.value==undefined){
+  //   this.radiochosenornot=true;
+  // }
+  // else{
+  //   this.radiochosenornot=false;
+  // }
 
   this.dialogTitle = 'Edit User';
   this.dialogActionButtonLabel = 'Update'; 
@@ -201,8 +196,15 @@ editDialog(currentrow:any){
   this.AddUserDialog=true;
 
   let parsedValues=currentrow.accessprofiles;
+
+  let valuesArray = parsedValues?.split(',');
+  
+  let formattedArrayString = JSON.stringify(valuesArray, null, 2);
+  
+  console.log(formattedArrayString);
+
   if(parsedValues){
-    parsedValues  = JSON.parse(currentrow.accessprofiles.replace(/[\r\n]/g, ''));
+    parsedValues  = JSON.parse(formattedArrayString.replace(/[\r\n]/g, ''));
   }
   else{
     parsedValues=[];
@@ -229,11 +231,11 @@ this.last_modifiedby=currentrow.modifiedby;
 
 onSubmitDialogModal(){
   
-  if(this.form.get('gender')?.value==="" || this.form.get('gender')?.value==null || this.form.get('gender')?.value==undefined){
-    this.radiochosenornot = true;
-  } else {
-    this.radiochosenornot = false;
-  }
+  // if(this.form.get('gender')?.value==="" || this.form.get('gender')?.value==null || this.form.get('gender')?.value==undefined){
+  //   this.radiochosenornot = true;
+  // } else {
+  //   this.radiochosenornot = false;
+  // }
 
   if(this.form.invalid){
     let formdata={...this.form.value}
@@ -255,6 +257,8 @@ onSubmitDialogModal(){
     roleuno=2;
   }
   let resp;
+
+  let accessprofile = formdata.accessprofile.toString().replace(/[\[\]]/g, '');
 
   let removed_hyphen=formdata.emiratesID.replace(/-/g, '');
     let data={
@@ -280,7 +284,7 @@ onSubmitDialogModal(){
       "p_hasmultiplecompanyaccess":0,
       "p_useruno":0,
       "p_roleuno":roleuno,
-      "p_accessprofiles":formdata.accessprofile,
+      "p_accessprofiles":accessprofile,
       "p_action":"ADD",
       }
 
@@ -414,8 +418,7 @@ deleteuserpopup(list:any){
     header: this.translate.instant('Confirm'),
     icon: 'pi pi-exclamation-triangle',
     accept: () => {
-        // this.invoicesData = this.invoicesData.filter((val:any) => !this.selectedAttestations?.includes(val)); 
-        // this.selectedAttestations = null;
+       
         this.deleteuser(list)
 
        //start
@@ -446,4 +449,82 @@ onInput(event: Event): void {
   // Filter out non-digit characters
   this.form.get('mobilenumber')?.setValue(inputElement.value.replace(/[^0-9]/g, ''));
 }
+
+
+pdfPayload:any;
+exportTableToPDF() {
+  // header2Data
+  const jsonData1 = {
+    edasattestno: this.translate.instant(
+      "edasattestno"
+    ),
+    noofdaysleft: this.translate.instant(
+      "noofdaysleft"
+    ),
+    status: this.translate.instant("status"),
+    invoiceamount: this.translate.instant(
+      "invoiceamount"
+    ),
+  };
+  let dataList1: any = {};
+  this.list.map((item: any) => {
+    const dataItem: any = {};
+    dataItem[jsonData1.edasattestno] = item.edasattestno
+      ? item.edasattestno
+      : "";
+    dataItem[jsonData1.noofdaysleft] = item.noofdaysleft
+      ? item.noofdaysleft
+      : "";
+    dataItem[jsonData1.status] = item.statusname ? item.statusname : "";
+    dataItem[jsonData1.invoiceamount] = item.invoiceamount
+      ? item.invoiceamount
+      : "";
+    dataList1 = dataItem;
+  });
+  // bodyData
+  const jsonData2 = {
+    edasattestno: this.translate.instant("edasattestno"),
+    noofdaysleft: this.translate.instant("noofdaysleft"),
+    status: this.translate.instant("status"),
+    invoiceamount: this.translate.instant("invoiceamount"),
+  };
+  const dataList2: any = [];
+  this.list.map((item: any) => {
+    const dataItem: any = {};
+    dataItem[jsonData2.edasattestno] = item.edasattestno
+      ? item.edasattestno
+      : "";
+    dataItem[jsonData2.noofdaysleft] = item.noofdaysleft
+      ? item.noofdaysleft
+      : "";
+    dataItem[jsonData2.status] = item.statusname ? item.statusname : "";
+    dataItem[jsonData2.invoiceamount] = item.invoiceamount
+      ? item.invoiceamount
+      : "";
+    dataList2.push(dataItem);
+  });
+  let header2DataList = this.bindVisibleMoreDatasCommon(dataList1);
+  let bodyDataList: any[] = dataList2;
+  this.pdfPayload = {
+    header1Data: { header: "INVOICE", content: "Invoice ID# 1112024" },
+    header2Data: header2DataList, // [],
+    bodyHeaderData: "Invoice Details",
+    bodyData: bodyDataList, // [],
+    // footerData: {},
+  };
+}
+
+viewcreateddatas:any;
+
+bindVisibleMoreDatasCommon(dataItem: any) {
+this.viewcreateddatas = [];
+for (const key in dataItem) {
+  if (dataItem.hasOwnProperty(key)) {
+    const value = dataItem[key];
+    this.viewcreateddatas.push({ label: key, value: value });
+  }
+}
+}
+
+
 }

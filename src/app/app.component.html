@@ -17,7 +17,7 @@
     <!-- common.getSelectedCompany()  getUserProfile -->
     <a
       (click)="drawer.toggle()"
-      *ngIf="userloggedin || lcauserloggedin"
+      *ngIf="bigScreen && (userloggedin || lcauserloggedin)"
       class="mr-2 cursor-pointer"
     >
       <mat-icon color="primary">menu</mat-icon>
@@ -225,7 +225,7 @@
     <!--Menu Only Shown on Mobile starts-->
     <div class="b-navbar" *ngIf="!bigScreen" class="top-toggle-icon">
       <div class="b-navbar__toggle" *ngIf="!bigScreen">
-        <button
+        <button   *ngIf="userloggedin || lcauserloggedin"
           (click)="onToggle()"
           class="b-navbar__button humberger-menu"
           mat-button

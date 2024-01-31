@@ -41,6 +41,7 @@ export class ConstantsService {
 
   mpaypurchaseRequest = 'lca/mpaypurchaseRequest';
   LCAmpayinquiryTransaction = 'lca/mpayinquiryTransaction';
+  mpayinquiryTransactionForPayAll='lca/mpayinquiryTransactionForPayAll'
 
   getPhysicalAttestpaymentdetails = 'entity/getPhysicalAttestpaymentdetails';
   getCOOAttestpaymentdetails = 'entity/getCOOAttestpaymentdetails';
@@ -100,4 +101,21 @@ export class ConstantsService {
 //     "companyuno": "626",
 //     "uuid": "bbbb11121nnn1"
 // }
+// getImportReportForLCA='getImportReportForLCA' /// dummy
+getImportReportForLCA = "dashboard/getImportReportForLCA";
+
+
+//getPreprocessLCARequests
+getPreprocessLCARequests = 'User/getPreprocessLCARequests'; 
+//
+updateCompanyProfile='Admin/updateCompanyProfile'
+
+
+// getListOfValues='user/getListOfValues';
+
+getAttestStatisticsForCustomer='dashboard/getAttestStatisticsForCustomer'
+
+CheckUAEPassLogin="Common/CheckUAEPassLogin";
+
+  getEmbassywiseAttestationCount = "dashboard/getEmbassywiseAttestationCount";
 }

@@ -32,7 +32,7 @@
           <mat-spinner diameter="35"></mat-spinner>
         </span>
       </a>
-        <input type="text" formControlName="uploadDeclarationFile" name="uploadDeclarationFile" readonly matInput />
+        <input appTrimInput type="text" formControlName="uploadDeclarationFile" name="uploadDeclarationFile" readonly matInput />
 
         <input accept=".pdf" style="display: none" formControlName="uploadDeclarationFile" name="uploadDeclarationFile" #attachments type="file" (change)="onFileChanged($event)" #fileInput
           />

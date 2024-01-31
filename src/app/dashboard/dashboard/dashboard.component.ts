@@ -62,6 +62,13 @@ export class DashboardComponent extends LayoutModel implements OnInit {
   cooChartOptionattestation: EChartsOption = {};
   physicalChartOptionattestation: EChartsOption = {};
 
+  allattesttogether: EChartsOption = {};
+  LCAstatusChart: EChartsOption = {};
+  COOStatusChart: EChartsOption = {};
+  PhysicalStatusChart: EChartsOption = {};
+
+
+
   uuid: any;
   weekNumber: number = 0;
   constructor(
@@ -90,6 +97,8 @@ export class DashboardComponent extends LayoutModel implements OnInit {
   }
 
   ngOnInit(): void {
+
+   
     const today = new Date();
     this.weekNumber = this.getWeekNumber(today);
 
@@ -153,7 +162,7 @@ export class DashboardComponent extends LayoutModel implements OnInit {
       this.common.hideLoading();
 
       this.isLoading = false;
-    }, 3000);
+    }, 1500);
   }
 
   onClickFilterOptionDailyMonthlyWeekly(
@@ -289,7 +298,7 @@ export class DashboardComponent extends LayoutModel implements OnInit {
     setTimeout(() => {
       // Set isLoading to false after 3 seconds
       this.isLoading = false;
-    }, 3000);
+    }, 1500);
 
     this.refreshAttestChartAll(type);
     let xAxis: string[] = [];
@@ -404,7 +413,7 @@ export class DashboardComponent extends LayoutModel implements OnInit {
         left: '6%',
         right: '6%',
         bottom: '10%',
-        top: '10%',
+        top: '13%',
       },
       color: ['#b68a35', '#1b1d21'],
       toolbox: {
@@ -423,6 +432,7 @@ export class DashboardComponent extends LayoutModel implements OnInit {
       yAxis: {
         type: 'value',
       },
+      
       series: [
         {
           name: 'Pending',
@@ -461,6 +471,7 @@ export class DashboardComponent extends LayoutModel implements OnInit {
 
     seriesDataCompleted: number[]
   ) {
+    //LCA
     if (type === 'lca') {
       this.lcaChartOptionattestation.xAxis = {
         type: 'category',
@@ -484,7 +495,21 @@ export class DashboardComponent extends LayoutModel implements OnInit {
           data: seriesDataCompleted,
         },
       ];
-    } else if (type === 'coo') {
+
+      this.lcaChartOptionattestation.title= {
+        show: xAxis.length === 0,
+        textStyle: {
+            color: "grey",
+            fontSize: 20
+        },
+        text: this.translate.instant("No data"),
+        left: "center",
+        top: "center"
+    }
+
+    } 
+    //COO
+    else if (type === 'coo') {
       this.cooChartOptionattestation.xAxis = {
         type: 'category',
         boundaryGap: false,
@@ -507,7 +532,19 @@ export class DashboardComponent extends LayoutModel implements OnInit {
           data: seriesDataRequest,
         },
       ];
-    } else if (type === 'physical') {
+      this.cooChartOptionattestation.title= {
+        show: xAxis.length === 0,
+        textStyle: {
+            color: "grey",
+            fontSize: 20
+        },
+        text: this.translate.instant("No data"),
+        left: "center",
+        top: "center"
+    }
+    } 
+    //Physical
+    else if (type === 'physical') {
       this.physicalChartOptionattestation.xAxis = {
         type: 'category',
         boundaryGap: false,
@@ -529,13 +566,21 @@ export class DashboardComponent extends LayoutModel implements OnInit {
           data: seriesDataRequest,
         },
       ];
+
+      this.physicalChartOptionattestation.title= {
+        show: xAxis.length === 0,
+        textStyle: {
+            color: "grey",
+            fontSize: 20
+        },
+        text: this.translate.instant("No data"),
+        left: "center",
+        top: "center"
+    }
     }
   }
 
-  // splitdatetime1(date: any) {
-  //   return this.common.splitdatetime1(date);
-  // }
-
+ 
   splitdatetime(datetimeString: any, dateFormat: string = 'dd-MMM-yyyy') {
     if (datetimeString) {
       if (typeof datetimeString === 'string') {
@@ -561,67 +606,7 @@ export class DashboardComponent extends LayoutModel implements OnInit {
     return null; // Invalid or null datetime string
   }
 
-  splitdatetime1(
-    datetimeString: any,
-    dateFormat: string = 'dd-MMM-yyyy',
-    yearfirst = true
-  ) {
-    if (datetimeString && typeof datetimeString === 'string') {
-      const dateTimeParts = datetimeString;
-      if (dateTimeParts.length === 8 || dateTimeParts.length === 11) {
-        let parsedDate = null;
-        if (yearfirst) {
-          parsedDate = new Date(
-            Number(dateTimeParts.substr(0, 4)),
-            Number(dateTimeParts.substr(4, 2)) - 1,
-            Number(dateTimeParts.substr(6, 2))
-          );
-        } else {
-          parsedDate = new Date(
-            Number(dateTimeParts.substr(4, 4)),
-            Number(dateTimeParts.substr(2, 2)) - 1,
-            Number(dateTimeParts.substr(0, 2))
-          );
-        }
-        return {
-          date: this.datePipe.transform(parsedDate, dateFormat),
-        };
-      }
-    }
-    return null; // Invalid or null datetime string
-  }
+ 
 
-  splitdatetime2(datetimeString: string) {
-    let formattedDate: string = '';
-    const monthMap = {
-      Jan: '01',
-      Feb: '02',
-      Mar: '03',
-      Apr: '04',
-      May: '05',
-      Jun: '06',
-      Jul: '07',
-      Aug: '08',
-      Sep: '09',
-      Oct: '10',
-      Nov: '11',
-      Dec: '12',
-    };
-    if (datetimeString && typeof datetimeString === 'string') {
-      let dateTimeParts: string = datetimeString;
-      while (dateTimeParts.length < 11) {
-        dateTimeParts = '0' + dateTimeParts;
-      }
-      if (dateTimeParts.length === 11) {
-        const parts = dateTimeParts.split('-');
-        const day = parts[0];
-        const month = monthMap[parts[1] as keyof typeof monthMap];
-        const year = parts[2];
 
-        const dateObj = new Date(`${year}-${month}-${day}`);
-        formattedDate = dateObj.toISOString().split('T')[0];
-      }
-    }
-    return formattedDate;
-  }
 }

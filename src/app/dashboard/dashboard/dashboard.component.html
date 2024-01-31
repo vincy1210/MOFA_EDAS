@@ -4,8 +4,8 @@
     <!-- <div class="grid grid-cols-4 gap-6 px-5 py-3">
     </div> -->
     <div class="grid grid-cols-4 gap-6 px-5 py-3">
-      <div class="grid grid-cols-1 bg-green-db p-5">
-        <div class="grid grid-cols-3">
+      <div class="grid grid-cols-1 bg-yellow-db p-5">
+        <div class="grid ">
           <div>
             <i class="fa fa-home fa-3x text-white"></i>
           </div>
@@ -20,10 +20,10 @@
         </div>
       </div>
       <div
-        class="grid grid-cols-1 bg-green-db p-5 cursror"
-        [routerLink]="'/companydetailspending'"
+        class="grid grid-cols-1 bg-yellow-db p-5"
+       
       >
-        <div class="grid grid-cols-3">
+        <div class="grid ">
           <div>
             <i class="fa fa-building fa-3x text-white"></i>
           </div>
@@ -37,8 +37,8 @@
           </div>
         </div>
       </div>
-      <div class="grid grid-cols-1 bg-green-db p-5">
-        <div class="grid grid-cols-3">
+      <div class="grid grid-cols-1 bg-yellow-db p-5">
+        <div class="grid ">
           <div>
             <i class="fa fa-check-circle fa-3x text-white"></i>
           </div>
@@ -52,8 +52,8 @@
           </div>
         </div>
       </div>
-      <div class="grid grid-cols-1 bg-green-db p-5">
-        <div class="grid grid-cols-3">
+      <div class="grid grid-cols-1 bg-yellow-db p-5">
+        <div class="grid">
           <div>
             <i class="fa fa-thumbs-up fa-3x text-white"></i>
           </div>
@@ -72,7 +72,7 @@
     </div>
     <!-- pending tile dashboard  -->
     <div class="grid grid-cols-4 gap-6 px-5 py-3">
-      <div class="grid grid-cols-1 bg-red-db p-5">
+      <div class="grid grid-cols-1 bg-blue-db p-5">
         <div class="grid grid-cols-3">
           <div>
             <i class="fa fa-home fa-3x text-white"></i>
@@ -90,7 +90,7 @@
         </div>
       </div>
       <div
-        class="grid grid-cols-1 bg-red-db p-5 cursror"
+        class="grid grid-cols-1 bg-blue-db p-5 cursror"
         [routerLink]="'/lca/attestation'"
       >
         <div class="grid grid-cols-3">
@@ -110,7 +110,7 @@
         </div>
       </div>
       <div
-        class="grid grid-cols-1 bg-red-db p-5 cursror"
+        class="grid grid-cols-1 bg-blue-db p-5 cursror"
         [routerLink]="'/coo/cooattestation'"
       >
         <div class="grid grid-cols-3">
@@ -130,7 +130,7 @@
         </div>
       </div>
       <div
-        class="grid grid-cols-1 bg-red-db p-5 cursror"
+        class="grid grid-cols-1 bg-blue-db p-5 cursror"
         [routerLink]="'/physical/physicalattestation'"
       >
         <div class="grid grid-cols-3">
@@ -150,6 +150,10 @@
         </div>
       </div>
     </div>
+
+
+
+    <!-- chart starts -->
     <!-- attestation request -->
     <div class="grid grid-cols-1 px-5 py-3">
       <div class="grid grid-cols-1 bg-white-r p-5">
@@ -173,35 +177,28 @@
             </div>
           </div>
 
-          <div class="col-span-2">
-            <div class="flex justify-end">
-              <mat-list role="list" class="kd-guage-legends rkpi-guage-legends">
-                <mat-list-item role="listitem">
-                  <mat-icon class="mr-1 kd-dot kdl-chart-color-brown"
-                    >circle</mat-icon
-                  >{{ "Pending" | translate }}
-                </mat-list-item>
-                <!-- <mat-list-item role="listitem">
-                  <mat-icon class="mr-1 kd-dot kdl-chart-color-black"
-                    >circle</mat-icon
-                  >{{'Approved' | translate}}
-                </mat-list-item> -->
-                <mat-list-item role="listitem">
-                  <mat-icon class="mr-1 kd-dot kdl-chart-color-black"
-                    >circle</mat-icon
-                  >{{ "Completed" | translate }}
-                </mat-list-item>
-              </mat-list>
-            </div>
-          </div>
+         
         </div>
-        <!-- <div class="button-groups">
-          <button (click)="isLoading = !isLoading" nz-button nztype="default">Toggle Loading</button>
-        </div>  -->
-        <!-- {{isLoading}} -->
 
-        <div class="grid grid-cols-1">
+        <div class="grid grid-cols-1 border-top">
           <div class="ps-01">
+            <div class="col-span-2">
+              <div class="flex justify-end">
+                <mat-list role="list" class="kd-guage-legends rkpi-guage-legends">
+                  <mat-list-item role="listitem">
+                    <mat-icon class="mr-1 kd-dot kdl-chart-color-brown"
+                      >circle</mat-icon
+                    >{{ "Pending" | translate }}
+                  </mat-list-item>
+                 
+                  <mat-list-item role="listitem">
+                    <mat-icon class="mr-1 kd-dot kdl-chart-color-black"
+                      >circle</mat-icon
+                    >{{ "Completed" | translate }}
+                  </mat-list-item>
+                </mat-list>
+              </div>
+            </div>
             <div
               echarts
               [loading]="isLoading"
@@ -225,8 +222,7 @@
                 <mat-label>Select</mat-label>
                 <mat-select
                   (selectionChange)="onClickFilterOption('coo', $event.value)"
-                  value="01"
-                >
+                  value="01">
                   <mat-option value="01">{{ "Day" | translate }}</mat-option>
                   <mat-option value="02">{{ "Week" | translate }}</mat-option>
                   <mat-option value="03">{{ "Month" | translate }}</mat-option>
@@ -235,30 +231,29 @@
             </div>
           </div>
 
-          <div class="col-span-2">
-            <div class="flex justify-end">
-              <mat-list role="list" class="kd-guage-legends rkpi-guage-legends">
-                <mat-list-item role="listitem">
-                  <mat-icon class="mr-1 kd-dot kdl-chart-color-brown"
-                    >circle</mat-icon
-                  >{{ "Pending" | translate }}
-                </mat-list-item>
-                <!-- <mat-list-item role="listitem">
-                  <mat-icon class="mr-1 kd-dot kdl-chart-color-black"
-                    >circle</mat-icon
-                  >{{'Approved' | translate}}
-                </mat-list-item> -->
-                <mat-list-item role="listitem">
-                  <mat-icon class="mr-1 kd-dot kdl-chart-color-black"
-                    >circle</mat-icon
-                  >{{ "Completed" | translate }}
-                </mat-list-item>
-              </mat-list>
-            </div>
-          </div>
+         
         </div>
-        <div class="grid grid-cols-1">
+        <div class="grid grid-cols-1 border-top">
           <div class="ps-01">
+
+            <div class="col-span-2 ">
+              <div class="flex justify-end">
+                <mat-list role="list" class="kd-guage-legends rkpi-guage-legends">
+                  <mat-list-item role="listitem">
+                    <mat-icon class="mr-1 kd-dot kdl-chart-color-brown"
+                      >circle</mat-icon
+                    >{{ "Pending" | translate }}
+                  </mat-list-item>
+                
+                  <mat-list-item role="listitem">
+                    <mat-icon class="mr-1 kd-dot kdl-chart-color-black"
+                      >circle</mat-icon
+                    >{{ "Completed" | translate }}
+                  </mat-list-item>
+                </mat-list>
+              </div>
+            </div>
+
             <div
               [loading]="isLoading"
               echarts
@@ -294,30 +289,26 @@
             </div>
           </div>
 
-          <div class="col-span-2">
-            <div class="flex justify-end">
-              <mat-list role="list" class="kd-guage-legends rkpi-guage-legends">
-                <mat-list-item role="listitem">
-                  <mat-icon class="mr-1 kd-dot kdl-chart-color-brown"
-                    >circle</mat-icon
-                  >{{ "Pending" | translate }}
-                </mat-list-item>
-                <!-- <mat-list-item role="listitem">
-                  <mat-icon class="mr-1 kd-dot kdl-chart-color-black"
-                    >circle</mat-icon
-                  >{{'Approved' | translate}}
-                </mat-list-item> -->
-                <mat-list-item role="listitem">
-                  <mat-icon class="mr-1 kd-dot kdl-chart-color-black"
-                    >circle</mat-icon
-                  >{{ "Completed" | translate }}
-                </mat-list-item>
-              </mat-list>
-            </div>
-          </div>
+          
         </div>
-        <div class="grid grid-cols-1">
+        <div class="grid grid-cols-1 border-top">
           <div class="ps-01">
+            <div class="col-span-2">
+              <div class="flex justify-end">
+                <mat-list role="list" class="kd-guage-legends rkpi-guage-legends dboardv">
+                  <mat-list-item role="listitem">
+                    <mat-icon class="mr-1 kd-dot kdl-chart-color-brown"
+                      >circle</mat-icon
+                    >{{ "Pending" | translate }}
+                  </mat-list-item>
+                  <mat-list-item role="listitem">
+                    <mat-icon class="mr-1 kd-dot kdl-chart-color-black"
+                      >circle</mat-icon
+                    >{{ "Completed" | translate }}
+                  </mat-list-item>
+                </mat-list>
+              </div>
+            </div>
             <div
               echarts
               [loading]="isLoading"
@@ -329,5 +320,8 @@
         </div>
       </div>
     </div>
+  <!-- Status chart---- to avoid dup -->
+  <!-- main-template.component.html -->
+
   </div>
 </div>

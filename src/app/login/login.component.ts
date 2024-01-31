@@ -79,7 +79,6 @@ export class LoginComponent {
     }
 
     const objusers = {
-      //LanguageCode: 'EN',
       Username: this.f["username"].value.trim(),
       Password: this.commonServ.encryptWithPublicKey(
         JSON.stringify(this.f["password"].value.trim())

@@ -1,0 +1,12 @@
+.datefilter{
+    background-color: white;
+}
+
+.mat-form-field-wrapper {
+    padding-bottom: 0em !important;
+
+}
+
+.filter_datepicker_rpt .mat-form-field-wrapper {
+    padding-bottom: 0em;
+}

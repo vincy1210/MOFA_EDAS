@@ -24,39 +24,111 @@ import { AuthService } from 'src/service/auth.service';
 export class CompanyProfileComponent implements OnInit {
 
   companyDetailsForm: FormGroup;//
+  prefform:FormGroup;
   reg_form_data:any;
   today: Date = new Date(); 
    attestfilelocation:string=''
    
   legalTypeOptions: { typeuno: string; typename: string }[] = [];
+  companytypeoptions:  { itemno: string; itemcode: string }[] = [];
   hide = true;
+  list1:any;
 
-  constructor(private formBuilder:FormBuilder, public common:CommonService, private auth:AuthService, private apicall:ApiService, private consts:ConstantsService) {
+list:any;
+  isadmin:boolean=false;
+
+  AddInvoiceDialog: boolean = false;
+  AddInvoiceDialogprefemail:boolean=false
+  currentcompany:any;
+  uuid:any;
+  loading:any
+cols:any;
+totalrecords:any;
+prefemailaddresstodisplay:string='';
+currentLanguagecode: string='1033';
+  constructor(private router:Router,private formBuilder:FormBuilder, public common:CommonService, private auth:AuthService, private apicall:ApiService, private consts:ConstantsService) {
 
 
+    let selectedlanguage = sessionStorage.getItem('language') || 'en';
+
+    if(selectedlanguage==='ar'){
+        this.currentLanguagecode='14337'
+    }
+    else{
+      this.currentLanguagecode='1033'
+
+    }
+   console.log(this.currentLanguagecode);
+    this.cols = [
+      { field: 'eid', header: 'Emirates ID' },
+      { field: 'fullnameen', header: 'User Name' },
+      { field: 'usertype', header: 'Role' },
+      
+      { field: 'emailid', header: 'Email ID' },
+      { field: 'mobilenumber', header: 'mobilenumber' },
+      { field: 'enteredby', header: 'Created By' },
+      { field: 'enteredon', header: 'Created' }
+
+  ];
     // this.currentcompany_name=this.auth.getSelectedCompany()?.business_name;
     let abc=this.auth.getmycompanyprofile() || '';
     let def=JSON.parse(abc);
     console.log(abc);
+    this.list1=def;
 this.attestfilelocation=def.attachment;
     // if(abc){
       this.companyDetailsForm=this.formBuilder.group({
         name_of_Business:[def.nameofbusiness],
         trade_Licence:[def.tradelicenseno],
-        trade_Licence_Issue_Date:[def.licenseissuedate, Validators.required],
-        trade_Licence_Expiry_Date:[def.licenseexpirydate, Validators.required],
-        Licence_issuing_auth:[def.licenseissuingauthority, [Validators.required, Validators.pattern('^(?=.*\\S).+$')]],
-        legal_Type:[def.legaltypeuno, Validators.required],
-        Comp_Reg_Email_Address:[def.companyemailaddress, [Validators.required, Validators.email]],
+        trade_Licence_Issue_Date:[def.licenseissuedate],
+        trade_Licence_Expiry_Date:[def.licenseexpirydate],
+        Licence_issuing_auth:[def.licenseissuingauthority, [ Validators.pattern('^(?=.*\\S).+$')]],
+        legal_Type:[def.legaltypeuno, ],
+        Comp_Reg_Email_Address:[def.companyemailaddress, [ Validators.email]],
         //'^5\\d+$'
-        Comp_contact_number:[def.companycontactno, [Validators.required, Validators.maxLength(9), Validators.minLength(9), Validators.pattern(/^5\d+$/)]],
-        Upload_trade_license:['', Validators.required],
-        auth_code:['', Validators.required]
+        Comp_contact_number:[def.companycontactno, [Validators.maxLength(9), Validators.minLength(9), Validators.pattern(/^5\d+$/)]],
+        Upload_trade_license:[''],
+        auth_code:['']
+
+
+        // name_of_Business:[def.nameofbusiness],
+        // trade_Licence:[def.tradelicenseno],
+        // trade_Licence_Issue_Date:[def.licenseissuedate, Validators.required],
+        // trade_Licence_Expiry_Date:[def.licenseexpirydate, Validators.required],
+        // Licence_issuing_auth:[def.licenseissuingauthority, [Validators.required, Validators.pattern('^(?=.*\\S).+$')]],
+        // legal_Type:[def.legaltypeuno, Validators.required],
+        // Comp_Reg_Email_Address:[def.companyemailaddress, [Validators.required, Validators.email]],
+        // //'^5\\d+$'
+        // Comp_contact_number:[def.companycontactno, [Validators.required, Validators.maxLength(9), Validators.minLength(9), Validators.pattern(/^5\d+$/)]],
+        // Upload_trade_license:['', Validators.required],
+        // auth_code:['', Validators.required]
       })
+
+      if(this.list1.preferredemailaddress==='' || this.list1.preferredemailaddress==null){
+        this.prefemailaddresstodisplay=this.list1.companyemailaddress
+      }
+      else{
+        this.prefemailaddresstodisplay=this.list1.preferredemailaddress
+      }
+
+      this.prefform=this.formBuilder.group({
+        prefemailaddress:[def.preferredemailaddress, [Validators.required,Validators.pattern('^(?=.*\\S).+$')]],
+        prefcomtype:[def.companytypeuno, Validators.required]
+
+      })
+
+      if(def.rolename=='Admin'){
+        this.isadmin=true;
+      }
+      else{
+        this.isadmin=false;
+      }
+
+
 
       let data={
         "useruno":"1",
-        "languagecode":0
+        "languagecode":this.currentLanguagecode
       }
     
       this.apicall.post(this.consts.GetLegalTypes, data).subscribe((response: any) => {
@@ -68,8 +140,6 @@ this.attestfilelocation=def.attachment;
         console.log(dataArray)
       });
     
-    
-
 
 
     
@@ -78,6 +148,38 @@ this.attestfilelocation=def.attachment;
    }
 
   ngOnInit(): void {
+
+
+    let currcompany  =this.auth.getSelectedCompany();
+    
+
+  if(currcompany){
+    this.currentcompany=currcompany.companyuno;
+    if(this.currentcompany==null || this.currentcompany==undefined || this.currentcompany===''){
+      this.router.navigateByUrl('/landingpage')
+    }
+  }
+  else{
+    this.common.redirecttologin();
+    return;
+  }
+    let data11=this.common.getUserProfile();
+    let uuid;
+    if(data11!=null || data11!=undefined){
+      data11=JSON.parse(data11)
+      console.log(data11.Data)
+      uuid=data11.Data.uuid;
+      this.uuid=uuid;
+      // this.user_mailID=data11.Data.email;
+      // this.contactno=data11.Data.mobile;
+      //mobile
+
+    }
+
+this.InitTable();
+
+    // let findisadmin=this.auth.getSelectedCompany();
+    // console.log(findisadmin)
   }
 
 
@@ -145,4 +247,110 @@ this.attestfilelocation=def.attachment;
   }
   
 
+  openNew() {
+    this.AddInvoiceDialog=true;
+  }
+
+  
+  InitTable(){
+    let resp;
+    let data={
+      "uuid":this.uuid,
+      "companyuno": this.currentcompany,
+      "isapplnadmin":0
+        }
+        this.common.showLoading();
+        this.loading=true;
+        this.apicall.post(this.consts.getCompanyUserList, data).subscribe({
+          next: (success: any) => {
+            this.common.hideLoading();
+            this.loading = false;
+            resp = success;
+            if (resp.responsecode == 1) {
+              this.list = resp.data;
+              // this.common.showSuccessMessage('Data retrieved'); // Show the success message
+            } else {
+              // this.common.showErrorMessage('Data retrieval failed')
+              this.common.showErrorMessage('Something went wrong');
+            }
+          },
+          error: (error: any) => {
+            if (error.status === 401) {
+              console.log("in 401")
+              // Handle 401 Unauthorized error here
+              // For example, redirect to login page or show an error message
+              this.common.showErrorMessage('Something went wrong');
+              // You can also navigate to the login page or perform other actions as needed.
+            } else {
+              // Handle other errors here
+              this.common.showErrorMessage('Something went wrong');
+            }
+            this.common.hideLoading();
+            this.loading = false;
+          }
+        });
+        
+
+  }
+  updateprefemailopenpopup(){
+   
+
+
+    let data2={
+      "uuid": this.uuid,
+      "languagecode": this.currentLanguagecode, // 14337, 1033
+      "processname": "COMPANYTYPE"
+    }
+  
+  
+    this.AddInvoiceDialogprefemail=true;
+
+    this.apicall.post(this.consts.getListOfValues, data2).subscribe((response: any) => {
+      this.common.hideLoading();
+
+      const dataArray = response.data; // Access the 'data' property from the response
+      console.log(dataArray);
+      this.companytypeoptions=dataArray;
+      console.log(this.companytypeoptions)
+    });
+  
+
+  }
+
+  updateprefemail(){
+
+    const form = { ...this.prefform.value };
+
+    if(this.prefform.valid){
+
+      
+            let data2={
+              "uuid": this.uuid,
+              "companyuno":this.currentcompany,
+              "preferredemail":form.prefemailaddress,
+              "companytypeuno":form.prefcomtype
+            }
+            this.AddInvoiceDialogprefemail=false;
+this.common.showLoading();
+            this.apicall.post(this.consts.updateCompanyProfile, data2).subscribe((response: any) => {
+              this.common.hideLoading();
+              this.prefemailaddresstodisplay=form.prefemailaddress;
+              if(response.status==='Success'){
+                this.common.showSuccessMessage('Item updated successfully');
+                return;
+              }
+              else{
+                this.common.showErrorMessage(response.status);
+                return;
+              }
+            });
+          }
+          else{
+            this.prefform.markAllAsTouched();
+            return;
+          }
+
+    }
+   
+    
 }

@@ -1,7 +1,17 @@
 <div style="font-size: 12px !important; background-color: #ccc!important;">
     <div class="grid grid-cols-1" color="primary"  class="page-header">
                  
-      <label style="font-size: 14px; color: white; font-weight: bold;">{{'Report' |translate}} - {{'Physical Attestation(s)' | translate}} </label>
+      <!-- <label style="font-size: 14px; color: white; font-weight: bold;">{{'Report' |translate}} - {{'Physical Attestation(s)' | translate}} </label> -->
+
+      <h3>
+        <button *ngIf="showBackButton" mat-icon-button (click)="goBackToAnalytics()">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <ng-container><label style="font-size: 13px; color: white; font-weight: bold;">{{'Report' |translate}} - {{'Physical Attestation(s)' | translate}} </label></ng-container>
+      </h3>
+
+      
+      
     </div>
     
     <div style="padding:3px; border-radius:2px"  >
@@ -48,7 +58,7 @@
                       <div style="padding: 5px;" class="col-md-3 col-lg-3 col-sm-6">
                               <mat-form-field class="searchboxinput" >
                                 <mat-label><mat-icon style="font-size:larger;">search</mat-icon> {{'SearchKeyword' | translate}}</mat-label>
-                                <input  matInput type="text" (input)="tableref.filterGlobal($any($event.target).value, 'contains')" placeholder="{{'SearchKeyword' | translate}}">
+                                <input appTrimInput   matInput type="text" (input)="tableref.filterGlobal($any($event.target).value, 'contains')" placeholder="{{'SearchKeyword' | translate}}">
                               </mat-form-field>
                       </div>
                    
@@ -71,7 +81,7 @@
                     <div style="padding: 5px;" *ngIf="enableFilters" class="col-md-3 col-lg-3  col-md-6">
                       <mat-form-field  class="filter_datepicker">
                         <mat-label>{{'Start Date' | translate}}</mat-label>
-                        <input matInput [matDatepicker]="decDatepicker1" [max]="todayModel" [(ngModel)]="oneMonthAgo" placeholder="{{'From' | translate}}" name="createdatefrom"  />
+                        <input appTrimInput  matInput [matDatepicker]="decDatepicker1" (dateChange)="handleDateChange($event, 'from')" [max]="todayModel" [(ngModel)]="oneMonthAgo" placeholder="{{'From' | translate}}" name="createdatefrom"  />
                         <mat-datepicker-toggle matSuffix [for]="decDatepicker1"></mat-datepicker-toggle>
                         <mat-datepicker #decDatepicker1></mat-datepicker>
                       </mat-form-field>
@@ -79,18 +89,44 @@
               <div style="padding: 5px;" *ngIf="enableFilters" class="col-md-3 col-lg-3  col-sm-6">
                 <mat-form-field  class="filter_datepicker">
                   <mat-label>{{'End Date' | translate}}</mat-label>
-                  <input matInput [matDatepicker]="decDatepicker2" [min]="oneMonthAgo" [max]="today" placeholder="{{'To' | translate}}" [(ngModel)]="todayModel" name="createdateto"  />
+                  <input appTrimInput  matInput [matDatepicker]="decDatepicker2" (dateChange)="handleDateChange($event, 'to')" [min]="oneMonthAgo" [max]="today" placeholder="{{'To' | translate}}" [(ngModel)]="todayModel" name="createdateto"  />
                   <mat-datepicker-toggle matSuffix [for]="decDatepicker2"></mat-datepicker-toggle>
                   <mat-datepicker #decDatepicker2></mat-datepicker>
                 </mat-form-field>
               </div>
-              <div style="padding: 5px;" *ngIf="enableFilters" class="col-md-3 col-lg-3">
-                <button type="button" mat-flat-button color="primary" (click)="FilterInitTable()" >{{'Apply' | translate}}</button>
-              </div>
-    
+            
               <span style="padding: 10px;"></span>
-                    <button type="button" pButton  pRipple  icon="pi pi-file-excel"  (click)="exportExcel()"  class="mr-2 grid-header-right-icon"  pTooltip="{{'Excel' | translate}}"
-                    tooltipPosition="bottom"  ></button>
+                    <!-- <button type="button" pButton  pRipple  icon="pi pi-file-excel"  (click)="exportExcel()"  class="mr-2 grid-header-right-icon"  pTooltip="{{'Excel' | translate}}"
+                    tooltipPosition="bottom"  ></button> -->
+
+
+                    <button
+                    type="button"
+                    pButton
+                    pRipple
+                    [matMenuTriggerFor]="menu"
+                    icon="fas fa-download"
+                    class="mr-2 grid-header-right-icon"
+                    [pTooltip]="'Export' | translate"
+                    tooltipPosition="left"
+                    [disabled]="invoiceRequestLists.length === 0" [matMenuTriggerFor]="menu"
+                  ></button>
+                  <mat-menu #menu="matMenu" class="exportmenu"  xPosition="before">
+                    <button mat-menu-item (click)="exportExcel()" [ngClass]="common.getmypalette()">
+                      <span class="mat-menu-share">
+                        <i class="pi pi-file-excel pr-2"></i>
+                        {{ "Excel Export" | translate }}</span
+                      >
+                    </button>
+                    <button mat-menu-item (click)="exportTableToPDF()" [ngClass]="common.getmypalette()">
+                      <span class="mat-menu-share">
+                        <i class="pi pi-file-pdf pr-2"></i>
+                        {{ "PDF Export" | translate }}</span
+                      >
+                    </button>
+                  </mat-menu>
+
+                    <!-- end -->
                    <button  type="button"
                     pButton  pRipple  icon="pi pi-filter"   (click)="clickChips()"  class="mr-2 grid-header-right-icon"
                     [ngClass]="{ clicked: enableFilters }"  [pTooltip]="'Filter' | translate"  tooltipPosition="bottom" ></button>
@@ -98,8 +134,10 @@
                             'addAttest' | translate  "  tooltipPosition="bottom"  ></button> -->
                   </ng-template>
               </p-toolbar>
+              <!-- <table>
               <tr>
-                <td colspan="12">
+                <td > -->
+                  <div style="padding-top: 10px;">
                   <div class="alert alert-success flex" role="alert">
                     <span
                       class="glyphicon glyphicon-exclamation-sign"
@@ -107,16 +145,14 @@
                     ></span>
                     <i class="fas fa-lightbulb light-bulb"></i>
                     <p>
-                      Physical Invoice Records are shown in this list. Physical Invoice Records are shown
-                      in this list. Physical Invoice Records are shown in this list. LCA
-                      Request are shown in this list. Physical Invoice Records are shown in
-                      this list. Physical Invoice Records are shown in this list. Physical Invoice Records
-                      are shown in this list. Physical Invoice Records
-                      are shown in this list.
+                      Physical Invoice Report shows all the data related to Physical Invoice Attestation. 
+                      Kindly use the Filter to retrieve data for various combination of scenarios as per your needs.
                     </p>
                   </div>
-                </td>
+                </div>
+                <!-- </td>
               </tr>
+            </table> -->
 
               </ng-template>
                 <ng-template pTemplate="header" let-columns>
@@ -158,7 +194,9 @@
                     </td>
                     <td>
                       <!-- <span class="image-text">{{ data.statusname }}</span> -->
-                      <p-tag [value]="data.statusname" [severity]="getSeverity_(data.statusname)"></p-tag>
+                      <!-- <p-tag [value]="data.statusname" [severity]="getSeverity_(data.statusname)"></p-tag> -->
+                      <p-tag [value]="data.statusname === 'IN REVIEW' ? 'PENDING' : data.statusname" [severity]="getSeverity_(data.statusname)"></p-tag>
+
                     </td>
                     <td>
                       <span class="image-text">{{ data.invoiceno }}</span>
@@ -182,7 +220,7 @@
                     </td>
                     <td>
                       <span class="image-text">{{
-                        splitdatetime1(data.invoicedate)?.date
+                        common.splitdatetime(data.invoicedate)?.date
                       }}</span>
                     </td>
                     
@@ -369,14 +407,24 @@
   
                 <div class="more-content">
                   <mat-label class="title-label">{{ 'Attestation File' | translate }}</mat-label>
-                  <!-- <div class="more-content-body">
-                    <mat-label class="more-content-block" >{{ 'Attestation.pdf' }} <span (click)="common.getimagebase64(currentrow.attestfilelocation)">  <mat-icon class="action_eye_icon_popup" >download</mat-icon> </span> </mat-label>
-                  </div> -->
+               
                   <div *ngIf="attchemntisthere" class="more-content-body">
-                    <mat-label class="more-content-block" >{{ 'Attestation.pdf' }} <span (click)="common.getimagebase64(currentrow.filepath)">  <mat-icon class="action_eye_icon_popup" >download</mat-icon> </span> </mat-label>
+                    <mat-label class="more-content-block" >{{  common.givefilename(popupDownloadfilename) }} <span (click)="common.getimagebase64(currentrow.filepath, common.givefilename(popupDownloadfilename))">  <mat-icon class="action_eye_icon_popup" >download</mat-icon> </span> </mat-label>
                   </div>
                   <div class="more-content-body" *ngIf="!attchemntisthere">
                     <mat-label class="more-content-block" >{{ 'File is not available' }} </mat-label>
+                  </div>
+                </div>
+
+                <div *ngIf="invoiceisthere" class="more-content">
+                  <mat-label class="title-label">{{  "Invoice" | translate }}</mat-label>
+                  <div class="more-content-body">
+                    <mat-label class="more-content-block"
+                      >{{ common.givefilename('Invoice') }}
+                      <span (click)=" common.getPaymentReceiptDownload(currentrow.invoiceuno, common.givefilename('Invoice')) " >
+                        <mat-icon class="action_eye_icon_popup" >download</mat-icon>
+                      </span>
+                    </mat-label>
                   </div>
                 </div>
   
@@ -395,7 +443,9 @@
     
     </p-dialog>
     
-      
+    <div>
+      <app-pdf-export [pdfPayload]="pdfPayload"></app-pdf-export>
+    </div>
       
     
     

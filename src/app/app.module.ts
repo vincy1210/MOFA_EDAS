@@ -63,21 +63,10 @@ import { ToastrModule } from 'ngx-toastr';
 import { LoginComponent } from './login/login.component';
 import { ToolbarModule } from 'primeng/toolbar';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-
-
-import {
-  RecaptchaModule,
-  RECAPTCHA_SETTINGS,
-  RecaptchaSettings,
-  RecaptchaFormsModule,
-  RECAPTCHA_V3_SITE_KEY,
-  RecaptchaV3Module,
-} from 'ng-recaptcha';
-
+import {RecaptchaModule,
+  RECAPTCHA_SETTINGS,RecaptchaSettings,RecaptchaFormsModule,RECAPTCHA_V3_SITE_KEY,RecaptchaV3Module,} from 'ng-recaptcha';
 import { LandingPageComponent } from './landing-page/landing-page.component';
-
 import { DialogModule } from 'primeng/dialog';
-
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { ErrorComponent } from './error/error.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
@@ -99,6 +88,15 @@ import { UnauthorizedComponent } from './error/unauthorized/unauthorized.compone
 import { MatDialogModule } from '@angular/material/dialog';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { FinedetailsComponent } from './finedetails/finedetails.component';
+import { PdfExportComponent } from './shared/components/pdf-export/pdf-export.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { TrimInputDirective } from './trim-input.directive';
+
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TimingInterceptor } from '../assets/BasicAuthInterceptor'
+
+
+// import { PdfExportComponent } from './shared/components/pdf-export/pdf-export.component';
 
 // Define the custom date format
 const customDateFormats: MatDateFormats = {
@@ -114,7 +112,7 @@ const customDateFormats: MatDateFormats = {
 };
 
 @NgModule({
-  declarations: [
+  declarations: [PdfExportComponent,
     AppComponent,
     RegistrationComponent,
     CompanydetailsComponent,
@@ -127,6 +125,9 @@ const customDateFormats: MatDateFormats = {
     UnauthorizedComponent,
     PageNotFoundComponent,
     FinedetailsComponent,
+    TrimInputDirective,
+    // PdfExportComponent
+
   ],
 
   imports: [
@@ -142,7 +143,6 @@ const customDateFormats: MatDateFormats = {
     NgxOtpInputModule,
     BrowserModule,
     AppRoutingModule,
-    BrowserModule,
     ReactiveFormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -189,9 +189,14 @@ const customDateFormats: MatDateFormats = {
     }),
     MatNativeDateModule,
     MatMomentDateModule,
-    MatDialogModule,MatAutocompleteModule
+    MatDialogModule,MatAutocompleteModule, MatPaginatorModule
   ],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TimingInterceptor,
+      multi: true,
+    },
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
     {
       provide: DateAdapter,

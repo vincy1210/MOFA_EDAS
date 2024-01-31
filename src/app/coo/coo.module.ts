@@ -32,6 +32,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { AuthGuard } from '../auth.guard';
 // import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { MatMenuModule } from '@angular/material/menu';
+
+import { PdfExportComponent } from './pdf-export/pdf-export.component';
+
+ 
+import { TrimInputDirective } from '../trim-input.directive';
 
 const routes = [
   {
@@ -59,7 +65,7 @@ const routes = [
     CooAttestationCreateComponent,
     CompletedCooRequestsComponent,
     CooinreviewComponent,
-    CooAttestationComponent,
+    CooAttestationComponent,PdfExportComponent
   ],
   imports: [
     CommonModule,
@@ -88,6 +94,7 @@ const routes = [
     MatDialogModule,
     MatButtonModule,
     MatButtonToggleModule,
+    MatMenuModule
   ],
 })
 export class CooModule {}

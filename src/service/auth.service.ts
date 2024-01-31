@@ -15,11 +15,19 @@ export class AuthService {
   public lcauserloggedinSubject = new BehaviorSubject<boolean>(false);
   lcauserloggedin$ = this.lcauserloggedinSubject.asObservable();
 
+  private tokenSubject = new BehaviorSubject<string | null>(null);
+  token$=this.tokenSubject.asObservable();
+
+
   private userCompanysubject = new BehaviorSubject<string>('');
   userCompany$ = this.userCompanysubject.asObservable();
 
+  private userCompanyProfilesubject = new BehaviorSubject<string>('');
+  userCompanyProfile$ = this.userCompanyProfilesubject.asObservable();
+
   private isAdmin = new BehaviorSubject<boolean>(false);
   isAdmin$ = this.isAdmin.asObservable();
+
 
   public userType = new BehaviorSubject<string>('');
   userType$ = this.userType.asObservable();
@@ -27,11 +35,6 @@ export class AuthService {
   private userprofilesubject = new BehaviorSubject<string>('');
   userprofile$ = this.userprofilesubject.asObservable();
 
-  private dataSubject = new BehaviorSubject<string>('');
-  private userinfo = new BehaviorSubject<string>('');
-  private RegisteredCompanyDetails = new BehaviorSubject<string>('');
-  private selectedcompany = new BehaviorSubject<string>('');
-  private freeZone = new BehaviorSubject<string>('');
 
   private userRoleSubject = new Subject<string>();
   userRole$ = this.userRoleSubject.asObservable();
@@ -57,6 +60,10 @@ export class AuthService {
       this.lcauserloggedinSubject.next(false);
     }
 
+    this.setcurrentcompanyfromexistingsession();
+  }
+
+  setcurrentcompanyfromexistingsession(){
     let data: any;
     data = sessionStorage.getItem('currentcompany');
     console.log(data);
@@ -79,6 +86,34 @@ export class AuthService {
       this.userloggedinSubject.next(false);
       this.userCompanysubject.next('');
     }
+
+
+//companyprofile
+
+
+    let data2:any;
+
+    data2=sessionStorage.getItem('companyprofile');
+
+    if (data2 != undefined || data2 != null) {
+      this.userloggedinSubject.next(true);
+      let abc = JSON.parse(data2);
+      abc = abc.role;
+      console.log(data2);
+      this.userCompanyProfilesubject.next(data2);
+
+      // if (abc == 'Admin') {
+      //   this.isAdmin.next(true);
+      // } else if (abc == 'User') {
+      //   this.isAdmin.next(false);
+      // } else {
+      //   this.isAdmin.next(false);
+      // }
+    } else {
+      this.userCompanyProfilesubject.next('[]');
+      // this.userCompanysubject.next('');
+    }
+
   }
 
   logout() {
@@ -136,7 +171,7 @@ export class AuthService {
       let dat = sessionStorage.getItem('userProfile');
 
       if (dat != undefined || dat != null) {
-        console.log('to landing page from common service line 284');
+        console.log('to landing page from auth service line 170');
         this.router.navigateByUrl('/landingpage');
       }
       // else{
@@ -173,6 +208,7 @@ export class AuthService {
 
   setmycompanyprofile(data:any){
     sessionStorage.setItem('companyprofile', JSON.stringify(data));
+    this.userCompanyProfilesubject.next(data)
   }
 
 
@@ -211,4 +247,20 @@ export class AuthService {
       return false;
     }
   }
+
+
+  
+
+  getToken() {
+    return this.tokenSubject.asObservable();
+  }
+
+  setToken(token: string): void {
+    // let abc=sessionStorage.getItem('companyprofile');
+    sessionStorage.setItem('token', token);
+    console.log("settoken"+ token)
+    this.tokenSubject.next(token);
+  }
+
+
 }

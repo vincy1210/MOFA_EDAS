@@ -93,7 +93,7 @@
                                   ><mat-icon style="font-size: larger">search</mat-icon>
                                   {{ "SearchKeyword" | translate }}</mat-label
                                 >
-                              <input matInput type="text"
+                              <input appTrimInput  matInput type="text"
                                   (input)="tableref.filterGlobal(  $any($event.target).value,'contains'
                                     ) " placeholder="{{ 'SearchKeyword' | translate }}" /></mat-form-field>
                             </div>

@@ -1,0 +1,211 @@
+<!-- <div class="company-bg registration-page">
+  <div class="container mx-auto px-32 registration-window"> -->
+
+    <div class="grid grid-cols-1" color="primary" class="page-header">
+      <label style="font-size: 14px; color: white; font-weight: bold"
+        >{{ "Report" | translate }} - {{ "Analytics" | translate }}</label
+      >
+    </div>
+
+    <div class="company-bg registration-page">
+      <div class="container mx-auto px-32 registration-window"> 
+
+        <!-- <ng-template pTemplate="right"> -->
+          <div class="datefilter">
+         
+            <div class="grid grid-cols-2 px-5 py-3">
+
+              <div style="padding: 15px;">
+                <mat-form-field class="filter_datepicker_rpt">
+                  <mat-label>{{ "Start Date" | translate }}</mat-label>
+                  <input
+                    matInput readonly="true" (dateChange)="handleDateChange($event, 'from')"
+                    [matDatepicker]="decDatepicker1"
+                    [max]="todayModel"
+                    [(ngModel)]="oneMonthAgo"
+                    placeholder="From"
+                    name="createdatefrom"
+                  />
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="decDatepicker1"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #decDatepicker1></mat-datepicker>
+                </mat-form-field>
+              </div>
+      
+              <div  style="padding: 15px;">
+                <mat-form-field class="filter_datepicker_rpt">
+                  <mat-label>{{ "End Date" | translate }}</mat-label>
+                  <input readonly="true"
+                    matInput readonly="true" (dateChange)="handleDateChange($event, 'to')"
+                    [matDatepicker]="decDatepicker2"
+                    [min]="oneMonthAgo"
+                    [max]="today"
+                    placeholder="To"
+                    [(ngModel)]="todayModel"
+                    name="createdateto"
+                  />
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="decDatepicker2"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #decDatepicker2></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div>
+
+              </div>
+      
+            </div>
+        </div>
+
+        <!-- </ng-template> -->
+
+  <!-- Status chart---- to avoid dup -->
+
+  <!-- main-template.component.html -->
+  <div class="grid grid-cols-2 gap-4 py-3">
+    <!-- Chart Section 1 -->
+    <div class="grid grid-cols-1  bg-white-r px-5">
+      <div class="grid pt-5">
+        <div class="labelandddl">
+          <h1 class="font-bold  mr-3">{{ "Total Attestation Request" | translate }} </h1>
+         
+        </div>
+      </div>
+      <div>
+        <div class="border-top mt-3 pt-8">
+          <div class="flex justify-end">
+            <mat-list role="list" class="kd-guage-legends rkpi-guage-legends ar-chart-legents">
+              <mat-list-item role="listitem">
+                <mat-icon class="mr-1 kd-dot ar-chart-color-darkpink">circle</mat-icon>{{'COO'  | translate}}
+              </mat-list-item>
+              <mat-list-item role="listitem">
+                <mat-icon class="mr-1 kd-dot ar-chart-color-grey">circle</mat-icon>{{'LCA'  | translate}}
+              </mat-list-item>
+              <mat-list-item role="listitem">
+                <mat-icon class="mr-1 kd-dot ar-chart-color-green">circle</mat-icon>{{'Physical'  | translate}}
+              </mat-list-item>
+
+
+            </mat-list>
+          </div>
+        </div>
+      </div>
+  
+      <div class="grid grid-cols-1">
+        <div echarts [loading]="isLoading" [options]="charts['all']" (chartClick)="chartclick($event)" class="demo-chart pb-3" style="height: 300px; width: 100%"></div>
+      </div>
+    </div>
+    
+  
+    <!-- Chart Section 2 -->
+    <div class="grid grid-cols-1 bg-white-r px-5">
+      <div class="grid pt-5">
+        <div class="labelandddl">
+          <h1 class="font-bold  mr-3">{{ "LCA Attestation Requests" | translate }}</h1>
+         
+        </div>
+      </div>
+      <div>
+        <div class="border-top mt-3 pt-8">
+          <div class="flex justify-end">
+            <mat-list role="list" class="kd-guage-legends rkpi-guage-legends ar-chart-legents">
+              <mat-list-item role="listitem">
+                <mat-icon class="mr-1 kd-dot ar-chart-color-darkpink">circle</mat-icon>{{'Draft' | translate}}
+              </mat-list-item>
+              <mat-list-item role="listitem">
+                <mat-icon class="mr-1 kd-dot ar-chart-color-grey">circle</mat-icon>{{'In Risk' | translate}}
+              </mat-list-item>
+              <mat-list-item role="listitem">
+                <mat-icon class="mr-1  kd-dot ar-chart-color-green">circle</mat-icon>{{'Completed'  | translate}}
+              </mat-list-item>
+
+
+            </mat-list>
+          </div>
+        </div>
+      </div>
+  
+      <div class="grid grid-cols-1">
+        <div echarts [loading]="isLoading" [options]="charts['lca']" (chartClick)="chartclick($event)" class="demo-chart pb-3" style="height: 300px; width: 100%"></div>
+      </div>
+    </div>
+    
+    <!-- ... -->
+  
+    <!-- Chart Section 3 -->
+    <div class="grid grid-cols-1 bg-white-r px-5">
+      <div class="grid pt-5">
+        <div class="labelandddl">
+          <h1 class="font-bold  mr-3">{{ "All Requests" | translate }}</h1>
+         
+        </div>
+      </div>
+      <div>
+        <div class="border-top mt-3 pt-8">
+          <div class="flex justify-end">
+            <mat-list role="list" class="kd-guage-legends rkpi-guage-legends ar-chart-legents">
+              <mat-list-item role="listitem">
+                <mat-icon class="mr-1 kd-dot ar-chart-color-darkpink">circle</mat-icon>{{'Pending'  | translate}}
+              </mat-list-item>
+              <mat-list-item role="listitem">
+                <mat-icon class="mr-1 kd-dot ar-chart-color-grey">circle</mat-icon>{{'In Review'  | translate}}
+              </mat-list-item>
+              <mat-list-item role="listitem">
+                <mat-icon class="mr-1 kd-dot ar-chart-color-green">circle</mat-icon>{{'Completed'  | translate}}
+              </mat-list-item>
+
+
+            </mat-list>
+          </div>
+        </div>
+      </div>
+  
+      <div class="grid grid-cols-1">
+        <div echarts [loading]="isLoading" [options]="charts['coo']" (chartClick)="chartclick($event)" class="demo-chart pb-3" style="height: 300px; width: 100%"></div>
+      </div>
+    </div>
+    
+    <!-- ... -->
+    <!-- Chart Section 4 -->
+    <div class="grid grid-cols-1 bg-white-r px-5">
+      <div class="grid pt-5">
+        <div class="labelandddl">
+          <h1 class="font-bold  mr-3">{{ "Physical Attestation Requests" | translate }}</h1>
+          
+        </div>
+      </div>
+      <div>
+        <div class="border-top mt-3 pt-8">
+          <div class="flex justify-end">
+            <mat-list role="list" class="kd-guage-legends rkpi-guage-legends ar-chart-legents">
+              <mat-list-item role="listitem">
+                <mat-icon class="mr-1 kd-dot ar-chart-color-darkpink">circle</mat-icon>{{'Pending'  | translate}}
+              </mat-list-item>
+              <mat-list-item role="listitem">
+                <mat-icon class="mr-1 kd-dot ar-chart-color-grey">circle</mat-icon>{{'In Review'  | translate}}
+              </mat-list-item>
+              <mat-list-item role="listitem">
+                <mat-icon class="mr-1 kd-dot ar-chart-color-green">circle</mat-icon>{{'Completed'  | translate}}
+              </mat-list-item>
+
+
+            </mat-list>
+          </div>
+        </div>
+      </div>
+  
+      <div class="grid grid-cols-1">
+        <div echarts [loading]="isLoading" [options]="charts['physical']" (chartClick)="chartclick($event)"  class="demo-chart pb-3" style="height: 300px; width: 100%"></div>
+      </div>
+    </div>
+    
+  
+    <!-- ... -->
+  
+  </div>
+  
+
+    </div></div>

@@ -45,19 +45,6 @@ p-table {
   background-color: #b68a35 transparent;
 }
 
-/* title start -25-10-2023 */
-
-/* title end - 25-10-2023 */
-
-.filter_datepicker {
-  height: 20px;
-  margin: 0;
-  padding-top: 0;
-  margin-top: -2.89em !important;
-  width: 170px;
-}
-
-/* navod css */
 
 ::ng-deep .cdk-overlay-connected-position-bounding-box {
   z-index: 10000 !important;
@@ -167,12 +154,7 @@ mat-form-field {
   align-items: end;
 }
 
-/* row highlight */
 
-/* :host ::ng-deep .coonotpaidclass {
-  background-color: rgba(137, 136, 136, 0.15) !important;
-  color: #737373 !important;
-} */
 .overduefilter {
   padding: 7px;
   font-size: 17px;
@@ -191,7 +173,9 @@ mat-form-field {
   color: #0f9c34;
   cursor: pointer;
 }
-
+.exportmenu{
+  color: red !important;
+}
 
 
 

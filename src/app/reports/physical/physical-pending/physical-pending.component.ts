@@ -12,7 +12,7 @@ import { LazyLoadEvent } from 'primeng/api';
 import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/service/auth.service';
 import { Router } from '@angular/router';
-
+import * as moment from 'moment';
 
 
 @Component({
@@ -42,6 +42,7 @@ export class PhysicalPendingComponent implements OnInit {
   currentcompany:any;
 AddInvoiceDialog:boolean=false;
 attchemntisthere:boolean=false;
+invoiceisthere:boolean=false;
 payorpayall:string='Pay';
   timelineItems = [
     { status: '', title: this.translate.instant('IN DRAFT'), icon: 'check', date: '', time: '' },
@@ -75,6 +76,9 @@ paymentcount=environment.appdetails.payment_count;
 total_invoiceamount:any;
 totalfeesamount:any;
 
+popupDownloadfilename:string='Physical';
+ 
+showBackButton: boolean = false;
   constructor(
     private modalPopupService: ModalPopupService,
     public translate: TranslateService,
@@ -83,7 +87,36 @@ totalfeesamount:any;
     public common: CommonService,private datePipe: DatePipe, private fb:FormBuilder, private auth:AuthService, private router:Router
  
   ) {
-    this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
+
+    const previousRoute = this.router.getCurrentNavigation()?.extras.state?.['returnUrl'] || '/';
+    this.showBackButton = previousRoute.includes('/analytics');
+    console.log(previousRoute)
+
+    let defaultdata=this.common.getDefaultInputsforPHYSICALReports()
+    console.log(defaultdata)
+    if(defaultdata){
+      this.selectedStatus=defaultdata.selectedpiece
+      if(defaultdata.selectedpiece==='Completed'){
+        this.selectedStatus='2'
+      }
+      else if(defaultdata.selectedpiece==='Pending' || defaultdata.selectedpiece==='In Review'){
+        this.selectedStatus='1'
+      }
+      else{
+        this.selectedStatus='0'
+      }
+      this.todayModel= new Date(defaultdata.startdate);
+      this.oneMonthAgo=new Date(defaultdata.enddate);
+      this.enableFilters=true;
+    }
+    else{
+      this.enableFilters=false;
+      this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
+    }
+
+
+
+    // this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
 
     this.form = this.fb.group({
       edasreqno: '',
@@ -287,16 +320,7 @@ totalfeesamount:any;
 
   }
 
-  // openDialogAttest() {
-  //   const dialogRef =
-  //     this.modalPopupService.openPopup<PhysicalAttestationCreateComponent>(
-  //       PhysicalAttestationCreateComponent,
-  //       null
-  //     );
-  //   dialogRef.afterClosed().subscribe((result) => {
-  //     this.FilterInitTable();
-  //   });
-  // }
+ 
 
   exportExcel() {
     const jsonData = {
@@ -306,20 +330,25 @@ totalfeesamount:any;
       entitycode: this.translate.instant(
         'Channel'
       ),
+      status: this.translate.instant(
+        'status'
+      ),
       invoiceno: this.translate.instant(
         'Invoice ID'
       ),
       invoiceamount: this.translate.instant(
         'invoiceamount'
+      ), feesamount: this.translate.instant(
+        'Fees'
       ),
       invoicecurrency: this.translate.instant(
         'invoicecurrency'
       ),
+      enteredon: this.translate.instant(
+        'Entered on'
+      ),
       invoicedate: this.translate.instant(
         'invoicedate'
-      ),
-      status: this.translate.instant(
-        'status'
       )
     };
     const dataList: any = [];
@@ -327,22 +356,24 @@ totalfeesamount:any;
       const dataItem: any = {};
       dataItem[jsonData.edasreqno] = item.edasreqno;
       dataItem[jsonData.entitycode] = item.entitycode;
+      dataItem[jsonData.status] = item.statusname  === 'IN REVIEW' ? 'PENDING' : item.statusname;
       dataItem[jsonData.invoiceno] = item.invoiceno;
       dataItem[jsonData.invoiceamount] = item.invoiceamount;
+      dataItem[jsonData.feesamount] = item.feesamount;
       dataItem[jsonData.invoicecurrency] = item.invoicecurrency;
-      dataItem[jsonData.invoicedate] = this.splitdatetime1(item.invoicedate)?.date;
-      dataItem[jsonData.status] = item.status;
+      dataItem[jsonData.enteredon] = this.common.splitdatetime(item.enteredon)?.date;
+      dataItem[jsonData.invoicedate] = this.common.splitdatetime(item.invoicedate)?.date;
       dataList.push(dataItem);
     });
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataList);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Physical Attestation-Pending');
-    XLSX.writeFile(wb, 'Physical_Attestation_Pending.xlsx');
+    XLSX.utils.book_append_sheet(wb, ws, this.common.givefilename('Physical_Report'));
+    XLSX.writeFile(wb, this.common.givefilename('Physical_Report')+'.xlsx');
   }
 
-  splitdatetime1(date: any) {
-    return this.common.splitdatetime1(date);
-  }
+  // splitdatetime1(date: any) {
+  //   return this.common.splitdatetime1(date);
+  // }
 loadsidepanel(event:any){
 
   this.settingbackgroundcolors(event)
@@ -620,8 +651,7 @@ AttestationPay(){
 //     "version": "1.0.1"
 // }
 let data={
-  "id": "",
-  "password": "",
+
   "servicedata": [        
       {
           "noOfTransactions": "1",
@@ -640,8 +670,8 @@ let data={
   "udf6":"",
   "udf7":"",
   "udf8":"",
-  "udf9":"",
-  "udf10":"",
+  "udf9":this.uuid,
+  "udf10":"PHYSICAL",
   "action": 1,
   "correlationid": this.invoiceunoresponse.toString(),
   "langid": "EN",
@@ -700,46 +730,46 @@ splitdatetime(datetimeString: any) {
 
 
 
-FilterInitTable(){
-  let data = {
-    "companyuno":this.currentcompany,
-    "uuid":this.uuid,
-    "startnum":0,
-    "limit":20,
-    "startdate":this.common.formatDateTime_API_payload(this.oneMonthAgo.toDateString()),
-    "enddate":this.common.formatDateTime_API_payload(this.todayModel.toDateString()),
-    "statusuno":10
-  };
-  this.common.showLoading();
+// FilterInitTable(){
+//   let data = {
+//     "companyuno":this.currentcompany,
+//     "uuid":this.uuid,
+//     "startnum":0,
+//     "limit":20,
+//     "startdate":this.common.formatDateTime_API_payload(this.oneMonthAgo.toDateString()),
+//     "enddate":this.common.formatDateTime_API_payload(this.todayModel.toDateString()),
+//     "statusuno":10
+//   };
+//   this.common.showLoading();
 
-  this.apiservice
-    .post(this.consts.getMyInvoiceAttestationsForAllS, data)
-    .subscribe((response: any) => {
-      this.common.hideLoading();
+//   this.apiservice
+//     .post(this.consts.getMyInvoiceAttestationsForAllS, data)
+//     .subscribe((response: any) => {
+//       this.common.hideLoading();
 
-      if (`${response.responsecode}` === '1') {
-        const dataArray = response.data;
-        this.invoiceRequestLists = dataArray;
-        this.totalrecords=response.recordcount;
-        this.invoiceRequestLists.map((row: any) => {
-          if (row.statusuno === AttestationStatusEnum.Status0) {
-            row.status = 'Created';
-          } else if (row.statusuno === AttestationStatusEnum.Status1) {
-            row.status = 'Approved';
-          } else if (row.statusuno === AttestationStatusEnum.Status2) {
-            row.status = 'Payment';
-          } else if (row.statusuno === AttestationStatusEnum.Status3) {
-            row.status = 'Attestation';
-          } else if (row.statusuno === AttestationStatusEnum.Status4) {
-            row.status = 'Completed';
-          } else {
-            row.status = '';
-          }
-        });
-      }
-    });
+//       if (`${response.responsecode}` === '1') {
+//         const dataArray = response.data;
+//         this.invoiceRequestLists = dataArray;
+//         this.totalrecords=response.recordcount;
+//         this.invoiceRequestLists.map((row: any) => {
+//           if (row.statusuno === AttestationStatusEnum.Status0) {
+//             row.status = 'Created';
+//           } else if (row.statusuno === AttestationStatusEnum.Status1) {
+//             row.status = 'Approved';
+//           } else if (row.statusuno === AttestationStatusEnum.Status2) {
+//             row.status = 'Payment';
+//           } else if (row.statusuno === AttestationStatusEnum.Status3) {
+//             row.status = 'Attestation';
+//           } else if (row.statusuno === AttestationStatusEnum.Status4) {
+//             row.status = 'Completed';
+//           } else {
+//             row.status = '';
+//           }
+//         });
+//       }
+//     });
 
-}
+// }
 
 // closesidetab(){
 //   this.confirmationService.confirm({
@@ -794,6 +824,16 @@ openNew(data:any) {
 
   }
 		
+  if(this.currentrow.statusname!=='IN DRAFT'){
+    this.invoiceisthere=true;
+  }
+  else{
+    this.invoiceisthere=false;
+
+  }
+		
+
+  //invoiceisthere
 
 
   this.AddInvoiceDialog=true
@@ -829,6 +869,9 @@ openNew(data:any) {
         value: value
       };
     });
+
+    
+    this.popupDownloadfilename = 'Physical_'+ this.currentrow.statusname.replace(/\s/g, '_');
   }
   
 
@@ -894,5 +937,129 @@ onDropdownChange(event:any){
   this.InitTable(updatedLazyLoadEvent);
 
 }
+
+// invoiceRequestListsFilter:any;
+pdfPayload:any;
+
+exportTableToPDF() {
+    // header2Data
+    const jsonData1 = {
+      edasattestno: this.translate.instant(
+        "edasattestno"
+      ),
+      noofdaysleft: this.translate.instant(
+        "noofdaysleft"
+      ),
+      status: this.translate.instant("status"),
+      invoiceamount: this.translate.instant(
+        "invoiceamount"
+      ),
+    };
+    let dataList1: any = {};
+    this.invoiceRequestLists.map((item: any) => {
+      const dataItem: any = {};
+      dataItem[jsonData1.edasattestno] = item.edasattestno
+        ? item.edasattestno
+        : "";
+      dataItem[jsonData1.noofdaysleft] = item.noofdaysleft
+        ? item.noofdaysleft
+        : "";
+      dataItem[jsonData1.status] = item.statusname ? item.statusname : "";
+      dataItem[jsonData1.invoiceamount] = item.invoiceamount
+        ? item.invoiceamount
+        : "";
+      dataList1 = dataItem;
+    });
+    // bodyData
+    const jsonData2 = {
+      edasreqno: this.translate.instant('edasreqno'),
+      entitycode: this.translate.instant('Channel'),
+      status: this.translate.instant('status'),
+      invoiceno: this.translate.instant('Invoice ID'),
+      invoiceamount: this.translate.instant('Invoice Amount'),
+      invoicecurrency: this.translate.instant('Currency'),
+      invoicedate: this.translate.instant('invoicedate'),
+      enteredon: this.translate.instant('Entered on'),
+    };
+    
+    const dataList2: any = [];
+    this.invoiceRequestLists.map((item: any) => {
+      const dataItem: any = {};
+      dataItem[jsonData2.edasreqno] = item.edasreqno;
+      dataItem[jsonData2.entitycode] = item.entitycode;
+      dataItem[jsonData2.status] = item.status;
+      dataItem[jsonData2.invoiceno] = item.invoiceno;
+      dataItem[jsonData2.invoiceamount] = item.invoiceamount;
+      dataItem[jsonData2.invoicecurrency] = item.invoicecurrency;
+      dataItem[jsonData2.invoicedate] = item.invoicedate;
+      dataItem[jsonData2.enteredon] = item.enteredon;
+      dataList2.push(dataItem);
+    });
+    dataList2.forEach((dataItem: any) => {
+      dataItem[jsonData2.enteredon] = this.splitdatetime(dataItem[jsonData2.enteredon])?.date;
+      dataItem[jsonData2.invoicedate] = this.splitdatetime(dataItem[jsonData2.invoicedate])?.date;
+    });
+    let header2DataList = this.bindVisibleMoreDatasCommon(dataList1);
+    let bodyDataList: any[] = dataList2;
+    this.pdfPayload = {
+      header1Data: { header: "INVOICE", content: "Invoice ID# 1112024" },
+      header2Data: header2DataList, // [],
+      bodyHeaderData: "Invoice Details",
+      bodyData: bodyDataList, // [],
+      // footerData: {},
+    };
+}
+
+viewcreateddatas:any;
+
+bindVisibleMoreDatasCommon(dataItem: any) {
+  this.viewcreateddatas = [];
+  for (const key in dataItem) {
+    if (dataItem.hasOwnProperty(key)) {
+      const value = dataItem[key];
+      this.viewcreateddatas.push({ label: key, value: value });
+    }
+  }
+}
+
+
+
+goBackToAnalytics() {
+  // Navigate back to 'analytics'
+  this.router.navigate(['/reports/rptanalytics']);
+}
+
+handleDateChange(event: any, dateType: string): void {
+  const momentObject = event.value || moment();
+  let date=new Date(momentObject.toDate())
+console.log(date)
+console.log(date.toISOString())
+
+ if (dateType === 'from') {
+   this.oneMonthAgo = date ;
+  } 
+  else if (dateType === 'to') {
+    this.todayModel =date;
+  }
+
+  console.log(this.oneMonthAgo)
+  console.log(this.todayModel)
+
+  this.onfilterclick()
+
+}
+
+
+
+ onfilterclick() {
+    const updatedLazyLoadEvent: LazyLoadEvent = {
+      // Modify properties as needed
+      first: 0,
+      rows: 10,
+      // ... other properties
+    };
+    // this.overdue=1;
+    this.InitTable(updatedLazyLoadEvent);
+  }
  
 }

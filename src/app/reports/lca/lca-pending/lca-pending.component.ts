@@ -25,7 +25,7 @@ import * as pdfMake from 'pdfmake/build/pdfmake';
 import { HttpClient } from '@angular/common/http';
 import { MatToolbar } from '@angular/material/toolbar';
 import { DatePipe } from '@angular/common';
-import { Router } from '@angular/router';
+import {ActivatedRoute, Router } from '@angular/router';
 // import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 // import {MatButtonModule} from '@angular/material/button';
 // import { MatDialog } from '@angular/material/dialog';
@@ -53,6 +53,7 @@ import { formatDate } from '@angular/common';
 
 import { saveAs } from 'file-saver';
 import { environment } from 'src/environments/environment';
+import * as moment from 'moment';
 
 interface Column {
   field: string;
@@ -200,7 +201,8 @@ export class LcaPendingComponent implements OnInit {
   total_invoiceamount:any;
   total_feesamount:any;
   status:number=2;
-  constructor(
+  showBackButton: boolean = false;
+  constructor(private route: ActivatedRoute,
     private translate: TranslateService,
     private fb: FormBuilder,
     public dialog: MatDialog,
@@ -211,7 +213,35 @@ export class LcaPendingComponent implements OnInit {
     public datepipe: DatePipe,
     private auth: AuthService
   ) {
-    this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
+
+   
+    const previousRoute = this.router.getCurrentNavigation()?.extras.state?.['returnUrl'] || '/';
+    this.showBackButton = previousRoute.includes('/analytics');
+    console.log(previousRoute)
+
+
+    let defaultdata=this.common.getDefaultInputsforLCAReports()
+    console.log(defaultdata)
+    if(defaultdata){
+      this.selectedStatus=defaultdata.selectedpiece
+      if(defaultdata.selectedpiece==='Completed'){
+        this.selectedStatus='10'
+      }
+      else if(defaultdata.selectedpiece==='Draft'){
+        this.selectedStatus='1'
+      }
+      else{
+        this.selectedStatus='0'
+      }
+      this.todayModel= new Date(defaultdata.startdate);
+      this.oneMonthAgo=new Date(defaultdata.enddate);
+      this.enableFilters=true;
+    }
+    else{
+      this.enableFilters=false;
+      this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
+    }
+
 
     this.form = this.fb.group({
       coorequestno: '',
@@ -232,6 +262,10 @@ export class LcaPendingComponent implements OnInit {
   }
 
   ngOnInit() {
+
+  
+
+
     console.log('calling getselected company');
     let currcompany = this.auth.getSelectedCompany();
     if (currcompany) {
@@ -266,22 +300,17 @@ export class LcaPendingComponent implements OnInit {
 
     }
     this.cols_xl = [
-      { field: 'Noofdaysleft', header: 'Age', width: '5%' },
-      { field: 'edasattestno', header: 'Attestation No', width: '20%' },
+      { field: 'edasattestno', header: 'EDAS Attestation No', width: '20%' },
       { field: 'currencycode', header: 'Currency', width: '20%' },
-
       { field: 'canpay', header: 'Status', width: '20%' },
-
+      { field: 'noofdaysoverdue', header: 'Day(s)', width: '5%' },
       { field: 'invoiceamount', header: 'Invoice Amount', width: '20%' },
       { field: 'feesamount', header: 'Fees', width: '20%' },
-
       { field: 'invoicenumber', header: 'Invoice ID', width: '20%' },
       { field: 'declarationumber', header: 'Declaration No', width: '20%' },
-
       { field: 'declarationdate', header: 'Declaration Date', width: '200px' },
       { field: 'attestreqdate', header: 'Created', width: '200px' },
       { field: 'lcaname', header: 'Channel', width: '15%' },
-      { field: 'Company', header: 'Company', width: '20%' },
     ];
     this.cols = [
       { field: 'companyname', header: this.translate.instant('Company'), width: '20%' },
@@ -487,43 +516,45 @@ export class LcaPendingComponent implements OnInit {
       },
     });
   }
-  filterInittable() {
-    let resp;
-    let data = {
-      Companyuno: this.currentcompany,
-      uuid: this.uuid,
-      startnum: 0,
-      limit: 200,
-      Startdate: this.common.formatDateTime_API_payload(
-        this.oneMonthAgo.toDateString()
-      ),
-      Enddate: this.common.formatDateTime_API_payload(
-        this.todayModel.toDateString()
-      ),
-    };
-    this.loading = true;
-    this.common.showLoading();
+  // filterInittable() {
+  //   let resp;
+  //   let data = {
+  //     Companyuno: this.currentcompany,
+  //     uuid: this.uuid,
+  //     startnum: 0,
+  //     limit: 200,
+  //     Startdate: this.common.formatDateTime_API_payload(
+  //       this.oneMonthAgo.toDateString()
+  //     ),
+  //     Enddate: this.common.formatDateTime_API_payload(
+  //       this.todayModel.toDateString()
+  //     ),
+  //     overdue: this.overdue,
+  //     statusuno:this.selectedStatus
+  //   };
+  //   this.loading = true;
+  //   this.common.showLoading();
 
-    this.apicall.post(this.consts.pendingattestation, data).subscribe({
-      next: (success: any) => {
-        this.common.hideLoading();
+  //   this.apicall.post(this.consts.lcaMyAttestListForAllStatus, data).subscribe({
+  //     next: (success: any) => {
+  //       this.common.hideLoading();
 
-        this.loading = false;
-        resp = success;
-        if (resp.dictionary.responsecode == 1) {
-          this.list = resp.dictionary.data;
-          this.datasource = resp.dictionary.data;
-          this.totalrecords = resp.dictionary.data.length;
-          this.loading = false;
-          this.Reduce();
-          // this.common.showSuccessMessage('Data retrived'); // Show the verification alert
-        } else {
-          this.common.showErrorMessage('Something went wrong');
-          this.loading = false;
-        }
-      },
-    });
-  }
+  //       this.loading = false;
+  //       resp = success;
+  //       if (resp.dictionary.responsecode == 1) {
+  //         this.list = resp.dictionary.data;
+  //         this.datasource = resp.dictionary.data;
+  //         this.totalrecords = resp.dictionary.data.length;
+  //         this.loading = false;
+  //         this.Reduce();
+  //         // this.common.showSuccessMessage('Data retrived'); // Show the verification alert
+  //       } else {
+  //         this.common.showErrorMessage('Something went wrong');
+  //         this.loading = false;
+  //       }
+  //     },
+  //   });
+  // }
 
   // response:any
 
@@ -728,19 +759,19 @@ export class LcaPendingComponent implements OnInit {
         this.getimagebase64(this.selectedAttestations[0]?.attestfilelocation);
       }
 
-      let createddate = this.common.splitdatetimeforstring(
+      let createddate = this.common.splitdatetime(
         this.selectedAttestations[0]?.enteredon
       );
-      let approveddate = this.common.splitdatetimeforstring(
+      let approveddate = this.common.splitdatetime(
         this.selectedAttestations[0]?.approvedon
       );
-      let paymentdate = this.common.splitdatetimeforstring(
+      let paymentdate = this.common.splitdatetime(
         this.selectedAttestations[0]?.paidon
       );
-      let attestationdate = this.common.splitdatetimeforstring(
+      let attestationdate = this.common.splitdatetime(
         this.selectedAttestations[0]?.attestedon
       );
-      let completedDate = this.common.splitdatetimeforstring(
+      let completedDate = this.common.splitdatetime(
         this.selectedAttestations[0]?.completedon
       );
 
@@ -796,8 +827,6 @@ export class LcaPendingComponent implements OnInit {
 
   AttestationPay() {
     let data = {
-      id: '',
-      password: '',
       servicedata: [
         {
           noOfTransactions: '1',
@@ -816,8 +845,8 @@ export class LcaPendingComponent implements OnInit {
       udf6: '',
       udf7: '',
       udf8: '',
-      udf9: '',
-      udf10: '',
+      udf9: this.uuid,
+      udf10: this.processname,
       action: 1,
       correlationid: this.invoiceunoresponse.toString(),
       langid: 'EN',
@@ -880,9 +909,11 @@ export class LcaPendingComponent implements OnInit {
             item[col.field]
           )?.date;
         }
-        // else if (col.header === 'Age') {
-        //   dataItem[col.header] = this.common.calculateDifference(item.attestreqdate);
-        // }
+        else if(col.header === 'Status'){
+          dataItem[col.header] = item[col.field] === 1 ? 'COO paid' : 'COO unpaid ';
+          //customer.canpay === 1 ? 'COO paid' : '  &nbsp; COO unpaid '
+        }
+       
         else {
           dataItem[col.header] = item[col.field];
         }
@@ -896,9 +927,9 @@ export class LcaPendingComponent implements OnInit {
     XLSX.utils.book_append_sheet(
       wb,
       ws,
-      this.translate.instant('Draft Attestation')
+      this.common.givefilename('LCA_Report')
     );
-    XLSX.writeFile(wb, 'Draft_Attestation.xlsx');
+    XLSX.writeFile(wb,  this.common.givefilename('LCA_Report')+'.xlsx');
   }
 
   saveAsExcelFile(buffer: any, fileName: string): void {
@@ -1116,7 +1147,9 @@ this.AddInvoiceDialog_ = true;
       // Add more fields as needed
     };
 
-    this.popupDownloadfilename='Attest_'+this.currentrow.edasattestno;
+    // this.popupDownloadfilename=this.currentrow.statusname;
+    this.popupDownloadfilename = 'LCA_'+ this.currentrow.statusname.replace(/\s/g, '_');
+
 
     if (data) {
       this.fields = Object.keys(fieldMappings).map((key) => {
@@ -1398,5 +1431,131 @@ onDropdownChange(event:any){
   this.InitTable(updatedLazyLoadEvent);
 
 }
+
+// invoiceRequestListsFilter:any;
+pdfPayload:any;
+
+exportTableToPDF() {
+    // header2Data
+    const jsonData1 = {
+      edasattestno: this.translate.instant(
+        "edasattestno"
+      ),
+      noofdaysleft: this.translate.instant(
+        "noofdaysleft"
+      ),
+      status: this.translate.instant("status"),
+      invoiceamount: this.translate.instant(
+        "invoiceamount"
+      ),
+    };
+    let dataList1: any = {};
+    this.list.map((item: any) => {
+      const dataItem: any = {};
+      dataItem[jsonData1.edasattestno] = item.edasattestno
+        ? item.edasattestno
+        : "";
+      dataItem[jsonData1.noofdaysleft] = item.noofdaysleft
+        ? item.noofdaysleft
+        : "";
+      dataItem[jsonData1.status] = item.statusname ? item.statusname : "";
+      dataItem[jsonData1.invoiceamount] = item.invoiceamount
+        ? item.invoiceamount
+        : "";
+      dataList1 = dataItem;
+    });
+    // bodyData
+    const jsonData2 = 
+    {
+      edasattestno: this.translate.instant("edasattestno"),
+      currencycode: this.translate.instant("Currency"),
+      canpay: this.translate.instant("Status"),
+      noofdaysoverdue: this.translate.instant("Day(s)"),
+      invoiceamount: this.translate.instant("Invoice Amount"),
+      feesamount: this.translate.instant("Fees"),
+      invoicenumber: this.translate.instant("Invoice ID"),
+      declarationumber: this.translate.instant("Declaration No"),
+      declarationdate: this.translate.instant("Declaration Date"),
+      attestreqdate: this.translate.instant("Created"),
+      lcaname: this.translate.instant("Channel"),
+    };
+    const dataList2: any = [];
+    this.list.map((item: any) => {
+      const dataItem: any = {};
+      dataItem[jsonData2.edasattestno] = item.edasattestno? item.edasattestno : "";
+      dataItem[jsonData2.currencycode] = item.currencycode ? item.currencycode : "";
+      dataItem[jsonData2.canpay] = item.canpay === 1 ? 'COO paid' : 'COO unpaid ';
+      dataItem[jsonData2.noofdaysoverdue] = item.noofdaysoverdue;
+      dataItem[jsonData2.invoiceamount] = item.invoiceamount ? item.invoiceamount : "";
+      dataItem[jsonData2.feesamount] = item.feesamount ? item.feesamount : "";
+      dataItem[jsonData2.invoicenumber] = item.invoicenumber ? item.invoicenumber : "";
+      dataItem[jsonData2.declarationumber] = item.declarationumber ? item.declarationumber : "";
+      dataItem[jsonData2.declarationdate] = item.declarationdate ? item.declarationdate : "";
+      dataItem[jsonData2.attestreqdate] = item.attestreqdate ? item.attestreqdate : "";
+      dataItem[jsonData2.lcaname] = item.lcaname ? item.lcaname : "";
+
+      dataList2.push(dataItem);
+    });
+    let header2DataList = this.bindVisibleMoreDatasCommon(dataList1);
+    let bodyDataList: any[] = dataList2;
+    this.pdfPayload = {
+      header1Data: { header: "INVOICE", content: "Invoice ID# 1112024" },
+      header2Data: header2DataList, // [],
+      bodyHeaderData: "Invoice Details",
+      bodyData: bodyDataList, // [],
+      // footerData: {},
+    };  
+}
+
+viewcreateddatas:any;
+
+bindVisibleMoreDatasCommon(dataItem: any) {
+  this.viewcreateddatas = [];
+  for (const key in dataItem) {
+    if (dataItem.hasOwnProperty(key)) {
+      const value = dataItem[key];
+      this.viewcreateddatas.push({ label: key, value: value });
+    }
+  }
+}
+
+goBackToAnalytics() {
+  // Navigate back to 'analytics'
+  this.router.navigate(['/reports/rptanalytics']);
+}
+
+
+handleDateChange(event: any, dateType: string): void {
+  const momentObject = event.value || moment();
+  let date=new Date(momentObject.toDate())
+console.log(date)
+console.log(date.toISOString())
+
+ if (dateType === 'from') {
+   this.oneMonthAgo = date ;
+  } 
+  else if (dateType === 'to') {
+    this.todayModel =date;
+  }
+
+  console.log(this.oneMonthAgo)
+  console.log(this.todayModel)
+
+  this.onfilterclick()
+
+}
+
+
+
+ onfilterclick() {
+    const updatedLazyLoadEvent: LazyLoadEvent = {
+      // Modify properties as needed
+      first: 0,
+      rows: 10,
+      // ... other properties
+    };
+    // this.overdue=1;
+    this.InitTable(updatedLazyLoadEvent);
+  }
 
 }

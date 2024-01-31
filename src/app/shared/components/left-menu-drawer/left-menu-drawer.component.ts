@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
 import { AuthService } from 'src/service/auth.service';
 
 interface MenuModel {
+  role:string;
   id: number;
   menu: string;
   icon: string;
@@ -36,16 +37,26 @@ export class LeftMenuDrawerComponent implements OnInit {
 
   username: any;
   companyname: any;
+  rolename:string='';
   usertype: string = '';
   isAdmin: boolean = false;
   menuList: MenuModel[] = [];
+  companyprofile:any;
   @ViewChild('myPanel') myPanel!: MatExpansionPanel;
   private userRoleSubscription!: Subscription;
+  currentLanguage: string;
+  private languageSubscription: Subscription;
+
   constructor(
     private router: Router,
     public common: CommonService,
     private auth: AuthService
-  ) {}
+  ) {
+    this.currentLanguage = sessionStorage.getItem('language') || 'en';
+    this.languageSubscription = this.common.languageChange.subscribe((language) => {
+      this.currentLanguage = language;
+    });
+  }
 
   ngOnInit(): void {
     this.common.getData().subscribe((data) => {
@@ -102,22 +113,26 @@ export class LeftMenuDrawerComponent implements OnInit {
 
     if (usertype == '11' || usertype == '12') {
     } else {
-      this.auth.userCompany$.subscribe((loggedIn) => {
-        this.companyname = loggedIn;
+      this.auth.userCompanyProfile$.subscribe((loggedIn) => {
+        this.companyprofile=loggedIn
+        console.log(this.companyprofile);
+        this.companyname = this.companyprofile?.nameofbusiness;
+        this.rolename=this.companyprofile?.rolename;
         this.setusername();
       });
-      let companyname1 = this.auth.getSelectedCompany();
-      console.log(companyname1);
-      this.companyname = companyname1?.business_name || '';
 
+      //this is not getting updated during page load
+      let companyname2 = this.auth.getSelectedCompany() || '';
+      console.log(companyname2)
+      if(companyname2){
+      let companyname1=(companyname2);
+
+        console.log(companyname1);
+        this.companyname = companyname1?.business_name || '';
+        this.rolename=companyname1?.role;
+      }
       this.auth.isAdmin$.subscribe((isAdmin_) => {
-
       console.log('company switched!!')
-
-
-
-
-
         this.isAdmin = isAdmin_;
         if (this.usertype == '11' || this.usertype == '12') {
         } else {
@@ -130,6 +145,8 @@ export class LeftMenuDrawerComponent implements OnInit {
 
   getMenuItemLists() {
     this.menuList = [];
+   
+
 
     console.log(this.usertype);
 
@@ -145,6 +162,7 @@ export class LeftMenuDrawerComponent implements OnInit {
 
       this.menuList.push(
         {
+          role:'All',
           id: 1,
           menu: 'Dashboard',
           icon: 'dashboard',
@@ -152,6 +170,7 @@ export class LeftMenuDrawerComponent implements OnInit {
           hasubMenu: false,
         },
         {
+          role:'All',
           id: 2,
           menu: 'Attestations',
           hasubMenu: true,
@@ -184,13 +203,14 @@ export class LeftMenuDrawerComponent implements OnInit {
           ],
         },
         {
-          id: 2,
+          role:'All',
+          id: 3,
           menu: 'Reports',
           hasubMenu: true,
           icon: 'assessment',
           subMenus: [
             {
-              id: 5,
+              id: 1,
               menu: 'Settlement',
               icon: 'play_arrow',
               link: '/reports/lcasettlementsreport',
@@ -199,17 +219,51 @@ export class LeftMenuDrawerComponent implements OnInit {
         }
       );
     } else {
+
+      let def,accessprofile;
+      let abc=this.auth.getmycompanyprofile() || '';
+      if(abc){
+         def=JSON.parse(abc);
+        console.log(abc);
+    
+         accessprofile=def.accessprofiles;
+      }
+      else{
+        return;
+      }
+      
+      const accessprofiles = accessprofile.split(',').map((profile:any) => profile.trim().toLowerCase());
+  
       //
 
-      this.menuList.push(
+      const roleBasedMenuItems = [
         {
+          role:'All',
           id: 1,
           menu: 'Dashboard',
           icon: 'dashboard',
           link: '/shared',
           hasubMenu: false,
+        }
+        ,
+        {
+          role:'All',
+          id: 4,
+          menu: 'Company Profile',
+          icon: 'settings',
+          link: 'shared/companyprofile',
+          hasubMenu: false,
+        } ,
+        {
+          role:'All',
+          id: 4,
+          menu: 'Glossary',
+          icon: 'psychology_alt',
+          link: 'shared/glossary',
+          hasubMenu: false,
         },
         {
+          role:'LCA',
           id: 1,
           menu: 'Attestation',
           icon: 'event_note',
@@ -228,9 +282,24 @@ export class LeftMenuDrawerComponent implements OnInit {
               link: '/lca/lcacompletedattestation',
               param: 'true',
             },
+            // {
+            //   id: 3,
+            //   menu: 'In process',
+            //   icon: 'play_arrow',
+            //   link: '/lca/lcainprocess',
+            //   param: 'true',
+            // },
+            {
+              id: 4,
+              menu: 'In Risk',
+              icon: 'play_arrow',
+              link: '/lca/lcainhold',
+              param: 'true',
+            },
           ],
         },
         {
+          role:'COO',
           id: 1,
           menu: 'COO Attestation',
           hasubMenu: true,
@@ -242,12 +311,6 @@ export class LeftMenuDrawerComponent implements OnInit {
               icon: 'play_arrow',
               link: '/coo/cooattestation',
             },
-            // {
-            //   id: 2,
-            //   menu: 'In Review',
-            //   icon: 'play_arrow',
-            //   link: '/coo/cooinreview',
-            // },
             {
               id: 3,
               menu: 'Completed',
@@ -257,6 +320,7 @@ export class LeftMenuDrawerComponent implements OnInit {
           ],
         },
         {
+          role:'Physical',
           id: 1,
           menu: 'Physical Attestation',
           hasubMenu: true,
@@ -268,12 +332,6 @@ export class LeftMenuDrawerComponent implements OnInit {
               icon: 'play_arrow',
               link: '/physical/physicalattestation',
             },
-            // {
-            //   id: 2,
-            //   menu: 'In Review',
-            //   icon: 'play_arrow',
-            //   link: '/physical/physicalinreview',
-            // },
             {
               id: 3,
               menu: 'Completed',
@@ -282,43 +340,55 @@ export class LeftMenuDrawerComponent implements OnInit {
             },
           ],
         },
-        // rptpendinglca
         {
+          role:'All',
           id: 1,
           menu: 'Reports',
           hasubMenu: true,
           icon: 'feed',
           subMenus: [
             { id: 1, menu: 'LCA', icon: 'play_arrow', link: '/reports/rptpendinglca' },
-            // { id: 2, menu: 'LCA - Completed', icon: 'play_arrow', link: '/reports/rptlca' },
-            { id: 3, menu: 'COO', icon: 'play_arrow', link: '/reports/rptpendingcoo' },
-            // { id: 3, menu: 'COO - Completed', icon: 'play_arrow', link: '/reports/rptcoo' },
-            { id: 4, menu: 'Physical',icon: 'play_arrow', link: '/reports/rptpendingphysical' },
+            { id: 2, menu: 'COO', icon: 'play_arrow', link: '/reports/rptpendingcoo' },
+            { id: 3, menu: 'Physical',icon: 'play_arrow', link: '/reports/rptpendingphysical' },
+            { id: 4, menu: 'Fines', icon: 'play_arrow',link: '/reports/rptfines',},
+            { id: 5, menu: 'Region-wise Import', icon: 'play_arrow',link: '/reports/rptregionwiseimport',},
+            { id: 5, menu: 'Analytics', icon: 'play_arrow',link: '/reports/rptanalytics',},
 
-            // { id: 4, menu: 'Physical - Completed',icon: 'play_arrow', link: '/reports/rptphysical' },
-            { id: 5, menu: 'Fines', icon: 'play_arrow',link: '/reports/rptfines',},
           ],
         }
-      );
+      ];
 
       if (this.isAdmin) {
+        this.menuList.push(...roleBasedMenuItems)
         this.menuList.push(
           {
+          role:'All',
           id: 3,
           menu: 'My Team',
           icon: 'supervisor_account',
           link: 'shared/userslist',
           hasubMenu: false,
-        },
-        {
-          id: 4,
-          menu: 'Company Profile',
-          icon: 'settings',
-          link: 'shared/companyprofile',
-          hasubMenu: false,
         }
+       
         );
       } else {
+//push menu based on user role
+                const filteredMenuItems: MenuModel[] = roleBasedMenuItems.map(menuItem => {
+                  if (menuItem.role.toLowerCase() === 'all' || accessprofiles.includes(menuItem.role.toLowerCase())) {
+                    if (menuItem.menu.toLowerCase() === 'reports' && menuItem.hasubMenu && menuItem.subMenus) {
+                      // If the menu is 'Reports', filter sub-menus based on accessprofiles
+                      menuItem.subMenus = menuItem.subMenus.filter(subMenu => {
+                        const subMenuName = subMenu.menu.toLowerCase();
+                        return accessprofiles.includes(subMenuName) || (subMenuName === 'fines' || subMenuName === 'region-wise import');
+                      });
+                    }
+                    return menuItem;
+                  }
+                  return null; // Exclude menu if the user doesn't have access
+                }).filter(Boolean) as MenuModel[];
+
+                this.menuList.push(...filteredMenuItems);
+//end
         const switchCompanyIndex = this.menuList.findIndex(
           (item) => item.id === 3
         );
@@ -327,7 +397,41 @@ export class LeftMenuDrawerComponent implements OnInit {
           this.menuList.splice(switchCompanyIndex, 1);
         }
       }
+// for pay all menu
+      this.common.payallcount$.subscribe((payallcountv) => {
+        console.log('company switched!!')
+          // this.isAdmin = isAdmin_;
+
+          console.log(payallcountv);
+          if (this.usertype == '11' || this.usertype == '12') {
+          } else {
+            if(payallcountv && payallcountv<100){  
+              this.addpayallinmenu();
+            }
+          }
+        });
+// pay all menu with session
+        let payallcountfromsession=this.common.getpayallcount() ||'0';
+        if(parseInt(payallcountfromsession) && parseInt(payallcountfromsession)<100 ){
+          this.addpayallinmenu();
+        }
+    
     }
+  }
+  addpayallinmenu(){
+     const isPayAllAlreadyAdded = this.menuList.some(item => item.id === 6);
+              if (!isPayAllAlreadyAdded) {
+              this.menuList.push(
+                {
+                  role:'All',
+                  id: 6,
+                  menu: 'Pay All',
+                  icon: 'checklist',
+                  link: 'shared/payall',
+                  hasubMenu: false,
+                }
+                );
+              }
   }
 
   onPanelClick(items: any) {
@@ -458,5 +562,8 @@ export class LeftMenuDrawerComponent implements OnInit {
       console.log(JSON.parse(data));
       this.username = abc.Data.firstnameEN;
     }
+  }
+  redirectuserprofile(){
+    this.router.navigateByUrl('/shared/userprofile');
   }
 }

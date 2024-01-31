@@ -122,6 +122,19 @@ $uaemofa-lime-theme: mat.define-light-theme(
 
 // theme-green
 .theme-green {
+  .mat-accordion .mat-expansion-panel-header.mat-expanded {
+    border-left: 5px solid var(--green-color) !important;
+}
+  .company-dp-icon {
+    color: var(--green-color);
+    border: 4px solid var(--green-color);
+  }
+
+  .mat-menu-share, .mat-menu-content .mat-menu-item  {
+    color: var(--green-color) !important;
+  }
+
+  
   .p-datatable .p-sortable-column.p-highlight {
     color: #fff !important;
   }
@@ -143,7 +156,7 @@ $uaemofa-lime-theme: mat.define-light-theme(
   .p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight,
   .dw-container .current .timeline-content h6 span,
   .mat-form-field.mat-focused .mat-form-field-label,
-  .mat-datepicker-toggle-active {
+  .mat-datepicker-toggle-active, .bg-yellow-db i, .a-bold-brown  {
     color: var(--green-color);
   }
 
@@ -170,6 +183,7 @@ $uaemofa-lime-theme: mat.define-light-theme(
   .dw-container .marker,
   .dw-container .timeline-block::before {
     border-color: var(--green-color);
+    background-color: var(--green-color);
   }
 
   .hyperlink .p-button:enabled:hover {
@@ -183,7 +197,7 @@ $uaemofa-lime-theme: mat.define-light-theme(
   .mat-flat-button.mat-primary,
   .mat-raised-button.mat-primary,
   .mat-fab.mat-primary,
-  .mat-mini-fab.mat-primary {
+  .mat-mini-fab.mat-primary, .mat-tab-group.mat-primary .mat-ink-bar {
     background-color: var(--green-color);
   }
 
@@ -214,6 +228,7 @@ $uaemofa-lime-theme: mat.define-light-theme(
 
   .clicked {
     background-color: var(--green-color) !important;
+    color: #fff;
   }
 
   .p-dropdown:not(.p-disabled):hover,
@@ -255,7 +270,7 @@ $uaemofa-lime-theme: mat.define-light-theme(
     background-color: var(--green-color) !important;
   }
 
-  .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+  .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle , .mat-expansion-indicator::after {
     border-color: var(--green-color) !important;
   }
 
@@ -337,7 +352,7 @@ $uaemofa-lime-theme: mat.define-light-theme(
     color: var(--green-color) !important;
   }
 
-  .swal2-styled.swal2-confirm {
+  .swal2-styled.swal2-confirm, .letter-header.selected {
     background-color: var(--green-color) !important;
   }
 
@@ -361,13 +376,36 @@ $uaemofa-lime-theme: mat.define-light-theme(
     color: var(--green-color) !important;
   }
 
-  .float-right {
+  .float-right, .check_circle_outline {
     color: var(--green-color) !important;
   }
+
+  .mat-menu-panel .mat-menu-content .mat-menu-item .mat-menu-share {
+    color: var(--green-color) !important;
+  }
+  
 }
 
 // theme-red
 .theme-red {
+
+  .mat-accordion .mat-expansion-panel-header.mat-expanded {
+    border-left: 5px solid var(--red-color) !important;
+}
+
+  .mat-menu-item {
+    color: var(--red-color) !important;
+}
+.company-dp-icon {
+  color: var(--red-color);
+  border: 4px solid var(--red-color);
+}
+
+
+ .mat-menu-share, .mat-menu-content .mat-menu-item  {
+    color: var(--red-color) !important;
+  }
+
   .p-datatable .p-sortable-column.p-highlight {
     color: #fff !important;
   }
@@ -388,7 +426,7 @@ $uaemofa-lime-theme: mat.define-light-theme(
   .p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight,
   .dw-container .current .timeline-content h6 span,
   .mat-form-field.mat-focused .mat-form-field-label,
-  .mat-datepicker-toggle-active {
+  .mat-datepicker-toggle-active, .bg-yellow-db i , .a-bold-brown  {
     color: var(--red-color);
   }
 
@@ -413,6 +451,7 @@ $uaemofa-lime-theme: mat.define-light-theme(
   .dw-container .marker,
   .dw-container .timeline-block::before {
     border-color: var(--red-color);
+    background-color: var(--red-color);
   }
 
   .p-button:enabled:hover,
@@ -422,9 +461,15 @@ $uaemofa-lime-theme: mat.define-light-theme(
   .mat-flat-button.mat-primary,
   .mat-raised-button.mat-primary,
   .mat-fab.mat-primary,
-  .mat-mini-fab.mat-primary {
+  .mat-mini-fab.mat-primary, .mat-tab-group.mat-primary .mat-ink-bar {
     background-color: var(--red-color);
   }
+
+//   .grid-header-right-icon  {
+//     // background-color: var(--primary-color);
+//     color: var(--white-color);
+// }
+
   .hyperlink .p-button:enabled:hover {
     background-color: var(--light-red-color);
   }
@@ -456,6 +501,7 @@ $uaemofa-lime-theme: mat.define-light-theme(
 
   .clicked {
     background-color: var(--red-color) !important;
+    color: #fff;
   }
 
   .p-dropdown:not(.p-disabled):hover,
@@ -497,7 +543,7 @@ $uaemofa-lime-theme: mat.define-light-theme(
     background-color: var(--red-color) !important;
   }
 
-  .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+  .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle, .mat-expansion-indicator::after {
     border-color: var(--red-color) !important;
   }
 
@@ -580,7 +626,7 @@ $uaemofa-lime-theme: mat.define-light-theme(
     color: var(--red-color) !important;
   }
 
-  .swal2-styled.swal2-confirm {
+  .swal2-styled.swal2-confirm, .letter-header.selected {
     background-color: var(--red-color) !important;
   }
 
@@ -604,13 +650,31 @@ $uaemofa-lime-theme: mat.define-light-theme(
     color: var(--red-color) !important;
   }
 
-  .float-right {
+  .float-right, .check_circle_outline {
     color: var(--red-color) !important;
   }
 }
 
 // theme-red
 .theme-grey {
+
+  .mat-accordion .mat-expansion-panel-header.mat-expanded {
+    border-left: 5px solid var(--grey-color) !important;
+}
+
+  .company-dp-icon {
+    color: var(--grey-color);
+    border: 4px solid var(--grey-color);
+  }
+
+  .mat-menu-share, .mat-menu-content .mat-menu-item  {
+    color: var(--grey-color) !important;
+  }
+
+ .mat-menu-share {
+    color: var(--grey-color) !important;
+  }
+
   .p-datatable .p-sortable-column.p-highlight {
     color: #fff !important;
   }
@@ -633,7 +697,7 @@ $uaemofa-lime-theme: mat.define-light-theme(
   .p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight,
   .dw-container .current .timeline-content h6 span,
   .mat-form-field.mat-focused .mat-form-field-label,
-  .mat-datepicker-toggle-active {
+  .mat-datepicker-toggle-active, .bg-yellow-db i , .a-bold-brown  {
     color: var(--grey-color);
   }
   .userdetailsheader,
@@ -658,6 +722,7 @@ $uaemofa-lime-theme: mat.define-light-theme(
   .dw-container .marker,
   .dw-container .timeline-block::before {
     border-color: var(--grey-color);
+    background-color: var(--grey-color);
   }
   .hyperlink .p-button:enabled:hover {
     background-color: var(--light-grey-color);
@@ -670,7 +735,7 @@ $uaemofa-lime-theme: mat.define-light-theme(
   .mat-flat-button.mat-primary,
   .mat-raised-button.mat-primary,
   .mat-fab.mat-primary,
-  .mat-mini-fab.mat-primary {
+  .mat-mini-fab.mat-primary, .mat-tab-group.mat-primary .mat-ink-bar {
     background-color: var(--grey-color);
   }
 
@@ -701,6 +766,7 @@ $uaemofa-lime-theme: mat.define-light-theme(
 
   .clicked {
     background-color: var(--grey-color) !important;
+    color: #fff;
   }
 
   .p-dropdown:not(.p-disabled):hover,
@@ -742,7 +808,7 @@ $uaemofa-lime-theme: mat.define-light-theme(
     background-color: var(--grey-color) !important;
   }
 
-  .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+  .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle, .mat-expansion-indicator::after {
     border-color: var(--grey-color) !important;
   }
 
@@ -825,7 +891,7 @@ $uaemofa-lime-theme: mat.define-light-theme(
     color: var(--grey-color) !important;
   }
 
-  .swal2-styled.swal2-confirm {
+  .swal2-styled.swal2-confirm, .letter-header.selected {
     background-color: var(--grey-color) !important;
   }
 
@@ -838,5 +904,8 @@ $uaemofa-lime-theme: mat.define-light-theme(
     .info {
       color: var(--grey-color) !important;
     }
+  }
+  .float-right, .check_circle_outline {
+    color: var(--grey-color) !important;
   }
 }

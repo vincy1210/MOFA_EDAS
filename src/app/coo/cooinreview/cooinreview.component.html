@@ -45,7 +45,7 @@
                     <div style="padding: 5px;" class="col-md-3 col-lg-3 col-sm-6">
                             <mat-form-field class="searchboxinput"  >
                               <mat-label><mat-icon style="font-size:larger;">search</mat-icon> {{'SearchKeyword' | translate}}</mat-label>
-                              <input  matInput type="text" (input)="tableref.filterGlobal($any($event.target).value, 'contains')" placeholder="{{'SearchKeyword' | translate}}">
+                              <input appTrimInput  matInput type="text" (input)="tableref.filterGlobal($any($event.target).value, 'contains')" placeholder="{{'SearchKeyword' | translate}}">
                             </mat-form-field>
                  
                   </div>
@@ -57,7 +57,7 @@
                   <div  *ngIf="enableFilters" style="padding: 5px;" class="col-md-3 col-lg-3  col-md-6">
                     <mat-form-field class="filter_datepicker">
                       <mat-label>{{'Start Date' | translate}}</mat-label>
-                      <input matInput [matDatepicker]="decDatepicker1" [max]="todayModel" [(ngModel)]="oneMonthAgo" placeholder="{{'From' | translate}}" name="createdatefrom"  />
+                      <input appTrimInput matInput [matDatepicker]="decDatepicker1" [max]="todayModel" [(ngModel)]="oneMonthAgo" placeholder="{{'From' | translate}}" name="createdatefrom"  />
                       <mat-datepicker-toggle matSuffix [for]="decDatepicker1"></mat-datepicker-toggle>
                       <mat-datepicker #decDatepicker1></mat-datepicker>
                     </mat-form-field>
@@ -65,14 +65,12 @@
             <div  *ngIf="enableFilters" style="padding: 5px;" class="col-md-3 col-lg-3  col-sm-6">
               <mat-form-field class="filter_datepicker">
                 <mat-label>{{'End Date' | translate}}</mat-label>
-                <input matInput [matDatepicker]="decDatepicker2" [min]="oneMonthAgo" [max]="today" placeholder="{{'To' | translate}}" [(ngModel)]="todayModel" name="createdateto"  />
+                <input appTrimInput matInput [matDatepicker]="decDatepicker2" [min]="oneMonthAgo" [max]="today" placeholder="{{'To' | translate}}" [(ngModel)]="todayModel" name="createdateto"  />
                 <mat-datepicker-toggle matSuffix [for]="decDatepicker2"></mat-datepicker-toggle>
                 <mat-datepicker #decDatepicker2></mat-datepicker>
               </mat-form-field>
             </div>
-            <div *ngIf="enableFilters"style="padding: 5px;" class="col-md-3 col-lg-3">
-              <button type="button" mat-flat-button color="primary" (click)="FilterInittable()" >{{'Apply' | translate}}</button>
-            </div>
+           
   
             <span style="padding: 10px;"></span>
                   <button type="button" pButton  pRipple  icon="pi pi-file-excel"  (click)="exportExcel()"  class="mr-2 grid-header-right-icon"  pTooltip="{{'Excel' | translate}}"
@@ -147,9 +145,9 @@
                       <mat-icon class="action_eye_icon" >visibility</mat-icon>
                         </span>
   
-                    <span *ngIf="data.feespaid === 'Paid'" (click)="uploadDeclaration(data)" style="padding:15px; cursor: pointer;" pTooltip="{{'Upload attachment' | translate}}"  class="image-text viewaction">
+                    <!-- <span *ngIf="data.feespaid === 'Paid'" (click)="uploadDeclaration(data)" style="padding:15px; cursor: pointer;" pTooltip="{{'Upload attachment' | translate}}"  class="image-text viewaction">
                       <mat-icon class="action_eye_icon" >upload</mat-icon>
-                        </span> &nbsp;
+                        </span> &nbsp; -->
   </td>
   
   

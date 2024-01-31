@@ -12,6 +12,8 @@ import { RoleGuard } from './role.guard';
 import { UnauthorizedComponent } from './error/unauthorized/unauthorized.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { FinedetailsComponent } from './finedetails/finedetails.component';
+// import { PdfExportComponent } from './shared/components/pdf-export/pdf-export.component';
+import { PdfExportComponent } from './shared/components/pdf-export/pdf-export.component';
 
 const routes: Routes = [
   {
@@ -38,6 +40,13 @@ const routes: Routes = [
     component: AttestationWorkflowComponent,
     data: { role: ['Admin', 'User'] },
   },
+  {
+    path: 'pdfexport',
+    component: PdfExportComponent,
+    data: { role: ['Admin', 'User'] },
+  },
+
+  //PdfExportComponent
   
   // {
   //   path: 'payall',

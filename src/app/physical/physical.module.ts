@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 // import { PhysicalinreviewComponent } from './physical/physicalinreview/physicalinreview.component';
 import { PhysicalAttestationComponent } from './physical-attestation.component';
 import { PhysicalAttestationCreateComponent } from './physical-attestation-create/physical-attestation-create.component';
-import { PhysicalinreviewComponent } from './physicalinreview/physicalinreview.component';
+// import { PhysicalinreviewComponent } from './physicalinreview/physicalinreview.component';
 import { CompletedAttestationComponent } from './completed-attestation/completed-attestation.component';
 
 import { RouterModule, Routes } from '@angular/router';
@@ -38,6 +38,11 @@ import { AuthGuard } from '../auth.guard';
 import { DropdownModule } from 'primeng/dropdown';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 // import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
+ 
+import { PdfExportComponent } from './pdf-export/pdf-export.component';
+
+
 
 const routes = [
   {
@@ -52,20 +57,19 @@ const routes = [
     data: { role: ['Admin', 'User'], name: 'completedattestation' },
     canActivate: [AuthGuard],
   },
-  {
-    path: 'physicalinreview',
-    component: PhysicalinreviewComponent,
-    data: { role: ['Admin', 'User'], name: 'physicalinreview' },
-    canActivate: [AuthGuard],
-  },
+  // {
+  //   path: 'physicalinreview',
+  //   component: PhysicalinreviewComponent,
+  //   data: { role: ['Admin', 'User'], name: 'physicalinreview' },
+  //   canActivate: [AuthGuard],
+  // },
 ];
 
 @NgModule({
   declarations: [
     PhysicalAttestationComponent,
     PhysicalAttestationCreateComponent,
-    PhysicalinreviewComponent,
-    CompletedAttestationComponent,
+    CompletedAttestationComponent,PdfExportComponent
   ],
   imports: [
     CommonModule,
@@ -94,7 +98,8 @@ const routes = [
     MatDialogModule,
     MatSelectModule,
     MatButtonModule,
-    MatButtonToggleModule, DropdownModule, MatAutocompleteModule
+    MatButtonToggleModule, DropdownModule, MatAutocompleteModule,
+    MatMenuModule,
   ],
 })
 export class PhysicalModule {}

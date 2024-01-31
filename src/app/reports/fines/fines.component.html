@@ -98,7 +98,7 @@
                     <mat-label>{{ "Start Date" | translate }}</mat-label>
                     <input
                       matInput
-                      [matDatepicker]="decDatepicker1"
+                      [matDatepicker]="decDatepicker1" (dateChange)="handleDateChange($event, 'from')"
                       [max]="todayModel"
                       [(ngModel)]="oneMonthAgo"
                       placeholder="From"
@@ -120,7 +120,7 @@
                     <mat-label>{{ "End Date" | translate }}</mat-label>
                     <input
                       matInput
-                      [matDatepicker]="decDatepicker2"
+                      [matDatepicker]="decDatepicker2" (dateChange)="handleDateChange($event, 'to')"
                       [min]="oneMonthAgo"
                       [max]="today"
                       placeholder="To"
@@ -134,22 +134,9 @@
                     <mat-datepicker #decDatepicker2></mat-datepicker>
                   </mat-form-field>
                 </div>
-                <div
-                  *ngIf="enableFilters"
-                  style="padding: 5px"
-                  class="col-md-3 col-lg-3"
-                >
-                  <button
-                    type="button"
-                    mat-flat-button
-                    color="primary"
-                    (click)="FilterInitTable()"
-                  >
-                    Apply
-                  </button>
-                </div>
+               
                 <span style="padding: 10px"></span>
-                <button
+                <!-- <button
                   type="button"
                   pButton
                   pRipple
@@ -158,7 +145,36 @@
                   class="mr-2 grid-header-right-icon"
                   pTooltip="{{ 'Excel' | translate }}"
                   tooltipPosition="bottom"
-                ></button>
+                ></button> -->
+                <button
+                type="button"
+                pButton
+                pRipple
+                [matMenuTriggerFor]="menu"
+                icon="fas fa-download"
+                class="mr-2 grid-header-right-icon"
+                [pTooltip]="'Export' | translate"
+                tooltipPosition="left"
+                [disabled]="list.length === 0" [matMenuTriggerFor]="menu"
+              ></button>
+              <mat-menu #menu="matMenu" class="exportmenu"  xPosition="before">
+                <button mat-menu-item (click)="exportExcel()" [ngClass]="common.getmypalette()">
+                  <span class="mat-menu-share">
+                    <i class="pi pi-file-excel pr-2"></i>
+                    {{ "Excel Export" | translate }}</span
+                  >
+                </button>
+                <button mat-menu-item (click)="exportTableToPDF()" [ngClass]="common.getmypalette()">
+                  <span class="mat-menu-share">
+                    <i class="pi pi-file-pdf pr-2"></i>
+                    {{ "PDF Export" | translate }}</span
+                  >
+                </button>
+              </mat-menu>
+
+
+
+                <!-- end -->
                 <button
                   type="button"
                   pButton
@@ -172,8 +188,8 @@
                 ></button>
               </ng-template>
             </p-toolbar>
-            <tr>
-              <td colspan="12">
+            <div style="padding-top: 10px;">
+            
                 <div class="alert alert-success flex" role="alert">
                   <span
                     class="glyphicon glyphicon-exclamation-sign"
@@ -188,8 +204,7 @@
                     Fines are shown in this list. Fines are shown in this list.Fines are shown in this list.
                   </p>
                 </div>
-              </td>
-            </tr>
+            </div>
           </ng-template>
           <ng-template pTemplate="header" let-columns>
             <tr>
@@ -249,7 +264,7 @@
               </td>
               <td>
                 <span class="image-text">{{
-                  common.splitdatetime1(customer.invoicedate)?.date
+                  common.splitdatetime(customer.invoicedate)?.date
                 }}</span>
               </td>
               <td class="text_align_right">
@@ -371,3 +386,8 @@
     ></p-button>
   </ng-template>
 </p-dialog>
+
+
+<div>
+  <app-pdf-export [pdfPayload]="pdfPayload"></app-pdf-export>
+</div>

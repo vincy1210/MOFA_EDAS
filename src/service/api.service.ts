@@ -23,7 +23,18 @@ export class ApiService {
 
   //Company/RegisterCompany
 
-  constructor(private http: HttpClient, private json: AppConfigService) {}
+  // setHttpOptions() {
+  //   const bearerToken = this.getCookie("Bearer");
+  //   httpOptions = {
+  //     headers: new HttpHeaders({
+  //       Authorization: "Bearer " + bearerToken,
+  //     }),
+  //   };
+  // }
+
+  constructor(private http: HttpClient, private json: AppConfigService) {
+    
+  }
 
   get(servicename: any) {
     return this.http
@@ -41,20 +52,23 @@ export class ApiService {
       .post(this.baseURL + servicename, data, header)
       .pipe(catchError(this.handleError));
   }
-  sPassAuthGetUserprofile(param1: any, param3: any) {
-    const email = encodeURIComponent(param3.trim());
-    let email2 = encodeURIComponent(email);
+  // sPassAuthGetUserprofile(param1: any, param3: any) {
+  //   const email = encodeURIComponent(param3.trim());
+  //   let email2 = encodeURIComponent(email);
 
-    console.log(email);
-    console.log(email2);
+  //   console.log(email);
+  //   console.log(email2);
+  //   let data={
+  //     "Code":param1,"Email":email2
+  //   }
 
-    let Url =
-      this.baseURL +
-      `Common/CheckUAEPassLogin?sAuthCode=${param1}&sEmail=${email2}`;
-    console.log(Url);
+  //   // let Url =this.baseURL +`Common/CheckUAEPassLogin?sAuthCode=${param1}&sEmail=${email2}`;
+  //   let Url =this.baseURL +`Common/CheckUAEPassLogin`;
 
-    return this.http.get(Url, this.headerOptions);
-  }
+  //   console.log(Url);
+
+  //   return this.http.post(Url,data, this.headerOptions).pipe(catchError(this.handleError));
+  // }
 
   handleError(error: HttpErrorResponse) {
     console.log('error');

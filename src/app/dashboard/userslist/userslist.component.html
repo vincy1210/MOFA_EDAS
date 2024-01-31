@@ -13,7 +13,7 @@
         <!-- table starts here -->
 
            
-        <p-table [(selection)]="selectedAttestations"  [resizableColumns]="true" dataKey="edasattestno"  [scrollable]="true"   selectionMode="multiple"
+        <p-table   [resizableColumns]="true" dataKey="edasattestno"  [scrollable]="true"   selectionMode="multiple"
         #tableref [rowHover]="true" [paginator]="true" currentPageReportTemplate="{{'Showing' | translate}} {first} {{'to' | translate}} {last} {{'of' | translate}} {totalRecords} {{'entries' | translate}}" [filterDelay]="0"
         [totalRecords]="totalrecords"
         [value]="list"
@@ -34,7 +34,7 @@
               <div style="padding: 5px;" class="col-md-3 col-lg-3 col-sm-6">
                       <mat-form-field class="searchboxinput" >
                         <mat-label><mat-icon style="font-size:larger;">search</mat-icon> {{'SearchKeyword' | translate}}</mat-label>
-                        <input   matInput type="text" (input)="tableref.filterGlobal($any($event.target).value, 'contains')" placeholder="{{'SearchKeyword' | translate}}">
+                        <input appTrimInput   matInput type="text" (input)="tableref.filterGlobal($any($event.target).value, 'contains')" placeholder="{{'SearchKeyword' | translate}}">
                       </mat-form-field>
               </div>
            
@@ -64,8 +64,10 @@
     
          
         </p-toolbar>
-        <tr>
-          <td colspan="12">
+        <!-- <tr>
+          <td colspan="12"> -->
+            <div style="padding-top: 10px;">
+
             <div class="alert alert-success flex" role="alert">
               <span
                 class="glyphicon glyphicon-exclamation-sign"
@@ -81,8 +83,9 @@
 
               </p>
             </div>
-          </td>
-        </tr>
+            </div>
+          <!-- </td>
+        </tr> -->
           
           
         </ng-template>
@@ -183,7 +186,7 @@
     <p>
         <mat-form-field appearance="outline">
           <mat-label>{{'Company' | translate}}</mat-label>
-          <input  matInput formControlName="company" readonly [disabled]="true" name="company" placeholder="{{'Enter Company Name' | translate}}">
+          <input appTrimInput  matInput formControlName="company" readonly [disabled]="true" name="company" placeholder="{{'Enter Company Name' | translate}}">
         </mat-form-field>
       </p>
       <div style="display: flex; justify-content: space-between; ">
@@ -191,31 +194,20 @@
           <mat-form-field  appearance="outline">
             <mat-label>{{'User Name' | translate}}</mat-label>
           <mat-hint>{{'Enter your user name as on Emirates ID' | translate}}</mat-hint>
-            <input  matInput maxlength="200" placeholder="{{'Enter User Name' | translate}}"  formControlName="username" name="username">
+            <input appTrimInput  matInput maxlength="200" placeholder="{{'Enter User Name' | translate}}"  formControlName="username" name="username">
           <mat-error *ngIf="form.get('username')?.hasError('required')"> {{'User Name is required' | translate }} </mat-error>
           <mat-error *ngIf="form.get('username')?.hasError('pattern')"> {{'User Name is required' | translate }} </mat-error>
 
 
           </mat-form-field>
         </div>
-       
-        <div style="flex: 1; margin-top: 1rem;">
-
-          <mat-radio-group formControlName="gender" name="gender" aria-label="Gender?"> 
-            <mat-label style="font-weight: 600;">{{'Gender' | translate }}</mat-label> &nbsp; &nbsp; &nbsp; 
-  
-              <mat-radio-button  value="Male">{{'Male' | translate }}</mat-radio-button>&nbsp;
-              <mat-radio-button value="Female">{{'Female' | translate }}</mat-radio-button>
-              <mat-error class="error" *ngIf="form.get('gender')?.hasError('required') && radiochosenornot ">{{'Please select the option'| translate }}</mat-error>
-  
-            </mat-radio-group>
-        </div>
+      
       </div>
     <div style="display: flex;">
       <div style="flex: 1; padding-right: 10px;">
         <mat-form-field style="width: 100%;" class="example-full-width">
           <mat-label>{{'Email ID' | translate}}</mat-label>
-          <input maxlength="100" matInput placeholder="{{'Enter Email ID' | translate}}" name="emailaddress" formControlName="emailaddress">
+          <input appTrimInput maxlength="100" matInput placeholder="{{'Enter Email ID' | translate}}" name="emailaddress" formControlName="emailaddress">
           <mat-error *ngIf="form.get('emailaddress')?.hasError('required')"> {{'Email ID is required' | translate }} </mat-error>
           <mat-error *ngIf="form.get('emailaddress')?.hasError('email')"> {{'Invalid Email ID' | translate }} </mat-error>
 
@@ -228,7 +220,7 @@
         <mat-form-field style="width: 100%;" class="example-full-width">
          
           <mat-label>{{'mobilenumber' | translate }} </mat-label>
-          <input matInput   autocomplete="off" maxlength="9" formControlName="mobilenumber" name="mobilenumber" type="tel" placeholder="55 1234 567" (input)="onInput($event)">
+          <input appTrimInput matInput   autocomplete="off" maxlength="9" formControlName="mobilenumber" name="mobilenumber" type="tel" placeholder="55 1234 567" (input)="onInput($event)">
           <span matPrefix>+971&nbsp;</span>
 
           <mat-error *ngIf="!(form.get('mobilenumber')?.hasError('minlength')|| form.get('mobilenumber')?.hasError('maxlength'))&&form.get('mobilenumber')?.hasError('pattern')"> {{'Invalid Mobile Number' | translate }} </mat-error>
@@ -263,6 +255,7 @@
         <mat-select formControlName="accessprofile" name="accessprofile" multiple>
           <mat-option *ngFor="let accessprofile of accessprofileList" [value]="accessprofile">{{accessprofile}}</mat-option>
         </mat-select>
+        <mat-error *ngIf="form.get('accessprofile')?.hasError('required')"> {{'Access profile is required' | translate }} </mat-error>
       </mat-form-field>
     </p>
  
@@ -289,10 +282,10 @@
 <br>
 <br>
     <div *ngIf="dialogTitle == 'Edit User'" class="grid grid-cols-1 edit_footer">
-      <div > <small>{{'Created on' | translate}} <strong>{{createdtime.date}}</strong> {{'at' | translate}} <strong>{{createdtime.time}} </strong>  {{'by' | translate}} {{createdby}}</small>
+      <div > <small>{{'Created on' | translate}} <strong>{{createdtime?.date}}</strong> {{'at' | translate}} <strong>{{createdtime?.time}} </strong> <span *ngIf="createdby">{{'by' | translate}} {{createdby}}</span>  </small>
         <span  *ngIf="last_modifiedby!=''">
 <br>
-         <small>{{'Last Updated on' | translate}} <strong>{{last_modifiedtime.date}}</strong> {{'at' | translate}} <strong>{{last_modifiedtime.time}} </strong>  {{'by' | translate}} {{last_modifiedby}}</small><br> </span>
+         <small>{{'Last Updated on' | translate}} <strong>{{last_modifiedtime?.date}}</strong> {{'at' | translate}} <strong>{{last_modifiedtime?.time}} </strong>  {{'by' | translate}} {{last_modifiedby}}</small><br> </span>
        </div>
     </div>
   </ng-template>
@@ -302,3 +295,7 @@
   <p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
 
 <!-- modal ends here -->
+
+<div>
+  <app-pdf-export [pdfPayload]="pdfPayload"></app-pdf-export>
+</div>

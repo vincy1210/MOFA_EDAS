@@ -1,7 +1,10 @@
-.labelandddl {
-  display: inherit;
-}
 
 .cursror {
   cursor: pointer;
+}
+
+
+
+.border-top {
+  border-top: 1px solid rgb(227, 228, 230);
 }

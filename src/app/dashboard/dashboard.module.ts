@@ -35,7 +35,12 @@ import { CompanyProfileComponent } from './company-profile/company-profile.compo
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AuthGuard } from '../auth.guard';
 import { MatButtonModule } from '@angular/material/button';
+import { PdfExportComponent } from './pdf-export/pdf-export.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { GlossaryComponent } from './glossary/glossary.component';
 
+ import { MatCardModule } from '@angular/material/card';
+ import { MatExpansionModule } from '@angular/material/expansion';
 
 
 const routes: Routes = [
@@ -54,10 +59,26 @@ const routes: Routes = [
   {
     path: 'payall',
     component: PayallComponent,
+    data: { role: ['Admin', 'User'], name: 'payall' },
+    canActivate: [AuthGuard],
   },
   {
     path: 'companyprofile',
     component: CompanyProfileComponent,
+    data: { role: ['Admin', 'User'], name: 'companyprofile' },
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'userprofile',
+    component: UserProfileComponent,
+    data: { role: ['Admin', 'User'], name: 'userprofile' },
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'glossary',
+    component: GlossaryComponent,
+    data: { role: ['Admin', 'User'], name: 'glossary' },
+    canActivate: [AuthGuard],
   },
 ];
 
@@ -68,10 +89,11 @@ const routes: Routes = [
     UserslistComponent,
     PhoneMaskDirective,
     EidFormatterPipe,
-    CompanyProfileComponent
+    CompanyProfileComponent, PdfExportComponent, UserProfileComponent, GlossaryComponent
     
   ],
   imports: [
+    MatCardModule,
     MatButtonModule,
     RouterModule.forChild(routes),
     MatProgressSpinnerModule,
@@ -97,7 +119,7 @@ const routes: Routes = [
     MatInputModule,
     MatListModule,
     MatIconModule,
-    NgxEchartsModule,
+    NgxEchartsModule,MatExpansionModule,
     NgxEchartsModule.forRoot({
       echarts,
     }),

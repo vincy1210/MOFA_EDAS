@@ -1,0 +1,67 @@
+<!-- <app-loader></app-loader> -->
+<div>
+    <div class="grid grid-cols-1" color="primary" class="page-header">
+   <h3>
+    <ng-container >{{
+        "Region-wise Import Details" | translate
+      }}</ng-container>
+   </h3>
+    </div>
+    <div class="datefilter">
+      <div class="grid grid-cols-2 px-5 py-3">
+        <div style="padding: 15px;">
+          <mat-form-field class="filter_datepicker_rpt">
+            <mat-label>{{ "Start Date" | translate }}</mat-label>
+            <input
+              matInput readonly="true" (dateChange)="handleDateChange($event, 'from')"
+              [matDatepicker]="decDatepicker1"
+              [max]="todayModel"
+              [(ngModel)]="oneMonthAgo"
+              placeholder="From"
+              name="createdatefrom"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="decDatepicker1"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #decDatepicker1></mat-datepicker>
+          </mat-form-field>
+        </div>
+  
+        <div  style="padding: 15px;">
+          <mat-form-field class="filter_datepicker_rpt">
+            <mat-label>{{ "End Date" | translate }}</mat-label>
+            <input readonly="true"
+              matInput readonly="true" (dateChange)="handleDateChange($event, 'to')"
+              [matDatepicker]="decDatepicker2"
+              [min]="oneMonthAgo"
+              [max]="today"
+              placeholder="To"
+              [(ngModel)]="todayModel"
+              name="createdateto"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="decDatepicker2"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #decDatepicker2></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div>
+  
+        </div>
+  
+      </div>
+  </div>
+  <br>
+
+    <div >
+      <div >
+        <div class="myreginonmap">
+          <google-chart [data]="geoChart"></google-chart>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  
