@@ -283,7 +283,7 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
     const rows = event?.rows ? event?.rows : 0;
     this.selectedFilterOption.startnum = startnum;
     this.selectedFilterOption.rows = rows;
-    this.selectedFilterOption.uuid = '12223';
+    this.selectedFilterOption.uuid = this.uuid;
     // event.globalFilter = "";
     this.globalFilter = event.globalFilter;
     this.sortFilter = {
@@ -321,10 +321,10 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
           let data2 = sessionStorage.getItem('lcauserdetails');
           if (data2 != undefined || data2 != null) {
             let lcauserdetails = JSON.parse(data2);
-            const itemname = lcaList.find(
+            const itemcode = lcaList.find(
               (m) => m.itemno === lcauserdetails?.lcauno
-            )?.itemname;
-            this.LCACode = itemname;
+            )?.itemcode;
+            this.LCACode = itemcode;
           }
         }
       },
@@ -360,10 +360,22 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
           Remarks,
         ] = row;
         if (index != 0 && RequestNo) {
-          const RequestDate1 = this.common.excelDateToJSDate(RequestDate);
-          const DeclarationDate1 =
+          let RequestDate11 = this.common.excelDateToJSDate(RequestDate);
+          let DeclarationDate11 =
             this.common.excelDateToJSDate(DeclarationDate);
-          const InvoiceDate1 = this.common.excelDateToJSDate(InvoiceDate);
+          let InvoiceDate11 = this.common.excelDateToJSDate(InvoiceDate);
+          const RequestDate1 = this.common.splitdatetime3(
+            `${RequestDate11}`,
+            'DD/MM/YY'
+          );
+          const DeclarationDate1 = this.common.splitdatetime3(
+            `${DeclarationDate11}`,
+            'DD/MM/YY'
+          );
+          const InvoiceDate1 = this.common.splitdatetime3(
+            `${InvoiceDate11}`,
+            'DD/MM/YY'
+          );
           const error = {
             LCACode: this.LCACode,
             TradelicenceNo: TradelicenceNo,
@@ -635,7 +647,7 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
       allRequestData.push({
         requestNo: RequestNo,
         requestDate: row1.RequestDate,
-        lcaCode: row1.LCACode.replace('LCA ', ''),
+        lcaCode: row1.LCACode, //.replace('LCA ', ''),
         requestDetails: {}, //[]
       });
     });
@@ -693,10 +705,11 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
 
   submitLcaDatas(allRequestData: any[]) {
     // console.log('allRequestData: ', allRequestData);
+    // return;
     // this.common.showSuccessMessage('Submit data Inprogress');
     let resp;
     const payload = {
-      uuid: '111',
+      uuid: this.uuid,
       requestjson: allRequestData,
     };
     this.loading = true;
