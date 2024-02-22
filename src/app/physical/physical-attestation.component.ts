@@ -130,6 +130,8 @@ paymentcount=environment.appdetails.payment_count;
     }
     else{
        this.common.setlogoutreason("session");
+       console.log("from phyattest")
+
       this.auth.logout();
 
     }

@@ -158,6 +158,8 @@ this.form = this.fb.group({
     }
     else{
        this.common.setlogoutreason("session");
+       console.log("from cooinreview")
+
       this.auth.logout();
      
     }

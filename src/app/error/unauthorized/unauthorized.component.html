@@ -1,1 +1,76 @@
-<p>unauthorized works!</p>
+<div
+  class="main-panel pageNotFound-window flex items-center justify-center text-center"
+>
+  <div class="content-wrapper error-page pt-5">
+    <div class="row flex-grow">
+      <div class="col-lg-7 mx-auto">
+        <div class="row items-center flex-row">
+          <ng-container *ngIf="statusCode === '404'">
+            <div class="grid grid-cols-1">
+              <div class="text-center">
+                  <div class="four_zero_four_bg">
+                      <h1 class="text-center ">404</h1>
+                      <div class="contant_box_404">
+                          <h3>
+                          Looks like you're lost
+                          </h3>
+      
+                          <p>The page you are looking for is not available!</p>
+      
+      
+                          <button mat-flat-button color="primary" class="ma-20" routerLink="/registration">Go to Home</button>
+                      </div>
+      
+                  </div>
+                  <div class="text-center">
+                      <img src="./assets/img/error05.jpg" alt="error-img" class="error-img">
+                  </div>
+      
+      
+                  </div>
+                  <div>
+      
+          </div>
+          </div>
+          </ng-container>
+          <ng-container *ngIf="statusCode === '400'">
+            <div class="col-lg-6 text-lg-right pr-lg-4">
+              <h2 class="text-6xl mb-0 color-changing-element">400</h2>
+            </div>
+            <div class="col-lg-6 error-page-divider text-lg-left pl-lg-4">
+              <h2 class="text-3xl font-bold">
+                {{ "label.sorry" | translate }}
+              </h2>
+              <h3 class="text-xl font-light">
+                {{ "label.statusCode400" | translate }}
+              </h3>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="statusCode === '500'">
+            <div class="col-lg-6 text-lg-right pr-lg-4">
+              <h2 class="text-6xl mb-0 color-changing-element">500</h2>
+            </div>
+            <div class="col-lg-6 error-page-divider text-lg-left pl-lg-4">
+              <h2 class="text-3xl font-bold">
+                {{ "label.sorry" | translate }}
+              </h2>
+              <h3 class="text-xl font-light">
+                {{ "label.statusCode500" | translate }}
+              </h3>
+            </div>
+          </ng-container>
+        </div>
+        <div class="row mt-5">
+          <div class="col-3 text-center mt-8 xl:mt-2">
+
+            <button mat-flat-button color="primary" (click)="redirectToHome()">
+                {{'Home' | translate}}
+              </button>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

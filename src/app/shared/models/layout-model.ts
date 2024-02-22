@@ -104,65 +104,65 @@ export abstract class LayoutModel implements OnDestroy {
   // }
 
   // siteAnalyticsData, call from abstract class
-  siteAnalyticsData(payload: { action: string }) {
-    let data = {
-      action: payload.action,
-      timespend: 10,
-    };
-    this.onSaveSiteAnalyticsData(data);
-  }
+  // siteAnalyticsData(payload: { action: string }) {
+  //   let data = {
+  //     action: payload.action,
+  //     timespend: 10,
+  //   };
+  //   this.onSaveSiteAnalyticsData(data);
+  // }
 
-  onSaveSiteAnalyticsData(payload: { action: string }) {
-    this.pageEndTime = new Date();
-    this.calculateTimeSpent();
-    // const { device, isDesktop, isTablet, isMobile } = this.common;
-    const { url } = this.router;
-    let url1 = url;
-    if (payload.action === ActionConstants.destroy) {
-      url1 = this.previousUrl;
-    }
-    // let data = {
-    //   // uuid: uuid,
-    //   // companyuno: companyuno,
-    //   pagename: this.common.allPagesDetails(url1.replace("/", ""))?.menu, //payload.pagename,
-    //   action: payload.action,
-    //   browser: device?.browser,
-    //   language: this.translate.currentLang,
-    //   timespend: this.timeSpentOnPage,
-    // };
-    // this.siteAnalyticsDataList.push(data);
-  }
+  // onSaveSiteAnalyticsData(payload: { action: string }) {
+  //   this.pageEndTime = new Date();
+  //   this.calculateTimeSpent();
+  //   // const { device, isDesktop, isTablet, isMobile } = this.common;
+  //   const { url } = this.router;
+  //   let url1 = url;
+  //   if (payload.action === ActionConstants.destroy) {
+  //     url1 = this.previousUrl;
+  //   }
+  //   // let data = {
+  //   //   // uuid: uuid,
+  //   //   // companyuno: companyuno,
+  //   //   pagename: this.common.allPagesDetails(url1.replace("/", ""))?.menu, //payload.pagename,
+  //   //   action: payload.action,
+  //   //   browser: device?.browser,
+  //   //   language: this.translate.currentLang,
+  //   //   timespend: this.timeSpentOnPage,
+  //   // };
+  //   // this.siteAnalyticsDataList.push(data);
+  // }
 
   ngOnDestroy() {
     // this.timerSubscription.unsubscribe();
-    this.siteAnalyticsData({ action: ActionConstants.destroy });
-    this.onSaveSiteAnalytics();
+    // this.siteAnalyticsData({ action: ActionConstants.destroy });
+    // this.onSaveSiteAnalytics();
   }
 
-  private calculateTimeSpent() {
-    const diff = this.pageEndTime.getTime() - this.pageStartTime.getTime();
-    this.timeSpentOnPage = Math.floor(diff / 1000); // Convert to seconds
-  }
+  // private calculateTimeSpent() {
+  //   const diff = this.pageEndTime.getTime() - this.pageStartTime.getTime();
+  //   this.timeSpentOnPage = Math.floor(diff / 1000); // Convert to seconds
+  // }
 
-  onSaveSiteAnalytics() {
-    this.saveSiteAnalytics();
-  }
+  // onSaveSiteAnalytics() {
+  //   this.saveSiteAnalytics();
+  // }
 
-  saveSiteAnalytics() {
-    // this.loading = true;
-    const { uuid, companyuno } = this.selectedFilterGeneric;
-    const data = {
-      uuid: uuid,
-      companyuno: companyuno,
-      json: this.siteAnalyticsDataList,
-    };
-    const getLists = this.consts.saveSiteAnalytics;
-    this.apiservice.post(getLists, data).subscribe((response: any) => {
-      // this.loading = false;
-      const dictionary = response;
-      if (`${dictionary.responsecode}` === "1") {
-        this.siteAnalyticsDataList = [];
-      }
-    });
-  }
+  // saveSiteAnalytics() {
+  //   // this.loading = true;
+  //   const { uuid, companyuno } = this.selectedFilterGeneric;
+  //   const data = {
+  //     uuid: uuid,
+  //     companyuno: companyuno,
+  //     json: this.siteAnalyticsDataList,
+  //   };
+  //   const getLists = this.consts.saveSiteAnalytics;
+  //   this.apiservice.post(getLists, data).subscribe((response: any) => {
+  //     // this.loading = false;
+  //     const dictionary = response;
+  //     if (`${dictionary.responsecode}` === "1") {
+  //       this.siteAnalyticsDataList = [];
+  //     }
+  //   });
+  // }
 }

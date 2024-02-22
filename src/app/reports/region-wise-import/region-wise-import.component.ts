@@ -112,6 +112,8 @@ today: Date = new Date();
     }
     else{
        this.common.setlogoutreason("session");
+       console.log("from region")
+
       this.auth.logout();
     }
   }
@@ -121,7 +123,7 @@ today: Date = new Date();
   
   
     this.onClickFilterOptionDate(false);
-    this.siteAnalyticsData({ action: ActionConstants.load });
+    // this.siteAnalyticsData({ action: ActionConstants.load });
 
     let rowList: any[] = [["Country", "Counts"]];
     this.refreshGeoChart(rowList);

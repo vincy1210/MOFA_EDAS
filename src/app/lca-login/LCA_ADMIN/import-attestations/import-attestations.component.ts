@@ -108,6 +108,8 @@ currentLanguagecode: string='1033';
       this.uuid = data11.Data.uuid;
     } else {
       this.common.setlogoutreason('session');
+      console.log("from import attest")
+
       this.auth.logout();
     }
 
@@ -249,7 +251,7 @@ currentLanguagecode: string='1033';
       this.selectedFilterOption.Startdate.getDate() - 30
     );
     // this.onClickFilterOptionDate(false);
-    this.siteAnalyticsData({ action: ActionConstants.load });
+    // this.siteAnalyticsData({ action: ActionConstants.load });
     this.lcaDataList();
   }
 
@@ -553,7 +555,7 @@ currentLanguagecode: string='1033';
   }
 
   openDialogAdd() {
-    this.siteAnalyticsData({ action: ActionConstants.addcompany });
+    // this.siteAnalyticsData({ action: ActionConstants.addcompany });
     const dialogRef =
       this.modalPopupService.openPopup<ImportAttestationsCreateComponent>(
         ImportAttestationsCreateComponent,

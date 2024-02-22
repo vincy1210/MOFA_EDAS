@@ -203,6 +203,7 @@ export class AppComponent {
         this.userloggedin = false;
         this.lcauserloggedin = false;
         this.common.setlogoutreason('session');
+        console.log("from appcomponent")
         this.auth.logout();
 
         //not clearing session here

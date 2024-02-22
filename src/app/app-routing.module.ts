@@ -9,7 +9,12 @@ import { PaymentinfoComponent } from './paymentinfo/paymentinfo.component';
 import { ErrorComponent } from './error/error.component';
 import { AuthGuard } from './auth.guard';
 import { RoleGuard } from './role.guard';
-import { UnauthorizedComponent } from './error/unauthorized/unauthorized.component';
+// import {
+//   Error400Component,
+//   Error500Component,
+//   PageErrorHandleComponent,
+// } from "src/app/shared/components/page-error-handle/page-error-handle.component";
+import { UnauthorizedComponent, Error400Component, Error500Component } from './error/unauthorized/unauthorized.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { FinedetailsComponent } from './finedetails/finedetails.component';
 // import { PdfExportComponent } from './shared/components/pdf-export/pdf-export.component';
@@ -91,7 +96,18 @@ const routes: Routes = [
   }
   ,
   { path: 'unauthorized', component: UnauthorizedComponent },
-  { path: '**', component: PageNotFoundComponent },
+  { path: 'PageNotFound', component: PageNotFoundComponent },
+  
+      {
+        path: "error-400",
+        component: Error400Component,
+        data: { name: "error-400" },
+      },
+      {
+        path: "error-500",
+        component: Error500Component,
+        data: { name: "error-500" },
+      }
 ];
 
 @NgModule({

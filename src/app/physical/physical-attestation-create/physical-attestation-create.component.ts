@@ -92,6 +92,8 @@ export class PhysicalAttestationCreateComponent implements OnInit {
     }
     else{
        this.common.setlogoutreason("session");
+       console.log("from physi attest create")
+
       this.auth.logout();
 
     }

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Injectable } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -84,19 +84,25 @@ const RECAPTCHA_V2_DUMMY_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TabViewModule } from 'primeng/tabview';
 import { AuthGuard } from './auth.guard';
-import { UnauthorizedComponent } from './error/unauthorized/unauthorized.component';
+// import { UnauthorizedComponent } from './error/unauthorized/unauthorized.component';
+import { UnauthorizedComponent, Error400Component, Error500Component } from './error/unauthorized/unauthorized.component';
+
 import { MatDialogModule } from '@angular/material/dialog';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { FinedetailsComponent } from './finedetails/finedetails.component';
 import { PdfExportComponent } from './shared/components/pdf-export/pdf-export.component';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginatorModule, MatPaginatorIntl } from '@angular/material/paginator';
 import { TrimInputDirective } from './trim-input.directive';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TimingInterceptor } from '../assets/BasicAuthInterceptor'
+import {Subject} from 'rxjs';
+import { MyCustomPaginatorIntl } from 'src/service/matinternationalization';
 
 
 // import { PdfExportComponent } from './shared/components/pdf-export/pdf-export.component';
+
+
 
 // Define the custom date format
 const customDateFormats: MatDateFormats = {
@@ -122,7 +128,7 @@ const customDateFormats: MatDateFormats = {
     AttestationWorkflowComponent,
     LoginComponent,
     PaymentinfoComponent,
-    UnauthorizedComponent,
+    UnauthorizedComponent, Error400Component, Error500Component,
     PageNotFoundComponent,
     FinedetailsComponent,
     TrimInputDirective,
@@ -192,6 +198,7 @@ const customDateFormats: MatDateFormats = {
     MatDialogModule,MatAutocompleteModule, MatPaginatorModule
   ],
   providers: [
+    {provide: MatPaginatorIntl, useClass: MyCustomPaginatorIntl},
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TimingInterceptor,
@@ -237,3 +244,4 @@ export class AppModule {}
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/');
 }
+

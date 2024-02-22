@@ -61,7 +61,7 @@ export class ConstantsService {
   getDailyStatistics = 'dashboard/getDailyStatistics';
   getWeeklyStatistics = 'dashboard/getWeeklyStatistics';
   getMonthlyStatistics = 'dashboard/getMonthlyStatistics';
-  saveSiteAnalytics = '/dashboard/saveSiteAnalytics';
+  saveSiteAnalytics = 'dashboard/saveSiteAnalytics';
   getLCAStatistics = 'dashboard/getLCAStatistics';
 
   // this.consts.getDailyStatistics: filterType === "weekly"? this.consts.getWeeklyStatistics: this.consts.getMonthlyStatistics;

@@ -283,9 +283,7 @@ export class AttestationComponent implements OnInit {
       { field: 'attestreqdate', header: 'Created', width: '200px' },
       { field: 'lcaname', header: 'Channel', width: '15%' },
     ];
-    this.cols = [
-      { field: 'companyname', header: this.translate.instant('Company'), width: '20%' },
-    ];
+    this.cols = this.cols_xl;
 
     this.cols_ = [
       // { field: 'coorequestno', header: 'Request No.' },
@@ -324,18 +322,18 @@ export class AttestationComponent implements OnInit {
       // { field: 'lcaname', header: 'Channel', width: '15%' },
     ];
 
-    this._selectedColumns = this.cols.filter((c:any,index:any) => index < 0);
+    // this._selectedColumns = this.cols.filter((c:any,index:any) => index < 0);
     //this.cols;
   }
 
-  @Input() get selectedColumns(): any[] {
-    return this._selectedColumns;
-  }
+  // @Input() get selectedColumns(): any[] {
+  //   return this._selectedColumns;
+  // }
 
-  set selectedColumns(val: any[]) {
-    //restore original order
-    this._selectedColumns = this.cols.filter((col: any, index:any) => val.includes(col));
-  }
+  // set selectedColumns(val: any[]) {
+  //   //restore original order
+  //   this._selectedColumns = this.cols.filter((col: any, index:any) => val.includes(col));
+  // }
 
   filterField(row: any, filter: any) {
     //   let isInFilter = false;

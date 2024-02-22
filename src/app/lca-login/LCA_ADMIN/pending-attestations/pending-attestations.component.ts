@@ -97,6 +97,8 @@ export class PendingAttestationsComponent
     }
     else{
        this.common.setlogoutreason("session");
+       console.log("from pending attest")
+
       this.auth.logout();
     }
     
@@ -239,7 +241,7 @@ export class PendingAttestationsComponent
       this.selectedFilterOption.Startdate.getDate() - 30
     );
     // this.onClickFilterOptionDate(false);
-    this.siteAnalyticsData({ action: ActionConstants.load });
+    // this.siteAnalyticsData({ action: ActionConstants.load });
     this.getCompanyList();
   }
 

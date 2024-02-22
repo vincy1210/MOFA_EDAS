@@ -122,6 +122,11 @@ $uaemofa-lime-theme: mat.define-light-theme(
 
 // theme-green
 .theme-green {
+
+  .bg-yellow-db {
+    border: 1px solid var(--green-color);
+  }
+
   .mat-accordion .mat-expansion-panel-header.mat-expanded {
     border-left: 5px solid var(--green-color) !important;
 }
@@ -388,6 +393,10 @@ $uaemofa-lime-theme: mat.define-light-theme(
 
 // theme-red
 .theme-red {
+
+  .bg-yellow-db {
+    border: 1px solid var(--red-color);
+  }
 
   .mat-accordion .mat-expansion-panel-header.mat-expanded {
     border-left: 5px solid var(--red-color) !important;
@@ -657,6 +666,10 @@ $uaemofa-lime-theme: mat.define-light-theme(
 
 // theme-red
 .theme-grey {
+
+  .bg-yellow-db {
+    border: 1px solid var(--red-color);
+  }
 
   .mat-accordion .mat-expansion-panel-header.mat-expanded {
     border-left: 5px solid var(--grey-color) !important;

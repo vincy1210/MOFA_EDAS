@@ -203,7 +203,7 @@ export class LcaSettlementsReportsComponent
     );
     this.onClickFilterOptionDate(false);
     this.lcaDataList();
-    this.siteAnalyticsData({ action: ActionConstants.load });
+    // this.siteAnalyticsData({ action: ActionConstants.load });
   }
 
   onClickFilterOptionDate(fromHtml: boolean) {
@@ -524,7 +524,7 @@ export class LcaSettlementsReportsComponent
   }
 
   loadsidepanel(row: any, action: 'view' | 'download') {
-    this.siteAnalyticsData({ action: ActionConstants.workflowview });
+    // this.siteAnalyticsData({ action: ActionConstants.workflowview });
     this.fileContentEncode = undefined;
     row.companyattestationenums = CompanyAttestationEnums.Company;
     this.selectedRows = [row];

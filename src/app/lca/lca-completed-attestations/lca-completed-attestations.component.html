@@ -26,7 +26,7 @@
           [totalRecords]="totalrecords"
           [value]="list"
           [rows]="10"
-          [columns]="selectedColumns"
+          [columns]="cols"
           [showCurrentPageReport]="true"
           [rowsPerPageOptions]="[10, 20, 50]"
           [loading]="loading"
@@ -52,10 +52,10 @@
               <ng-template pTemplate="left">
                 <div style="padding: 5px" class="col-md-3 col-lg-3 col-sm-6">
                   <mat-form-field class="searchboxinput">
-                    <mat-label
+                    <!-- <mat-label
                       ><mat-icon style="font-size: larger">search</mat-icon>
                       {{ "SearchKeyword" | translate }}</mat-label
-                    >
+                    > -->
                     <input appTrimInput
                       matInput
                       type="text"
@@ -197,7 +197,7 @@
           </ng-template>
           <ng-template pTemplate="header" let-columns>
             <tr>
-              <th pSortableColumn="edasattestno">
+              <!-- <th pSortableColumn="edasattestno">
                 {{ "edasattestno" | translate }}
                 <p-sortIcon field="edasattestno"></p-sortIcon>
               </th>
@@ -236,7 +236,7 @@
               <th pSortableColumn="lcaname">
                 {{ "Channel" | translate }}
                 <p-sortIcon field="attestreqdate"></p-sortIcon>
-              </th>
+              </th> -->
 
               <th
                 *ngFor="let col of columns"
@@ -308,9 +308,9 @@
                 <span class="image-text">{{ customer.lcaname }}</span>
               </td>
               <!-- <td><span class="image-text">{{customer.companyname}}</span></td> -->
-              <td *ngFor="let col of columns">
+              <!-- <td *ngFor="let col of columns">
                 {{ customer[col.field] }}
-              </td>
+              </td> -->
 
               <td pFrozenColumn alignFrozen="right">
                 <span

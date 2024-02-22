@@ -159,6 +159,8 @@ showBackButton: boolean = false;
     }
     else{
        this.common.setlogoutreason("session");
+       console.log("from phy pendin")
+
       this.auth.logout();
 
     }

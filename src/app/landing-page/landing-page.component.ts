@@ -1,17 +1,24 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Injectable, NgModule } from '@angular/core';
 import { CommonService } from 'src/service/common.service';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/service/api.service';
 import { ConstantsService } from 'src/service/constants.service';
 import { AuthService } from 'src/service/auth.service';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatPaginator, PageEvent, MatPaginatorIntl } from '@angular/material/paginator';
+import {Subject} from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
+
+
 
 @Component({
   selector: 'app-landing-page',
   templateUrl: './landing-page.component.html',
   styleUrls: ['./landing-page.component.css'],
 })
+
+
 export class LandingPageComponent implements OnInit {
+  
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 totalcount:any;
@@ -34,7 +41,7 @@ displaytext:string='';
     private router: Router,
     private apicall: ApiService,
     private consts: ConstantsService,
-    private auth: AuthService
+    private auth: AuthService, private translate:TranslateService
   ) {
 
     this.uuiddetails = this.common.getUserProfile();
@@ -46,12 +53,20 @@ displaytext:string='';
       this.uuid = uuid;
     } else {
       this.common.setlogoutreason('session');
+      console.log("from landingpage")
+
       this.auth.logout();
     }
     this.getcompanylist();
     
-    this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
+    this.oneMonthAgo.setMonth(this.today.getMonth() - 1);
   }
+
+
+
+
+
+
 
   ngOnDestroy(){
     // this.json=[{"pagename":"Menu.barchartreports","action":"Destroy","browser":"Chrome","timespend":1213}]
@@ -63,7 +78,7 @@ displaytext:string='';
   ngOnInit(): void {
 
    
-
+    // this.paginator._intl.itemsPerPageLabel = 'My translation for items per page.';
     // this.getcopyrightyear();
    
 

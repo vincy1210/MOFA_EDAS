@@ -98,6 +98,8 @@ export class CompletedAttestationsComponent
     }
     else{
        this.common.setlogoutreason("session");
+       console.log("from compattest")
+
       this.auth.logout();
     }
 
@@ -240,7 +242,7 @@ export class CompletedAttestationsComponent
       this.selectedFilterOption.Startdate.getDate() - 30
     );
     // this.onClickFilterOptionDate(false);
-    this.siteAnalyticsData({ action: ActionConstants.load });
+    // this.siteAnalyticsData({ action: ActionConstants.load });
     this.getCompanyList();
   }
 

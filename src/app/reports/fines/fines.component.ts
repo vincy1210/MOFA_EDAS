@@ -150,6 +150,8 @@ isButtonDisabled = false;
     }
     else{
        this.common.setlogoutreason("session");
+       console.log("from fines")
+
       this.auth.logout();
 
     }

@@ -93,6 +93,8 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
     else{
      
        this.common.setlogoutreason("session");
+       console.log("from completedcoorequest")
+
       this.auth.logout();
 
     }

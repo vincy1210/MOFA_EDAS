@@ -73,6 +73,8 @@ export class AttestationsComponent extends LayoutModel implements OnInit {
       uuid = data11.Data.uuid;
     } else {
       this.common.setlogoutreason('session');
+      console.log("from attestations")
+
       this.auth.logout();
     }
 
@@ -96,7 +98,7 @@ export class AttestationsComponent extends LayoutModel implements OnInit {
     );
     this.selectedFilterOption.uuid = '11122';
     this.getThemes1();
-    this.siteAnalyticsData({ action: ActionConstants.load });
+    // this.siteAnalyticsData({ action: ActionConstants.load });
   }
 
   getThemes1() {

@@ -234,7 +234,7 @@ bearer_token:string='';
     console.log('---------');
     this._activatedRoute.queryParams.subscribe((params: Params) => {
       // Access and capture the parameters here
-      this.param1 = params['code'];
+      this.param1 = params['code'] || params['Code'] || params['AuthenticationCode']; // AuthenticationCode
       this.param2 = params['lang'];
       this.param3 = params['email'];
 

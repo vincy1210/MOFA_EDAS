@@ -50,12 +50,12 @@
                 <ng-template pTemplate="left">
                   <div style="padding: 5px" class="col-md-3 col-lg-3 col-sm-6">
                     <mat-form-field class="searchboxinput">
-                      <mat-label
+                      <!-- <mat-label
                         ><mat-icon style="font-size: larger">
                           search
                         </mat-icon>
                         {{ "SearchKeyword" | translate }}</mat-label
-                      >
+                      > -->
                       <input
                         matInput
                         type="text"
@@ -187,13 +187,14 @@
                       class="glyphicon glyphicon-exclamation-sign"
                       aria-hidden="true"
                     ></span>
+                    <p>
                     <i class="fas fa-lightbulb light-bulb"></i>
                     COO Attestation Pending Request are shown in this list. COO payment is mandatory to pay the related Invoice Attestation request(s).
                     For Each Declaration Number from LCA; One COO will be created.
                     Once Payment is done; All related Invoice Attestation request(s) are enabled for payment.
                     You will be allowed to upload the COO document once the COO payment is done.
                     Uploading the COO document is as per the requirements of the client.
-
+                  </p>
                   </div>
                 </div>
                 <!-- </td>

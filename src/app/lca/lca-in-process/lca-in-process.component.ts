@@ -163,6 +163,8 @@ noOfInvoicesSelected_coo: any;
     }
     else{
        this.common.setlogoutreason("session");
+       console.log("from lcainprocess")
+
       this.auth.logout();
 
     }

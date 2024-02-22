@@ -111,6 +111,8 @@ export class DashboardComponent extends LayoutModel implements OnInit {
       this.uuid = uuid;
     } else {
       this.common.setlogoutreason('session');
+      console.log("from dashboard")
+
       this.auth.logout();
     }
 
@@ -136,7 +138,7 @@ export class DashboardComponent extends LayoutModel implements OnInit {
     this.onClickFilterOptionDate('daily');
     this.onClickFilterOptionDate('weekly');
     this.onClickFilterOptionDate('monthly');
-    this.siteAnalyticsData({ action: ActionConstants.load });
+    // this.siteAnalyticsData({ action: ActionConstants.load });
   }
 
   bindDataToDaily() {
