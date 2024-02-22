@@ -718,23 +718,22 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
       .post(this.consts.requestAttestationFromExcelImport, payload)
       .subscribe({
         next: (success: any) => {
-          this.common.hideLoading();
           this.loading = false;
+          this.common.hideLoading();
           resp = success;
           if (resp.responsecode == 1) {
             this.common.showSuccessMessage(
               this.translate.instant('Item_Created_Successfully')
             );
             this.excelLists = [];
-            this.loading = false;
           } else {
             this.common.showErrorMessage(
               this.translate.instant('something went wrong')
             );
-            this.loading = false;
           }
         },
         error: (error: any) => {
+          this.loading = false;
           this.common.hideLoading();
           this.common.showErrorMessage(
             this.translate.instant('something went wrong')
