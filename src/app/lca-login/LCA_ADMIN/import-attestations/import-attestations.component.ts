@@ -63,8 +63,8 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
   responsiveLayout: 'scroll' | 'stack' = 'scroll';
   issubmitvalid: boolean = false;
   LCACode: string = '';
-uuid:any;
-currentLanguagecode: string='1033';
+  uuid: any;
+  currentLanguagecode: string = '1033';
   constructor(
     public override router: Router,
     public override consts: ConstantsService,
@@ -88,24 +88,21 @@ currentLanguagecode: string='1033';
 
     let selectedlanguage = sessionStorage.getItem('language') || 'en';
 
-    if(selectedlanguage==='ar'){
-        this.currentLanguagecode='14337'
+    if (selectedlanguage === 'ar') {
+      this.currentLanguagecode = '14337';
+    } else {
+      this.currentLanguagecode = '1033';
     }
-    else{
-      this.currentLanguagecode='1033'
-
-    }
-   console.log(this.currentLanguagecode);
-
-   
+    console.log(this.currentLanguagecode);
   }
 
   ngOnInit(): void {
+    debugger;
     let data11 = this.common.getUserProfile();
     if (data11 != null || data11 != undefined) {
       data11 = JSON.parse(data11);
       console.log(data11.Data);
-      this.uuid = data11.Data.uuid;
+      // this.uuid = data11.Data.uuid;
     } else {
       this.common.setlogoutreason('session');
       this.auth.logout();
@@ -363,11 +360,7 @@ currentLanguagecode: string='1033';
           CompanyName,
           Remarks,
         ] = row;
-        if (
-          index != 0 &&
-          typeof RequestNo === 'string' &&
-          RequestNo.trim().length > 0
-        ) {
+        if (index != 0 && RequestNo) {
           const error = {
             LCACode: this.LCACode,
             TradelicenceNo: TradelicenceNo,
@@ -386,42 +379,28 @@ currentLanguagecode: string='1033';
           const Status: string = this.errorsChecker(error);
           this.excelLists.push({
             rowNum: index + 1,
-            LCACode:
-              typeof this.LCACode === 'string' ? this.LCACode.trim() : '',
-            RequestNo: typeof RequestNo === 'string' ? RequestNo.trim() : '',
-            RequestDate:
-              typeof RequestDate === 'string' ? RequestDate.trim() : '',
-            DeclarationNo:
-              typeof DeclarationNo === 'string' ? DeclarationNo.trim() : '',
-            DeclarationDate:
-              typeof DeclarationDate === 'string' ? DeclarationDate.trim() : '',
-            TradelicenceNo:
-              typeof TradelicenceNo === 'string' ? TradelicenceNo.trim() : '',
-            ConsigneeName:
-              typeof ConsigneeName === 'string' ? ConsigneeName.trim() : '',
-            EmailAddress:
-              typeof EmailAddress === 'string' ? EmailAddress.trim() : '',
-            ContactNo: typeof ContactNo === 'string' ? ContactNo.trim() : '',
-            DocType: typeof DocType === 'string' ? DocType.trim() : '',
-            ExpPortCode:
-              typeof ExpPortCode === 'string' ? ExpPortCode.trim() : '',
-            ExpPortName:
-              typeof ExpPortName === 'string' ? ExpPortName.trim() : '',
-            Mode: typeof Mode === 'string' ? Mode.trim() : '',
-            AttestationNo:
-              typeof AttestationNo === 'string' ? AttestationNo.trim() : '',
-            InvoiceDate:
-              typeof InvoiceDate === 'string' ? InvoiceDate.trim() : '',
-            InvoiceAmount:
-              typeof InvoiceAmount === 'string' ? InvoiceAmount.trim() : '',
-            InvoiceNo: typeof InvoiceNo === 'string' ? InvoiceNo.trim() : '',
-            InvoiceCurrency:
-              typeof InvoiceCurrency === 'string' ? InvoiceCurrency.trim() : '',
-            InvoiceId: typeof InvoiceId === 'string' ? InvoiceId.trim() : '',
-            CompanyName:
-              typeof CompanyName === 'string' ? CompanyName.trim() : '',
-            Remarks: typeof Remarks === 'string' ? Remarks.trim() : '',
-            Status: typeof Status === 'string' ? Status.trim() : '',
+            LCACode: this.LCACode ? this.LCACode : '',
+            RequestNo: RequestNo ? RequestNo : '',
+            RequestDate: RequestDate ? RequestDate : '',
+            DeclarationNo: DeclarationNo ? DeclarationNo : '',
+            DeclarationDate: DeclarationDate ? DeclarationDate : '',
+            TradelicenceNo: TradelicenceNo ? TradelicenceNo : '',
+            ConsigneeName: ConsigneeName ? ConsigneeName : '',
+            EmailAddress: EmailAddress ? EmailAddress : '',
+            ContactNo: ContactNo ? ContactNo : '',
+            DocType: DocType ? DocType : '',
+            ExpPortCode: ExpPortCode ? ExpPortCode : '',
+            ExpPortName: ExpPortName ? ExpPortName : '',
+            Mode: Mode ? Mode : '',
+            AttestationNo: AttestationNo ? AttestationNo : '',
+            InvoiceDate: InvoiceDate ? InvoiceDate : '',
+            InvoiceAmount: InvoiceAmount ? InvoiceAmount : '',
+            InvoiceNo: InvoiceNo ? InvoiceNo : '',
+            InvoiceCurrency: InvoiceCurrency ? InvoiceCurrency : '',
+            InvoiceId: InvoiceId ? InvoiceId : '',
+            CompanyName: CompanyName ? CompanyName : '',
+            Remarks: Remarks ? Remarks : '',
+            Status: Status ? Status : '',
           });
         }
       });
@@ -851,7 +830,7 @@ currentLanguagecode: string='1033';
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataList);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Risk Profile');
-    XLSX.writeFile(wb,  this.common.givefilename('lca-details') +'.xlsx');
+    XLSX.writeFile(wb, this.common.givefilename('lca-details') + '.xlsx');
   }
 
   // splitdatetime1(date: any) {
