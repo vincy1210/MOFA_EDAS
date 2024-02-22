@@ -360,16 +360,20 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
           Remarks,
         ] = row;
         if (index != 0 && RequestNo) {
+          const RequestDate1 = this.common.excelDateToJSDate(RequestDate);
+          const DeclarationDate1 =
+            this.common.excelDateToJSDate(DeclarationDate);
+          const InvoiceDate1 = this.common.excelDateToJSDate(InvoiceDate);
           const error = {
             LCACode: this.LCACode,
             TradelicenceNo: TradelicenceNo,
             ConsigneeName: ConsigneeName,
             DeclarationNo: DeclarationNo,
             RequestNo: RequestNo,
-            RequestDate: RequestDate,
-            DeclarationDate: DeclarationDate,
+            RequestDate: RequestDate1,
+            DeclarationDate: DeclarationDate1,
             AttestationNo: AttestationNo,
-            InvoiceDate: InvoiceDate,
+            InvoiceDate: InvoiceDate1,
             InvoiceAmount: InvoiceAmount,
             InvoiceNo: InvoiceNo,
             InvoiceCurrency: InvoiceCurrency,
@@ -380,9 +384,9 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
             rowNum: index + 1,
             LCACode: this.LCACode ? this.LCACode : '',
             RequestNo: RequestNo ? RequestNo : '',
-            RequestDate: RequestDate ? RequestDate : '',
+            RequestDate: RequestDate1 ? RequestDate1 : '',
             DeclarationNo: DeclarationNo ? DeclarationNo : '',
-            DeclarationDate: DeclarationDate ? DeclarationDate : '',
+            DeclarationDate: DeclarationDate1 ? DeclarationDate1 : '',
             TradelicenceNo: TradelicenceNo ? TradelicenceNo : '',
             ConsigneeName: ConsigneeName ? ConsigneeName : '',
             EmailAddress: EmailAddress ? EmailAddress : '',
@@ -392,7 +396,7 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
             ExpPortName: ExpPortName ? ExpPortName : '',
             Mode: Mode ? Mode : '',
             AttestationNo: AttestationNo ? AttestationNo : '',
-            InvoiceDate: InvoiceDate ? InvoiceDate : '',
+            InvoiceDate: InvoiceDate1 ? InvoiceDate1 : '',
             InvoiceAmount: InvoiceAmount ? InvoiceAmount : '',
             InvoiceNo: InvoiceNo ? InvoiceNo : '',
             InvoiceCurrency: InvoiceCurrency ? InvoiceCurrency : '',

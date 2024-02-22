@@ -84,86 +84,95 @@
               ''
             ]"
           >
-          <ng-template pTemplate="caption">
-            <p-toolbar>
-             <ng-template pTemplate="left">
-                            <div style="padding: 5px" class="col-md-3 col-lg-3 col-sm-6">
-                              <mat-form-field class="searchboxinput">
-                                <mat-label
-                                  ><mat-icon style="font-size: larger">search</mat-icon>
-                                  {{ "SearchKeyword" | translate }}</mat-label
-                                >
-                              <input appTrimInput  matInput type="text"
-                                  (input)="tableref.filterGlobal(  $any($event.target).value,'contains'
-                                    ) " placeholder="{{ 'SearchKeyword' | translate }}" /></mat-form-field>
-                            </div>
-                           </ng-template>
-                          <ng-template pTemplate="right">
-                          <div class="grid-header-right">
-                            <button
-                              type="button"
-                              [disabled]="excelLists.length === 0"
-                              pButton
-                              pRipple
-                              (click)="postDataValid()"
-                              *ngIf="issubmitvalid"
-                              class="mr-2 grid-header-right-btn"
-                              tooltipPosition="bottom"
-                            >
-                             {{' Read Valid Excel Record' | translate}}
-                            </button>
-                            <button
-                              type="button"
-                              [disabled]="excelLists.length === 0"
-                              pButton
-                              pRipple
-                              (click)="postData()"
-                              class="mr-2 grid-header-right-btn"
-                              tooltipPosition="bottom"
-                            >
-                              {{'Read Excel' | translate}}
-                            </button>
-                            <button
-                              type="button"
-                              pButton
-                              pRipple
-                              icon="pi pi-file-excel"
-                              (click)="exportExcel()"
-                              class="mr-2 grid-header-right-icon"
-                              [pTooltip]="'excelExport' | translate"
-                              tooltipPosition="bottom"
-                            ></button>
-                            <button
-                              type="button"
-                              pButton
-                              pRipple
-                              icon="pi pi-filter"
-                              (click)="clickChips()"
-                              class="mr-2 grid-header-right-icon"
-                              [ngClass]="{ clicked: enableFilters }"
-                              [pTooltip]="'Filter' | translate"
-                              tooltipPosition="bottom"
-                            ></button>
-           <!-- </ng-template> -->
-                        <!-- </p-toolbar> -->
-                            <button
-                              type="button"
-                              pButton
-                              pRipple
-                              icon="pi pi-plus"
-                              (click)="openDialogAdd()"
-                              class="mr-2 grid-header-right-btn"
-                              [pTooltip]="'Upload' | translate"
-                              tooltipPosition="bottom"
-                            >
-                              &nbsp;{{'Upload' | translate}}
-                            </button>
-                          </div>
-                        <!-- </div> -->
-                      </ng-template>
-                      </p-toolbar>
-                      </ng-template>
-          
+            <ng-template pTemplate="caption">
+              <p-toolbar>
+                <ng-template pTemplate="left">
+                  <div style="padding: 5px" class="col-md-3 col-lg-3 col-sm-6">
+                    <mat-form-field class="searchboxinput">
+                      <mat-label
+                        ><mat-icon style="font-size: larger">search</mat-icon>
+                        {{ "SearchKeyword" | translate }}</mat-label
+                      >
+                      <input
+                        appTrimInput
+                        matInput
+                        type="text"
+                        (input)="
+                          tableref.filterGlobal(
+                            $any($event.target).value,
+                            'contains'
+                          )
+                        "
+                        placeholder="{{ 'SearchKeyword' | translate }}"
+                    /></mat-form-field>
+                  </div>
+                </ng-template>
+                <ng-template pTemplate="right">
+                  <div class="grid-header-right">
+                    <button
+                      type="button"
+                      [disabled]="excelLists.length === 0"
+                      pButton
+                      pRipple
+                      (click)="postDataValid()"
+                      *ngIf="issubmitvalid"
+                      class="mr-2 grid-header-right-btn"
+                      tooltipPosition="bottom"
+                    >
+                      {{ " Read Valid Excel Record" | translate }}
+                    </button>
+                    <button
+                      type="button"
+                      [disabled]="excelLists.length === 0"
+                      pButton
+                      pRipple
+                      (click)="postData()"
+                      class="mr-2 grid-header-right-btn"
+                      tooltipPosition="bottom"
+                    >
+                      {{ "Read Excel" | translate }}
+                    </button>
+                    <button
+                      type="button"
+                      pButton
+                      pRipple
+                      icon="pi pi-file-excel"
+                      (click)="exportExcel()"
+                      class="mr-2 grid-header-right-icon"
+                      [pTooltip]="'excelExport' | translate"
+                      tooltipPosition="bottom"
+                    ></button>
+                    <button
+                      type="button"
+                      pButton
+                      pRipple
+                      icon="pi pi-filter"
+                      (click)="clickChips()"
+                      class="mr-2 grid-header-right-icon"
+                      [ngClass]="{ clicked: enableFilters }"
+                      [pTooltip]="'Filter' | translate"
+                      tooltipPosition="bottom"
+                    ></button>
+                    <!-- </ng-template> -->
+                    <!-- </p-toolbar> -->
+                    <button
+                      type="button"
+                      pButton
+                      pRipple
+                      icon="pi pi-plus"
+                      (click)="openDialogAdd()"
+                      class="mr-2 grid-header-right-btn"
+                      [pTooltip]="'Upload' | translate"
+                      tooltipPosition="bottom"
+                    >
+                      &nbsp;{{ "Upload" | translate }}
+                    </button>
+                  </div>
+                  <!-- </div> -->
+                </ng-template>
+              </p-toolbar>
+            </ng-template>
+
             <ng-template pTemplate="header" let-columns>
               <tr>
                 <th
@@ -240,7 +249,9 @@
                   <span class="p-column-title">{{
                     "Request Date" | translate
                   }}</span>
-                  <span class="image-text">{{ data.RequestDate }}</span>
+                  <span class="image-text">{{
+                    common.splitdatetime3(data.RequestDate, "DD/MM/YYYY")
+                  }}</span>
                 </td>
                 <td
                   class=""
@@ -264,7 +275,9 @@
                   <span class="p-column-title">{{
                     "Declaration Date" | translate
                   }}</span>
-                  <span class="image-text">{{common.splitdatetime(data.DeclarationDate)?.date  }}</span>
+                  <span class="image-text">{{
+                    common.splitdatetime3(data.DeclarationDate, "DD/MM/YYYY")
+                  }}</span>
                 </td>
                 <td
                   class=""
@@ -357,9 +370,7 @@
                       getErrorAvailable(data, 'Mode').valid === false
                   }"
                 >
-                  <span class="p-column-title">{{
-                    "Mode" | translate
-                  }}</span>
+                  <span class="p-column-title">{{ "Mode" | translate }}</span>
                   <span class="image-text">{{ data.Mode }}</span>
                 </td>
                 <td
@@ -384,7 +395,9 @@
                   <span class="p-column-title">{{
                     "Invoice Date" | translate
                   }}</span>
-                  <span class="image-text">{{ data.InvoiceDate }}</span>
+                  <span class="image-text">{{
+                    common.splitdatetime3(data.InvoiceDate, "DD/MM/YYYY")
+                  }}</span>
                 </td>
                 <td
                   class=""
@@ -465,9 +478,7 @@
                       getErrorAvailable(data, 'Status').valid === false
                   }"
                 >
-                  <span class="p-column-title">{{
-                    "Status" | translate
-                  }}</span>
+                  <span class="p-column-title">{{ "Status" | translate }}</span>
                   <span class="image-text">
                     <p-tag
                       [value]="data.Status"

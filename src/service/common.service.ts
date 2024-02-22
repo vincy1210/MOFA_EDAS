@@ -20,6 +20,7 @@ import {
 } from 'src/app/shared/constants/status-enum';
 import Swal from 'sweetalert2';
 import { environment } from 'src/environments/environment';
+import * as moment from 'moment';
 
 export type RetType = {
   name: string;
@@ -35,10 +36,11 @@ export const ConstAccessDenied: string = 'access-denied';
   providedIn: 'root',
 })
 export class CommonService {
-
-  private languageSubject = new BehaviorSubject<string>(sessionStorage.getItem('language') || 'en');
+  private languageSubject = new BehaviorSubject<string>(
+    sessionStorage.getItem('language') || 'en'
+  );
   languageChange = this.languageSubject.asObservable();
-  
+
   favink1: string = '';
   favink2: string = '';
   private mycopyrightyear: string = '';
@@ -64,11 +66,8 @@ export class CommonService {
   // userRole$ = this.userRoleSubject.asObservable();
   // userRole: string=''; // You might want to initialize this with a default value if needed
 
-
   private payallcountSubject = new BehaviorSubject<number>(0);
   payallcount$ = this.payallcountSubject.asObservable();
-
-  
 
   private inactivityTimer: any;
   private readonly INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minutes in milliseconds
@@ -76,7 +75,7 @@ export class CommonService {
 
   // private sidebarOpen = false;
   private isDrawerOpenSubject = new BehaviorSubject<boolean>(false);
-  currentcompany:string='';
+  currentcompany: string = '';
   uuid: string = '';
   src: any;
   base64PdfString: any;
@@ -279,7 +278,6 @@ export class CommonService {
     const rsa = forge.pki.publicKeyFromPem(this.publicKey);
     return window.btoa(rsa.encrypt(valueToEncrypt.toString()));
   }
-
 
   // splitdatetime(datetimeString: any) {
   //   if (datetimeString && typeof datetimeString === 'string') {
@@ -519,7 +517,9 @@ export class CommonService {
           this.base64PdfString = resp.data;
 
           const base64 = this.base64PdfString.replace(
-            'data:application/pdf;base64,',  '');
+            'data:application/pdf;base64,',
+            ''
+          );
           // Convert base64 to a byte array
           const byteArray = new Uint8Array(
             atob(base64)
@@ -550,18 +550,20 @@ export class CommonService {
     return this.base64PdfString;
   }
 
-  givefilename(filetype:any){
+  givefilename(filetype: any) {
     const currentDate = new Date();
 
     // Format the date as DDMMYYYY
-                const formattedDate = currentDate.toLocaleDateString('en-GB', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric',
-                }).replace(/\//g, ''); // Remove slashes
+    const formattedDate = currentDate
+      .toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+      })
+      .replace(/\//g, ''); // Remove slashes
 
-let filename=filetype+'_'+formattedDate;
-return filename;
+    let filename = filetype + '_' + formattedDate;
+    return filename;
   }
 
   filterColumnsClientDataTrim(filters: any) {
@@ -610,6 +612,15 @@ return filename;
   areAllStringsEmpty(arr: string[]): boolean {
     return arr.every((str) => str === '');
   }
+
+  excelDateToJSDate = (serial: any) => {
+    let utc_days = Math.floor(serial - 25569);
+    let utc_value = utc_days * 86400;
+    let date_info = new Date(utc_value * 1000);
+
+    // let fractional_day = serial - Math.floor(serial) + 0.0000001;
+    return date_info;
+  };
 
   filterColumnsClientData(data: any[], filterList: any) {
     return data.filter((item) => {
@@ -919,7 +930,8 @@ return filename;
             permission: [PermissionEnums.Add, PermissionEnums.Edit],
           },
         ],
-      }, {
+      },
+      {
         name: 'lcainhold',
         menu: 'lcainhold',
         menufull: 'lcainhold',
@@ -1277,6 +1289,11 @@ return filename;
     return null; // Invalid or null datetime string
   }
 
+  splitdatetime3(datetimeString: string, dateFormat: string = 'DD-MMM-YYYY') {
+    const datetimeString1 = moment(new Date(datetimeString)).format(dateFormat);
+    return datetimeString1;
+  }
+
   showSweetAlert(title: string, text: string, html?: any, position?: any) {
     let typeIcon = TYPE.WARNING;
     Swal.fire({
@@ -1348,22 +1365,20 @@ return filename;
     }
   }
 
-
-  
-  setpayallcount(data:any){
+  setpayallcount(data: any) {
     sessionStorage.setItem('payallcount', JSON.stringify(data));
-    this.payallcountSubject.next(data)
+    this.payallcountSubject.next(data);
   }
 
-
-  getpayallcount(){
-    let abc=sessionStorage.getItem('payallcount');
+  getpayallcount() {
+    let abc = sessionStorage.getItem('payallcount');
     return abc;
   }
 
-
-  
-  async getPaymentReceiptDownload(invoiceuno: any, filename?:any): Promise<any> {
+  async getPaymentReceiptDownload(
+    invoiceuno: any,
+    filename?: any
+  ): Promise<any> {
     return new Promise((resolve, reject) => {
       let data2 = sessionStorage.getItem('userProfile');
       if (data2 != undefined || data2 != null) {
@@ -1385,36 +1400,37 @@ return filename;
           const resp = success;
           if (resp.responsecode == 1) {
             this.base64PdfString = resp.data;
-           //download process starts here
-           if(this.base64PdfString){
-                        const base64 = this.base64PdfString.replace(
-                          'data:application/pdf;base64,',  '');
-                        // Convert base64 to a byte array
-                        const byteArray = new Uint8Array(
-                          atob(base64)
-                            .split('')
-                            .map((char) => char.charCodeAt(0))
-                        );
-                        // Create a Blob and download the file
-                        const file = new Blob([byteArray], { type: 'application/pdf' });
-                        const fileUrl = URL.createObjectURL(file);
+            //download process starts here
+            if (this.base64PdfString) {
+              const base64 = this.base64PdfString.replace(
+                'data:application/pdf;base64,',
+                ''
+              );
+              // Convert base64 to a byte array
+              const byteArray = new Uint8Array(
+                atob(base64)
+                  .split('')
+                  .map((char) => char.charCodeAt(0))
+              );
+              // Create a Blob and download the file
+              const file = new Blob([byteArray], { type: 'application/pdf' });
+              const fileUrl = URL.createObjectURL(file);
 
-                        const link = document.createElement('a');
-                        link.href = fileUrl;
-                        if (filename) {
-                          link.download = filename;
-                        } else {
-                          link.download = 'Invoice.pdf'; // You can customize the file name here
-                        }
-                        document.body.appendChild(link);
-                        link.click();
-                        document.body.removeChild(link);
-                      } else {
-                        this.showErrorMessage('Attachment load failed');
-                      }
+              const link = document.createElement('a');
+              link.href = fileUrl;
+              if (filename) {
+                link.download = filename;
+              } else {
+                link.download = 'Invoice.pdf'; // You can customize the file name here
+              }
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+            } else {
+              this.showErrorMessage('Attachment load failed');
+            }
 
-
-           //ends here
+            //ends here
           } else {
             this.showErrorMessage('Attachment load failed');
             reject('Attachment load failed');
@@ -1428,11 +1444,11 @@ return filename;
       });
     });
   }
-  
+
   setmymap(data: any[]) {
     sessionStorage.setItem('regionwiseimport', JSON.stringify(data));
   }
-  
+
   getmymap(): any[] | null {
     let storedData = sessionStorage.getItem('regionwiseimport');
     return storedData ? JSON.parse(storedData) : null;
@@ -1440,35 +1456,32 @@ return filename;
 
   //localstorage
 
-   
   setDefaultInputsforLCAReports(data: any) {
     sessionStorage.setItem('defaultLCAReport', JSON.stringify(data));
   }
-  
+
   getDefaultInputsforLCAReports(): any | null {
     let storedData = sessionStorage.getItem('defaultLCAReport');
     return storedData ? JSON.parse(storedData) : null;
   }
- 
+
   setDefaultInputsforCOOReports(data: any) {
     sessionStorage.setItem('defaultCOOReport', JSON.stringify(data));
   }
-  
+
   getDefaultInputsforCOOReports(): any | null {
     let storedData = sessionStorage.getItem('defaultCOOReport');
     return storedData ? JSON.parse(storedData) : null;
   }
- 
+
   setDefaultInputsforPHYSICALReports(data: any) {
     sessionStorage.setItem('defaultPHYSICAlReport', JSON.stringify(data));
   }
-  
+
   getDefaultInputsforPHYSICALReports(): any | null {
     let storedData = sessionStorage.getItem('defaultPHYSICAlReport');
     return storedData ? JSON.parse(storedData) : null;
   }
-
-
 
   // AddAnalyticsAPIcall(){
 
@@ -1522,17 +1535,16 @@ return filename;
   clearAnalyticsData() {
     this.analyticsData = [];
   }
-getmypalette(){
-  let theme=sessionStorage.getItem('Palette');
-  if(theme===''){
-    theme='theme-default';
+  getmypalette() {
+    let theme = sessionStorage.getItem('Palette');
+    if (theme === '') {
+      theme = 'theme-default';
+    }
+    return theme;
   }
-  return theme;
-}
 
-setLanguage(language: string) {
-  sessionStorage.setItem('language', language);
-  this.languageSubject.next(language);
-}
-
+  setLanguage(language: string) {
+    sessionStorage.setItem('language', language);
+    this.languageSubject.next(language);
+  }
 }
