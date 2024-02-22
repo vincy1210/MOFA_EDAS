@@ -366,15 +366,15 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
           let InvoiceDate11 = this.common.excelDateToJSDate(InvoiceDate);
           const RequestDate1 = this.common.splitdatetime3(
             `${RequestDate11}`,
-            'DD/MM/YY'
+            'YYYY-MM-DD'
           );
           const DeclarationDate1 = this.common.splitdatetime3(
             `${DeclarationDate11}`,
-            'DD/MM/YY'
+            'YYYY-MM-DD'
           );
           const InvoiceDate1 = this.common.splitdatetime3(
             `${InvoiceDate11}`,
-            'DD/MM/YY'
+            'YYYY-MM-DD'
           );
           const error = {
             LCACode: this.LCACode,
@@ -645,7 +645,7 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
         return;
       }
       allRequestData.push({
-        requestNo: RequestNo,
+        requestNo: `${RequestNo}`,
         requestDate: row1.RequestDate,
         lcaCode: row1.LCACode, //.replace('LCA ', ''),
         requestDetails: {}, //[]
@@ -654,30 +654,30 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
     // all unique declarations
     allRequestData.forEach((rowReq) => {
       const allRequestByNo = dataList1.filter(
-        (m) => m.RequestNo === rowReq.requestNo
+        (m) => `${m.RequestNo}` === `${rowReq.requestNo}`
       );
       allRequestByNo.forEach((rowReq1) => {
         const DeclarationNo = rowReq1.DeclarationNo;
         const requestDetailsList: any[] = [rowReq.requestDetails]; //rowReq.requestDetails;
         const allDataDeclaration = requestDetailsList.filter(
-          (m: any) => m.decNo === DeclarationNo
+          (m: any) => `${m.decNo}` === `${DeclarationNo}`
         );
         if (allDataDeclaration.length > 0) {
           return;
         }
         const allDataInvoices = dataList1.filter(
-          (m) => m.DeclarationNo === DeclarationNo
+          (m) => `${m.DeclarationNo}` === `${DeclarationNo}`
         );
         const invoiceList: any[] = [];
         allDataInvoices.forEach((rowInv) => {
           invoiceList.push({
-            attestationNo: rowInv.AttestationNo,
+            attestationNo: `${rowInv.AttestationNo}`,
             invoiceDate: rowInv.InvoiceDate,
             invAmount: rowInv.InvoiceAmount,
-            invoiceNum: rowInv.InvoiceNo,
+            invoiceNum: `${rowInv.InvoiceNo}`,
             invCurrency: rowInv.InvoiceCurrency,
             companyName: rowInv.CompanyName,
-            invoiceID: rowInv.InvoiceId,
+            invoiceID: `${rowInv.InvoiceId}`,
             remarks1: rowInv.Remarks,
           });
         });
@@ -687,9 +687,9 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
             : {};
         // rowReq.requestDetails.push
         rowReq.requestDetails = {
-          decNo: DeclarationNo,
+          decNo: `${DeclarationNo}`,
           decDate: dataInvoices.DeclarationDate,
-          tradeLicNo: dataInvoices.TradelicenceNo,
+          tradeLicNo: `${dataInvoices.TradelicenceNo}`,
           emailAddr: dataInvoices.EmailAddress,
           contactNo: dataInvoices.ContactNo,
           docType: dataInvoices.DocType,
