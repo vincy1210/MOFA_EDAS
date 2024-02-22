@@ -97,12 +97,11 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
   }
 
   ngOnInit(): void {
-    debugger;
     let data11 = this.common.getUserProfile();
     if (data11 != null || data11 != undefined) {
       data11 = JSON.parse(data11);
       console.log(data11.Data);
-      // this.uuid = data11.Data.uuid;
+      this.uuid = data11.Data.uuid;
     } else {
       this.common.setlogoutreason('session');
       this.auth.logout();
