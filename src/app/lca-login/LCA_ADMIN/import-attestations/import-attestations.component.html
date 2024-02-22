@@ -264,7 +264,7 @@
                   <span class="p-column-title">{{
                     "Declaration Date" | translate
                   }}</span>
-                  <span class="image-text">{{common.splitdatetime(data.DeclarationDate)?.date  }}</span>
+                  <span class="image-text">{{ data.DeclarationDate }}</span>
                 </td>
                 <td
                   class=""
@@ -357,9 +357,7 @@
                       getErrorAvailable(data, 'Mode').valid === false
                   }"
                 >
-                  <span class="p-column-title">{{
-                    "Mode" | translate
-                  }}</span>
+                  <span class="p-column-title">{{ "Mode" | translate }}</span>
                   <span class="image-text">{{ data.Mode }}</span>
                 </td>
                 <td
@@ -465,9 +463,7 @@
                       getErrorAvailable(data, 'Status').valid === false
                   }"
                 >
-                  <span class="p-column-title">{{
-                    "Status" | translate
-                  }}</span>
+                  <span class="p-column-title">{{ "Status" | translate }}</span>
                   <span class="image-text">
                     <p-tag
                       [value]="data.Status"

@@ -23,7 +23,7 @@ import { CommonService } from 'src/service/common.service';
 import { ConstantsService } from 'src/service/constants.service';
 
 type ExcelTypes = {
-  LCACode: string;
+  LCACode?: string;
   RequestNo: string;
   RequestDate: string;
   DeclarationNo: string;
@@ -137,7 +137,7 @@ export class ImportAttestationsCreateComponent implements OnInit {
   exportToExcel() {
     const jsonData: ExcelTypes[] = [
       {
-        LCACode: '',
+        // LCACode: '',
         RequestNo: '',
         RequestDate: '',
         DeclarationNo: '',
@@ -165,7 +165,10 @@ export class ImportAttestationsCreateComponent implements OnInit {
       Sheets: { LCA: worksheet },
       SheetNames: ['LCA'],
     };
-    XLSX.writeFile(workbook,  this.common.givefilename('lca-template')+'.xlsx');
+    XLSX.writeFile(
+      workbook,
+      this.common.givefilename('lca-template') + '.xlsx'
+    );
   }
 
   onFileChanged(event: any) {
