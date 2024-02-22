@@ -28,7 +28,7 @@
             [totalRecords]="totalrecords"
             [value]="list"
             [rows]="10"
-            [columns]="selectedColumns"
+            [columns]="cols"
             [showCurrentPageReport]="true"
             [rowsPerPageOptions]="[10, 20, 50]"
             [loading]="loading"
@@ -52,11 +52,11 @@
                 <ng-template pTemplate="left">
                   <div style="padding: 5px" class="col-md-3 col-lg-3 col-sm-6">
                     <mat-form-field class="searchboxinput">
-                      <mat-label
+                      <!-- <mat-label
                         ><mat-icon style="font-size: larger">search</mat-icon
-                        >{{ "SearchKeyword" | translate }}</mat-label
-                      >
-                      <input appTrimInput matInput type="text"  (input)=" tableref.filterGlobal( $any($event.target).value,'contains')" placeholder="{{ 'SearchKeyword' | translate }}"/>
+                        >{{ "SearchKeyword" | translate }}</mat-label> -->
+                      <input appTrimInput matInput type="text"  (input)=" tableref.filterGlobal( $any($event.target).value,'contains')" placeholder=" {{ 'SearchKeyword' | translate }}"/>
+                      <!-- <span matTextPrefix><mat-icon style="font-size: larger">search</mat-icon></span> -->
                     </mat-form-field>
                   </div>
                 
@@ -200,14 +200,16 @@
                       class="glyphicon glyphicon-exclamation-sign"
                       aria-hidden="true"
                     ></span>
+                    <p>
                     <i class="fas fa-lightbulb light-bulb"></i>
+                   
                     Invoice Attestation Pending Request are shown in this list.
                     You have 14 days to pay for the Invoice Attestation request
                     fees. COO payment is mandatory to pay for the Invoice
                     Attestation request. If Invoice Attestation request is not
                     paid within 14 days additional fine of AED 150 is added to
                     the Invoice Attestation request. Fine amount has to be paid
-                    along with the Invoice Attestation fees amount
+                    along with the Invoice Attestation fees amount</p>
                   </div>
                   </div>
                 <!-- </td>
@@ -220,7 +222,7 @@
                   <p-tableHeaderCheckbox (click)="loadsidepanel(list)">
                   </p-tableHeaderCheckbox>
               </th>
-              <th pSortableColumn="edasattestno" >{{'edasattestno' | translate}}  <p-sortIcon field="edasattestno"></p-sortIcon> </th>
+              <!-- <th pSortableColumn="edasattestno" >{{'edasattestno' | translate}}  <p-sortIcon field="edasattestno"></p-sortIcon> </th>
               <th pSortableColumn="currencycode">{{'invoiceCurrency' | translate}}  <p-sortIcon field="currencycode"></p-sortIcon></th>
               <th pSortableColumn="canpay">{{'status' | translate}}  <p-sortIcon field="canpay"></p-sortIcon></th>
               <th pSortableColumn="noofdaysoverdue">{{'Day(s)'| translate}}  <p-sortIcon field="noofdaysoverdue"></p-sortIcon></th>
@@ -230,7 +232,25 @@
               <th pSortableColumn="declarationumber">{{'declarationumber' | translate}} <p-sortIcon field="declarationumber"></p-sortIcon></th>
               <th pSortableColumn="declarationdate">{{'declarationdate' | translate}}  <p-sortIcon field="declarationdate"></p-sortIcon></th>
               <th pSortableColumn="attestreqdate">{{'attestreqdate' | translate}}  <p-sortIcon field="attestreqdate"></p-sortIcon> </th>
-              <th pSortableColumn="lcaname">{{'Channel' | translate}}  <p-sortIcon field="attestreqdate"></p-sortIcon> </th>
+              <th pSortableColumn="lcaname">{{'Channel' | translate}}  <p-sortIcon field="attestreqdate"></p-sortIcon> </th> -->
+
+              <!-- <th *ngFor="let col of columns">
+                {{ col.header }}
+            </th> -->
+            <!-- <th
+            *ngFor="let col of columns"
+            [pSortableColumn]="col.field"
+            [style.width]="col.width"
+          >
+            {{ col.header | translate }}
+            <p-sortIcon [field]="col.field"></p-sortIcon>
+            <p-columnFilter
+              type="text"
+              [field]="col.field"
+              display="menu"
+              *ngIf="enableFilters"
+            ></p-columnFilter>
+          </th> -->
 
               <th *ngFor="let col of columns" pResizableColumn [pSortableColumn]="col.field" [style.width]="col.width" >
                   {{col.header | translate}} <p-sortIcon [field]="col.field"  ></p-sortIcon>
@@ -346,9 +366,9 @@
                 </td>
 
                 <!-- lcaname -->
-                <td *ngFor="let col of columns">
+                <!-- <td *ngFor="let col of columns">
                   {{ customer[col.field] }}
-                </td>
+                </td> -->
 
                 <td pFrozenColumn alignFrozen="right">
                   <span
@@ -549,7 +569,7 @@
         <ng-container>
           <div class="more-content" *ngFor="let field of fields">
             <mat-label class="title-label">{{
-              field.label | translate
+              'COO details' | translate
             }}</mat-label>
             <div class="more-content-body">
               <mat-label class="more-content-block">{{

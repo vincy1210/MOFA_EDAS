@@ -69,8 +69,10 @@ export class CommonService {
   private payallcountSubject = new BehaviorSubject<number>(0);
   payallcount$ = this.payallcountSubject.asObservable();
 
-  private inactivityTimer: any;
-  private readonly INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minutes in milliseconds
+  
+
+  // private inactivityTimer: any;
+  // private readonly INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minutes in milliseconds
   isSidebar: boolean = false;
 
   // private sidebarOpen = false;
@@ -198,44 +200,6 @@ export class CommonService {
     $('#loading').hide();
   }
 
-  // setSelectedCompany(data: any) {
-  //    sessionStorage.setItem('currentcompany', JSON.stringify(data));
-  //    if(data!=undefined || data !=null){
-  //     this.userloggedinSubject.next(true);
-  //     this.userCompanysubject.next(data.business_name)
-  //         let  abc=data.role;
-  //           if(abc=="Admin"){
-  //           this.isAdmin.next(true);
-  //           }
-  //           else if(abc=="User"){
-  //           this.isAdmin.next(false);
-  //           }
-  //           else{
-  //           this.isAdmin.next(false);
-  //           }
-  //     }
-  //     else{
-  //    // this.userloggedin=false;
-  //     this.userloggedinSubject.next(false);
-  //     this.userCompanysubject.next('')
-  //     }
-  //  }
-
-  //  getSelectedCompany() {
-  //    const myselectedcompany = sessionStorage.getItem('currentcompany');
-  //     if (myselectedcompany) {
-  //      return JSON.parse(myselectedcompany);
-  //    }
-  //    else{
-  //     let dat=sessionStorage.getItem('userProfile');
-
-  //     if(dat!=undefined ||dat!=null )
-  //     {
-  //       console.log("to landing page from common service line 284")
-  //     }
-  //    }
-  //    //return null;
-  //  }
 
   setfreezone(data: string) {
     this.freeZone.next(data);
@@ -244,14 +208,6 @@ export class CommonService {
   getfreezone() {
     return this.freeZone.asObservable();
   }
-
-  // toggleSidebar() {
-  //   this.sidebarOpen = !this.sidebarOpen;
-  // }
-
-  // isSidebarOpen() {
-  //   return this.sidebarOpen;
-  // }
 
   isDrawerOpen$ = this.isDrawerOpenSubject.asObservable();
 
@@ -279,51 +235,12 @@ export class CommonService {
     return window.btoa(rsa.encrypt(valueToEncrypt.toString()));
   }
 
-  // splitdatetime(datetimeString: any) {
-  //   if (datetimeString && typeof datetimeString === 'string') {
-  //     const dateTimeParts = datetimeString.split('T'); // Splitting the string at 'T'
-  //     if (dateTimeParts.length === 2) {
-  //       return {
-  //         date: this.datePipe.transform(dateTimeParts[0], 'dd-MMM-yyyy'),
-  //         time: dateTimeParts[1],
-  //       };
-  //     } else {
-  //       return {
-  //         date: this.datePipe.transform(dateTimeParts[0], 'dd-MMM-yyyy'),
-  //         time: '',
-  //       };
-  //     }
-  //   }
-  //   return null; // Invalid or null datetime string
-  // }
-
-  // splitdatetime1(datetimeString: any) {
-  //   if (datetimeString && typeof datetimeString === 'string') {
-  //     const dateTimeParts = datetimeString;
-  //     if (dateTimeParts.length === 8) {
-  //       const parsedDate = new Date(
-  //         Number(dateTimeParts.substr(4, 4)),
-  //         Number(dateTimeParts.substr(2, 2)) - 1,
-  //         Number(dateTimeParts.substr(0, 2))
-  //       );
-  //       return {
-  //         date: this.datePipe.transform(parsedDate, 'dd-MMM-yyyy'),
-  //       };
-  //     }
-  //   }
-  //   return null; // Invalid or null datetime string
-  // }
 
   setUserProfile(userProfile: any) {
     console.log(userProfile);
     sessionStorage.setItem('userProfile', JSON.stringify(userProfile));
-    this.startInactivityTimer();
     let userdata = JSON.parse(userProfile);
-
-    //this.userprofilesubject.next(userdata);
-
     if (userdata != undefined || userdata != null) {
-      // let abc=JSON.parse(userdata)
       this.userprofilesubject.next(userdata.Data?.firstnameEN);
     }
   }
@@ -344,7 +261,6 @@ export class CommonService {
   setCompanyList(companylist: any) {
     console.log(companylist);
     sessionStorage.setItem('companylist', JSON.stringify(companylist));
-    this.startInactivityTimer();
   }
 
   getCompanyList() {
@@ -358,7 +274,6 @@ export class CommonService {
   setpaymentdetails(paymentidandinvuno: any) {
     console.log(paymentidandinvuno);
     sessionStorage.setItem('PID', JSON.stringify(paymentidandinvuno));
-    this.startInactivityTimer();
   }
 
   getpaymentdetails() {
@@ -370,23 +285,24 @@ export class CommonService {
     return null;
   }
 
-  startInactivityTimer() {
-    // Clear existing timer (if any)
-    this.clearInactivityTimer();
-    // Start a new timer for inactivity
-    this.inactivityTimer = setTimeout(() => {
-      // Session timeout action - you can logout the user or perform any other action
-      this.auth.logout();
-    }, this.INACTIVITY_TIMEOUT);
-  }
+  // startInactivityTimer() {
+  //   // Clear existing timer (if any)
+  //   this.clearInactivityTimer();
+  //   // Start a new timer for inactivity
+  //   this.inactivityTimer = setTimeout(() => {
+  //     // Session timeout action - you can logout the user or perform any other action
+  //     console.log("from comon 381")
+  //     this.auth.logout();
+  //   }, this.INACTIVITY_TIMEOUT);
+  // }
 
-  clearInactivityTimer() {
-    // Clear the inactivity timer
-    if (this.inactivityTimer) {
-      clearTimeout(this.inactivityTimer);
-      this.inactivityTimer = null;
-    }
-  }
+  // clearInactivityTimer() {
+  //   // Clear the inactivity timer
+  //   if (this.inactivityTimer) {
+  //     clearTimeout(this.inactivityTimer);
+  //     this.inactivityTimer = null;
+  //   }
+  // }
 
   convertBase64ToPdf(base64Data: string): void {
     const binaryData = atob(base64Data);
@@ -415,29 +331,10 @@ export class CommonService {
     return `${day}-${month}-${year}`;
   }
 
-  // calculateDifference(attestreqdate: string) {
-  //   const today = new Date();
-  //   const reqDate = new Date(attestreqdate); // Convert to date if not already
-  //   const differenceInDays = Math.floor((today.getTime() - reqDate.getTime()) / (1000 * 3600 * 24));
-  //   return 15 - differenceInDays;
-  // }
-  // calculateDifference(attestreqdate: string) {
-  //   // Assuming attestreqdate is in 'yyyyMMdd' format
-  //   const year = +attestreqdate.substring(0, 4); // Extract year
-  //   const month = +attestreqdate.substring(4, 6) - 1; // Extract month (0-indexed)
-  //   const day = +attestreqdate.substring(6, 8); // Extract day
-  //   const reqDate = new Date(year, month, day); // Create a date object
-
-  //   const today = new Date();
-  //   const differenceInDays = Math.floor((today.getTime() - reqDate.getTime()) / (1000 * 3600 * 24));
-  //   return 15 - differenceInDays;
-  // }
-
   formatAmount(amount: number | undefined): string {
     if (amount === undefined || isNaN(amount)) {
       return '';
     }
-
     // Use toLocaleString to format the number with commas
     return amount.toLocaleString(undefined, { maximumFractionDigits: 2 });
   }
@@ -1261,16 +1158,6 @@ export class CommonService {
     return false;
   }
 
-  // formatDatestringtodate(dateString: string): string {
-  //   const date = new Date(
-  //     parseInt(dateString.substring(0, 4)),
-  //     parseInt(dateString.substring(4, 6)) - 1,
-  //     parseInt(dateString.substring(6, 8))
-  //   );
-
-  //   return this.datePipe.transform(date, 'yyyy-MM-dd') || 'Invalid Date'; // Handle invalid date format
-  // }
-
   splitdatetime(datetimeString: any) {
     if (datetimeString && typeof datetimeString === 'string') {
       const dateTimeParts = datetimeString.split('T'); // Splitting the string at 'T'
@@ -1306,15 +1193,6 @@ export class CommonService {
     });
   }
 
-  // stringtodate(inputDate: string): string{
-  //   const year = inputDate.slice(0, 4);
-  //   const month = inputDate.slice(4, 6);
-  //   const day = inputDate.slice(6, 8);
-
-  //   // Manually construct the date string in the desired format
-  //   return `${day}-${this.getMonthAbbreviation(month)}-${year}`;
-
-  //   }
 
   getMonthAbbreviation(month: string): string {
     const months = [

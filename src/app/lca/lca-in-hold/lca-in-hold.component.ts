@@ -163,14 +163,16 @@ noOfInvoicesSelected_coo: any;
     }
     else{
        this.common.setlogoutreason("session");
+       console.log("from lcainhold")
+
       this.auth.logout();
 
     }
-    this.cols = [
-      // { field: 'lcaname', header: 'Channel', width:'15%' },
-      // { field: 'companyname', header: 'Company', width:'20%' },
-      { field: 'companyname', header: this.translate.instant('Company'), width: '20%' },
-  ];
+  //   this.cols = [
+  //     // { field: 'lcaname', header: 'Channel', width:'15%' },
+  //     // { field: 'companyname', header: 'Company', width:'20%' },
+  //     { field: 'companyname', header: this.translate.instant('Company'), width: '20%' },
+  // ];
 
     this.cols_xl = [
      { field: 'edasattestno', header: 'EDAS Attest No', width:'20%' },
@@ -185,8 +187,9 @@ noOfInvoicesSelected_coo: any;
      { field: 'lcaname', header: 'Channel', width:'15%' },
   
   ];
+  this.cols=this.cols_xl;
 
-  this._selectedColumns = this.cols.filter((c:any,index:any) => index < 0);
+  // this._selectedColumns = this.cols.filter((c:any,index:any) => index < 0);
   //this.getimagebase64();
   //this.InitTable()
 
@@ -195,14 +198,14 @@ noOfInvoicesSelected_coo: any;
   }
 
   
-  @Input() get selectedColumns(): any[] {
-    return this._selectedColumns;
-}
+//   @Input() get selectedColumns(): any[] {
+//     return this._selectedColumns;
+// }
 
-set selectedColumns(val: any[]) {
-    //restore original order
-    this._selectedColumns = this.cols.filter((col:any) => val.includes(col));
-}
+// set selectedColumns(val: any[]) {
+//     //restore original order
+//     this._selectedColumns = this.cols.filter((col:any) => val.includes(col));
+// }
 
   globalFilter(row: any, globalFilterValue: string): boolean {
     for (const key in row) {

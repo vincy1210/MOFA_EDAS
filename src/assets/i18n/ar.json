@@ -450,5 +450,18 @@
   "page.approvetitle": "استيراد LCA",
 
   "Designation": "المسمى الوظيفي",
-  "Designation is required": "المسمى الوظيفي مطلوب"
+  "Designation is required": "المسمى الوظيفي مطلوب",
+
+
+
+
+  "First page": "الصفحة الأولى",
+  "Items per page:": "عناصر في الصفحة",
+  "Last page": "الصفحة الأخيرة",
+  "Next page": "الصفحة التالية",
+  "Previous page": "الصفحة السابقة",
+  "Page 1 of 1": "الصفحة 1 من 1",
+  "Page {{page}} of {{amountPages}}": "الصفحة {{page}} من {{amountPages}}"
+
+   
 }

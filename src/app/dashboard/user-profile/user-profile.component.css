@@ -34,4 +34,7 @@
     border: 3px solid #b68a35;
     border-radius: 15px;
     margin-top: 3%;
+    min-width: 500px;
+    display: flex;
+    justify-content: center;
 }

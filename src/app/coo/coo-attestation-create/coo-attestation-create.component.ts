@@ -55,6 +55,8 @@ export class CooAttestationCreateComponent implements OnInit {
     }
     else{
        this.common.setlogoutreason("session");
+       console.log("from cooattestcretae")
+
       this.auth.logout();
 
     }

@@ -104,6 +104,8 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
       this.uuid = data11.Data.uuid;
     } else {
       this.common.setlogoutreason('session');
+      console.log("from import attest")
+
       this.auth.logout();
     }
 
@@ -245,7 +247,7 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
       this.selectedFilterOption.Startdate.getDate() - 30
     );
     // this.onClickFilterOptionDate(false);
-    this.siteAnalyticsData({ action: ActionConstants.load });
+    // this.siteAnalyticsData({ action: ActionConstants.load });
     this.lcaDataList();
   }
 
@@ -547,7 +549,7 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
   }
 
   openDialogAdd() {
-    this.siteAnalyticsData({ action: ActionConstants.addcompany });
+    // this.siteAnalyticsData({ action: ActionConstants.addcompany });
     const dialogRef =
       this.modalPopupService.openPopup<ImportAttestationsCreateComponent>(
         ImportAttestationsCreateComponent,

@@ -98,6 +98,8 @@ uuid:any
     }
     else{
        this.common.setlogoutreason("session");
+       console.log("from risklca")
+
       this.auth.logout();
     }
 
@@ -240,7 +242,7 @@ uuid:any
       this.selectedFilterOption.Startdate.getDate() - 30
     );
     // this.onClickFilterOptionDate(false);
-    this.siteAnalyticsData({ action: ActionConstants.load });
+    // this.siteAnalyticsData({ action: ActionConstants.load });
     this.getCompanyList();
   }
 

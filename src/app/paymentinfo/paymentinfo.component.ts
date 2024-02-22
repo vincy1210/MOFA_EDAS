@@ -68,6 +68,8 @@ paymentstatus:string=''
     }
     else{
        this.common.setlogoutreason("session");
+       console.log("from paymentinf")
+
       this.auth.logout();
 
     }

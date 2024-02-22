@@ -325,8 +325,10 @@
   },
   "pay": "Pay",
   "Pay All": "Pay All",
-
-  
   "Designation": "Designation",
-  "Designation is required": "Designation is required"
+  "Designation is required": "Designation is required",
+
+
+  "Page 1 of 1": "Page 1 of 1",
+  "Page {{page}} of {{amountPages}}": "Page {{page}} of {{amountPages}}"
 }
