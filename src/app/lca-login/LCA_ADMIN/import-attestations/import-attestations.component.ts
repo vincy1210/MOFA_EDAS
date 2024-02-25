@@ -104,7 +104,7 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
       this.uuid = data11.Data.uuid;
     } else {
       this.common.setlogoutreason('session');
-      console.log("from import attest")
+      console.log('from import attest');
 
       this.auth.logout();
     }
@@ -423,6 +423,7 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
       });
     }
     this.excelListsFilter = this.excelLists;
+    this.totalrecords = this.excelListsFilter.length;
   }
 
   errorsChecker(error: any) {
@@ -602,6 +603,7 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
           });
           this.excelLists = dataList;
           this.excelListsFilter = this.excelLists;
+          this.totalrecords = this.excelListsFilter.length;
         }
         this.messageService.add({
           severity: 'success',
