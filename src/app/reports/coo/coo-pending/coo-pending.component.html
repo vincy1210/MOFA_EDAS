@@ -164,7 +164,7 @@
                     class="mr-2 grid-header-right-icon"
                     [pTooltip]="'Export' | translate"
                     tooltipPosition="left"
-                    [disabled]="cooAttestationLists.length === 0" [matMenuTriggerFor]="menu"
+                    [disabled]="cooAttestationLists && cooAttestationLists.length === 0" [matMenuTriggerFor]="menu"
                   ></button>
                   <mat-menu #menu="matMenu" class="exportmenu"  xPosition="before">
                     <button mat-menu-item (click)="exportExcel()" [ngClass]="common.getmypalette()">
@@ -320,7 +320,7 @@
               </ng-template>
 
               <ng-template pTemplate="footer"  >
-                <ng-container *ngIf="cooAttestationLists.length>0">
+                <ng-container *ngIf="cooAttestationLists && cooAttestationLists.length>0">
               <tr>
                 <td colspan="3">
                   {{ "Total" | translate }}

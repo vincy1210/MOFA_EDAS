@@ -236,6 +236,37 @@ export class CommonService {
   }
 
 
+  decryptWithPrivateKey(encryptedValue: string): string {
+    // Assuming you have the private key stored securely
+    try {
+    const privateKey = `-----BEGIN RSA PRIVATE KEY-----
+    MIICXAIBAAKBgQClnd0dRXYSiKkHgmzq53FiEAiRdWOU2EZMFDYbICt/t0SB0FLf
+    N7pOaI3t9/WxxBmqHPL6MrFTDdmJi0BLD2LTDQ4EsZl4Uj1u7PJyDewjQxpehRv5
+    dZ6u7wXOy0U9/WsNrWMrZo3UiL9Dndb6GUciXo31MQyXkegCGYxB/qm19wIDAQAB
+    AoGAeXf+S9C9V7yZ1KMpRWS4uUavMhhaEDpL3NLaGC0RGlwNR/TGQ2d5Irb2mfnK
+    XzZH6IfRAgaaHiNDUOksH6FKRfVonXO+jMr6Y+uBQtxCP3k9ET0CT2gkZ8Vu5R71
+    Jz8AyXzDC5oBRKTIMVFrPNSTj3rY+767F8Q8uCwg7nZHjDECQQDwGv749rTD1yra
+    FkNq08BEMMhdbMp1fhkT0g4BO1r3bZKWtFbjRFMteVzQJs3F1proDxTaEyktGwCz
+    Z2zCSfs5AkEAsJSGkZzoafrhXo0BYq7p/R1fgA8yWni1SmMtYTfXyPBvYR1njinO
+    svAvnwkhXGPsJZZgWWi9aDOTJJ5o0LzKrwJBANGkYJf0oKSWTF4bLkYqGSfxCCE6
+    ihPIRBEgSQYeUzDSxTk8wNiyoYWE/9rm5qgk1yBjeqtmK3+sohIC7d0+R1ECQHiC
+    tSB1nKyPmvXDd/mYdHrZbA7i0DOsg9WjwBnEWdF6PhliTwVYBQhcIbQBMDJ0w3qX
+    mWQLtpCB+l8YeWJUJmMCQDWyCUy8yKG3DgWr4dY5AXadBW2zLu5sYcqGwjbwcL/Q
+    gQDU2T0vAxNqWcOi+PjGOTCt/JIbzm31DMNNjNdtkFA=
+    -----END RSA PRIVATE KEY-----`;
+
+    const rsa = forge.pki.privateKeyFromPem(privateKey);
+    const decryptedBytes = rsa.decrypt(window.atob(encryptedValue));
+    return decryptedBytes.toString();
+    }
+    catch (error) {
+      // console.error("Decryption failed:", error);
+      return encryptedValue;
+    }
+}
+
+
+
   setUserProfile(userProfile: any) {
     console.log(userProfile);
     sessionStorage.setItem('userProfile', JSON.stringify(userProfile));
@@ -604,8 +635,8 @@ export class CommonService {
   }
 
   redirecttologin() {
-    window.location.href =
-      'https://stg-id.uaepass.ae/idshub/logout?redirect_uri=https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2';
+    window.location.href =environment.redirectURL;
+     
   }
   // formatDatestringtodate(dateString: string): string {
   //   const date = new Date(
@@ -1425,4 +1456,22 @@ export class CommonService {
     sessionStorage.setItem('language', language);
     this.languageSubject.next(language);
   }
+
+
+
+  // setDefaultInputsforPHYSICALReports(data: any) {
+  //   sessionStorage.setItem('defaultPHYSICAlReport', JSON.stringify(data));
+  // }
+
+
+  setauthcodedata(data:any){
+    localStorage.setItem('authdata', JSON.stringify(data));
+
+  }
+
+  getauthcodedata(){
+    let abc=localStorage.getItem('authdata');
+    return abc;
+  }
+  
 }

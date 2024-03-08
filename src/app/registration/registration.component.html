@@ -107,8 +107,8 @@
         <mat-form-field appearance="outline" >
           <mat-label>{{'dmcclabel' | translate }}</mat-label>
           <mat-select name="dmccOption" formControlName="dmccOption" >
-            <mat-option *ngFor="let option of freezone" [value]="option.typeuno">
-              {{ option.typename | translate }}
+            <mat-option *ngFor="let option of freezone1" [value]="option.itemcode">
+              {{ option.itemname | translate }}
             </mat-option>
           </mat-select>
           <mat-error class="error" *ngIf="registrationForm.get('dmccOption')?.hasError('required')">{{'Please select an option'|translate}}</mat-error>
@@ -117,10 +117,12 @@
       </ng-container>
       <div class="text-right">
         <!-- <button pButton pRipple label="{{'Cancel' | translate}}" icon="pi pi-times" class="p-confirm-dialog-reject" (click)="CancelForLoggedinUsers()"></button> -->
-        <button *ngIf="UserHavingCompany"  mat-flat-button color="secondary" class="p-confirm-dialog-reject secondary_button"  (click)="CancelForLoggedinUsers()" >{{'Cancel' | translate }}</button>
    
-        &nbsp;
+       
         <button mat-flat-button color="primary"  (click)="proceed()" >{{'proceedbtn' | translate }}</button>
+        &nbsp;
+        <button *ngIf="UserHavingCompany"  mat-flat-button color="secondary" class="p-confirm-dialog-reject secondary_button"  (click)="CancelForLoggedinUsers()" >{{'Cancel' | translate }}</button>
+
       </div>
 
       </div>

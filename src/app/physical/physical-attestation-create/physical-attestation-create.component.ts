@@ -114,19 +114,20 @@ export class PhysicalAttestationCreateComponent implements OnInit {
 
   getIssuingAuthorities() {
     let data = {
-      useruno: '1',
-      languagecode:this.currentLanguagecode
+      "uuid": "1",
+      "languagecode": this.currentLanguagecode,
+      "processname": "FREEZONEMST"
     };
     this.common.showLoading();
 
     this.apiservice
-      .post(this.consts.getFreezonetypes, data)
+      .post(this.consts.getListOfValues, data)
       .subscribe((response: any) => {
         this.common.hideLoading();
 
         if (`${response.responseCode}` === '200') {
           const dataArray = response.data;
-          this.issuingAuthorities = dataArray.dictionary.data;
+          this.issuingAuthorities = dataArray.data;
           console.log(response)
         }
       });

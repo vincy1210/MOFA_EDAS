@@ -361,7 +361,7 @@ this.reset();
 }
 
   logout() {
-    sessionStorage.clear()
+    // sessionStorage.clear()
     this.common.setlogoutreason('manuallogout');
     this.auth.logout();
   }

@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import jspdf from 'jspdf';
 import * as FileSaver from 'file-saver';
 import { AuthService } from 'src/service/auth.service';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -17,22 +18,22 @@ export class ErrorComponent implements OnInit {
   timenow:Date=new Date();
   timestr:any;
   sessionnote:string='';
-
-  data={
-    name: "vincy",
-    company:"Ducont"
-  }
+authcodedata:any;
+  // data={
+  //   name: "vincy",
+  //   company:"Ducont"
+  // }
   firsttime:number=1;
 
   constructor(public common:CommonService,private datePipe: DatePipe, private Router:Router, private auth:AuthService) { 
 
-    
+    let abc=this.common.getauthcodedata();
+if(abc){
+  this.authcodedata= abc;
+    console.log(this.authcodedata);
+}
+   
 
-    // sessionStorage.clear();
-
-    // if(this.firsttime==1){
-    //  window.location.reload();
-    // }
     this.common.getlogoutreason().subscribe(data => {
    
 
@@ -60,11 +61,13 @@ else if(data=="manuallogout"){
     // this.auth.logout();
     window.history.replaceState({}, document.title, window.location.href);
 
+    sessionStorage.clear();
+
     if (this.isUserSignedOut()){
       this.showSignOutMessage = true;
     }
     else{
-      sessionStorage.clear();
+     
       window.location.reload();
     }
   }
@@ -82,7 +85,26 @@ else if(data=="manuallogout"){
   
   }
   redirecttologin(){
-    window.location.href = "https://stg-id.uaepass.ae/idshub/logout?redirect_uri=https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2"
+
+console.log(environment.redirectURL)
+window.location.href = environment.redirectURL;
+
+  }
+
+  redirecttogloballogout(){
+
+    //     let abc= this.common.getauthcodedata()
+// console.log(abc);
+// console.log(this.authcodedata);
+let abc=JSON.parse(this.authcodedata)
+let link=abc.Code+'&lang=en&email='+abc.Email;
+console.log(environment.logoutURL+link)
+//f38b7cc7-a6d1-4310-a18f-eb6c0c721589&lang=ar&email=x44IfzFRhSE77EqMnZHviNyq33%252fnZ%252bNANeQzi2RXZhk%253d
+// let balanceurl=abc.
+
+
+    window.location.href = environment.logoutURL+link;
+
   }
 
 }

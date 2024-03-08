@@ -291,6 +291,17 @@ export class CompletedAttestationsComponent
     this.onClickFilterOptionCommon();
   }
 
+  formatDateTime_API_payload(dateTimeString: string): string {
+    const date = new Date(dateTimeString);
+
+    // Get date components
+    const day = date.getDate();
+    const month = date.toLocaleString('default', { month: 'short' });
+    const year = date.getFullYear().toString().slice(-2); // Get the last two digits of the year
+
+    return `${day}-${month}-${year}`;
+  }
+
   onClickFilterOptionCommon() {
     let payload = {
       useruno: "111",

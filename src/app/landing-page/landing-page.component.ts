@@ -37,7 +37,7 @@ displaytext:string='';
   pageIndex = 0; // Current page index
   json:any;
   constructor(
-    private common: CommonService,
+    public common: CommonService,
     private router: Router,
     private apicall: ApiService,
     private consts: ConstantsService,

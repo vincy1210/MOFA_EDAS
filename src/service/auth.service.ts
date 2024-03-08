@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Subject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -182,8 +183,7 @@ export class AuthService {
     //return null;
   }
   redirecttoEdas() {
-    window.location.href =
-      'https://stg-id.uaepass.ae/idshub/logout?redirect_uri=https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2';
+    window.location.href = environment.redirectURL;
   }
 
   setSelectedCompany(data: any) {

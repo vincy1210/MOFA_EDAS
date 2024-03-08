@@ -47,7 +47,7 @@
                                     <div class="row">
                                         <div class="col CompanyName">
                                             <label >{{'TradeLicenseNo'|translate}}   </label> &nbsp;
-                                            <span style="font-weight:normal;">{{list.tradelicenseno}}</span>
+                                            <span style="font-weight:normal;">{{common.decryptWithPrivateKey(list.tradelicenseno) }}</span>
                                         </div>
                                     </div>
                                     <br>

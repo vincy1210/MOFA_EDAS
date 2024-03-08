@@ -1,16 +1,16 @@
 <div class="grid grid-cols-1 page-header" color="primary">
   <label style="font-size: 13px; color: white; font-weight: bold">{{ "Glossary" | translate }}</label>
 </div>
-
-<div class="col-md-3 col-lg-3 col-sm-6">
-  <mat-form-field class="searchboxinputglossary" floatLabel="always">
+<!-- class="searchboxinputglossary" -->
+<div >
+  <mat-form-field  class="searchboxinputglossary1"  floatLabel="always">
     <input appTrimInput matInput type="text" [(ngModel)]="searchKeyword" (input)="searchContent()" placeholder="{{ 'SearchKeyword' | translate }}">
   </mat-form-field>
 </div>
 
 <br>
 
-<div class="glossary_div_one">
+<div *ngIf="filteredGlossaryContent.length>0" class="glossary_div_one">
   <div class="glossary-container">
     <mat-accordion multi>
 
@@ -55,4 +55,8 @@
 
     </mat-accordion>
   </div>
+</div>
+
+<div *ngIf="filteredGlossaryContent.length==0" class="noresfound">
+  {{'No results found' | translate}}
 </div>

@@ -19,11 +19,11 @@
           
             <div class="grid grid-cols-1 gap-4 mt-5">
                 <div class="grid grid-cols-1">
-                    <div style="font-size: 30px;" class="a-bold-brown">{{list1.repfullnameen.toUpperCase()}}</div>
+                    <div style="font-size: 30px;" class="a-bold-brown">{{common.decryptWithPrivateKey(list1.repfullnameen).toUpperCase()}}</div>
                     <div class="a-bold-brown">
-                      <span >{{list1.repemailaddress || list1.companyemailaddress}}</span>
+                      <span >{{common.decryptWithPrivateKey(list1.repemailaddress || list1.companyemailaddress)}}</span>
                     </div>
-                    <div class="a-bold-brown">{{list1.companycontactno}}</div>
+                    <div class="a-bold-brown">{{common.decryptWithPrivateKey(list1.companycontactno)}}</div>
                     <div class="a-bold-brown">{{list1.rolename}}</div>
                     <!-- class="companyname" -->
                     <div class="a-bold-brown designation"> {{list1.nameofbusiness}}</div>

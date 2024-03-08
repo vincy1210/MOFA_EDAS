@@ -84,3 +84,9 @@
   background-color: rgba(0, 0, 0, 0.5); /* Add your desired background styling */
 }
 
+
+
+.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}

@@ -155,7 +155,7 @@
                 class="mr-2 grid-header-right-icon"
                 [pTooltip]="'Export' | translate"
                 tooltipPosition="left"
-                [disabled]="list.length === 0" [matMenuTriggerFor]="menu"
+                [disabled]="list && list.length === 0" [matMenuTriggerFor]="menu"
               ></button>
               <mat-menu #menu="matMenu" class="exportmenu"  xPosition="before">
                 <button mat-menu-item (click)="exportExcel()" [ngClass]="common.getmypalette()">
@@ -304,7 +304,7 @@
           </ng-template>
 
           <ng-template pTemplate="footer">
-            <ng-container *ngIf="list.length > 0">
+            <ng-container *ngIf="list && list.length > 0">
               <tr>
                 <td colspan="4">
                   {{ "Total" | translate }}

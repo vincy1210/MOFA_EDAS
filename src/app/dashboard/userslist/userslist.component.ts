@@ -259,27 +259,27 @@ onSubmitDialogModal(){
   let resp;
 
   let accessprofile = formdata.accessprofile.toString().replace(/[\[\]]/g, '');
-
+let mobilenumber=this.common.formatmobilenumber(formdata.mobilenumber);
   let removed_hyphen=formdata.emiratesID.replace(/-/g, '');
     let data={
-      "p_emiratesid":removed_hyphen,
+      "p_emiratesid":this.common.encryptWithPublicKey(removed_hyphen) || '',
       "p_uuid":this.uuid,
       "p_companyuno":this.currentcompany,
       "p_usertype":formdata.role,
-      "p_mobile":this.common.formatmobilenumber(formdata.mobilenumber),
-      "p_email":formdata.emailaddress,
-      "p_fullnameen":formdata.username,
-      "p_fullnamear":"0",
-      "p_firstnameen":"0",
-      "p_firstnamear":"0",
-      "p_lastnameen":"0",
-      "p_lastnamear":"0",
-      "p_nationalityen":"0",
-      "p_nationalityar":"0",
-      "p_gender": formdata.gender,
+      "p_mobile":this.common.encryptWithPublicKey(mobilenumber),
+      "p_email":this.common.encryptWithPublicKey(formdata.emailaddress) ,
+      "p_fullnameen":this.common.encryptWithPublicKey(formdata.username),
+      "p_fullnamear":"",
+      "p_firstnameen":"",
+      "p_firstnamear":"",
+      "p_lastnameen":"",
+      "p_lastnamear":"",
+      "p_nationalityen":"",
+      "p_nationalityar":"",
+      "p_gender": formdata.gender || '',
       "p_idtype":"EmiratesID",
-      "p_titleen":"0",
-      "p_titlear":"0",
+      "p_titleen":"",
+      "p_titlear":"",
       "p_isadmin":isadmin,
       "p_hasmultiplecompanyaccess":0,
       "p_useruno":0,
@@ -366,13 +366,13 @@ deleteuser(currentrow:any){
 
   let resp;
     let data={
-      "p_emiratesid":currentrow.eid,
+      "p_emiratesid":this.common.encryptWithPublicKey(currentrow.eid) ,
       "p_uuid":this.uuid,
       "p_companyuno":this.currentcompany,
       "p_usertype":currentrow.usertype,
       "p_mobile":this.common.formatmobilenumber(currentrow.mobilenumber),
-      "p_email":currentrow.emailid,
-      "p_fullnameen":currentrow.fullnameen,
+      "p_email":this.common.encryptWithPublicKey(currentrow.emailid),
+      "p_fullnameen":this.common.encryptWithPublicKey(currentrow.fullnameen),
       "p_fullnamear":"0",
       "p_firstnameen":"0",
       "p_firstnamear":"0",
@@ -380,7 +380,7 @@ deleteuser(currentrow:any){
       "p_lastnamear":"0",
       "p_nationalityen":"0",
       "p_nationalityar":"0",
-      "p_gender": currentrow.gender,
+      "p_gender": currentrow.gender || '',
       "p_idtype":"EmiratesID",
       "p_titleen":"0",
       "p_titlear":"0",

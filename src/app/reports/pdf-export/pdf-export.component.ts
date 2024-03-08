@@ -29,6 +29,9 @@ export class PdfExportComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes["pdfPayload"]) {
       const pdfPayloaddata = changes["pdfPayload"].currentValue;
+      if(pdfPayloaddata){
+
+      
       // this.pdfPayload = { header2Data: pdfPayloaddata.header2Data };
       this.pdfPayload = pdfPayloaddata;
       this.pdfPayload.bodyDataHeader =
@@ -44,6 +47,7 @@ export class PdfExportComponent implements OnInit {
       } else {
         this.IsPdfContent = false;
       }
+    }
     }
   }
 

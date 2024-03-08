@@ -30,6 +30,7 @@ export class PdfExportComponent implements OnInit {
     if (changes["pdfPayload"]) {
       const pdfPayloaddata = changes["pdfPayload"].currentValue;
       // this.pdfPayload = { header2Data: pdfPayloaddata.header2Data };
+      if(pdfPayloaddata){
       this.pdfPayload = pdfPayloaddata;
       this.pdfPayload.bodyDataHeader =
         this.pdfPayload.bodyData && this.pdfPayload.bodyData.length > 0
@@ -44,6 +45,7 @@ export class PdfExportComponent implements OnInit {
       } else {
         this.IsPdfContent = false;
       }
+    }
     }
   }
 

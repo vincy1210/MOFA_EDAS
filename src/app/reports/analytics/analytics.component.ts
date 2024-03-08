@@ -79,6 +79,7 @@ export class AnalyticsComponent implements OnInit {
   }
 
   statuschartload(legendData: string[], seriesData: { value: number; name: string }[], chartType: string) {
+    console.log(seriesData.length)
     const commonObject: EChartsOption = {
       tooltip: {
         trigger: 'item',
@@ -166,7 +167,7 @@ this.apicall.post(this.consts.getAttestStatisticsForCustomer, data).subscribe((r
   const processName = processname.toLowerCase(); // Convert processname to lowercase for consistent handling
 
   // Extracting the noofrequestsubmitted based on the process name
-  const noofrequestsubmitted = response.data[0].noofrequestsubmitted;
+  const noofrequestsubmitted = response.data[0]?.noofrequestsubmitted || 0;
 
   // Creating series data for 'all' case
   // const seriesDataAll = [{ value: noofrequestsubmitted, name: processName.toUpperCase() }];
@@ -185,17 +186,17 @@ let seriesDataSpecific: any[];
 switch (processName) {
 case 'lca':
     seriesDataSpecific = [
-        { value: response.data[0].noofrequestpending, name: 'Draft' },
-        { value: response.data[0].noofrequestinrisk, name: 'In Risk' },
-        { value: response.data[0].noofrequestcompleted, name: 'Completed' }
+        { value: response.data[0]?.noofrequestpending, name: 'Draft' },
+        { value: response.data[0]?.noofrequestinrisk, name: 'In Risk' },
+        { value: response.data[0]?.noofrequestcompleted, name: 'Completed' }
     ].filter(item => item.value !== undefined); // Filter out items with undefined values
     break;
 case 'coo':
 case 'physical':
     seriesDataSpecific = [
-        { value: response.data[0].noofrequestpending, name: 'Pending' },
-        { value: response.data[0].noofrequestinreview, name: 'In Review' },
-        { value: response.data[0].noofrequestcompleted, name: 'Completed' }
+        { value: response.data[0]?.noofrequestpending, name: 'Pending' },
+        { value: response.data[0]?.noofrequestinreview, name: 'In Review' },
+        { value: response.data[0]?.noofrequestcompleted, name: 'Completed' }
     ].filter(item => item.value !== undefined); // Filter out items with undefined values
     break;
 default:

@@ -244,24 +244,25 @@ bearer_token:string='';
 
       // You can perform any actions or logic with these parameters
     });
-    //for cancel button checking whether any company already there
+    //for cancel button checking whether any company already there 
     this.reg_form_data = this.common.getUserProfile();
    
 
     console.log(this.reg_form_data);
     let data = {
-      useruno: '1',
-      languagecode: this.currentLanguagecode,
+      "uuid": "1",
+      "languagecode": this.currentLanguagecode,
+      "processname": "FREEZONEMST"
     };
     // this.common.showLoading();
 
     this.apiservice
-      .post(this.consts.getFreezonetypes, data)
+      .post(this.consts.getListOfValues, data)
       .subscribe((response: any) => {
         this.common.hideLoading();
 
         const dataArray = response.data; // Access the 'data' property from the response
-        this.freezone1 = dataArray.dictionary.data;
+        this.freezone1 = dataArray;
         this.common.setfreezone(this.freezone1);
         console.log(this.freezone1);
 
@@ -293,9 +294,8 @@ bearer_token:string='';
         // Delay the execution  by 2 seconds
         setTimeout(() => {
           // this.auth.logout();
-          window.location.href =
-            'https://stg-id.uaepass.ae/idshub/logout?redirect_uri=https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2';
-        }, 2000); // 2000 milliseconds = 2 seconds
+          window.location.href =environment.redirectURL;
+        }, 500); // 2000 milliseconds = 2 seconds
         return;
       }
     } else {
@@ -316,18 +316,36 @@ bearer_token:string='';
 
   checkcompanyuserforcancel(userinfo: any) {
     let response, data;
+    let email=this.common.encryptWithPublicKey(userinfo.email);
+    let mobile=this.common.encryptWithPublicKey(userinfo.mobile);
+    let firstnameEN=this.common.encryptWithPublicKey(userinfo.firstnameEN);
+
+    let emirateid;
+    if(userinfo.idn){
+      emirateid=this.common.encryptWithPublicKey(userinfo.idn)
+    }
+    else{
+      emirateid='';
+    }
+    
+
     data = {
       uuid: userinfo.uuid,
-      emiratesid: userinfo.idn,
-      email: userinfo.email,
-      mobile: userinfo.mobile,
-      firstname: userinfo.firstnameEN,
+      emiratesid: emirateid,
+      email: email,
+      mobile: mobile,
+      firstname: firstnameEN,
     };
     this.common.showLoading();
     this.apiservice.post(this.consts.checkCompanyUser, data).subscribe({
       next: (success: any) => {
         this.common.hideLoading();
         response = success;
+// token ref
+        // this.bearer_token=response.token;
+        //   console.log(this.bearer_token)
+        //   this.auth.setToken(this.bearer_token);
+
         if (response.data.length > 0) {
           this.UserHavingCompany = true;
         } else {
@@ -366,6 +384,8 @@ bearer_token:string='';
       Code: this.param1,
       Email: email2,
     };
+
+    this.common.setauthcodedata(objTxData);
  
     this.apiservice.post(this.consts.CheckUAEPassLogin, objTxData).subscribe({
       next: (response: any) => {
@@ -491,12 +511,25 @@ bearer_token:string='';
 
   useralreadyhavingcompany(userinfo: any) {
     let response, data;
+    let email=this.common.encryptWithPublicKey(userinfo.email);
+    let mobile=this.common.encryptWithPublicKey(userinfo.mobile)
+    let firstnameEN=this.common.encryptWithPublicKey(userinfo.firstnameEN)
+
+
+    let emirateid;
+    if(userinfo.idn){
+      emirateid=this.common.encryptWithPublicKey(userinfo.idn)
+    }
+    else{
+      emirateid='';
+    }
+    
     data = {
       uuid: userinfo.uuid,
-      emiratesid: userinfo.idn,
-      email: userinfo.email,
-      mobile: userinfo.mobile,
-      firstname: userinfo.firstnameEN,
+      emiratesid: emirateid,
+      email: email,
+      mobile: mobile,
+      firstname: firstnameEN,
     };
     this.common.showLoading();
 

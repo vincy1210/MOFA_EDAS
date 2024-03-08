@@ -15,12 +15,12 @@
                       <div class="grid grid-cols-1">
                           <div class="a-bold-brown company_name">{{list1.nameofbusiness.toUpperCase()}}</div>
                           <div class="a-bold-brown" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
-                              <span >{{prefemailaddresstodisplay}}</span> &nbsp;
+                              <span >{{common.decryptWithPrivateKey(prefemailaddresstodisplay) }}</span> &nbsp;
                               <div *ngIf="isadmin" style="cursor: pointer; display: inline-block;" pTooltip="{{'Edit' | translate}}" (click)="updateprefemailopenpopup()">
                                   <i class="fa fa-edit align-middle "></i>
                               </div>
                           </div>
-                          <div class="a-bold-brown"> {{list1.companycontactno}}</div>
+                          <div class="a-bold-brown"> {{common.decryptWithPrivateKey(list1.companycontactno)}}</div>
                       </div>
                   </div>
               </td>
@@ -38,11 +38,11 @@
                     </tr>
                     <tr>
                         <td><div class="a-bold-grey">{{'Email ID' | translate}}</div></td>
-                        <td><div class="a-bold-brown">{{list1.companyemailaddress}}</div></td>
+                        <td><div class="a-bold-brown">{{common.decryptWithPrivateKey(list1.companyemailaddress)}}</div></td>
                     </tr>
                     <tr>
                         <td><div class="a-bold-grey">{{'Trade Licence No' | translate}}</div></td>
-                        <td><div class="a-bold-brown">{{list1.tradelicenseno}}</div></td>
+                        <td><div class="a-bold-brown">{{common.decryptWithPrivateKey(list1.tradelicenseno)}}</div></td>
                     </tr>
                     <tr>
                         <td><div class="a-bold-grey">{{'tradelicenseissuedate' | translate}}</div></td>
@@ -55,16 +55,21 @@
                     <tr>
                         <td><div class="a-bold-grey">{{'status' | translate}}</div></td>
                         <td>
-                            <div *ngIf="!list1.islicenseexpired" class="text-green-info">
-                                <span >{{'Active' | translate}}</span>
+                            <div *ngIf="!list1.islicenseexpired" class="greeninfo"  >
+                              <!-- <span  > -->
+                                &nbsp;
+                                <span  >{{'Active' | translate}}</span> 
                                 <div class="float-left ml-3"> <i class="fa fa-info-circle fa-2x align-middle "></i></div>
+                              <!-- </span> -->
+                                <div *ngIf="isadmin" style="cursor: pointer;" pTooltip="{{'View' | translate}}" (click)="openNew()" class="float-left ml-3"> <i class="fa fa-eye align-middle "></i></div>
+
                             </div>
                 
                             <div *ngIf="list1.islicenseexpired" class="text-red-info">
-                                <span class="float-left">{{'Expired' | translate}}</span>
-                                <div class="float-left ml-3"> <i class="fa fa-info-circle fa-2x align-middle "></i></div>
+                                <span class="float-left text-red-info">{{'Expired' | translate}}</span>
+                                <div class="float-left ml-3 text-red-info"> <i class="fa fa-info-circle fa-2x align-middle "></i></div>
                                 
-                                <div *ngIf="isadmin" style="cursor: pointer;" pTooltip="{{'Edit' | translate}}" (click)="openNew()" class="float-left ml-3"> <i class="fa fa-edit align-middle "></i></div>
+                                <div *ngIf="isadmin" style="cursor: pointer;" pTooltip="{{'View' | translate}}" (click)="openNew()" class="float-left ml-3"> <i class="fa fa-eye align-middle "></i></div>
                             </div>
                         </td>
                     </tr>
@@ -102,7 +107,7 @@
                                             <div class="a-bold-grey">{{'Email ID' | translate}}</div>
                                         </td>
                                         <td class="col-span-2">
-                                            <div class="a-bold-brown">{{list1.companyemailaddress}}</div>
+                                            <div class="a-bold-brown">{{common.decryptWithPrivateKey(list1.companyemailaddress)}}</div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -110,7 +115,7 @@
                                             <div class="a-bold-grey">{{'Trade Licence No' | translate}}</div>
                                         </td>
                                         <td class="col-span-2">
-                                            <div class="a-bold-brown">{{list1.tradelicenseno}}</div>
+                                            <div class="a-bold-brown">{{common.decryptWithPrivateKey(list1.tradelicenseno)}}</div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -261,195 +266,14 @@
 
 
 <!-- modal details popup -->
-<p-dialog
-  [(visible)]="AddInvoiceDialog"
-  style="top: 20%; height: 80%"
-  [draggable]="false"
-  [dismissableMask]="false"
-  [style]="{ width: '750px' }"
-  header="{{ 'Company Details' | translate }}"
-  [modal]="true"
-  styleClass="p-fluid"
->
- <div>
-    <form  [formGroup]="companyDetailsForm">
-        <!-- <div class="grid grid-cols-1">
-          <div class="back pr-2  cursor-pointer" routerLink="/registration">
-          </div>
-          <h1 class="mt-0 mb-0 page-title-01"> {{'Company Details' | translate }}</h1>
-        </div> -->
-        <div class="grid grid-cols-1">
-   
-          <mat-form-field appearance="outline">
-              <mat-label>{{'Company' | translate}}</mat-label>
-              <input appTrimInput  matInput formControlName="name_of_Business" readonly [disabled]="true" name="name_of_Business" >
-            </mat-form-field>
-   
-        </div>
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-              <mat-form-field appearance="outline">
-                  <mat-label>{{'tradelicensenumber' | translate }}</mat-label>
-                  <input appTrimInput readonly [disabled]="true"  autocomplete="off" formControlName="trade_Licence" name="trade_Licence" matInput placeholder="123456">
-                <mat-error *ngIf="companyDetailsForm.get('trade_Licence')?.hasError('required')">{{'Trade License number is required' | translate }} </mat-error>
-                <mat-error *ngIf="companyDetailsForm.get('trade_Licence')?.hasError('pattern')">{{'Trade License number is required' | translate }} </mat-error>
-       
-                </mat-form-field>
-          </div>
-         
-        </div>
-   
-        <div class="grid grid-cols-2 gap-4">
-   
-          <div>
-            <mat-form-field class="example-form-field">
-              <mat-label>{{'tradelicenseissuedate' | translate }}</mat-label>
-              <input appTrimInput matInput readonly  [max]="today"  autocomplete="off" [disabled]="true" formControlName="trade_Licence_Issue_Date" name="trade_Licence_Issue_Date" [matDatepicker]="tlissuedate" placeholder="19/02/1972">
-   
-              <mat-datepicker-toggle matSuffix [for]="tlissuedate"></mat-datepicker-toggle>
-              <mat-datepicker #tlissuedate>
-                <mat-datepicker-actions>
-                  <button mat-button matDatepickerCancel>{{'cancelbtn' | translate }}</button>
-                  <button mat-raised-button color="primary" matDatepickerApply>{{'applybtn' | translate
-                    }}</button>
-                </mat-datepicker-actions>
-              </mat-datepicker>
-              <mat-error *ngIf="companyDetailsForm.get('trade_Licence_Issue_Date')?.hasError('required')">{{'Trade License issue Date is required' | translate }}</mat-error>
-   
-            </mat-form-field>
-          </div>
-   
-          <div>
-            <mat-form-field class="example-form-field">
-              <mat-label>{{'tradelicenseexpirydate' | translate }}</mat-label>
-              <input appTrimInput matInput readonly autocomplete="off" [min]="today" formControlName="trade_Licence_Expiry_Date" name="trade_Licence_Expiry_Date" [matDatepicker]="tlexpirydate" placeholder="19/10/2025">
-              <mat-datepicker-toggle matSuffix [for]="tlexpirydate"></mat-datepicker-toggle>
-              <mat-datepicker #tlexpirydate>
-                <mat-datepicker-actions>
-                  <button mat-button matDatepickerCancel>{{'cancelbtn' | translate }}</button>
-                  <button mat-raised-button color="primary" matDatepickerApply>{{'applybtn' | translate
-                    }}</button>
-                </mat-datepicker-actions>
-              </mat-datepicker>
-              <mat-error *ngIf="companyDetailsForm.get('trade_Licence_Expiry_Date')?.hasError('required')">{{'Trade License Expiry Date is required' | translate }} </mat-error>
-            </mat-form-field>
-          </div>
-        </div>
-   
-        <div class="grid grid-cols-2 gap-4">
-  <div>
-      <mat-form-field appearance="outline">
-          <mat-label>{{'licenseissuingauthority' | translate }}</mat-label>
-          <input appTrimInput matInput readonly [disabled]="true"  autocomplete="off" formControlName="Licence_issuing_auth" name="Licence_issuing_auth" placeholder="Free zone">
-          <mat-error *ngIf="companyDetailsForm.get('Licence_issuing_auth')?.hasError('required')">{{'License issuing authority is required' | translate }} </mat-error>
-          <mat-error *ngIf="companyDetailsForm.get('Licence_issuing_auth')?.hasError('pattern')">{{'License issuing authority is required' | translate }} </mat-error>
-       
-        </mat-form-field>
-  </div>
-         <div>
-          <div class="grid grid-cols-1">
-              <mat-form-field appearance="outline">
-                <mat-label>{{ 'legaltype' | translate }}</mat-label>
-                <mat-select name="legal_Type" formControlName="legal_Type">
-                  <mat-option *ngFor="let option of legalTypeOptions" [value]="option.typeuno">
-                    {{ option.typename }}
-                  </mat-option>
-                </mat-select>
-                <mat-error class="error" *ngIf="companyDetailsForm.get('legal_Type')?.hasError('required')">{{'Legal Type is required' | translate }}</mat-error>
-              </mat-form-field>
-            </div>
-           
-         </div>
-   
-   
-        </div>
-   
-     
-   
-        <div class="grid grid-cols-2 gap-4">
-   
-          <div>
-            <mat-form-field appearance="outline">
-              <mat-label>{{'companyregisteredemailaddress' | translate }} </mat-label>
-              <input appTrimInput matInput readonly  autocomplete="off" formControlName="Comp_Reg_Email_Address" name="Comp_Reg_Email_Address" placeholder="example@etech.com">
-              <!-- <span matSuffix>&nbsp;{{'EDIT' | translate }}</span> -->
-              <mat-error *ngIf="companyDetailsForm.get('Comp_Reg_Email_Address')?.hasError('required')">{{'Company Registered Email Address is required' | translate }} </mat-error>
-              <mat-error *ngIf="companyDetailsForm.get('Comp_Reg_Email_Address')?.hasError('email')">{{ 'Invalid Email format' | translate }}
-              </mat-error>
-            </mat-form-field>
-          </div>
-   
-          <div>
-            <mat-form-field appearance="outline" floatLabel="always">
-              <mat-label>{{'companycontactnumber' | translate }}   </mat-label>
-              <input appTrimInput readonly matInput type="tel"  autocomplete="off" maxlength="9" formControlName="Comp_contact_number" name="Comp_contact_number"    placeholder="55 1234 567">
-              <span matPrefix>+971&nbsp;</span>
-              <!-- <span matSuffix>&nbsp;{{'EDIT' | translate }}</span> -->
-              <mat-error *ngIf="!(companyDetailsForm.get('Comp_contact_number')?.hasError('minlength')|| companyDetailsForm.get('Comp_contact_number')?.hasError('maxlength'))&&companyDetailsForm.get('Comp_contact_number')?.hasError('pattern')">{{'Invalid Company Contact Number' | translate }} </mat-error>
-              <mat-error *ngIf="companyDetailsForm.get('Comp_contact_number')?.hasError('minlength')|| companyDetailsForm.get('Comp_contact_number')?.hasError('maxlength')">{{'Company Contact Number must be 9 characters long' | translate }}</mat-error>
-              <mat-error *ngIf="companyDetailsForm.get('Comp_contact_number')?.hasError('required')">{{'Company Contact Number is required' | translate }} </mat-error>
-            </mat-form-field>
-          </div>
-   
-        </div>
-        <div class="grid grid-cols-2 gap-4">
-   
-          <div class="cd-upload">
-           
-   
-            <!-- {{companyDetailsForm.get('Upload_trade_license')?.value}}  {{companyDetailsForm.get('Upload_trade_license')?.value!=''}}   &nbsp; &nbsp; &nbsp; -->
-            <mat-form-field appearance="outline" floatLabel="always">
-              <mat-label>{{'uploadtradelicense' | translate }}</mat-label>
-              <a mat-button color="primary" (click)="fileInput.click()" class="float-right"><span *ngIf="!isLoading">
-                {{ companyDetailsForm.get('Upload_trade_license')?.value === '' ? ('Upload' | translate) : ('Re-upload' | translate ) }}
-              </span>
-              <span  *ngIf="isLoading">
-                <mat-spinner diameter="35"></mat-spinner>
-              </span>
-            </a>
-              <input appTrimInput type="text" formControlName="Upload_trade_license" name="Upload_trade_license" readonly matInput />
-   
-              <input accept=".pdf" style="display: none" formControlName="Upload_trade_license" name="Upload_trade_license" #attachments type="file" (change)="onFileChanged($event)" #fileInput
-                />
-              <div *ngFor="let selected of listOfFiles; let index = index" class="cd-file-list">
-               <span class="doc_selected" >{{ selected }}</span> &nbsp; &nbsp; &nbsp;<mat-icon>check_circle_outline</mat-icon>
-                <small (click)="removeSelectedFile(index)">{{'Remove' | translate }}</small>
-              </div>
-          <mat-error *ngIf="companyDetailsForm.get('Upload_trade_license')?.hasError('required')"> {{'Trade License is required' | translate }} </mat-error>
-   
-            </mat-form-field>
-          </div>
-          <span
-         
-          style="padding: 15px; cursor: pointer"
-         
-          class="image-text viewaction">
-          <mat-icon  pTooltip="{{ 'Download Trade Licence' | translate }}" (click)="this.common.getimagebase64(attestfilelocation)" class="action_eye_icon">download</mat-icon>
-        </span>
-        </div>
-    </form>
- </div>
 
-  <ng-template pTemplate="footer">
-
-  
-
-
-    <p-button
-      icon="pi pi-times"
-      (click)="AddInvoiceDialog = false"
-      label="{{ 'Cancel' | translate }}"
-      styleClass="p-confirm-dialog-reject"
-    ></p-button>
-  </ng-template>
-</p-dialog>
 
 <p-dialog
   [(visible)]="AddInvoiceDialogprefemail"
-  style="top: 20%; height: 80%"
+  style="top: 20%; height: 80%; width: 58% !important;"
   [draggable]="false"
   [dismissableMask]="false"
-  [style]="{ width: '750px' }"
+  [style]="{ width: '450px' }"
   header="{{ 'Update Details' | translate }}"
   [modal]="true"
   styleClass="p-fluid"
@@ -462,7 +286,7 @@
         <div class="grid grid-cols-2 gap-4">
           <div>
               <mat-form-field appearance="outline">
-                  <mat-label>{{'prefemailaddress' | translate }}</mat-label>
+                  <mat-label>{{'Preferred Email Address' | translate }}</mat-label>
                   <input appTrimInput   autocomplete="off" formControlName="prefemailaddress" name="prefemailaddress" matInput placeholder="example@etech.com">
                 <mat-error *ngIf="prefform.get('prefemailaddress')?.hasError('required')">{{'Preferred Email address is required' | translate }} </mat-error>
                 <mat-error *ngIf="prefform.get('prefemailaddress')?.hasError('pattern')">{{'Preferred Email address is required' | translate }} </mat-error>
@@ -504,4 +328,47 @@
     ></p-button>
   </ng-template>
 </p-dialog>
+
+
+
+<p-dialog
+    [(visible)]="AddInvoiceDialog"
+    [draggable]="false"
+    style="top: 20%"
+    [style]="{ width: '750px' }"
+    header="{{ 'Company Details' | translate }}"
+    [modal]="true"
+    styleClass="p-fluid"
+  >
+    <div class="viewmore">
+      <div class="more-content-section">
+        <div class="grid grid-cols-2">
+          <ng-container>
+            <div class="more-content" *ngFor="let field of fields">
+              <mat-label class="title-label">{{
+                field.label | translate
+              }}</mat-label>
+              <div class="more-content-body">
+                <mat-label class="more-content-block">{{
+                  field.value
+                }}</mat-label>
+              </div>
+            </div>
+
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
+    <ng-template pTemplate="footer">
+      <p-button
+        icon="pi pi-times"
+        (click)="AddInvoiceDialog = false"
+        label="{{ 'Cancel' | translate }}"
+        styleClass="p-confirm-dialog-reject"
+      ></p-button>
+    </ng-template>
+  </p-dialog>
+
+
 <!-- modal 2 end -->

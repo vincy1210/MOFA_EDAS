@@ -52,14 +52,16 @@ json: any[] = []; // JSON to store values
               catchError((error) => {
                 if (error instanceof HttpErrorResponse) {
                   // Handle 400 and 500 series errors
-                  if (error.status >= 400 && error.status < 600) {
+                  if ((error.status >= 400 && error.status < 600) || error.status==0) {
                     console.error('HTTP Error:', error);
                     // this.router.navigate(['/pagenotfound']); // Redirect to 'pagenotfound' page
-                    this.router.navigateByUrl('/unauthorized')
+                    // this.router.navigateByUrl('/unauthorized')
                   }
                 }
                 return throwError(error);
-              }));
+              }
+              
+              ));
           } else {
           // Continue with the modified request
           return next.handle(modifiedReq).pipe(
@@ -67,7 +69,7 @@ json: any[] = []; // JSON to store values
             catchError((error) => {
               if (error instanceof HttpErrorResponse) {
                 // Handle 400 and 500 series errors
-                if (error.status >= 400 && error.status < 600) {
+                if (error.status >= 400 && error.status < 600  || error.status==0) {
                   console.error('HTTP Error:', error);
                   this.router.navigate(['/unauthorized']); // Redirect to 'pagenotfound' page
                 }

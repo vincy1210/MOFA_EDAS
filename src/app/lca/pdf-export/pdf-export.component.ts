@@ -28,22 +28,30 @@ export class PdfExportComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes["pdfPayload"]) {
+
       const pdfPayloaddata = changes["pdfPayload"].currentValue;
-      // this.pdfPayload = { header2Data: pdfPayloaddata.header2Data };
-      this.pdfPayload = pdfPayloaddata;
-      this.pdfPayload.bodyDataHeader =
-        this.pdfPayload.bodyData && this.pdfPayload.bodyData.length > 0
-          ? Object.keys(this.pdfPayload.bodyData[0])
-          : [];
-      if (this.pdfPayload.bodyDataHeader.length > 0) {
-        this.common.showLoading();
-        this.IsPdfContent = true;
-        setTimeout(() => {
-          this.pdfExport();
-        }, 2000);
-      } else {
-        this.IsPdfContent = false;
+      if(pdfPayloaddata){
+      //start
+
+        this.pdfPayload = pdfPayloaddata;
+        this.pdfPayload.bodyDataHeader =
+          this.pdfPayload?.bodyData && this.pdfPayload.bodyData?.length > 0
+            ? Object.keys(this.pdfPayload.bodyData[0])
+            : [];
+        if (this.pdfPayload.bodyDataHeader.length > 0) {
+          this.common.showLoading();
+          this.IsPdfContent = true;
+          setTimeout(() => {
+            this.pdfExport();
+          }, 2000);
+        } else {
+          this.IsPdfContent = false;
+        }
+  //end
+
       }
+     
+
     }
   }
 

@@ -46,6 +46,8 @@ cols:any;
 totalrecords:any;
 prefemailaddresstodisplay:string='';
 currentLanguagecode: string='1033';
+currentrow:any;
+fields:any;
   constructor(private router:Router,private formBuilder:FormBuilder, public common:CommonService, private auth:AuthService, private apicall:ApiService, private consts:ConstantsService) {
 
 
@@ -79,14 +81,14 @@ this.attestfilelocation=def.attachment;
     // if(abc){
       this.companyDetailsForm=this.formBuilder.group({
         name_of_Business:[def.nameofbusiness],
-        trade_Licence:[def.tradelicenseno],
+        trade_Licence:[this.common.decryptWithPrivateKey(def.tradelicenseno)],
         trade_Licence_Issue_Date:[def.licenseissuedate],
         trade_Licence_Expiry_Date:[def.licenseexpirydate],
         Licence_issuing_auth:[def.licenseissuingauthority, [ Validators.pattern('^(?=.*\\S).+$')]],
         legal_Type:[def.legaltypeuno, ],
-        Comp_Reg_Email_Address:[def.companyemailaddress, [ Validators.email]],
+        Comp_Reg_Email_Address:[this.common.decryptWithPrivateKey(def.companyemailaddress), [ Validators.email]],
         //'^5\\d+$'
-        Comp_contact_number:[def.companycontactno, [Validators.maxLength(9), Validators.minLength(9), Validators.pattern(/^5\d+$/)]],
+        Comp_contact_number:[this.common.decryptWithPrivateKey(def.companycontactno), [Validators.maxLength(9), Validators.minLength(9), Validators.pattern(/^5\d+$/)]],
         Upload_trade_license:[''],
         auth_code:['']
 
@@ -112,7 +114,7 @@ this.attestfilelocation=def.attachment;
       }
 
       this.prefform=this.formBuilder.group({
-        prefemailaddress:[def.preferredemailaddress, [Validators.required,Validators.pattern('^(?=.*\\S).+$')]],
+        prefemailaddress:[common.decryptWithPrivateKey(def.preferredemailaddress), [Validators.required,Validators.pattern('^(?=.*\\S).+$')]],
         prefcomtype:[def.companytypeuno, Validators.required]
 
       })
@@ -248,7 +250,60 @@ this.InitTable();
   
 
   openNew() {
-    this.AddInvoiceDialog=true;
+    let abc=this.auth.getmycompanyprofile() || '';
+    let def=JSON.parse(abc);
+    console.log(abc);
+this.attestfilelocation=def.attachment;
+
+let legalTypeName = '';
+  const legalTypeUno = def.legaltypeuno;
+  for (const legalType of this.legalTypeOptions) {
+    if (legalType.typeuno === legalTypeUno) {
+      legalTypeName = legalType.typename;
+      break;
+    }
+  }
+  console.log('Legal type name:', legalTypeName);
+    let data={
+      company:def.nameofbusiness,
+      tradelicense:this.common.decryptWithPrivateKey(def.tradelicenseno),
+      trade_Licence_Issue_Date: this.common.splitdatetime(def.licenseissuedate)?.date ,
+      trade_Licence_Expiry_Date: this.common.splitdatetime(def.licenseexpirydate)?.date,
+      Licence_issuing_auth: def.licenseissuingauthority,
+      legal_Type:legalTypeName,
+      Comp_Reg_Email_Address:this.common.decryptWithPrivateKey(def.companyemailaddress),
+      Comp_contact_number:this.common.decryptWithPrivateKey(def.companycontactno),
+    }
+    this.openNew1(data);
+  }
+
+  openNew1(data:any) {
+    console.log(data);
+    this.currentrow=data;
+  
+    this.AddInvoiceDialog=true
+    const fieldMappings: { [key: string]: string } = {
+      company: 'Company Name',
+      tradelicense: 'Trade license no',
+      trade_Licence_Issue_Date: 'Trade license Issue date',
+      trade_Licence_Expiry_Date: 'Trade license Expiry Date',
+      Licence_issuing_auth: 'License Issuing authority',
+      legal_Type: 'Legal Type',
+      Comp_Reg_Email_Address: 'Email Address',
+      Comp_contact_number: 'Contact No',
+    };
+  
+    if (data) {
+      this.fields = Object.keys(fieldMappings).map(key => {
+        let value = data[key];
+        return {
+          label: fieldMappings[key],
+          value: value
+        };
+      });
+    }
+    
+  
   }
 
   

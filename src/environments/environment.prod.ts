@@ -1,16 +1,21 @@
+
+//mofa prod
 export const environment = {
   production: true,
   recaptcha: {
-    siteKey: '6LcVQRwoAAAAAB6scwIvG78wLgpk516pJJ-IB-qQ',
+    siteKey: '6Ldh9ocpAAAAAEo3VzJuMJ51w6s7lEVmRd93NDWb',
   },
-  // baseURL: 'https://www.alphadatainsights.com/mofa/edasapi/api/',   https://www.alphadatainsights.com/mofa/edascustomerapi/api/User/
-  baseURL: 'https://www.alphadatainsights.com/mofa/edasapi/api/',
-  authTokenURL: 'https://mofastg.mofaic.gov.ae/en/Account/',
+  baseURL: 'https://edasapi.mofa.gov.ae/edasapi/api/',
+  authTokenURL: 'https://edasapi.mofa.gov.ae/en/Account/',
   appdetails:{
-    version:'2.8',
+    version:'3.5',
     year:'2024',
     payment_count:500,
     idletime_out:1500,
     session_timeout:300
-  }
+  },
+  redirectURL:"https://www.mofa.gov.ae/en/Account/Redirect-To-EDAS-v2",
+  logoutURL:"https://www.mofa.gov.ae/en/api/features/accounts/GETEDASLogoutV2?accessToken="
 };
+
+

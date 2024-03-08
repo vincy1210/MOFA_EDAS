@@ -147,7 +147,7 @@
                     class="mr-2 grid-header-right-icon"
                     [pTooltip]="'Export' | translate"
                     tooltipPosition="left"
-                    [disabled]="cooAttestationLists.length === 0" [matMenuTriggerFor]="menu" 
+                    [disabled]="cooAttestationLists && cooAttestationLists.length === 0" [matMenuTriggerFor]="menu" 
                   ></button>
                   <mat-menu #menu="matMenu" class="exportmenu"  xPosition="before">
                     <button mat-menu-item (click)="exportExcel()" [ngClass]="common.getmypalette()">
@@ -495,7 +495,7 @@
 
 
 
-            <div class="more-content">
+            <!-- <div class="more-content">
               <mat-label class="title-label">{{ 'Attestation File' | translate }}</mat-label>
               <div *ngIf="attchemntisthere" class="more-content-body">
                 <mat-label class="more-content-block" >{{ common.givefilename('COO') }} <span (click)="common.getimagebase64(currentrow.attachment, common.givefilename('COO'))">  <mat-icon class="action_eye_icon_popup" >download</mat-icon> </span> </mat-label>
@@ -503,7 +503,7 @@
               <div class="more-content-body" *ngIf="!attchemntisthere">
                 <mat-label class="more-content-block" >{{ 'No File Data' }} </mat-label>
               </div>
-            </div>
+            </div> -->
 
             <div *ngIf="invoiceisthere" class="more-content">
               <mat-label class="title-label">{{ 'Invoice File' | translate }}</mat-label>

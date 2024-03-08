@@ -109,7 +109,7 @@
                     class="mr-2 grid-header-right-icon"
                     [pTooltip]="'Export' | translate"
                     tooltipPosition="left"
-                    [disabled]="invoiceRequestLists.length === 0" [matMenuTriggerFor]="menu"
+                    [disabled]="invoiceRequestLists && invoiceRequestLists.length === 0" [matMenuTriggerFor]="menu"
                   ></button>
                   <mat-menu #menu="matMenu" class="exportmenu"  xPosition="before">
                     <button mat-menu-item (click)="exportExcel()" [ngClass]="common.getmypalette()">

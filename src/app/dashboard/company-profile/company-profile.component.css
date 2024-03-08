@@ -19,5 +19,8 @@ td{
 .profile-page-avatar{
   margin-top: 2rem;
 }
+.greeninfo{
+  display: flex; color: #0f9c34;
+}
 
 

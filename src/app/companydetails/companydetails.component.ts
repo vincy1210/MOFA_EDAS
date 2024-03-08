@@ -68,6 +68,8 @@ export class CompanydetailsComponent implements OnInit {
   isButtonDisabled = false;
   alreadyregisteredcompanydetails:any;
   currentLanguagecode: string='1033';
+  resendCount: number = 0;
+  maxResendCount: number = 5;
   constructor(private recaptchaV3Service:ReCaptchaV3Service,private common:CommonService ,private _activatedRoute: ActivatedRoute,private formBuilder:FormBuilder, public dialog: MatDialog, private Common:CommonService, public apiservice:ApiService, public consts:ConstantsService, public router:Router) {
 
     let selectedlanguage = sessionStorage.getItem('language') || 'en';
@@ -126,9 +128,9 @@ if(this.reg_form_data==undefined){
         console.log(this.freezonelist)
       });
       license_issuing_auth=this.reg_form_data.dmccOption;
-      let matchingObj = this.freezonelist.find((item:any) => item.typeuno === this.reg_form_data.dmccOption);
-      console.log(matchingObj.typename)
-      license_issuing_auth=matchingObj.typename
+      let matchingObj = this.freezonelist.find((item:any) => item.itemcode === this.reg_form_data.dmccOption);
+      console.log(matchingObj.itemname)
+      license_issuing_auth=matchingObj.itemname
 
     
     }
@@ -312,29 +314,37 @@ if(this.reg_form_data==undefined){
         else{
           lcano='07';
         }
-  
+
+        let idn;
+  if(this.user_info_taken_using_authtoken.idn){
+    idn=this.common.encryptWithPublicKey(this.user_info_taken_using_authtoken.idn) ;
+  }
+  else{
+    idn='' ;
+
+  }
        
 	  let data={
-      "emiratesId": this.user_info_taken_using_authtoken.idn,   // UAE pass frields start
+      "emiratesId": idn,   // UAE pass frields start
       "uuid": this.user_info_taken_using_authtoken.uuid,
       "token": this.user_info_taken_using_authtoken.Token,
       "useruno": "0",     //find out
       "companyname":form.name_of_Business,
-      "tradelicensenumber": form.trade_Licence,
+      "tradelicensenumber": this.common.encryptWithPublicKey(form.trade_Licence) || ' ',
       "tradelicenseissuedate": this.Common.convertISOToCustomFormat(form.trade_Licence_Issue_Date) ,
       "tradelicenseexpirydate": this.Common.convertISOToCustomFormat(form.trade_Licence_Expiry_Date),
       "licenseissuingauthority": form.Licence_issuing_auth, //freetext
-      "companyregisteredemailaddress": form.Comp_Reg_Email_Address,
-      "companycontactnumber": form.Comp_contact_number,
+      "companyregisteredemailaddress": this.common.encryptWithPublicKey(form.Comp_Reg_Email_Address),
+      "companycontactnumber": this.common.encryptWithPublicKey(form.Comp_contact_number),
       "HASATTACHMENT": "0",
       "attachment": form.trade_Licence,
-      "representativeemailaddress": form.companyrep_EmailAddress,
-      "mobilenumber": form.companyrep_MobileNumber,
+      "representativeemailaddress": this.common.encryptWithPublicKey(form.companyrep_EmailAddress),
+      "mobilenumber": this.common.encryptWithPublicKey(form.companyrep_MobileNumber),
       "userType": this.user_info_taken_using_authtoken.userType,
-      "mobile": this.user_info_taken_using_authtoken.mobile,
-      "email": this.user_info_taken_using_authtoken.email,
+      "mobile": this.common.encryptWithPublicKey(this.user_info_taken_using_authtoken.mobile),
+      "email": this.common.encryptWithPublicKey(this.user_info_taken_using_authtoken.email),
       "spuuid": this.user_info_taken_using_authtoken.spuuid,
-      "idn": this.user_info_taken_using_authtoken.idn,
+      "idn": idn,
       "fullnameEN": this.user_info_taken_using_authtoken.fullnameEN,
       "fullnameAR": this.user_info_taken_using_authtoken.fullnameAR,
       "firstnameEN": this.user_info_taken_using_authtoken.firstnameEN,
@@ -513,24 +523,39 @@ if(this.reg_form_data==undefined){
       if(this.reg_form_data.tradeLicenseNumber==null){
         this.reg_form_data.tradeLicenseNumber=""; 
       }
-      
+      let mobile=this.companyDetailsForm.get('companyrep_MobileNumber')?.value;
 
     data={
       "uuid":this.user_info_taken_using_authtoken.uuid,
       "OTP":"",
-      "tradelicenseno":this.reg_form_data.tradeLicenseNumber,
+      "tradelicenseno":this.common.encryptWithPublicKey(this.reg_form_data.tradeLicenseNumber),
       "companyname":this.reg_form_data.name_of_Business,
       "emirate":this.reg_form_data.issuingAuthority,
-      "emailID":email,
+      "emailID":this.common.encryptWithPublicKey(email),
+      "mobile": this.common.encryptWithPublicKey(mobile)
 
       }
       console.log(data);
+
+     
+
+
       let otpresponse;
       this.common.showLoading();
       this.set_countdown();
 
       this.apiservice.post(this.consts.SendOTPForCompanyRegn,data).subscribe({next:(success)=>{
         this.common.hideLoading();
+
+        this.resendCount++;
+
+        // Disable the resend link if the maximum count is reached
+        if (this.resendCount >= this.maxResendCount) {
+          const resendLink = document.getElementById('resendLink');
+          if (resendLink) {
+            resendLink.setAttribute('disabled', 'true');
+          }
+        }
 
       otpresponse=success;
       console.log(otpresponse);
@@ -540,6 +565,7 @@ if(this.reg_form_data==undefined){
   }
 
   openOTPPopup(templateRef: TemplateRef<any>) {
+    this.resendCount=0;
       this.rep_contact_no=this.companyDetailsForm.get('companyrep_MobileNumber')?.value;
       if(this.companyDetailsForm.get('isbroker')?.value===""){
         this.radiochosenornot=true;
@@ -611,6 +637,18 @@ if(this.reg_form_data==undefined){
       }
     });
   }
+  // otpValues: string[] = [];
+  isSubmitEnabled: number = 0;
+  otpchange(value: any) {
+    console.log(value);
+    if (Array.isArray(value) && value.length === 6) {
+        const nonNullNonEmptyValues = value.filter(val => val !== null && val !== '');
+        const count = nonNullNonEmptyValues.length;
+        console.log('Count:', count);
+        this.isSubmitEnabled=count;
+    }
+}
+
 
   handleFillEvent(value: string): void {
     console.log(value);
@@ -625,7 +663,7 @@ if(this.reg_form_data==undefined){
    let data={
       "uuid":this.user_info_taken_using_authtoken.uuid,
       "otp": this.OTP_entered,
-      "tradelicenseno":this.reg_form_data.tradeLicenseNumber,
+      "tradelicenseno":this.common.encryptWithPublicKey(this.reg_form_data.tradeLicenseNumber),
       "companyname":this.reg_form_data.name_of_Business,
     "emirate":this.reg_form_data.issuingAuthority
   }

@@ -296,7 +296,7 @@ export class LcaPendingComponent implements OnInit {
       this.uuid = uuid;
       this.user_mailID = data11.Data.email;
       this.contactno = data11.Data.mobile;
-      this.getLCAoverdueCount();
+      // this.getLCAoverdueCount();
 
     }
     this.cols_xl = [
@@ -1280,36 +1280,7 @@ this.AddInvoiceDialog_ = true;
 
 
   
-getLCAoverdueCount(){
-let resp;
-  let data={
-    "companyuno":this.currentcompany,
-    "uuid":this.uuid,
-    "startdate":this.common.formatDateTime_API_payload(this.oneMonthAgo.toDateString()),
-    "enddate":this.common.formatDateTime_API_payload(this.todayModel.toDateString())
-};
-  this.apicall
-  .post(this.consts.getLCAOverdueCount, data)
-  .subscribe((response: any) => {
-     resp=response;
-    if(resp.overdue && resp.overdue>0){
-     this.overdue_filter=true;
-    }
-    else{
-     this.overdue_filter=false;
-    }
-    if(resp.nearoverdue && resp.nearoverdue>0){
-     this.nearingoverdue_filter=true;
-    }
-    else{
-     this.overdue_filter=false;
-    }
 
-    this.common.hideLoading();
-    console.log(response);
-   
-  });
-}
 
 openpaymenttab(){
   this.showcoopaybutton=true;

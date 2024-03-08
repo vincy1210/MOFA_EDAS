@@ -10,6 +10,7 @@
 
   .glossary_div_one{
     padding: 2% 5%;
+    margin-top: -23px;
 
   }
 
@@ -67,7 +68,9 @@
   justify-content: end;
   padding: 0 7em;
 }
-
+.searchboxinputglossary1{
+  padding: 13px 44px 0px 44px;
+}
 
 
 .highlight {
@@ -83,3 +86,9 @@
 }
 
 
+.noresfound{
+  text-align: center;
+    padding: 57px;
+    background-color: #eee;
+    margin: 0px 42px;
+}

@@ -454,12 +454,12 @@ export class CooAttestationComponent implements OnInit {
     } else if (this.selectedAttestations.length == 0) {
       this.shouldShow = false;
     } else {
-      if (
-        this.selectedAttestations[0]?.attachment != '' ||
-        this.selectedAttestations[0]?.attachment != null
-      ) {
-        this.getimagebase64(this.selectedAttestations[0]?.attachment);
-      }
+      // if (
+      //   this.selectedAttestations[0]?.attachment != '' ||
+      //   this.selectedAttestations[0]?.attachment != null
+      // ) {
+      //   this.getimagebase64(this.selectedAttestations[0]?.attachment);
+      // }
 
       let createddate = this.common.splitdatetime(
         this.selectedAttestations[0]?.enteredon
@@ -620,40 +620,40 @@ export class CooAttestationComponent implements OnInit {
     return;
   }
 
-  getimagebase64(attachment: any) {
-    let resp;
-    //"D:\\mofafile\\LCARequest\\PDF\\\\20161220423\\INV00000_New.PDF"
-    //let attestfilelocation1=this.common.encryptWithPublicKey(attestfilelocation)
-    let data = {
-      attachment: attachment,
-      uuid: this.uuid,
-    };
-    this.common.showLoading();
+  // getimagebase64(attachment: any) {
+  //   let resp;
+  //   //"D:\\mofafile\\LCARequest\\PDF\\\\20161220423\\INV00000_New.PDF"
+  //   //let attestfilelocation1=this.common.encryptWithPublicKey(attestfilelocation)
+  //   let data = {
+  //     attachment: attachment,
+  //     uuid: this.uuid,
+  //   };
+  //   this.common.showLoading();
 
-    this.apiservice
-      .post(this.consts.getAttestationFileContent, data)
-      .subscribe({
-        next: (success: any) => {
-          this.common.hideLoading();
+  //   this.apiservice
+  //     .post(this.consts.getAttestationFileContent, data)
+  //     .subscribe({
+  //       next: (success: any) => {
+  //         this.common.hideLoading();
 
-          resp = success;
-          if (resp.responsecode == 1) {
-            this.base64PdfString = resp.data;
-            var binary_string = this.base64PdfString.replace(/\\n/g, '');
-            binary_string = window.atob(this.base64PdfString);
-            var len = binary_string.length;
-            var bytes = new Uint8Array(len);
-            for (var i = 0; i < len; i++) {
-              bytes[i] = binary_string.charCodeAt(i);
-            }
-            this.src = bytes.buffer;
-          } else {
-            this.common.showErrorMessage('');
-            this.loading = false;
-          }
-        },
-      });
-  }
+  //         resp = success;
+  //         if (resp.responsecode == 1) {
+  //           this.base64PdfString = resp.data;
+  //           var binary_string = this.base64PdfString.replace(/\\n/g, '');
+  //           binary_string = window.atob(this.base64PdfString);
+  //           var len = binary_string.length;
+  //           var bytes = new Uint8Array(len);
+  //           for (var i = 0; i < len; i++) {
+  //             bytes[i] = binary_string.charCodeAt(i);
+  //           }
+  //           this.src = bytes.buffer;
+  //         } else {
+  //           this.common.showErrorMessage('');
+  //           this.loading = false;
+  //         }
+  //       },
+  //     });
+  // }
   AttestationPay() {
     let data = {
       id: '',

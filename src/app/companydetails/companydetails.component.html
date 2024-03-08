@@ -140,7 +140,7 @@
         <div class="cd-upload">
           <mat-form-field appearance="outline" floatLabel="always">
             <mat-label>{{'uploadtradelicense' | translate }}</mat-label>
-            <a mat-button color="primary" (click)="fileInput.click()" class="float-right"><span *ngIf="!isLoading">
+            <a mat-button style="top: 0.3em;" color="primary" (click)="fileInput.click()" class="float-right"><span *ngIf="!isLoading">
               {{ companyDetailsForm.get('Upload_trade_license')?.value === '' ? ('UPLOAD' | translate) : ('Re-upload' | translate ) }}
             </span>
             <span  *ngIf="isLoading">
@@ -290,7 +290,7 @@
   </div> -->
 
   <div class="Frame-18642">
-    <a href="https://mofastg.mofaic.gov.ae/en/Account/Redirect-To-EDAS-V2" target="_blank" class="VISIT-MOFAGOVAE Heading">
+    <a href="https://www.mofa.gov.ae/en/Account/Redirect-To-EDAS-V2" target="_blank" class="VISIT-MOFAGOVAE Heading">
       {{ 'VISIT' | translate }} MOFA.GOV.AE
     </a>
   </div>
@@ -319,23 +319,31 @@
         <small class="text-center otp-timer"><strong>{{ countdownMinutes }}:{{ countdownSeconds }}</strong></small>
       </div>
       <div class="grid grid-cols-1">
-      <ngx-otp-input [config]="otpInputConfig" #ngxotp (fill)="handleFillEvent($event)">
+      <ngx-otp-input [config]="otpInputConfig" (otpChange)="otpchange($event)" #ngxotp (fill)="handleFillEvent($event)">
       </ngx-otp-input>
       <br>
       <p class="mat-error"  *ngIf="incorrectOTP">{{ 'Incorrect OTP. Please try again' | translate }}</p>
     </div>
     <!-- {{showResendLink}} -->
-    <div class="grid grid-cols-1 otp-receive-msg" *ngIf="showResendLink">
-    <p>{{'DidntreceivetheOTP' | translate }} <strong (click)="SendOTP()" class="cursor-pointer">{{'Resend' | translate }} </strong></p>
+    <div class="grid grid-cols-1 otp-receive-msg" *ngIf="showResendLink && resendCount<maxResendCount">
+    <p>{{'DidntreceivetheOTP' | translate }} <strong id="resendLink"  (click)="SendOTP()" class="cursor-pointer">{{'Resend' | translate }} </strong></p>
   </div>
+
+  <div class="grid grid-cols-1 otp-receive-msg" *ngIf="resendCount>=maxResendCount" >
+    <p>{{'Max attempts over! Please try later.' | translate }} </p>
+  </div>
+
+
+
   </div>
   <div mat-dialog-actions>
+    <div class="grid grid-cols-1 w-100">
+      <button mat-flat-button color="primary"  (click)="OTPSubmit()" [disabled]="isSubmitEnabled<6" class="green-filled-btn w-100">{{'Submit' | translate }} </button>
+</div>
       <div class="grid grid-cols-1 w-100 mb-2">
               <button mat-flat-button class="white-filled-btn w-100" mat-dialog-close color="primary"> {{'Cancel' | translate }}</button>
       </div>
-      <div class="grid grid-cols-1 w-100">
-        <button mat-flat-button color="primary" (click)="OTPSubmit()" class="green-filled-btn w-100">{{'Submit' | translate }} </button>
-</div>
+     
   </div>
 </ng-template>
 

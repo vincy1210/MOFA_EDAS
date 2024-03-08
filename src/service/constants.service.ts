@@ -23,7 +23,7 @@ export class ConstantsService {
   GetLegalTypes = 'Company/getLegalTypes';
   SendOTPForCompanyRegn = 'Company/saveOTPforCompanyRegn';
   validateOTPforCompanyRegn = 'Company/validateOTPforCompanyRegn';
-  getFreezonetypes = 'Company/getFreezonetypes';
+  // getFreezonetypes = 'Company/getFreezonetypes';
   pendingattestation = 'User/lcaMypendingAttestList';
   //UAEPassprofile="Company/lcapendingAttestList"
   getInvoiceAttestations = 'User/getMyInvoiceAttestations'; // invoice attest lists
@@ -37,25 +37,20 @@ export class ConstantsService {
   getCompanyList = 'User/getMyCompanyList';
   getInReviewCOOReq = 'User/getInReviewCOOReq';
   getInReviewAttestReq = 'User/getInReviewAttestReq';
-  checkCompanyUser = 'user/checkCompanyUser';
+  checkCompanyUser = 'User/checkCompanyUser';
 
-  mpaypurchaseRequest = 'lca/mpaypurchaseRequest';
-  LCAmpayinquiryTransaction = 'lca/mpayinquiryTransaction';
-  mpayinquiryTransactionForPayAll='lca/mpayinquiryTransactionForPayAll'
 
-  getPhysicalAttestpaymentdetails = 'entity/getPhysicalAttestpaymentdetails';
-  getCOOAttestpaymentdetails = 'entity/getCOOAttestpaymentdetails';
+  getPhysicalAttestpaymentdetails = 'User/getPhysicalAttestpaymentdetails';
+  getCOOAttestpaymentdetails = 'User/getCOOAttestpaymentdetails';
 
   getcompletedInvoiceAttestList = 'User/getMycompletedInvoiceAttestList';
 
-  managecompanyuser = 'Admin/managecompanyuser'; //manage user
-  getCompanyUserList = 'Admin/getCompanyUserList';
+
 
   eSealSoapGatewayUrl = 'https://stg-id.uaepass.ae/trustedx-gw/SoapGateway';
 
   //payment
 
-  getLCAPaymentdetails = 'LCA/getLCAPaymentdetails';
 
   //dashboard
   getDailyStatistics = 'dashboard/getDailyStatistics';
@@ -67,26 +62,34 @@ export class ConstantsService {
   // this.consts.getDailyStatistics: filterType === "weekly"? this.consts.getWeeklyStatistics: this.consts.getMonthlyStatistics;
 
   getFinesReport = 'lca/getFinesReport';
-
+  getFinesReportForAllStatus='lca/getFinesReportForAllStatus';
+  getLCAPaymentdetails = 'LCA/getLCAPaymentdetails';
+  mpaypurchaseRequest = 'lca/mpaypurchaseRequest';
+  LCAmpayinquiryTransaction = 'lca/mpayinquiryTransaction';
+  mpayinquiryTransactionForPayAll='lca/mpayinquiryTransactionForPayAll'
   requestAttestationFromExcelImport = 'lca/requestAttestationFromExcelImport';
   getPendingReqforlcauser = 'lca/getPendingReqforlcauser';
   getCompletedReqforlcauser = 'lca/getCompletedReqforlcauser';
   getCompanyListForLcaUser = 'lca/getCompanyListForLcaUser';
   getInRiskReqforlcauser = 'lca/getInRiskReqforlcauser';
 
-  getcoolistforlcaattestno = 'user/getcoolistforlcaattestno';
-  getlcalistforcoodeclaration = 'user/getlcalistforcoodeclaration';
-  getListOfValues = 'user/getListOfValues';
+  getcoolistforlcaattestno = 'User/getcoolistforlcaattestno';
+  getlcalistforcoodeclaration = 'User/getlcalistforcoodeclaration';
+  getListOfValues = 'User/getListOfValues';
   getSettlementList = 'payment/getSettlementList';
   getServerTime='Common/getServerTime';
-  getLCAOverdueCount='Admin/getLCAOverdueCount';
+
+  getLCAOverdueCount='User/getLCAOverdueCount';
+  updateCompanyProfile='User/updateCompanyProfile'
+  managecompanyuser = 'User/managecompanyuser'; //manage user
+  getCompanyUserList = 'User/getCompanyUserList';
+
   getCOOgroupPaymentDetails='payment/getCOOgroupPaymentDetails';
   lcaMyAttestListForAllStatus='User/lcaMyAttestListForAllStatus';
 
 
 
 
-  getFinesReportForAllStatus='lca/getFinesReportForAllStatus';
   getMyInvoiceAttestationsForAllS='User/getMyInvoiceAttestationsForAllStatus';
   getMyCOORequestsForAllStatus='User/getMyCOORequestsForAllStatus';
 
@@ -108,10 +111,10 @@ getImportReportForLCA = "dashboard/getImportReportForLCA";
 //getPreprocessLCARequests
 getPreprocessLCARequests = 'User/getPreprocessLCARequests'; 
 //
-updateCompanyProfile='Admin/updateCompanyProfile'
 
 
-// getListOfValues='user/getListOfValues';
+
+// getListOfValues='User/getListOfValues';
 
 getAttestStatisticsForCustomer='dashboard/getAttestStatisticsForCustomer'
 

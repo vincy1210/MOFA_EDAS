@@ -485,6 +485,20 @@ p.page-title-para {
 }
 
 
+#font-id.sm  .mat-option-text {
+  font-size: 12px !important;
+}
+#font-id.md  .mat-option-text {
+  font-size: 14px !important;
+}
+#font-id.lg  .mat-option-text {
+  font-size: 16px !important;
+}
+
+.mat-option-text {
+  font-size: 12px !important;
+}
+
 
 #font-id.sm .ftr-section h1 {
   font-size: 2.25rem !important;
@@ -782,7 +796,7 @@ button.white-icon-button.mat-menu-item {
   // top: -1px !important;
   color: var(--primary-color);
   font-weight: bold;
-  top: 0.27rem !important;
+  top: 0.15rem !important;
 }
 
 .cd-upload .mat-form-field-appearance-outline .mat-form-field-infix {
@@ -797,7 +811,9 @@ button.white-icon-button.mat-menu-item {
 }
 
 .cd-file-list {
-  margin-top: -40px;
+  // 40 before
+  //-55 for company details page
+  margin-top: -55px;  
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -2791,12 +2807,12 @@ mat-toolbar.main-header {
 
 .mat-option {
   height: 30px !important;
-  font-size: inherit !important;
+  // font-size: inherit !important;
 }
 
-.mat-option-text {
-  font-size: inherit !important;
-}
+// .mat-option-text {
+//   font-size: inherit !important;
+// }
 
 .mat-list-item-content {}
 
@@ -3182,7 +3198,8 @@ mat-toolbar.main-header {
 }
 
 .mat-form-field-appearance-outline .mat-form-field-wrapper {
-  margin: 2.25em 0 !important;
+  // margin: 2.25em 0 !important;
+  margin: 2.25em 0 -1em 0em !important;
 }
 .mat-accordion .mat-expansion-panel-header {
   flex-direction: row-reverse !important;
@@ -3289,9 +3306,9 @@ mat-toolbar.main-header {
   padding: 0.6em 0 1em 0 !important;
 }
 
-input.mat-input-element {
-  margin-top: 0.75em !important;
-}
+// input.mat-input-element {
+//   margin-top: 0.09em !important;
+// }
 
 .mat-select-trigger {
   height: 1.95em !important;
@@ -3300,3 +3317,17 @@ input.mat-input-element {
 .mat-menu-item .mat-icon-no-color {
   color: var(--primary-color) ;
 }
+
+.searchboxinput .mat-form-field-infix input.mat-input-element {
+  margin-top: 0.09em !important;
+}
+
+ .mat-form-field-infix input.mat-input-element {
+  margin-top: 0.25em !important;
+  //75 before
+
+}
+
+// .mat-form-field-appearance-outline .mat-form-field-wrapper {
+//   margin: 0.25em 0 -2em 0em;
+// }

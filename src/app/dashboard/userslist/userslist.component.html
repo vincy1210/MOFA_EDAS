@@ -277,9 +277,10 @@
 
   </form>
   <ng-template pTemplate="footer">
-    <button pButton pRipple label="{{'Cancel' | translate}}" icon="pi pi-times" class="p-confirm-dialog-reject" (click)="hideDialog()"></button>
     <button style="color: white;" pButton pRipple label="{{ dialogActionButtonLabel | translate }}"  icon="pi pi-check" [disabled]="isButtonDisabled"  (click)="onSubmitDialogModal()"></button>
-<br>
+    <button pButton pRipple label="{{'Cancel' | translate}}" icon="pi pi-times" class="p-confirm-dialog-reject" (click)="hideDialog()"></button>
+
+    <br>
 <br>
     <div *ngIf="dialogTitle == 'Edit User'" class="grid grid-cols-1 edit_footer">
       <div >

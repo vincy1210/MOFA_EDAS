@@ -38,18 +38,34 @@ export class GlossaryComponent implements AfterViewInit {
   }
 
   searchContent() {
-    console.log('Search triggered with keyword:', this.searchKeyword);
+    if(this.currentLanguage==='en'){
+      console.log('Search triggered with keyword:', this.searchKeyword);
   
-    if (this.searchKeyword.trim() === '') {
-      this.filteredGlossaryContent = [...this.glossaryContent];
-      return;
+      if (this.searchKeyword.trim() === '') {
+        this.filteredGlossaryContent = [...this.glossaryContent];
+        return;
+      }
+      const keyword = this.searchKeyword.toLowerCase();
+      this.filteredGlossaryContent = this.glossaryContent.filter(entry =>
+        entry.title.toLowerCase().includes(keyword) ||
+        entry.content.some(element => this.includesIgnoreCase(element.value, keyword))
+      );
     }
-  
-    const keyword = this.searchKeyword.toLowerCase();
-    this.filteredGlossaryContent = this.glossaryContent.filter(entry =>
-      entry.title.toLowerCase().includes(keyword) ||
-      entry.content.some(element => this.includesIgnoreCase(element.value, keyword))
-    );
+    else{
+      console.log('Search triggered with keyword ar:', this.searchKeyword);
+
+      if (this.searchKeyword.trim() === '') {
+        this.filteredGlossaryContent = [...this.glossaryContent];
+        return;
+      }
+      const keyword = this.searchKeyword.toLowerCase();
+      this.filteredGlossaryContent = this.glossaryContent.filter(entry =>
+        entry.title_ar?.toLowerCase().includes(keyword) ||
+        entry.content_ar?.some(element => this.includesIgnoreCase(element.value, keyword))
+      );
+
+    }
+   
   }
   
   includesIgnoreCase(value: string | string[], keyword: string): boolean {
