@@ -159,7 +159,7 @@ this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
           const dataArray = response.data;
           this.invoiceRequestLists = dataArray;
 
-
+          this.totalrecords=this.invoiceRequestLists.length;
           this.datasource=this.invoiceRequestLists;
           if ($event.globalFilter) {
             this.datasource = this.datasource.filter((row: any) => this.globalFilter(row, $event.globalFilter));
@@ -436,4 +436,14 @@ console.log(date.toISOString())
     this.InitTable(updatedLazyLoadEvent);
   }
 
+
+
+  getseverity(wfstatus:any){
+switch(wfstatus){
+case 'Completed':
+  return 'success';
+  default:
+    return 'danger';
+}
+  }
 }

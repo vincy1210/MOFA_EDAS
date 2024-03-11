@@ -18,7 +18,7 @@ export class ConstantsService {
   constructor() {}
   Updatecompanyuser = 'Company/Updatecompanyuser';
   getPaymentReceipt = 'payment/getPaymentReceipt';
-  registercompany = 'Company/RegisterCompany';
+  registercompany = 'proxy/registercompany';
   CheckCompanyRegStatus = 'Company/checkCompanyRegnStatus';
   GetLegalTypes = 'Company/getLegalTypes';
   SendOTPForCompanyRegn = 'Company/saveOTPforCompanyRegn';
@@ -27,13 +27,13 @@ export class ConstantsService {
   pendingattestation = 'User/lcaMypendingAttestList';
   //UAEPassprofile="Company/lcapendingAttestList"
   getInvoiceAttestations = 'User/getMyInvoiceAttestations'; // invoice attest lists
-  invoiceAttestation = 'Common/invoiceAttestation'; // invoice attest request // invoice attest request
+  invoiceAttestation = 'proxy/invoiceAttestation'; // invoice attest request // invoice attest request
   getCooRequests = 'User/getMyCOORequests'; // completed attest lists
-  updateCOORequests = 'Company/updateCOORequests'; // completed attest update
+  updateCOORequests = 'proxy/updateCOORequests'; // completed attest update
   lcaCompletedAttestList = 'User/lcaMyCompletedAttestList';
   sendMailGeneric = 'Company/sendMailGeneric';
   getcompletedCOORequests = 'User/getMycompletedCOORequests'; // completed COO Request
-  getAttestationFileContent = 'Company/getAttestationFileContent';
+  getAttestationFileContent = 'proxy/getAttestationFileContent';
   getCompanyList = 'User/getMyCompanyList';
   getInReviewCOOReq = 'User/getInReviewCOOReq';
   getInReviewAttestReq = 'User/getInReviewAttestReq';

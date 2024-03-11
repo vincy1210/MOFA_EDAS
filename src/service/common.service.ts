@@ -429,10 +429,18 @@ export class CommonService {
   }
 
   getimagebase64(attestfilelocation: any, filename?: any) {
+
+    let data11=this.getUserProfile();
+    let uuid;
+    if(data11!=null || data11!=undefined){
+      data11=JSON.parse(data11)
+      uuid=data11.Data.uuid;
+    }
+
     let resp;
     let data = {
       attestfilelocation: attestfilelocation,
-      uuid: this.uuid,
+      uuid: uuid,
     };
     this.showLoading();
 

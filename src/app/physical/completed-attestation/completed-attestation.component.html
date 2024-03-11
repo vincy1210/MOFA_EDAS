@@ -240,7 +240,7 @@
                 <span class="image-text">{{ data.entitycode }}</span>
               </td>
               <td>
-                <p-tag [value]="data.wfstatus" [severity]="'success'"></p-tag>
+                <p-tag [value]="data.wfstatus" [severity]="getseverity(data.wfstatus)"></p-tag>
               </td>
               <td>
                 <span class="image-text">{{ data.invoiceno }}</span>

@@ -288,7 +288,7 @@ let legalTypeName = '';
       trade_Licence_Issue_Date: 'Trade license Issue date',
       trade_Licence_Expiry_Date: 'Trade license Expiry Date',
       Licence_issuing_auth: 'License Issuing authority',
-      legal_Type: 'Legal Type',
+      // legal_Type: 'Legal Type',
       Comp_Reg_Email_Address: 'Email Address',
       Comp_contact_number: 'Contact No',
     };

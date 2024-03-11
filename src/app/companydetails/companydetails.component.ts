@@ -532,7 +532,7 @@ if(this.reg_form_data==undefined){
       "companyname":this.reg_form_data.name_of_Business,
       "emirate":this.reg_form_data.issuingAuthority,
       "emailID":this.common.encryptWithPublicKey(email),
-      "mobile": this.common.encryptWithPublicKey(mobile)
+      "MobileNumber": this.common.encryptWithPublicKey(mobile)
 
       }
       console.log(data);
