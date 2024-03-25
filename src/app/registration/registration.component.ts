@@ -230,6 +230,9 @@ export class RegistrationComponent {
     console.log('---------');
     this._activatedRoute.queryParams.subscribe((params: Params) => {
       // Access and capture the parameters here
+      // this.param1 = '6b07787b-af84-4fc8-bee3-0c262406374b'; // AuthenticationCode
+      // this.param2 = 'en';
+      // this.param3 = 'p4YHh7bRV9sSrvOzIQnRbOhANUxfxmfG5CL6XcdL%252bKc%253d';
       this.param1 =
         params['code'] || params['Code'] || params['AuthenticationCode']; // AuthenticationCode
       this.param2 = params['lang'];
@@ -382,6 +385,9 @@ export class RegistrationComponent {
 
     this.apiservice.post(this.consts.CheckUAEPassLogin, objTxData).subscribe({
       next: (response: any) => {
+        // let response = JSON.parse(
+        //   '{"IsSucceeded":"True","Message":"Succeeded.","Data":{"Id":"5b31318b-37db-45f5-a7f8-c70311b8d275","Token":"56e055a0-b791-4e2f-82e0-b7c4138d5432","userType":"SOP1","mobile":"971501435423","email":"navodthalassery@gmail.com","uuid":"a5c7c4a6-84d6-40b7-82a2-ec551424486c","spuuid":null,"idn":null,"fullnameEN":"NAVOD PUTHANPURAYIL MEETHAL","fullnameAR":null,"firstnameEN":"NAVOD","firstnameAR":null,"lastnameEN":"PUTHANPURAYIL MEETHAL","lastnameAR":null,"nationalityEN":"IND","nationalityAR":"هندى","gender":"Male","idType":null,"titleEN":null,"titleAR":null,"UAEPassJson":null}}'
+        // );
         console.log(response);
         if (typeof response === 'string' && !response.includes('/')) {
           // response = response.slice(1, -1);
