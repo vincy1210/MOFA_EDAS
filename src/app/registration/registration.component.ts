@@ -49,9 +49,9 @@ export class RegistrationComponent {
   reg_form_data: any;
   captcha: string = '';
   email: string = '';
-bearer_token:string='';
-  //testvar 
-  currentLanguagecode: string='1033';
+  bearer_token: string = '';
+  //testvar
+  currentLanguagecode: string = '1033';
 
   userinfo: any;
   captcha_token: any;
@@ -73,7 +73,6 @@ bearer_token:string='';
     private _activatedRoute: ActivatedRoute,
     private apiservice: ApiService
   ) {
-
     // this.getcopyrightyear();
     this.common.getData().subscribe((data) => {
       this.reg_form_data = data;
@@ -215,17 +214,14 @@ bearer_token:string='';
     }
   }
   ngOnInit() {
-
     let selectedlanguage = sessionStorage.getItem('language') || 'en';
 
-    if(selectedlanguage==='ar'){
-        this.currentLanguagecode='14337'
+    if (selectedlanguage === 'ar') {
+      this.currentLanguagecode = '14337';
+    } else {
+      this.currentLanguagecode = '1033';
     }
-    else{
-      this.currentLanguagecode='1033'
-
-    }
-   console.log(this.currentLanguagecode);
+    console.log(this.currentLanguagecode);
 
     this.common.showLoading();
 
@@ -234,7 +230,8 @@ bearer_token:string='';
     console.log('---------');
     this._activatedRoute.queryParams.subscribe((params: Params) => {
       // Access and capture the parameters here
-      this.param1 = params['code'] || params['Code'] || params['AuthenticationCode']; // AuthenticationCode
+      this.param1 =
+        params['code'] || params['Code'] || params['AuthenticationCode']; // AuthenticationCode
       this.param2 = params['lang'];
       this.param3 = params['email'];
 
@@ -244,15 +241,14 @@ bearer_token:string='';
 
       // You can perform any actions or logic with these parameters
     });
-    //for cancel button checking whether any company already there 
+    //for cancel button checking whether any company already there
     this.reg_form_data = this.common.getUserProfile();
-   
 
     console.log(this.reg_form_data);
     let data = {
-      "uuid": "1",
-      "languagecode": this.currentLanguagecode,
-      "processname": "FREEZONEMST"
+      uuid: '1',
+      languagecode: this.currentLanguagecode,
+      processname: 'FREEZONEMST',
     };
     // this.common.showLoading();
 
@@ -263,7 +259,7 @@ bearer_token:string='';
 
         const dataArray = response.data; // Access the 'data' property from the response
         this.freezone1 = dataArray;
-        this.FreezonelistFilter=dataArray;
+        this.FreezonelistFilter = dataArray;
         this.common.setfreezone(this.freezone1);
         console.log(this.freezone1);
 
@@ -278,12 +274,11 @@ bearer_token:string='';
       this.param1 == undefined ||
       this.param2 == undefined
     ) {
-
       const userProfilejson = JSON.parse(this.reg_form_data);
       if (userProfilejson) {
         this.checkcompanyuserforcancel(userProfilejson.Data);
       }
-      
+
       if (this.reg_form_data != null || this.reg_form_data != undefined) {
         this.userinfo = JSON.parse(this.reg_form_data);
         this.common.setUserIfoData(this.reg_form_data);
@@ -295,7 +290,7 @@ bearer_token:string='';
         // Delay the execution  by 2 seconds
         setTimeout(() => {
           // this.auth.logout();
-          window.location.href =environment.redirectURL;
+          window.location.href = environment.redirectURL;
         }, 500); // 2000 milliseconds = 2 seconds
         return;
       }
@@ -317,18 +312,16 @@ bearer_token:string='';
 
   checkcompanyuserforcancel(userinfo: any) {
     let response, data;
-    let email=this.common.encryptWithPublicKey(userinfo.email);
-    let mobile=this.common.encryptWithPublicKey(userinfo.mobile);
-    let firstnameEN=this.common.encryptWithPublicKey(userinfo.firstnameEN);
+    let email = this.common.encryptWithPublicKey(userinfo.email);
+    let mobile = this.common.encryptWithPublicKey(userinfo.mobile);
+    let firstnameEN = this.common.encryptWithPublicKey(userinfo.firstnameEN);
 
     let emirateid;
-    if(userinfo.idn){
-      emirateid=this.common.encryptWithPublicKey(userinfo.idn)
+    if (userinfo.idn) {
+      emirateid = this.common.encryptWithPublicKey(userinfo.idn);
+    } else {
+      emirateid = '';
     }
-    else{
-      emirateid='';
-    }
-    
 
     data = {
       uuid: userinfo.uuid,
@@ -342,7 +335,7 @@ bearer_token:string='';
       next: (success: any) => {
         this.common.hideLoading();
         response = success;
-// token ref
+        // token ref
         // this.bearer_token=response.token;
         //   console.log(this.bearer_token)
         //   this.auth.setToken(this.bearer_token);
@@ -377,8 +370,7 @@ bearer_token:string='';
   //Redirection from MOFA start
 
   addItem() {
-
-      //  const email = encodeURIComponent(this.param3.trim());
+    //  const email = encodeURIComponent(this.param3.trim());
     let email2 = encodeURIComponent(this.param3.trim());
 
     const objTxData = {
@@ -387,10 +379,10 @@ bearer_token:string='';
     };
 
     this.common.setauthcodedata(objTxData);
- 
+
     this.apiservice.post(this.consts.CheckUAEPassLogin, objTxData).subscribe({
       next: (response: any) => {
-        console.log(response)
+        console.log(response);
         if (typeof response === 'string' && !response.includes('/')) {
           // response = response.slice(1, -1);
           response = JSON.parse(response);
@@ -427,8 +419,8 @@ bearer_token:string='';
         }
 
         this.common.setUserIfoData(response.Data);
-      },});
-     
+      },
+    });
   }
 
   // ngOnDestroy() {
@@ -512,19 +504,17 @@ bearer_token:string='';
 
   useralreadyhavingcompany(userinfo: any) {
     let response, data;
-    let email=this.common.encryptWithPublicKey(userinfo.email);
-    let mobile=this.common.encryptWithPublicKey(userinfo.mobile)
-    let firstnameEN=this.common.encryptWithPublicKey(userinfo.firstnameEN)
-
+    let email = this.common.encryptWithPublicKey(userinfo.email);
+    let mobile = this.common.encryptWithPublicKey(userinfo.mobile);
+    let firstnameEN = this.common.encryptWithPublicKey(userinfo.firstnameEN);
 
     let emirateid;
-    if(userinfo.idn){
-      emirateid=this.common.encryptWithPublicKey(userinfo.idn)
+    if (userinfo.idn) {
+      emirateid = this.common.encryptWithPublicKey(userinfo.idn);
+    } else {
+      emirateid = '';
     }
-    else{
-      emirateid='';
-    }
-    
+
     data = {
       uuid: userinfo.uuid,
       emiratesid: emirateid,
@@ -534,79 +524,80 @@ bearer_token:string='';
     };
     this.common.showLoading();
 
-
     //start
 
-  //   this.apiservice.post(this.consts.checkCompanyUser, data)
-  // .pipe(takeUntil(this.ngUnsubscribe))
-  // .subscribe({
+    //   this.apiservice.post(this.consts.checkCompanyUser, data)
+    // .pipe(takeUntil(this.ngUnsubscribe))
+    // .subscribe({
 
     //end
 
-    this.apiservice.post(this.consts.checkCompanyUser, data)
-  .pipe(takeUntil(this.ngUnsubscribe))
-  .subscribe({
-      next: (success: any) => {
-        this.common.hideLoading();
-        response = success;
-        this.common.hideLoading();
-        if (response.responsecode == 1) {
-          this.bearer_token=response.token;
-          console.log(this.bearer_token)
-          this.auth.setToken(this.bearer_token);
-          if (response.data === 'User not available') {
-            return;
-          } 
-          else {
-            let lcauser: boolean = false;
-
-            // Iterate through the JSON data
-            for (const data of response.data) {
-              if (data.roleuno === 11 || data.roleuno === 12) {
-                lcauser = true;
-                break; // No need to continue checking once condition is met
-              }
-            }
-            // Now lcauser will be true if any lcauno is 11 or 12
-            console.log('Is lcauser true?', lcauser);
-
-            if (lcauser) {
-              const { rolename } = response.data[0];
-              if (rolename && rolename.length > 0) {
-                const UserRoleList: number[] =
-                  this.common.getRolefromString(rolename);
-                sessionStorage.setItem(
-                  'userrolelist',
-                  JSON.stringify(UserRoleList)
-                );
-              }
-              sessionStorage.setItem('lcauserdetails', JSON.stringify(response.data[0]));
-              this.auth.setLCAUser(response.data[0]);
-              this.router.navigateByUrl('/lca-login/lcadashboard');
+    this.apiservice
+      .post(this.consts.checkCompanyUser, data)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe({
+        next: (success: any) => {
+          this.common.hideLoading();
+          response = success;
+          this.common.hideLoading();
+          if (response.responsecode == 1) {
+            this.bearer_token = response.token;
+            console.log(this.bearer_token);
+            this.auth.setToken(this.bearer_token);
+            if (response.data === 'User not available') {
+              return;
             } else {
-              sessionStorage.setItem('usertype', 'CompanyUser');
+              let lcauser: boolean = false;
 
-              this.common.userType.next('CompanyUser');
-              console.log('to landing page from registration page line 535');
+              // Iterate through the JSON data
+              for (const data of response.data) {
+                if (data.roleuno === 11 || data.roleuno === 12) {
+                  lcauser = true;
+                  break; // No need to continue checking once condition is met
+                }
+              }
+              // Now lcauser will be true if any lcauno is 11 or 12
+              console.log('Is lcauser true?', lcauser);
 
-              this.router.navigateByUrl('/landingpage');
+              if (lcauser) {
+                const { rolename } = response.data[0];
+                if (rolename && rolename.length > 0) {
+                  const UserRoleList: number[] =
+                    this.common.getRolefromString(rolename);
+                  sessionStorage.setItem(
+                    'userrolelist',
+                    JSON.stringify(UserRoleList)
+                  );
+                }
+                sessionStorage.setItem(
+                  'lcauserdetails',
+                  JSON.stringify(response.data[0])
+                );
+                this.auth.setLCAUser(response.data[0]);
+                this.router.navigateByUrl('/lca-login/lcadashboard');
+              } else {
+                sessionStorage.setItem('usertype', 'CompanyUser');
+
+                this.common.userType.next('CompanyUser');
+                console.log('to landing page from registration page line 535');
+
+                this.router.navigateByUrl('/landingpage');
+              }
             }
           }
-        }
-      },
-    });
+        },
+      });
   }
   FreezonelistFilter: { itemcode: string; itemno: string }[] = [];
 
-  onInputChange(event: any, fieldValue: "categoryuno"): void {
+  onInputChange(event: any, fieldValue: 'categoryuno'): void {
     const userInput = event.target.value.toLowerCase();
-    if (fieldValue === "categoryuno") {
+    if (fieldValue === 'categoryuno') {
       this.freezone1 = this.FreezonelistFilter.filter((item: any) =>
         item.itemcode.toLowerCase().includes(userInput)
       );
     }
   }
-
 
   onInput(event: Event) {
     const inputElement = event.target as HTMLInputElement;
@@ -635,6 +626,4 @@ bearer_token:string='';
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
-
-
 }
