@@ -263,6 +263,7 @@ bearer_token:string='';
 
         const dataArray = response.data; // Access the 'data' property from the response
         this.freezone1 = dataArray;
+        this.FreezonelistFilter=dataArray;
         this.common.setfreezone(this.freezone1);
         console.log(this.freezone1);
 
@@ -580,7 +581,7 @@ bearer_token:string='';
                 );
               }
               sessionStorage.setItem('lcauserdetails', JSON.stringify(response.data[0]));
-              this.auth.setLCAUser(response.data[0].roleuno);
+              this.auth.setLCAUser(response.data[0]);
               this.router.navigateByUrl('/lca-login/lcadashboard');
             } else {
               sessionStorage.setItem('usertype', 'CompanyUser');
@@ -595,6 +596,17 @@ bearer_token:string='';
       },
     });
   }
+  FreezonelistFilter: { itemcode: string; itemno: string }[] = [];
+
+  onInputChange(event: any, fieldValue: "categoryuno"): void {
+    const userInput = event.target.value.toLowerCase();
+    if (fieldValue === "categoryuno") {
+      this.freezone1 = this.FreezonelistFilter.filter((item: any) =>
+        item.itemcode.toLowerCase().includes(userInput)
+      );
+    }
+  }
+
 
   onInput(event: Event) {
     const inputElement = event.target as HTMLInputElement;

@@ -50,7 +50,7 @@ export class AuthService {
     if (data2 != undefined || data2 != null) {
       let abc = JSON.parse(data2);
       this.userprofilesubject.next(abc.Data?.firstnameEN);
-      let usertypedata = this.getLCAUser() || '';
+      let usertypedata = this.getLCAUserRole() || '';
       console.log(usertypedata);
       if (usertypedata) {
         this.lcauserloggedinSubject.next(true);
@@ -125,20 +125,35 @@ export class AuthService {
     this.router.navigateByUrl('/logout');
   }
 
-  getLCAUser(): string {
+  getLCAUserRole(): string {
     // Retrieve user role from localStorage
     return sessionStorage.getItem('userrole') || '';
   }
 
-  setLCAUser(role: string): void {
-    this.userRole = role;
+  setLCAUser(lcauserdata: any): void {
+    this.userRole = lcauserdata.roleuno;
     // this.userRoleSubject.next(role);
     this.lcauserloggedinSubject.next(true);
+    // sessionStorage.setItem('lcauserprofile', lcauserdata);
+    const lcauserprofileJson = JSON.stringify(lcauserdata);
 
-    sessionStorage.setItem('userrole', role);
-    this.userRoleSubject.next(role);
+    sessionStorage.setItem('lcauserprofile', lcauserprofileJson);
+
+    sessionStorage.setItem('userrole', this.userRole);
+    this.userRoleSubject.next(this.userRole);
   }
 
+  getLCAuserprofile() {
+    const lcauserprofileJson = sessionStorage.getItem('lcauserprofile');
+    
+    if (lcauserprofileJson) {
+      // Parse the JSON string back to an object
+      return JSON.parse(lcauserprofileJson);
+    } else {
+      return '';
+    }
+  }
+  
   getUserProfile() {
     const userProfileString = sessionStorage.getItem('userProfile');
     if (userProfileString) {
@@ -220,7 +235,7 @@ export class AuthService {
   isAuthenticated(): boolean {
     const userProfile = this.getUserProfile();
     const selectedCompany = this.getSelectedCompany();
-    const isLCUser = this.getLCAUser();
+    const isLCUser = this.getLCAUserRole();
 
     // Check if both user profile and selected company are available
     if (userProfile && selectedCompany) {

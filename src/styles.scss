@@ -1839,7 +1839,7 @@ input {
 }
 
 mat-label {
-  font-size: 14px;
+  font-size: 12px;
   line-height: 1rem !important;
 }
 
@@ -2414,8 +2414,8 @@ p-toolbar .mat-form-field-appearance-outline .mat-form-field-flex {
     }
 
     .more-content-body {
-      display: block;
-      flex: auto;
+      display: flex;
+      // flex: auto;
       width: 100%;
 
       .more-content-block {
@@ -3323,10 +3323,16 @@ mat-toolbar.main-header {
 }
 
  .mat-form-field-infix input.mat-input-element {
-  margin-top: 0.25em !important;
+  margin-top: 0em !important;
   //75 before
 
 }
+
+.mat-form-field-appearance-outline .mat-form-field-label {
+  top: 1.39em !important;
+  margin-top: 0em !important;
+}
+
 
 // .mat-form-field-appearance-outline .mat-form-field-wrapper {
 //   margin: 0.25em 0 -2em 0em;

@@ -15,6 +15,8 @@ import { saveAs } from 'file-saver';
 import { AuthService } from 'src/service/auth.service';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
+import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+// import { ReactiveFormsModule } from '@angular/forms';
 
 import { TranslateService } from '@ngx-translate/core';
 // import { PdfExportComponent } from 'src/app/shared/components/pdf-export/pdf-export.component';
@@ -102,6 +104,7 @@ isfilenotfouund:boolean=false;
 fields: { label: string, value: any }[] = [];
 isButtonDisabled = false;
 AddInvoiceDialog_: boolean = false;
+AddInvoiceDialog__: boolean = false;
 selectedTabIndex:number=0;
 fields_coo:{ label: string; value: any }[] = [];
 noOfInvoicesSelected_coo: any;
@@ -112,8 +115,10 @@ noOfInvoicesSelected_coo: any;
           cooamount:any;
           noofcoo:any;
           nooffines:any;
-
-  constructor(private datePipe: DatePipe, private http:HttpClient,private _liveAnnouncer: LiveAnnouncer, private api:ApiService,
+          registrationForm!: FormGroup;
+          selectedFile: any;
+          listOfFiles: File[] = [];
+  constructor(private datePipe: DatePipe, private http:HttpClient,private _liveAnnouncer: LiveAnnouncer, private api:ApiService,  private FormBuilder: FormBuilder,
      public common:CommonService, private consts:ConstantsService, private auth:AuthService, private router:Router,
      private translate: TranslateService,) {
     this.oneMonthAgo.setMonth(this.oneMonthAgo.getMonth() - 1);
@@ -132,6 +137,15 @@ noOfInvoicesSelected_coo: any;
   }
 
   ngOnInit(): void {
+
+    this.registrationForm = this.FormBuilder.group({
+      coorequestno: [, Validators.required],
+      uploadInvoiceFile: [, Validators.required],
+      invoiceuno:[, Validators.required]
+    });
+    // this.registrationForm.get('coorequestno')?.setValue(this.data.coorequestno);
+    // this.registrationForm.get('invoiceuno')?.setValue(this.data.invoiceuno);
+
 
     console.log("calling getselected company")
     let currcompany=this.auth.getSelectedCompany();
@@ -796,6 +810,90 @@ console.log(date.toISOString())
     // this.overdue=1;
     this.InitTable(updatedLazyLoadEvent);
   }
+  removeSelectedFile(index: number) {
+    this.listOfFiles.splice(index, 1);
+    this.registrationForm.get('uploadInvoiceFile')?.setValue(null);
+    this.registrationForm.get('uploadInvoiceFile')?.updateValueAndValidity();
+  }
+
   
+  proceed() {
+    if (this.registrationForm.valid) {
+      let formData: FormData = new FormData();
+      const { coorequestno } = this.registrationForm.getRawValue();
+      const { invoiceuno } = this.registrationForm.getRawValue();
+
+      const data = { uuid: this.uuid, coorequestno: coorequestno, invoiceuno:invoiceuno };
+      formData.append('data', JSON.stringify(data));
+      formData.append('attachment', this.selectedFile);
+      this.submitDeclarationAttestations(formData);
+    } else {
+      // alert
+      this.common.showErrorMessage('Kindly Fill the mandatory fields');
+    }
+  }
+
+  submitDeclarationAttestations(data: FormData) {
+    this.common.showLoading();
+    // this.onClose(true);
+    this.api.post(this.consts.updateCOORequests, data).subscribe((response: any) => {
+       
+
+        const dataArray = response;
+        if (`${response.responsecode}` === '1') {
+          //alert
+          this.common.showSuccessMessage(`COO Request Send for Approval`);
+          // this.clearDatas();
+          this.common.hideLoading();
+          
+        } else {
+          //alert
+          this.common.showErrorMessage(`${dataArray.message}`);
+          this.common.hideLoading();
+        }
+      });
+  }
+
+  onFileChanged(event: any) {
+    this.listOfFiles = [];
+    for (var i = 0; i <= event.target.files.length - 1; i++) {
+      var selectedFile = event.target.files[i];
+      if (selectedFile) {
+        if(selectedFile.type === 'application/pdf')
+        {
+
+              if (selectedFile.size <= 2 * 1024 * 1024) {
+                this.listOfFiles.push(selectedFile);
+                this.isLoading = true;
+
+                setTimeout(() => {
+                  // After the upload is complete
+                  this.isLoading = false;
+                }, 3000);
+
+              } else {
+                this.registrationForm.get('uploadInvoiceFile')?.setValue(null);
+                //alert
+                this.common.showErrorMessage(
+                  'File size should be less than or equal to 2 MB'
+                );
+              }
+            }
+            else{
+              this.listOfFiles=[];
+              this.registrationForm.get('uploadInvoiceFile')?.setValue(null);
+              this.common.showErrorMessage('Only PDF files are allowed');
+            }
+
+      }
+    }
+  
+  
+  }
+
+  uploadPhysicalInvoice() {
+   this.AddInvoiceDialog__=true;
+  
+  }
 
 }

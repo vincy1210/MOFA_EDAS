@@ -46,7 +46,7 @@ export class LeftMenuDrawerComponent implements OnInit {
   private userRoleSubscription!: Subscription;
   currentLanguage: string;
   private languageSubscription: Subscription;
-
+lcauseradminoruser:string='';
   constructor(
     private router: Router,
     public common: CommonService,
@@ -98,7 +98,7 @@ export class LeftMenuDrawerComponent implements OnInit {
       this.getMenuItemLists();
     });
     this.setusername();
-    let usertype = this.auth.getLCAUser() || '';
+    let usertype = this.auth.getLCAUserRole() || '';
     if (usertype == '' || usertype == null) {
       this.common.userType$.subscribe((usertype_) => {
         this.usertype = usertype_;
@@ -158,7 +158,16 @@ export class LeftMenuDrawerComponent implements OnInit {
     console.log(userRole);
 
     if (this.usertype == '11' || this.usertype == '12') {
+
+      if(this.usertype=='11'){
+        this.lcauseradminoruser='LCA Admin';
+      }
+      else if(this.usertype=='12'){
+        this.lcauseradminoruser='LCA User';
+      }
       console.log('menu for LCA Admin is loading');
+
+
 
       this.menuList.push(
         {

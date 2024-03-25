@@ -30,7 +30,7 @@ export class AuthGuard implements CanActivate {
     | UrlTree {
     const userProfile = this.authService.getUserProfile();
     const selectedCompany = this.authService.getSelectedCompany();
-    const isLCAUser = this.authService.getLCAUser();
+    const isLCAUser = this.authService.getLCAUserRole();
     this.checkAccessAvailable(route);
 
     if (this.authService.isAuthenticated()) {
@@ -43,7 +43,7 @@ export class AuthGuard implements CanActivate {
       }
 
       const userRole = isLCAUser
-        ? this.authService.getLCAUser()
+        ? this.authService.getLCAUserRole()
         : this.authService.getSelectedCompany().role;
 
       if (requiredRole.includes(userRole)) {

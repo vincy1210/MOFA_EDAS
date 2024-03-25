@@ -112,12 +112,12 @@
               </td> -->
               <td>   
                 <!-- EmiratesID -->
-                <span >{{list.eid?.trim() | eidFormatter}} </span>
+                <span >{{this.common.decryptWithPrivateKey(list.eid)| eidFormatter}} </span>
                   
               </td>
               <td>
                 <!-- Name -->
-                  <span class="image-text">{{list.fullnameen}}</span>
+                  <span class="image-text">{{this.common.decryptWithPrivateKey(list.fullnameen)}}</span>
               </td>
               <td>
                 <!-- Role -->
@@ -129,11 +129,11 @@
               </td> -->
               <td>
                 <!-- Email ID -->
-                  <span class="image-text">{{list.emailid}}</span>
+                  <span class="image-text">{{this.common.decryptWithPrivateKey(list.emailid)}}</span>
               </td>
               <td>
                 <!-- Mobile Number -->
-                  <span class="image-text">{{common.formatmobilenumber(list.mobilenumber)}}</span>
+                  <span class="image-text">{{(common.decryptWithPrivateKey(list.mobilenumber))}}</span>
               </td>
               <td>
                 <!-- Entered by -->

@@ -64,7 +64,8 @@ export class PendingAttestationsComponent
   currentDate: Date = new Date();
   responsiveLayout: 'scroll' | 'stack' = 'scroll';
   filterOptions: Array<any> = [];
-
+uuid:any;
+lcauserprofile:any;
   constructor(
     public override router: Router,
     public override consts: ConstantsService,
@@ -88,12 +89,16 @@ export class PendingAttestationsComponent
 
   ngOnInit(): void {
 
+    this.lcauserprofile=this.auth.getLCAuserprofile();
+    console.log(this.lcauserprofile);
+
     let data11=this.common.getUserProfile();
     let uuid;
     if(data11!=null || data11!=undefined){
       data11=JSON.parse(data11)
       console.log(data11.Data)
       uuid=data11.Data.uuid;
+      this.uuid=uuid;
     }
     else{
        this.common.setlogoutreason("session");
@@ -279,7 +284,7 @@ export class PendingAttestationsComponent
     const rows = event?.rows ? event?.rows : 0;
     this.selectedFilterOption.startnum = startnum;
     this.selectedFilterOption.rows = rows;
-    this.selectedFilterOption.uuid = '12223';
+    this.selectedFilterOption.uuid = this.uuid;
     // event.globalFilter = "";
     this.globalFilter = event.globalFilter;
     this.sortFilter = {
@@ -292,13 +297,13 @@ export class PendingAttestationsComponent
 
   onClickFilterOptionCommon() {
     let payload = {
-      useruno: "111",
-      lcauno: 0, // should change based on loggedinuser
+      useruno: this.lcauserprofile.useruno,// should change based on loggedinuser
+      lcauno: this.lcauserprofile.lcauno, // should change based on loggedinuser
       companyuno: this.selectedFilterOption.id,
       startnum: this.selectedFilterOption.startnum,
       limit: this.selectedFilterOption.rows,
-      startdate: this.selectedFilterOption.Startdate,
-      enddate: this.selectedFilterOption.Enddate,
+      startdate: this.common.formatDateTime_API_payload(this.selectedFilterOption.Startdate),
+      enddate: this.common.formatDateTime_API_payload(this.selectedFilterOption.Enddate),
     };
     this.getLcaDetailList(payload);
   }
@@ -322,7 +327,7 @@ export class PendingAttestationsComponent
 
   getCompanyList() {
     let payload = {
-      lcauno: 0,
+      lcauno: this.lcauserprofile.lcauno,
     };
     this.getListOfValues(payload);
   }

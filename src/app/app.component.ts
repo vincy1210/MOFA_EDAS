@@ -144,7 +144,7 @@ export class AppComponent {
     keepalive: Keepalive, private gloss:GlossaryService,
     cd: ChangeDetectorRef //vincy
   ) {
-    let role2 = this.auth.getLCAUser();
+    let role2 = this.auth.getLCAUserRole();
     this.role2 = role2;
     console.log(role2);
 
@@ -161,8 +161,8 @@ export class AppComponent {
       this.userrole = role;
     }
     // if (this.userloggedin || this.lcauserloggedin) {
-    idle.setIdle(30000); // how long can they be inactive before considered idle, in seconds 1200
-    idle.setTimeout(30000); // how long can they be idle before considered timed out, in seconds 600
+    idle.setIdle(3000); // how long can they be inactive before considered idle, in seconds 1200
+    idle.setTimeout(1500); // how long can they be idle before considered timed out, in seconds 600
     idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
 
     idle.onIdleStart.subscribe(() => {

@@ -22,8 +22,9 @@
       {{ username }}
       <!-- {{companyname}}   width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;-->
     </div>
-    <div class="companyname">{{ companyname }}</div>
-    <div class="companyname">{{ rolename }}</div>
+    <div *ngIf="companyname" class="companyname">{{ companyname }}</div>
+    <div *ngIf="lcauseradminoruser" class="companyname">{{lcauseradminoruser}}</div>
+    <div *ngIf="rolename" class="companyname">{{ rolename }}</div>
     
   </div>
   <mat-divider></mat-divider>

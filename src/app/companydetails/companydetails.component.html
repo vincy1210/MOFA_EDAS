@@ -100,11 +100,38 @@
       <div class="grid grid-cols-1">
         <mat-form-field appearance="outline">
           <mat-label>{{ 'legaltype' | translate }}</mat-label>
-          <mat-select name="legal_Type" formControlName="legal_Type">
+          <!-- <mat-select name="legal_Type" formControlName="legal_Type">
             <mat-option *ngFor="let option of legalTypeOptions" [value]="option.typeuno">
               {{ option.typename }}
             </mat-option>
-          </mat-select>
+          </mat-select> -->
+          <!-- <input appTrimInput  type="text"
+          placeholder="Pick one"
+          aria-label="Number"
+          matInput
+          formControlName="legal_Type" name="legal_Type"  (input)="onInputChange($event, 'categoryuno')" (focus)="onInputChange($event, 'categoryuno')"
+          [matAutocomplete]="auto">
+      
+   <mat-autocomplete requireSelection #auto="matAutocomplete" >
+            <mat-option *ngFor="let option of legalTypeOptions" [value]="option.typename">
+              {{option.typename}}
+            </mat-option>
+          </mat-autocomplete> -->
+
+          <input appTrimInput type="text"
+      placeholder="Pick one"
+      aria-label="Number"
+      matInput
+      formControlName="legal_Type"
+      name="legal_Type"
+      (input)="onInputChange($event, 'categoryuno')" (blur)="validateLegalType($event)"
+      [matAutocomplete]="auto">
+    <mat-autocomplete requireSelection #auto="matAutocomplete">
+      <mat-option *ngFor="let option of legalTypeOptions" [value]="option.typename">
+        {{ option.typename }}
+      </mat-option>
+    </mat-autocomplete>
+        
           <mat-error class="error" *ngIf="companyDetailsForm.get('legal_Type')?.hasError('required')">{{'Legal Type is required' | translate }}</mat-error>
         </mat-form-field>
       </div>
@@ -236,7 +263,7 @@
           <!-- <button (click)="submit()"  *ngIf="OTP_verified"  disabled="isDisabled" mat-flat-button color="primary" >{{'submitbtn' | translate }}</button> -->
           <div *ngIf="OTP_verified"  class="verified-text"><mat-icon class="mr-2">check_circle_outline</mat-icon>{{'Verified' | translate }}</div> &nbsp;&nbsp;
           <button *ngIf="!OTP_verified" mat-button color="primary" class="mr-2" (click)="openOTPPopup(myDialogshortcut)">{{'Verify Company Contact Number' | translate }}</button>
-          <button mat-flat-button color="primary" [disabled]="!OTP_verified"  (click)="submit()" >{{'submitbtn' | translate }}</button>
+          <button mat-flat-button color="primary"  [disabled]="!OTP_verified"  (click)="submit()" >{{'submitbtn' | translate }}</button>
         </div>
       </div>
       

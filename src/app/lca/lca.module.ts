@@ -23,7 +23,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatChipsModule } from '@angular/material/chips';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { MatDialogModule } from '@angular/material/dialog';
-
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { AuthGuard } from '../auth.guard';
@@ -38,6 +38,7 @@ import { LcaInProcessComponent } from './lca-in-process/lca-in-process.component
 
 // import { TrimInputDirective } from '../trim-input.directive';
 import { LcaInHoldComponent } from './lca-in-hold/lca-in-hold.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 const routes = [
   {
     path: 'attestation',
@@ -78,6 +79,8 @@ const routes = [
     // PdfExportComponent,
     // AppModule,
     // TrimInputDirective,
+    MatProgressSpinnerModule,
+    ReactiveFormsModule,
     CommonModule,
     RouterModule.forChild(routes),
     TranslateModule,

@@ -167,11 +167,11 @@ this.apicall.post(this.consts.getAttestStatisticsForCustomer, data).subscribe((r
   const processName = processname.toLowerCase(); // Convert processname to lowercase for consistent handling
 
   // Extracting the noofrequestsubmitted based on the process name
-  const noofrequestsubmitted = response.data[0]?.noofrequestsubmitted || 0;
+  // const noofrequestsubmitted = response.data[0]?.noofrequestsubmitted || 0;// unc
 
   // Creating series data for 'all' case
   // const seriesDataAll = [{ value: noofrequestsubmitted, name: processName.toUpperCase() }];
-  this.allSeriesDataValues[processName] = noofrequestsubmitted;
+  this.allSeriesDataValues[processName] = response.data[0]?.noofrequestsubmitted;
 
   // Creating series data for 'all' case
 const seriesDataAll = Object.keys(this.allSeriesDataValues)

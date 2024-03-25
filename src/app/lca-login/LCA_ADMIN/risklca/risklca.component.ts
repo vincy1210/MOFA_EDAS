@@ -66,6 +66,7 @@ export class RisklcaComponent
   responsiveLayout: 'scroll' | 'stack' = 'scroll';
   filterOptions: Array<any> = [];
 uuid:any
+lcauserprofile:any;
   constructor(
     public override router: Router,
     public override consts: ConstantsService,
@@ -88,6 +89,7 @@ uuid:any
   }
 
   ngOnInit(): void {
+    this.lcauserprofile=this.auth.getLCAuserprofile();
     let data11=this.common.getUserProfile();
     let uuid;
     if(data11!=null || data11!=undefined){
@@ -293,13 +295,13 @@ uuid:any
 
   onClickFilterOptionCommon() {
     let payload = {
-      useruno: this.uuid,
-      lcauno: 0, // should change based on loggedinuser
+      useruno: this.lcauserprofile.useruno,
+      lcauno: this.lcauserprofile.lcauno, // should change based on loggedinuser
       companyuno: this.selectedFilterOption.id,
       startnum: this.selectedFilterOption.startnum,
       limit: this.selectedFilterOption.rows,
-      startdate: this.selectedFilterOption.Startdate,
-      enddate: this.selectedFilterOption.Enddate,
+      startdate: this.common.formatDateTime_API_payload(this.selectedFilterOption.Startdate),
+      enddate: this.common.formatDateTime_API_payload(this.selectedFilterOption.Enddate),
       statusuno:2
     };
     this.getLcaDetailList(payload);
@@ -324,7 +326,7 @@ uuid:any
 
   getCompanyList() {
     let payload = {
-      lcauno: 0,
+      lcauno: this.lcauserprofile.lcauno,
     };
     this.getListOfValues(payload);
   }

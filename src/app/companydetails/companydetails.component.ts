@@ -28,6 +28,9 @@ export class CompanydetailsComponent implements OnInit {
   @ViewChild('invisible') invisibleRecaptcha: any;
   companyDetailsForm: FormGroup;//
   legalTypeOptions: { typeuno: string; typename: string }[] = [];
+  legalTypeOptionsfilter: { typeuno: string; typename: string }[] = [];
+
+  // legaltt:any
   TemplateRef: any;
   captcha_token:any;
 
@@ -73,7 +76,7 @@ export class CompanydetailsComponent implements OnInit {
   constructor(private recaptchaV3Service:ReCaptchaV3Service,private common:CommonService ,private _activatedRoute: ActivatedRoute,private formBuilder:FormBuilder, public dialog: MatDialog, private Common:CommonService, public apiservice:ApiService, public consts:ConstantsService, public router:Router) {
 
     let selectedlanguage = sessionStorage.getItem('language') || 'en';
-
+this.getlegaltypes();
     if(selectedlanguage==='ar'){
         this.currentLanguagecode='14337'
     }
@@ -89,7 +92,7 @@ export class CompanydetailsComponent implements OnInit {
       if(this.alreadyregisteredcompanydetails){
         this.form1_Vis=false;
         this.response_code_after_submit=this.alreadyregisteredcompanydetails.regnno;   ///vincy 
-        this.already_reg_companyemail=this.alreadyregisteredcompanydetails.repemailaddress;
+        this.already_reg_companyemail= this.common.decryptWithPrivateKey(this.alreadyregisteredcompanydetails.repemailaddress);
         if(this.alreadyregisteredcompanydetails.isapproved){  //already approved
 
           this.setnote('C')  //vincy
@@ -183,6 +186,11 @@ if(this.reg_form_data==undefined){
 
     this.typeExpress=['yes', 'No']
     let response;
+  
+
+  }
+
+  getlegaltypes(){
     let data={
       "useruno":"1",
       "languagecode":this.currentLanguagecode
@@ -195,10 +203,11 @@ if(this.reg_form_data==undefined){
         const dataArray = response.data; // Access the 'data' property from the response
         console.log(dataArray);
         this.legalTypeOptions=dataArray.dictionary.data;
+        this.legalTypeOptionsfilter=dataArray.dictionary.data;
+        // this.legaltt=this.legalTypeOptions;
         console.log(dataArray)
       });
       this.common.hideLoading();
-
   }
 
   @ViewChild('attachments') attachment: any;
@@ -323,6 +332,8 @@ if(this.reg_form_data==undefined){
     idn='' ;
 
   }
+
+  let legaltype=this.returnTypeUnoFromTypeName(form.legal_Type)
        
 	  let data={
       "emiratesId": idn,   // UAE pass frields start
@@ -360,7 +371,7 @@ if(this.reg_form_data==undefined){
       "UAEPassJson": this.user_info_taken_using_authtoken.UAEPassJson,
       
       "freezoneuno": this.reg_form_data?.dmccOption,    ///
-      "legaltypeuno": form.legal_Type,
+      "legaltypeuno": legaltype,
       "repfullnameen":form.companyrep_fullname,
       "repfullnamear":form.companyrep_fullname,
       "licenseissuingauthorityemirate":lcano,  //dropdown
@@ -713,4 +724,45 @@ if(this.reg_form_data==undefined){
       ? `${token.substring(0, 7)}...${token.substring(token.length - 7)}`
       : 'null';
   }
+
+ 
+//   displayFn(event:string):string {
+
+//     console.log("display fn calling")
+//     console.log(event)
+// return '';
+//   }
+returnTypeUnoFromTypeName(typename: string): string | undefined {
+  if (!typename || !this.legalTypeOptions || !this.legalTypeOptions.length) {
+    return undefined;
+  }
+
+  const selectedOption = this.legalTypeOptions.find((option: any) => option.typename === typename);
+  return selectedOption ? selectedOption.typeuno : '';
+}
+
+
+
+onInputChange(event: any, fieldValue: "categoryuno"): void {
+  const userInput = event.target.value.toLowerCase();
+  if (fieldValue === "categoryuno") {
+    this.legalTypeOptions = this.legalTypeOptionsfilter.filter((item: any) =>
+      item.typename.toLowerCase().includes(userInput)
+    );
+  }
+}
+
+validateLegalType(event: any) {
+  const enteredValue = event.target.value.trim();
+  const isValid = this.legalTypeOptions.some(option => option.typename === enteredValue);
+  
+  if (!isValid) {
+    this.companyDetailsForm.get('legal_Type')?.setValue(''); // Clear the input
+
+    this.legalTypeOptions = this.legalTypeOptionsfilter.filter((item: any) =>
+    item.typename.toLowerCase().includes('')
+  );
+  }
+}
+
 }

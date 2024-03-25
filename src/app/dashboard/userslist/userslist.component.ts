@@ -210,14 +210,18 @@ editDialog(currentrow:any){
     parsedValues=[];
   }
 
+  let mobilenumber=this.common.decryptWithPrivateKey(currentrow.mobilenumber)
+
+  // this.common.decryptWithPrivateKey(currentrow.mobilenumber)
+
   this.form.patchValue({
     company:this.currentcompany_name,
-    username: currentrow.fullnameen,
+    username: this.common.decryptWithPrivateKey(currentrow.fullnameen),
     gender:currentrow.gender,
-    emailaddress:currentrow.emailid,
-    mobilenumber:this.common.formatmobilenumber(currentrow.mobilenumber),
+    emailaddress:this.common.decryptWithPrivateKey(currentrow.emailid),
+    mobilenumber:this.common.formatmobilenumber(mobilenumber),
     role:currentrow.usertype,
-    emiratesID:currentrow.eid,
+    emiratesID:this.common.decryptWithPrivateKey(currentrow.eid) ,
     useruno:currentrow.useruno,
      accessprofile:parsedValues
     // ... other form fields
@@ -435,8 +439,8 @@ emiratesIDValidator(): ValidatorFn {
     const emiratesIDPattern = /^\d{3}-\d{4}-\d{7}-\d{1}$/;
 
     if (control.value && !emiratesIDPattern.test(control.value)) {
-      console.log("'"+control.value+"'")
-      console.log("invalid")
+      // console.log("'"+control.value+"'")
+      // console.log("invalid")
       return { invalidEmiratesID: true };
     }
 

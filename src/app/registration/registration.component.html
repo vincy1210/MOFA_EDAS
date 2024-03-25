@@ -106,11 +106,26 @@
         <div class="mt-2 grid grid-cols-1">
         <mat-form-field appearance="outline" >
           <mat-label>{{'dmcclabel' | translate }}</mat-label>
-          <mat-select name="dmccOption" formControlName="dmccOption" >
+          <!-- <mat-select name="dmccOption" formControlName="dmccOption" >
             <mat-option *ngFor="let option of freezone1" [value]="option.itemcode">
               {{ option.itemname | translate }}
             </mat-option>
-          </mat-select>
+          </mat-select> -->
+
+          <input appTrimInput  type="text"
+        placeholder="Pick one"
+        aria-label="Number"
+        matInput
+        formControlName="dmccOption" name="dmccOption"  (input)="onInputChange($event, 'categoryuno')"
+        [matAutocomplete]="auto">
+		
+		  <mat-autocomplete #auto="matAutocomplete"  >
+            <mat-option *ngFor="let option of freezone1" [value]="option.itemcode">
+              {{ option.itemname | translate }}
+            </mat-option>
+          </mat-autocomplete>
+
+
           <mat-error class="error" *ngIf="registrationForm.get('dmccOption')?.hasError('required')">{{'Please select an option'|translate}}</mat-error>
         </mat-form-field>
       </div>

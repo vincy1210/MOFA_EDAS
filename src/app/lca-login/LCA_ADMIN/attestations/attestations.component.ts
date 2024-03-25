@@ -46,7 +46,8 @@ export class AttestationsComponent extends LayoutModel implements OnInit {
   lcaChartOptionattestation: EChartsOption = {};
   // cooChartOptionattestation: EChartsOption = {};
   // physicalChartOptionattestation: EChartsOption = {};
-
+uuid:any;
+lcauserprofile:any;
   constructor(
     public override router: Router,
     public override consts: ConstantsService,
@@ -65,12 +66,14 @@ export class AttestationsComponent extends LayoutModel implements OnInit {
   }
 
   ngOnInit(): void {
+    this.lcauserprofile=this.auth.getLCAuserprofile();
     let data11 = this.common.getUserProfile();
     let uuid;
     if (data11 != null || data11 != undefined) {
       data11 = JSON.parse(data11);
       console.log(data11.Data);
       uuid = data11.Data.uuid;
+      this.uuid=uuid;
     } else {
       this.common.setlogoutreason('session');
       console.log("from attestations")
@@ -96,7 +99,7 @@ export class AttestationsComponent extends LayoutModel implements OnInit {
     this.selectedFilterOption.Startdate.setDate(
       this.selectedFilterOption.Startdate.getDate() - 30
     );
-    this.selectedFilterOption.uuid = '11122';
+    this.selectedFilterOption.uuid = this.uuid;
     this.getThemes1();
     // this.siteAnalyticsData({ action: ActionConstants.load });
   }
@@ -131,22 +134,22 @@ export class AttestationsComponent extends LayoutModel implements OnInit {
     if (filterType === 'daily') {
       payload = {
         // date: this.common.splitdatetime(this.currentDate)?.date,
-        uuid: this.selectedFilterOption.uuid,
-        lcauno: 0, // should change based on loggedinuser
+        uuid: this.uuid,
+        lcauno: this.lcauserprofile.lcauno, // should change based on loggedinuser
       };
     } else if (filterType === 'weekly') {
       payload = {
         // week: 43,
         // year: this.common.splitdatetime(this.currentDate)?.date,
-        uuid: this.selectedFilterOption.uuid,
-        lcauno: 0, // should change based on loggedinuser
+        uuid: this.uuid,
+        lcauno: this.lcauserprofile.lcauno, // should change based on loggedinuser
       };
     } else if (filterType === 'monthly') {
       payload = {
         // Month: this.common.splitdatetime(this.currentDate)?.date,
         // year: this.common.splitdatetime(this.currentDate)?.date,
-        uuid: this.selectedFilterOption.uuid,
-        lcauno: 0, // should change based on loggedinuser
+        uuid: this.uuid,
+        lcauno: this.lcauserprofile.lcauno, // should change based on loggedinuser
       };
     }
     this.getStatistics(filterType, payload);

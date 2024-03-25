@@ -27,6 +27,7 @@ import {
   ActionConstants,
 } from 'src/service/constants.service';
 import { ModalPopupService } from 'src/service/modal-popup.service';
+import { AuthService } from 'src/service/auth.service';
 
 const MY_DATE_FORMATS = {
   parse: {
@@ -79,12 +80,12 @@ export class LcaSettlementsReportsComponent
   };
   currentDate: Date = new Date();
   responsiveLayout: 'scroll' | 'stack' = 'stack';
-  lcauno: number | undefined = 0;
+  // lcauno: number | undefined = 0;
   monthname: moment.Moment | null = moment().startOf('month');
   totals: any = {};
   uuid:any;
   currentLanguagecode: string='1033';
-
+  lcauserprofile:any;
   constructor(
     public override router: Router,
     public override consts: ConstantsService,
@@ -92,7 +93,7 @@ export class LcaSettlementsReportsComponent
     public override common: CommonService,
     public override translate: TranslateService,
     private route: ActivatedRoute,
-    private modalPopupService: ModalPopupService
+    private modalPopupService: ModalPopupService, private auth:AuthService
   ) {
     super(router, consts, apiservice, common, translate);
     const url = this.router.url;
@@ -107,7 +108,7 @@ export class LcaSettlementsReportsComponent
   }
 
   ngOnInit(): void {
-
+    this.lcauserprofile=this.auth.getLCAuserprofile();
     let data11=this.common.getUserProfile();
     let uuid;
     if(data11!=null || data11!=undefined){
@@ -271,7 +272,7 @@ export class LcaSettlementsReportsComponent
       payload = {
         uuid: this.selectedFilterOption.uuid,
         status: 0, // pending or complated
-        lcauno: this.lcauno,
+        lcauno: this.lcauserprofile.lcauno,
         monthname: `01-${this.monthname?.format(
           'MMM'
         )}-${this.monthname?.format('YY')}`,
@@ -280,7 +281,7 @@ export class LcaSettlementsReportsComponent
       payload = {
         uuid: this.selectedFilterOption.uuid,
         status: 1, // pending or complated
-        lcauno: this.lcauno,
+        lcauno: this.lcauserprofile.lcauno,
         monthname: `01-${this.monthname?.format(
           'MMM'
         )}-${this.monthname?.format('YY')}`,
@@ -380,16 +381,16 @@ export class LcaSettlementsReportsComponent
         if (`${dictionary.responsecode}` === '1') {
           this.lcaList = dictionary.data;
           // if (this.routesname === 'pending') {
-          this.lcauno = this.lcaList.at(0)?.itemno;
+          // this.lcauno = this.lcaList.at(0)?.itemno;
           this.onClickFilterOptionDate(true);
           // }
 
-          let data2 = sessionStorage.getItem('lcauserdetails');
-          if (data2 != undefined || data2 != null) {
-            let lcauserdetails = JSON.parse(data2);
-            this.lcauno = lcauserdetails?.lcauno;
-            this.lcauno = 2;
-          }
+          // let data2 = sessionStorage.getItem('lcauserdetails');
+          // if (data2 != undefined || data2 != null) {
+          //   let lcauserdetails = JSON.parse(data2);
+          //   this.lcauno = lcauserdetails?.lcauno;
+          //   this.lcauno = 2;
+          // }
         }
       },
     });
