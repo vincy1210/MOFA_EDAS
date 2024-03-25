@@ -138,6 +138,16 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
         errorrs: [],
       },
       {
+        field: 'CompanyName',
+        header: 'Company Name',
+        errorrs: [],
+      },
+      {
+        field: 'Status',
+        header: 'Status',
+        errorrs: [],
+      },
+      {
         field: 'DeclarationNo',
         header: 'Declaration No',
         errorrs: [],
@@ -218,18 +228,8 @@ export class ImportAttestationsComponent extends LayoutModel implements OnInit {
         errorrs: [],
       },
       {
-        field: 'CompanyName',
-        header: 'Company Name',
-        errorrs: [],
-      },
-      {
         field: 'Remarks',
         header: 'Remarks',
-        errorrs: [],
-      },
-      {
-        field: 'Status',
-        header: 'Status',
         errorrs: [],
       },
       {
