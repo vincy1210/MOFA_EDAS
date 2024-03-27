@@ -1,6 +1,6 @@
 <div class="grid grid-cols-1" color="primary" class="page-header">
     <label style="font-size: 14px; color: white; font-weight: bold"
-      >{{ "Attestation(s)" | translate }} - {{ "In Process" | translate }}</label
+      >{{ "Attestation(s)" | translate }} - {{ "Pending for Invoice Approval" | translate }}</label
     >
   </div>
   
@@ -8,7 +8,7 @@
     <div class="grid grid-cols-1">
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 tablepadding">
         <div [ngClass]="{ 'col-span-2': shouldShow, 'col-span-3': !shouldShow }">
-          <p-table
+          <p-table *ngIf="false"
             [(selection)]="selectedAttestations"
             [resizableColumns]="true"
             dataKey="edasattestno"
@@ -185,10 +185,10 @@
                     ></span>
                     <i class="fas fa-lightbulb light-bulb"></i>
                     <p>
-                      LCA Completed Request are shown in this list. LCA Completed
-                      Request are shown in this list. LCA Completed Request are
-                      shown in this list. LCA Completed Request are shown in this
-                      list. LCA Completed Request are shown in this list. LCA Completed Request are shown in this list.
+                      Attestation(s) - Pending for Invoice Approval are shown in this list. LCA Completed
+                      Request are shown in this list. Attestation(s) - Pending for Invoice Approval are
+                      shown in this list. Attestation(s) - Pending for Invoice Approval are shown in this
+                      list. Attestation(s) - Pending for Invoice Approval are shown in this list. Attestation(s) - Pending for Invoice Approval are shown in this list.
                     </p>
                   </div>
                   </div>

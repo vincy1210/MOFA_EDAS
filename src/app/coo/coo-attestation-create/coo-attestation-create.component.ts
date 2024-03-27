@@ -157,7 +157,7 @@ export class CooAttestationCreateComponent implements OnInit {
         const dataArray = response;
         if (`${response.responsecode}` === '1') {
           //alert
-          this.common.showSuccessMessage(`COO Request Send for Approval`);
+          this.common.showSuccessMessage(`COO Request Sent for Approval`);
           this.clearDatas();
           this.common.hideLoading();
           

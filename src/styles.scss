@@ -3106,6 +3106,7 @@ mat-toolbar.main-header {
 
 .p-dialog .p-dialog-content {
   padding: 1rem 1.5rem 2rem 1.5rem;
+  flex-grow: inherit;
 }
 
 .p-dialog .p-dialog-footer {
@@ -3336,4 +3337,9 @@ mat-toolbar.main-header {
 
 // .mat-form-field-appearance-outline .mat-form-field-wrapper {
 //   margin: 0.25em 0 -2em 0em;
+// }
+
+// .mat-form-field-infix {
+//   // padding: 0.5em 0;
+//   border-top: 0em solid transparent !important;
 // }

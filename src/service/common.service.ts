@@ -855,9 +855,9 @@ export class CommonService {
         ],
       },
       {
-        name: 'lcainprocess',
-        menu: 'lcainprocess',
-        menufull: 'lcainprocess',
+        name: 'pendinginvoiceapproval',
+        menu: 'pendinginvoiceapproval',
+        menufull: 'pendinginvoiceapproval',
         requiredRoles: [RoleEnums.Admin, RoleEnums.User],
         permissionRoles: [
           { role: RoleEnums.Admin, permission: [PermissionEnums.All] },

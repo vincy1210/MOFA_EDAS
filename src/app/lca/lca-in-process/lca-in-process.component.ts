@@ -163,7 +163,7 @@ noOfInvoicesSelected_coo: any;
     }
     else{
        this.common.setlogoutreason("session");
-       console.log("from lcainprocess")
+       console.log("from pendinginvoiceapproval")
 
       this.auth.logout();
 
@@ -234,8 +234,8 @@ set selectedColumns(val: any[]) {
     let resp;
     let data;
     data={
-      "companyuno":this.currentcompany,
       "uuid":this.uuid,
+      "companyuno":this.currentcompany,
       "startnum":$event.first,
       "limit":200 + ($event.first ?? 0),
       "Startdate":this.common.formatDateTime_API_payload(this.oneMonthAgo.toDateString()),
@@ -244,15 +244,15 @@ set selectedColumns(val: any[]) {
 this.loading=true;
 this.common.showLoading();
 
-    this.api.post(this.consts.getPreprocessLCARequests,data).subscribe({next:(success:any)=>{
+    this.api.post(this.consts.lcaPendingForInvoiceApproval,data).subscribe({next:(success:any)=>{
       this.common.hideLoading();
 
  this.loading=false;
       resp=success;
-      if(resp.responsecode==1){
-        this.list=resp.data
-        this.datasource=resp.data;
-        this.totalrecords=resp.recordcount;
+      if(resp.dictionary.responsecode==1){
+        this.list=resp.dictionary.data
+        this.datasource=resp.dictionary.data;
+        this.totalrecords=resp.dictionary.recordcount;
         this.loading = false;
         this.Reduce();
 

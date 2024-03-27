@@ -121,4 +121,10 @@ getAttestStatisticsForCustomer='dashboard/getAttestStatisticsForCustomer'
 CheckUAEPassLogin="Common/CheckUAEPassLogin";
 
   getEmbassywiseAttestationCount = "dashboard/getEmbassywiseAttestationCount";
+
+
+  uploadActualInvoicesForLCA="LCA/uploadActualInvoicesForLCA";
+
+
+  lcaPendingForInvoiceApproval="User/lcaPendingForInvoiceApproval";
 }

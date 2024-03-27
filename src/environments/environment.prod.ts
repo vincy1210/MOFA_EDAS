@@ -8,7 +8,7 @@ export const environment = {
   baseURL: 'https://edasapi.mofa.gov.ae/edasapi/api/',
   authTokenURL: 'https://edasapi.mofa.gov.ae/en/Account/',
   appdetails:{
-    version:'3.8',
+    version:'4.0',
     year:'2024',
     payment_count:500,
     idletime_out:1500,

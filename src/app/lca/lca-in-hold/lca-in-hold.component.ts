@@ -247,6 +247,7 @@ noOfInvoicesSelected_coo: any;
   {
     "useruno":this.uuid,
     "lcauno":0,
+    "profileuno":0,
     "companyuno":this.currentcompany,
     "startnum":$event.first,
     "limit":200 + ($event.first ?? 0),

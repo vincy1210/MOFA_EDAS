@@ -155,3 +155,17 @@ button.mat-stroked-button {
 }
 
 
+.cd-file-list {
+  margin-top: -50px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.mat-button .mat-button-wrapper>*{
+  vertical-align: text-bottom !important;
+  }
+  
+
+  .cd-upload a.mat-focus-indicator.float-right.mat-button.mat-button-base.mat-primary{
+    padding: 0 16px 4px;
+}

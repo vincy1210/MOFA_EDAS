@@ -59,9 +59,9 @@ const routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'lcainprocess',
+    path: 'pendinginvoiceapproval',
     component: LcaInProcessComponent,
-    data: { role: ['Admin', 'User'], name: 'lcainprocess' },
+    data: { role: ['Admin', 'User'], name: 'pendinginvoiceapproval' },
     canActivate: [AuthGuard],
   },
   {

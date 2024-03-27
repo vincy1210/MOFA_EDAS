@@ -139,12 +139,13 @@ noOfInvoicesSelected_coo: any;
   ngOnInit(): void {
 
     this.registrationForm = this.FormBuilder.group({
-      coorequestno: [, Validators.required],
+      LCARequestNo: [, Validators.required],
       uploadInvoiceFile: [, Validators.required],
-      invoiceuno:[, Validators.required]
+      InvoiceNumber:[, Validators.required],
+      RequestApplNo:[, Validators.required],
+      RequestDate:[, Validators.required],
+      action:[, Validators.required],
     });
-    // this.registrationForm.get('coorequestno')?.setValue(this.data.coorequestno);
-    // this.registrationForm.get('invoiceuno')?.setValue(this.data.invoiceuno);
 
 
     console.log("calling getselected company")
@@ -816,33 +817,55 @@ console.log(date.toISOString())
     this.registrationForm.get('uploadInvoiceFile')?.updateValueAndValidity();
   }
 
+  convertToBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = error => reject(error);
+    });
+  }
+   removeBase64Prefix(base64String: string): string {
+    const prefix = 'data:application/pdf;base64,';
+    if (base64String.startsWith(prefix)) {
+      return base64String.substring(prefix.length);
+    }
+    return base64String; // Return as is if prefix is not found
+  }
   
-  proceed() {
+  async proceed() {
     if (this.registrationForm.valid) {
-      let formData: FormData = new FormData();
-      const { coorequestno } = this.registrationForm.getRawValue();
-      const { invoiceuno } = this.registrationForm.getRawValue();
+      // let formData: FormData = new FormData();
+      const { LCARequestNo } = this.registrationForm.getRawValue();
+      const { InvoiceNumber } = this.registrationForm.getRawValue();
+      const { RequestApplNo } = this.registrationForm.getRawValue();
+      const { RequestDate } = this.registrationForm.getRawValue();
 
-      const data = { uuid: this.uuid, coorequestno: coorequestno, invoiceuno:invoiceuno };
-      formData.append('data', JSON.stringify(data));
-      formData.append('attachment', this.selectedFile);
-      this.submitDeclarationAttestations(formData);
+    let base64physicalFile= await this.convertToBase64(this.selectedFile);  //give function to convert this file to base 64 format
+    let cleaned_base64=this.removeBase64Prefix(base64physicalFile)
+
+      const data = { 
+        uuid: this.uuid, LCARequestNo: LCARequestNo, InvoiceNumber:InvoiceNumber , RequestApplNo:RequestApplNo, RequestDate: RequestDate, action: "ADD",
+        Invoice:cleaned_base64 || ''
+      };
+      this.submitDeclarationAttestations(data);
     } else {
       // alert
       this.common.showErrorMessage('Kindly Fill the mandatory fields');
     }
   }
 
-  submitDeclarationAttestations(data: FormData) {
+  submitDeclarationAttestations(data: any) {
     this.common.showLoading();
     // this.onClose(true);
-    this.api.post(this.consts.updateCOORequests, data).subscribe((response: any) => {
+    this.api.post(this.consts.uploadActualInvoicesForLCA, data).subscribe((response: any) => {
        
 
         const dataArray = response;
         if (`${response.responsecode}` === '1') {
           //alert
-          this.common.showSuccessMessage(`COO Request Send for Approval`);
+          this.common.showSuccessMessage(`Physical Invoice Sent for Approval`);
+          this.AddInvoiceDialog__=false;
           // this.clearDatas();
           this.common.hideLoading();
           
@@ -858,6 +881,7 @@ console.log(date.toISOString())
     this.listOfFiles = [];
     for (var i = 0; i <= event.target.files.length - 1; i++) {
       var selectedFile = event.target.files[i];
+      this.selectedFile=event.target.files[i];
       if (selectedFile) {
         if(selectedFile.type === 'application/pdf')
         {
@@ -891,7 +915,14 @@ console.log(date.toISOString())
   
   }
 
-  uploadPhysicalInvoice() {
+  uploadPhysicalInvoice(data:any) {
+console.log(data);
+        this.registrationForm.get('LCARequestNo')?.setValue(data.lcarequestno);
+    this.registrationForm.get('InvoiceNumber')?.setValue(data.invoicenumber);
+    this.registrationForm.get('RequestApplNo')?.setValue(data.reqappnumber);
+    this.registrationForm.get('RequestDate')?.setValue(data.attestreqdate);
+    this.registrationForm.get('action')?.setValue("ADD");
+
    this.AddInvoiceDialog__=true;
   
   }

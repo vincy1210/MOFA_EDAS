@@ -54,7 +54,8 @@ export class CompanydetailsComponent implements OnInit {
   OTP_entered:any;
   incorrectOTP: boolean = false;
   OTP_verified:boolean=false;
-
+  isSubmitting: boolean = false; 
+  submitCooldownSeconds: number = 10; 
   reg_form_data:any;
   user_info_taken_using_authtoken:any;
 
@@ -280,6 +281,11 @@ if(this.reg_form_data==undefined){
   //
   
   submit() {
+    this.isSubmitting = true;
+    setTimeout(() => {
+      this.isSubmitting = false;
+    }, this.submitCooldownSeconds * 1000);
+
     console.log(this.attachment)
     if (this.companyDetailsForm.get('isbroker')?.value === "") {
       this.radiochosenornot = true;
@@ -288,6 +294,7 @@ if(this.reg_form_data==undefined){
     }
   
     if (this.companyDetailsForm.valid) {
+      this.common.showLoading();
       // Execute reCAPTCHA v3
       this.recaptchaV3Service.execute('myAction').subscribe(
         (token) => {
@@ -384,7 +391,7 @@ if(this.reg_form_data==undefined){
   
         let data111 = { ...data, ...this.user_info_taken_using_authtoken };
         console.log(data111);
-
+        this.common.hideLoading();
         let response;
   this.common.showLoading();
         this.apiservice.registerCompanyAttachment(this.consts.registercompany ,this.sel_file_test,data).pipe(takeWhile(() => this.alive)).subscribe({

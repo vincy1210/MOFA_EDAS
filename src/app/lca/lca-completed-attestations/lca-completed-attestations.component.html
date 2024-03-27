@@ -334,10 +334,10 @@
                   <mat-icon class="action_eye_icon">download</mat-icon>
                 </span>
                 <!-- *ngIf="data.feespaid === 'Paid' && !data.attachment" -->
-                <span
-                (click)="uploadPhysicalInvoice()"
+                <span *ngIf="customer.canupload"
+                (click)="uploadPhysicalInvoice(customer)"
                 style="padding: 15px; cursor: pointer"
-                pTooltip="Upload attachment"
+                pTooltip="Upload Physical Invoice"
                 class="image-text viewaction"
               >
                 <mat-icon class="action_eye_icon">upload</mat-icon>
@@ -438,7 +438,7 @@
 
 <p-dialog
   [(visible)]="AddInvoiceDialog_"
-  [style]="{ width: '750px', height: '550px' }"
+  [style]="{ width: '750px' }"
   header="{{ 'COO details' | translate }}"
   [modal]="true"
   styleClass="p-fluid ui-dialog"
@@ -537,7 +537,7 @@
 
 <p-dialog
   [(visible)]="AddInvoiceDialog__"
-  [style]="{ width: '750px', height: '550px' }"
+  [style]="{ width: '750px' }"
   header="{{ 'Upload Physical Invoice' | translate }}"
   [modal]="true"
   styleClass="p-fluid ui-dialog"
@@ -551,40 +551,40 @@
       {{'Please upload the physical invoice.' | translate}}
     </p>
     <br>
-    <div class="grid grid-cols-1">
+   <div class="grid grid-cols-1">
     
-      <div class="cd-upload">
-  
-        <!-- <div *ngIf="isLoading; else fileUpload">
-          <mat-spinner diameter="50"></mat-spinner>
-        </div> -->
-  
-        <!-- <ng-template #fileUpload> -->
-        <mat-form-field appearance="outline" floatLabel="always" class="cd-upload-field">
-          <mat-label>{{ "uploadInvoice" | translate }}</mat-label>
-          <a  mat-button color="primary" (click)="fileInput.click()" class="float-right">
-            <span *ngIf="!isLoading">
-            {{ (registrationForm.get('uploadInvoiceFile')?.value === '' || registrationForm.get('uploadInvoiceFile')?.value === null) ? ('Upload' | translate) : ('Re-upload' | translate ) }}
-          </span>
-          <span  *ngIf="isLoading">
-            <mat-spinner diameter="35"></mat-spinner>
-          </span>
-        </a>
-         
-          <input appTrimInput  type="text" formControlName="uploadInvoiceFile" name="uploadInvoiceFile" readonly matInput />
-         
-          <input  accept=".pdf" style="display: none" formControlName="uploadInvoiceFile" name="uploadInvoiceFile" #attachments type="file" (change)="onFileChanged($event)" #fileInput /> 
-          <div *ngFor="let selected of listOfFiles; let index = index" class="cd-file-list">
-            <span class="doc_selected">{{ selected.name }}</span> &nbsp; &nbsp; &nbsp;<mat-icon>check_circle_outline</mat-icon>
-            <small (click)="removeSelectedFile(index)">{{'Remove' | translate }}</small>
-          </div>
-          <mat-error *ngIf="registrationForm.get('uploadInvoiceFile')?.hasError('required')">
-            {{ "alertuploadInvoice" | translate }}
-          </mat-error>
-        </mat-form-field>
+    <div class="cd-upload">
+
+      <!-- <div *ngIf="isLoading; else fileUpload">
+        <mat-spinner diameter="50"></mat-spinner>
+      </div> -->
+
+      <!-- <ng-template #fileUpload> -->
+      <mat-form-field appearance="outline" floatLabel="always" class="cd-upload-field">
+        <mat-label>{{ "uploadInvoice" | translate }}</mat-label>
+        <a  mat-button color="primary" (click)="fileInput.click()" class="float-right">
+          <span *ngIf="!isLoading">
+          {{ (registrationForm.get('uploadInvoiceFile')?.value === '' || registrationForm.get('uploadInvoiceFile')?.value === null) ? ('Upload' | translate) : ('Re-upload' | translate ) }}
+        </span>
+        <span  *ngIf="isLoading">
+          <mat-spinner diameter="35"></mat-spinner>
+        </span>
+      </a>
        
-      </div>
+        <input appTrimInput  type="text" formControlName="uploadInvoiceFile" name="uploadInvoiceFile" readonly matInput />
+       
+        <input  accept=".pdf" style="display: none" formControlName="uploadInvoiceFile" name="uploadInvoiceFile" #attachments type="file" (change)="onFileChanged($event)" #fileInput /> 
+        <div *ngFor="let selected of listOfFiles; let index = index" class="cd-file-list">
+          <span class="doc_selected">{{ selected.name }}</span> &nbsp; &nbsp; &nbsp;<mat-icon>check_circle_outline</mat-icon>
+          <!-- <small (click)="removeSelectedFile(index)">{{'Remove' | translate }}</small> -->
+        </div>
+        <mat-error *ngIf="registrationForm.get('uploadInvoiceFile')?.hasError('required')">
+          {{ "alertuploadInvoice" | translate }}
+        </mat-error>
+      </mat-form-field>
+     
     </div>
+  </div>
   </div>
   <div class="flex justify-center" mat-dialog-actions>
     <div class="grid grid-cols-1 w-30">

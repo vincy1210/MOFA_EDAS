@@ -291,13 +291,13 @@ lcauseradminoruser:string='';
               link: '/lca/lcacompletedattestation',
               param: 'true',
             },
-            // {
-            //   id: 3,
-            //   menu: 'In process',
-            //   icon: 'play_arrow',
-            //   link: '/lca/lcainprocess',
-            //   param: 'true',
-            // },
+            {
+              id: 3,
+              menu: 'Pending - Invoice approval',
+              icon: 'play_arrow',
+              link: '/lca/pendinginvoiceapproval',
+              param: 'true',
+            },
             {
               id: 4,
               menu: 'In Risk',

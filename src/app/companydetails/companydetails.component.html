@@ -263,7 +263,7 @@
           <!-- <button (click)="submit()"  *ngIf="OTP_verified"  disabled="isDisabled" mat-flat-button color="primary" >{{'submitbtn' | translate }}</button> -->
           <div *ngIf="OTP_verified"  class="verified-text"><mat-icon class="mr-2">check_circle_outline</mat-icon>{{'Verified' | translate }}</div> &nbsp;&nbsp;
           <button *ngIf="!OTP_verified" mat-button color="primary" class="mr-2" (click)="openOTPPopup(myDialogshortcut)">{{'Verify Company Contact Number' | translate }}</button>
-          <button mat-flat-button color="primary"  [disabled]="!OTP_verified"  (click)="submit()" >{{'submitbtn' | translate }}</button>
+          <button mat-flat-button color="primary"  [disabled]="!OTP_verified || isSubmitting"  (click)="submit()" >{{'submitbtn' | translate }}</button>
         </div>
       </div>
       
